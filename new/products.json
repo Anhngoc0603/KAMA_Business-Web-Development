@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Dior Forever Foundation",
+    "brand": "Dior",
+    "price": 68.00,
+    "rating": 4.9,
+    "category": "Face",
+    "image": "../new/images/figure-1655132157621.png",
+    "description": "A long-wear, high-perfection foundation that enhances your natural glow."
+  },
+  {
+    "id": 2,
+    "name": "Chanel Les Beiges Blush",
+    "brand": "Chanel",
+    "price": 52.00,
+    "rating": 4.8,
+    "category": "Face",
+    "image": "../new/images/ma-hong-dang-kem-chanel-les-beiges-water-fresh-blush-tone-light-peach-15ml-2-jpg-1686210006-08062023144006.webp",
+    "description": "Soft rosy blush that gives a healthy radiance with every sweep."
+  },
+  {
+    "id": 3,
+    "name": "YSL Touche Éclat Concealer",
+    "brand": "YSL",
+    "price": 40.00,
+    "rating": 4.7,
+    "category": "Face",
+    "image": "../new/images/che-khuyet-diem-yves-saint-laurent-ysl-touche-eclat-high-cover-radiant-concealer-tone-3-almond-1-jpg-1719392975-26062024160935.webp",
+    "description": "Brightening pen that instantly highlights and conceals imperfections."
+  },
+  {
+    "id": 4,
+    "name": "Lancôme Hypnôse Mascara",
+    "brand": "Lancôme",
+    "price": 33.00,
+    "rating": 4.9,
+    "category": "Eyes",
+    "image": "../new/images/61K1zuiyOhL._UF1000,1000_QL80_.jpg",
+    "description": "Buildable volume mascara for custom lash intensity and elegance."
+  },
+  {
+    "id": 5,
+    "name": "Charlotte Tilbury Eyeshadow Palette",
+    "brand": "Charlotte Tilbury",
+    "price": 55.00,
+    "rating": 4.8,
+    "category": "Eyes",
+    "image": "../new/images/bang-phan-mat-charlotte-tilbury-luxury-eyeshadow-palette-mau-pillow-talk-dreams-5-1g-62636164dbdaf-23042022091604.webp",
+    "description": "Luxury palette with silky shades that blend effortlessly for any look."
+  },
+  {
+    "id": 6,
+    "name": "Fenty Beauty Flyliner",
+    "brand": "Fenty Beauty",
+    "price": 25.00,
+    "rating": 4.5,
+    "category": "Eyes",
+    "image": "../new/images/images (3).jpg",
+    "description": "Water-resistant eyeliner for sharp, precise, and bold lines."
+  },
+  {
+    "id": 7,
+    "name": "Dior Addict Lip Glow",
+    "brand": "Dior",
+    "price": 40.00,
+    "rating": 5.0,
+    "category": "Lips",
+    "image": "../new/images/son-duong-dior-addict-lip-glow-015-cherry-mau-do-cherry-67c661e4436fc-04032025091356.webp",
+    "description": "Iconic lip balm that enhances natural color with glossy glow."
+  },
+  {
+    "id": 8,
+    "name": "YSL Rouge Pur Couture Lipstick",
+    "brand": "YSL",
+    "price": 45.00,
+    "rating": 4.9,
+    "category": "Lips",
+    "image": "../new/images/son-ysl-r1966.png",
+    "description": "High-pigment lipstick delivering luxurious color and comfort."
+  },
+  {
+    "id": 9,
+    "name": "Rare Beauty Lip Soufflé Tint",
+    "brand": "Rare Beauty",
+    "price": 22.00,
+    "rating": 4.8,
+    "category": "Lips",
+    "image": "../new/images/s2504413-main-zoom-jpg-1648524795-29032022103315.webp",
+    "description": "Airy tint that glides softly for a velvety-matte finish."
+  },
+  {
+    "id": 10,
+    "name": "NARS Radiant Creamy Concealer",
+    "brand": "NARS",
+    "price": 38.00,
+    "rating": 4.6,
+    "category": "Face",
+    "image": "../new/images/images (4).jpg",
+    "description": "Award-winning concealer that brightens and hides dark circles."
+  }
+]

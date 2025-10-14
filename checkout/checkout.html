@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - High-End Cosmetics</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1 class="main-title">💖 Checkout Order</h1>
+        <p class="subtitle">Confirm your shipping and payment details</p>
+    </div>
+
+    <div class="checkout-container">
+        
+        <section class="info-section">
+            <h2>📍 Shipping Information</h2>
+            
+            <div id="shippingDisplay" class="shipping-display">
+                <p><strong>Full Name:</strong> <span id="displayFullname"></span></p>
+                <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
+                <p><strong>Address:</strong> <span id="displayAddress"></span>, 
+                    <span id="displayDistrict"></span>, <span id="displayProvince"></span>
+                </p>
+            </div>
+            
+            <div id="noShippingInfo" class="no-info-message hidden">
+                <p>No shipping information provided. <a href="../cart/index.html">Return to cart</a> to enter details.</p>
+            </div>
+
+            <div id="engravingInfo" class="engraving-display hidden">
+                <p><strong>Custom Engraving:</strong> <span id="engravedNameCheckout"></span></p>
+            </div>
+        </section>
+
+        <section class="cart-section">
+            <h2>🛒 Order Details</h2>
+            <div id="cartItems">
+                </div>
+            
+            <div id="emptyCart" class="empty-cart-message hidden">
+                <h3>Cart is Empty</h3>
+                <p>There are no products in your cart.</p>
+            </div>
+        </section>
+
+        <section class="summary-section">
+            <h2>💰 Order Summary</h2>
+            
+            <div class="summary-details">
+                <div class="summary-row"><span>Subtotal (Items):</span><span id="subtotal">0₫</span></div>
+                <div class="summary-row"><span>Engraving Fee:</span><span id="engravingFee">0₫</span></div>
+                <div class="summary-row"><span>Discount (15%):</span><span id="discount">-0₫</span></div>
+                <div class="summary-row"><span>Shipping Fee:</span><span id="shippingFee">0₫</span></div>
+                
+                <div class="summary-row total"><span>TOTAL:</span><span id="total">0₫</span></div>
+            </div>
+
+            <div class="progress-wrapper">
+                <span>🚚 Free Shipping Progress:</span>
+                <div class="progress-bar">
+                    <div id="progressBar"></div>
+                </div>
+                <div id="progressText">Processing...</div>
+            </div>
+
+            <h2 style="margin-top: 1.5rem;">💳 Payment Method</h2>
+            <div class="payment-methods">
+                <label>
+                    <input type="radio" name="payment" value="momo" checked />
+                    <span>MoMo</span>
+                </label>
+                <label>
+                    <input type="radio" name="payment" value="zalo" />
+                    <span>ZaloPay</span>
+                </label>
+                <label>
+                    <input type="radio" name="payment" value="bank" />
+                    <span>Bank Transfer</span>
+                </label>
+                <label>
+                    <input type="radio" name="payment" value="cod" />
+                    <span>Cash on Delivery (COD)</span>
+                </label>
+            </div>
+            
+            <div id="qrMomo" class="qr-container hidden"></div>
+            <div id="qrZalo" class="qr-container hidden"></div>
+            <div id="qrBank" class="qr-container hidden"></div>
+            <div id="qrCod" class="qr-container hidden"></div>
+
+            <button id="confirmOrderBtn" class="checkout-btn">✅ CONFIRM ORDER</button>
+            
+            <a href="../cart/cart.html" class="back-to-cart-btn">⬅️ Go Back to Cart</a>
+
+        </section>
+    </div>
+
+    <div id="overlay" class="hidden"></div>
+    <div id="successPopup" class="popup hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+        <div class="popup-content">
+            <h3 style="color: #6B4C3B;">Order Successful!</h3>
+            <p>Your Order ID is: <strong id="orderId">#${Date.now()}</strong></p>
+            <button id="closePopupBtn" style="margin-top: 10px; padding: 8px 15px; border: none; background: #E6A6B0; color: white; border-radius: 5px;">Close</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

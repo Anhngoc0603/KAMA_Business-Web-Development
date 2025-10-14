@@ -1,0 +1,323 @@
+/* ===== Reset & Font ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    /* Nền Gradient ấm áp, sang trọng */
+    background: linear-gradient(135deg, #FADADD 0%, #FFF5F7 100%);
+    color: #6B4C3B; /* Màu chữ chính, tone đất/hồng nhạt */
+    animation: fadeIn 0.8s ease;
+    line-height: 1.6;
+}
+
+.hidden { display: none !important; }
+
+/* ===== Header & Typography ===== */
+.header {
+    text-align: center;
+    padding: 2rem;
+    background: #FFF; /* Header màu trắng tinh khiết */
+    color: #6B4C3B;
+    border-bottom: 4px solid #F9C6CF; /* Đường viền mỏng, sang trọng */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.header h1 { 
+    font-size: 2rem; 
+    font-weight: 700;
+    color: #A0726A; /* Màu tiêu đề đậm hơn */
+}
+.header p { 
+    font-size: 1.1rem; 
+    color: #6B4C3B; 
+    font-weight: 300;
+}
+
+h2 { 
+    color: #A0726A; 
+    margin-bottom: 1rem; 
+    font-size: 1.5rem;
+    border-bottom: 2px solid #FADADD;
+    padding-bottom: 0.5rem;
+}
+
+/* ===== Layout ===== */
+.checkout-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ===== Glass Sections ===== */
+section {
+    /* Tăng hiệu ứng glassmorphism */
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.7);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+}
+section:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+
+/* -------------------------------------------------------------------- */
+/* ===== CART & SUMMARY ITEMS (Căn chỉnh thẳng hàng) ===== */
+/* -------------------------------------------------------------------- */
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Căn chỉnh lên trên */
+    padding: .8rem 0;
+    border-bottom: 1px solid #F9C6CF;
+    line-height: 1.4;
+}
+.cart-item:last-child { border-bottom: none; }
+
+.cart-item-info {
+    flex-grow: 1; 
+    margin-right: 15px;
+}
+.cart-item-name { 
+    font-weight: 600; 
+    display: block;
+}
+.cart-item-price-qty { /* Class này dùng trong Checkout HTML */
+    font-size: 0.9em;
+    color: #A0726A;
+}
+.cart-item-controls { /* Chứa tổng tiền trong Checkout */
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 100px; 
+    font-weight: 600;
+    color: #6B4C3B;
+}
+
+.summary-details { margin-bottom: 1.5rem; }
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px dotted #FADADD;
+}
+.summary-row span:first-child { font-weight: 400; color: #A0726A; }
+.summary-row span:last-child { font-weight: 600; }
+
+.summary-row.total {
+    font-weight: 700;
+    color: #A0726A;
+    font-size: 1.2rem;
+    border-top: 2px solid #F9C6CF;
+    border-bottom: none;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+/* ===== Shipping & Engraving Info ===== */
+.shipping-display p, .engraving-display p { 
+    margin-bottom: 0.7rem; 
+    font-size: 1rem; 
+    line-height: 1.5;
+}
+.shipping-display strong, .engraving-display strong { color: #A0726A; font-weight: 600; }
+
+.no-info-message a {
+    color: #E6A6B0;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.no-info-message a:hover {
+    color: #6B4C3B;
+}
+
+
+/* -------------------------------------------------------------------- */
+/* ===== Payment & QR Codes (NEW) ===== */
+/* -------------------------------------------------------------------- */
+
+.payment-methods {
+    margin-bottom: 1.5rem;
+    border: 1px solid #FADADD;
+    padding: 10px;
+    border-radius: 8px;
+}
+.payment-methods label {
+    display: flex;
+    align-items: center;
+    margin: .6rem 0;
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.payment-methods label:hover {
+    color: #A0726A;
+}
+.payment-methods input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #E6A6B0; /* Màu nhấn radio button */
+}
+
+.qr-container {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: #fff7fa;
+    border: 2px dashed #E6A6B0;
+    border-radius: 12px;
+    text-align: center;
+    animation: popIn 0.3s ease;
+}
+.qr-container img {
+    border: 5px solid white;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.qr-container p {
+    margin-top: 10px;
+    font-weight: 500;
+    color: #A0726A;
+}
+
+
+/* -------------------------------------------------------------------- */
+/* ===== Progress & Buttons (Tối ưu) ===== */
+/* -------------------------------------------------------------------- */
+
+.progress-wrapper { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+.progress-bar {
+    background: #FADADD;
+    height: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+#progressBar {
+    height: 8px;
+    background: linear-gradient(90deg, #F9C6CF, #E6A6B0); /* Gradient nhẹ */
+    width: 0%;
+    transition: width .4s ease;
+}
+#progressText { /* Dùng ID này cho thông báo tiến độ */
+    text-align: center;
+    margin: .6rem 0;
+    font-size: .95rem;
+    font-weight: 500;
+}
+
+.checkout-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    background: #A0726A; /* Màu button chính: Tone đất hồng đậm */
+    color: #FFF;
+    font-weight: 600;
+    border: none;
+    padding: .8rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s, transform .2s, box-shadow 0.2s;
+    letter-spacing: 0.5px;
+}
+.checkout-btn:hover {
+    background: #6B4C3B; /* Đậm hơn khi hover */
+    color: #FFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(107,76,59,0.3);
+}
+
+.back-to-cart-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid #FADADD; /* Viền mỏng */
+    color: #A0726A;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+}
+.back-to-cart-btn:hover {
+    background: #FADADD;
+    color: #6B4C3B;
+}
+ .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: .6rem 0;
+            border-bottom: 1px solid #F9C6CF;
+            line-height: 1.5;
+        }
+        .cart-item-info {
+            flex-grow: 1; 
+            margin-right: 15px;
+        }
+        .cart-item-name { 
+            font-weight: 600; 
+            display: block; 
+            word-wrap: break-word; 
+        }
+        .cart-item-price-qty {
+            font-size: 0.9em;
+            color: #A0726A;
+        }
+        .cart-item-controls {
+            flex-shrink: 0;
+            text-align: right;
+            min-width: 100px;
+        }
+        .qr-container {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff7fa;
+            border: 1px dashed #E6A6B0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        /* NEW: Style cho nút Quay lại */
+        .back-to-cart-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid #F9C6CF;
+            color: #6B4C3B;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .back-to-cart-btn:hover {
+            background: #F9C6CF;
+        }
+
+/* -------------------------------------------------------------------- */
+/* ===== Popup (Toast/Alert) Animations cho JS showMessage() ===== */
+/* -------------------------------------------------------------------- */
+/* Note: CSS cho toast showMessage() phải được thêm vào head hoặc body 
+         trong JS để hoạt động. */
+
+@keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

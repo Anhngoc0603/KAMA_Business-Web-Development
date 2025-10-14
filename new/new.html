@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sakura High-End Beauty</title>
+  <link rel="stylesheet" href="../new/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <h1 class="main-title">New Arrivals</h1>
+    <p class="subtitle">Radiate elegance with every touch.</p>
+  </header>
+
+  <section class="ai-combo">
+    <button class="ai-btn">💡 Get AI Combo Suggestion</button>
+  </section>
+
+  <section class="filter-bar">
+    <div class="search-wrapper">
+      <input type="text" id="search-input" placeholder="Search for your favorite beauty product...">
+    </div>
+    <div class="filters-inline">
+      <select id="price-filter">
+        <option value="default">Price</option>
+        <option value="low-high">Low → High</option>
+        <option value="high-low">High → Low</option>
+      </select>
+      <select id="rating-filter">
+        <option value="default">Rating</option>
+        <option value="5">5★</option>
+        <option value="4.5">≥ 4.5★</option>
+        <option value="4">≥ 4★</option>
+      </select>
+      <select id="brand-filter">
+        <option value="default">Brand</option>
+        <option value="Dior">Dior</option>
+        <option value="Chanel">Chanel</option>
+        <option value="YSL">YSL</option>
+        <option value="Lancôme">Lancôme</option>
+        <option value="Rare Beauty">Rare Beauty</option>
+        <option value="NARS">NARS</option>
+        <option value="Charlotte Tilbury">Charlotte Tilbury</option>
+        <option value="Fenty Beauty">Fenty Beauty</option>
+      </select>
+    </div>
+
+    <div class="filter-dropdown">
+      <button id="filter-toggle" class="filter-btn">
+        ☰ Filter
+      </button>
+      <div id="filter-menu" class="filter-menu">
+        <button class="category-btn is-selected" data-category="All">All</button>
+        <button class="category-btn" data-category="Face">Face</button>
+        <button class="category-btn" data-category="Eyes">Eyes</button>
+        <button class="category-btn" data-category="Lips">Lips</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="products-grid"></main>
+
+  <div class="load-more">
+    <button id="load-more-button" class="btn-primary">Load More</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
