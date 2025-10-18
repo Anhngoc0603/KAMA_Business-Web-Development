@@ -4,15 +4,95 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sakura High-End Beauty</title>
-  <link rel="stylesheet" href="../new/style.css" />
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="header">
-    <h1 class="main-title">New Arrivals</h1>
-    <p class="subtitle">Radiate elegance with every touch.</p>
+  <!-- KAMA Announcement Bar -->
+  <div class="announcement-container">
+    <div class="announcement-wrapper" id="announcementWrapper">
+      <div class="announcement-slide">Free Shipping On Orders Over $100</div>
+      <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
+    </div>
+    <div class="announcement-buttons">
+      <button id="prev"><img src="../1 (1).Final/images/prev.png" alt="Previous"></button>
+      <button id="next"><img src="../1 (1).Final/images/next.png" alt="Next"></button>
+    </div>
+  </div>
+
+  <!-- KAMA Header -->
+  <div class="kama-header">
+    <a href="#">
+      <img src="../1 (1).Final/images/find.png" alt="Find">
+    </a>
+    <div class="logo">
+      <img src="../1 (1).Final/images/LOGO.png" alt="Kama Logo">
+    </div>
+    <nav>
+      <a href="#"><img src="../1 (1).Final/images/account.png" alt="Account"></a>
+      <a href="#"><img src="../1 (1).Final/images/contact.png" alt="Contact"></a>
+      <a href="#"><img src="../1 (1).Final/images/shopping.png" alt="Shopping"></a>
+    </nav>
+  </div>
+
+  <!-- KAMA Menu -->
+  <div>
+    <ul class="menu-top">
+      <li><a href="#">NEW</a></li>
+      <li><a href="#">COLLECTIONS</a></li>
+      <li><a href="#">BEST SELLERS</a></li>
+      <li><a href="#">SALE</a></li>
+      <li><a href="#">CATEGORIES</a></li>
+    </ul>
+    <div class="menu-categories">
+      <div class="category">
+        <h3><a href="#">FACE</a></h3>
+        <ul>
+          <li>Blush</li>
+          <li>Primer</li>
+          <li>Concealer</li>
+          <li>Finish Powder</li>
+          <li>Contour & Highlighter</li>
+          <li>Makeup Cleansing Balm</li>
+          <li>Shop All Face</li>
+        </ul>
+      </div>
+      <div class="category">
+        <h3><a href="#">EYES</a></h3>
+        <ul>
+          <li>Makeup Palette</li>
+          <li>Eyebrow Enhancer</li>
+          <li>Mascara</li>
+          <li>Eyeliner</li>
+          <li>Shop All Eyes</li>
+        </ul>
+      </div>
+      <div class="category">
+        <h3><a href="#">LIPS</a></h3>
+        <ul>
+          <li>Lip Cream</li>
+          <li>Lipstick</li>
+          <li>Lip Gloss</li>
+          <li>Lip Lacquer</li>
+          <li>Lip Glaze</li>
+          <li>Lip Jelly</li>
+          <li>Lip Mask</li>
+          <li>Shop All Lips</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sakura New Arrivals Section -->
+  <header class="new-arrivals">
+    <div class="new-arrivals-content">
+      <h1 class="main-title">New Arrivals</h1>
+      <p class="subtitle">Discover the essence of elegance with our latest Sakura-inspired collection.</p>
+      <a href="#products" class="btn-explore">Explore Now</a>
+    </div>
   </header>
 
+  <!-- Original Sakura Content -->
   <section class="ai-combo">
     <button class="ai-btn">💡 Get AI Combo Suggestion</button>
   </section>
@@ -59,12 +139,90 @@
     </div>
   </section>
 
-  <main class="products-grid"></main>
+  <main class="products-grid" id="products"></main>
 
   <div class="load-more">
     <button id="load-more-button" class="btn-primary">Load More</button>
   </div>
 
-  <script src="script.js"></script>
-</body>
+  <!-- Popup Modal -->
+  <div class="modal" id="product-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <img src="" alt="Product Image" class="modal-image">
+      <h2 class="modal-title"></h2>
+      <p class="modal-brand">Brand: <span class="modal-brand-text"></span></p>
+      <p class="modal-category">Category: <span class="modal-category-text"></span></p>
+      <p class="modal-description"></p>
+      <p class="modal-price"></p>
+      <p class="modal-rating"></p>
+      <p class="modal-id">ID: <span class="modal-id-text"></span></p>
+    </div>
+  </div>
+  <footer class="footer">
+            <div class="footer-newsletter">
+                <p>Sign up for updates:</p>
+                <p>Be the first to know about new collections and exclusive offers!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter email here">
+                    <button type="submit"><i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+
+            <div class="footer-main">
+                <div class="footer-section">
+                    <h3>ABOUT KAMA </h3>
+                    <ul>
+                        <li><a href="#">Loyalty Program</a></li>
+                        <li><a href="#">Brand Story</a></li>
+                        <li><a href="#">Affiliate Program</a></li>
+                        <li><a href="#">Student Discount</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Become a Retailer</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>CUSTOMER CARE</h3>
+                    <ul>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Refund & Return Policy</a></li>
+                        <li><a href="#">Promotion Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms and Conditions</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>CUSTOMER SERVICE</h3>
+                    <ul>
+                        <li><a href="#">Track Your Order</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Submit a Fake</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section footer-social">
+                    <h3>FOLLOW US</h3>
+                    <div class="social-icons">
+                        <button type="button" aria-label="Facebook"><i class="fab fa-facebook-f"></i></button>
+                        <button type="button" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
+                        <button type="button" aria-label="TikTok"><i class="fab fa-tiktok"></i></button>
+                        <button type="button" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kama. All rights reserved.</p>
+                <p>United States (USD $) <i class="fas fa-chevron-down"></i></p>
+            </div>
+        </footer>
+        <!-- Footer kết thúc ở đây -->
+        <script src="script.js"></script>
+
+    </body>
 </html>
+
+ 
