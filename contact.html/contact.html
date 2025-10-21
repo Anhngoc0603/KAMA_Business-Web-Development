@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AloTra — Contact</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="container">
+      <!-- Header -->
+      <section id="header" class="header text-center">
+        <h1 class="title gradient-text">Get in Touch</h1>
+        <p class="subtitle">We'd love to hear from you! Reach out with questions, feedback, or just to say hello</p>
+      </section>
+
+      <!-- Contact Cards -->
+      <section class="cards" id="contactCards">
+        <article class="card" data-delay="0">
+          <div class="icon gradient-1">📍</div>
+          <h3>Visit Us</h3>
+          <p class="muted small">123 Tea Street, Beverage District</p>
+          <p class="muted small">City Center, TC 12345</p>
+        </article>
+
+        <article class="card" data-delay="1">
+          <div class="icon gradient-2">📞</div>
+          <h3>Call Us</h3>
+          <p class="muted small">+1 (555) 123-4567</p>
+          <p class="muted small">Mon-Fri: 9AM-8PM</p>
+        </article>
+
+        <article class="card" data-delay="2">
+          <div class="icon gradient-3">✉️</div>
+          <h3>Email Us</h3>
+          <p class="muted small">hello@alotra.com</p>
+          <p class="muted small">support@alotra.com</p>
+        </article>
+
+        <article class="card" data-delay="3">
+          <div class="icon gradient-4">⏰</div>
+          <h3>Store Hours</h3>
+          <p class="muted small">Mon-Thu: 7AM-10PM</p>
+          <p class="muted small">Fri-Sun: 7AM-11PM</p>
+        </article>
+
+        <!-- Chat Panel as a Card -->
+        <article class="card chat-panel" id="chatPanel" data-delay="4">
+          <div class="icon gradient-5">🤖</div>
+          <h3>Live Chat Support</h3>
+          <div class="chat-body">
+            <div class="msg bot">
+              <div class="avatar">🤖</div>
+              <div class="bubble">Hi! I'm AloBot. How can I help you today? 😊</div>
+            </div>
+          </div>
+          <div class="chat-actions">
+            <button class="btn secondary" id="openChatBtn">
+              <span class="icon">💬</span>
+              Start Live Chat
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <!-- Main two columns -->
+      <section class="two-col">
+        <!-- Left: Form -->
+        <div class="left" id="formWrap">
+          <div class="panel">
+            <h2>Send us a Message</h2>
+            <form id="contactForm" class="form">
+              <div class="row">
+                <div class="col">
+                  <label class="label">Name</label>
+                  <input name="name" type="text" placeholder="Your full name" required />
+                </div>
+                <div class="col">
+                  <label class="label">Email</label>
+                  <input name="email" type="email" placeholder="your@email.com" required />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Subject</label>
+                <input name="subject" type="text" placeholder="What's this about?" required />
+              </div>
+
+              <div class="field">
+                <label class="label">Message</label>
+                <textarea name="message" rows="6" placeholder="Tell us more..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn primary">
+                <span class="icon">📤</span>
+                <span>Send Message</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Map + FAQ -->
+        <div class="right">
+          <!-- Map Panel -->
+          <div class="panel" id="mapPanel">
+            <h2>Find Our Stores</h2>
+            <div class="map-mock">
+              <div class="map-overlay">
+                <div class="dot dot-1"></div>
+                <div class="dot dot-2"></div>
+              </div>
+              <div class="map-center">
+                <div class="map-icon">📍</div>
+                <p class="muted small">Interactive Map</p>
+              </div>
+            </div>
+            <div class="locations" id="locationsList"></div>
+          </div>
+
+          <!-- FAQ Panel -->
+          <div class="panel" id="faqPanel">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-list" id="faqList"></div>
+            <div class="center">
+              <button class="btn outline" id="viewMoreFaq">View More FAQs</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Floating Chat Button -->
+  <button id="floatingChat" class="floating" aria-label="Open chat">💬</button>
+
+  <!-- Chat Modal -->
+  <div id="chatModal" class="chat-modal hidden" role="dialog" aria-modal="true">
+    <div class="chat-window">
+      <div class="chat-top">
+        <div class="chat-top-left">
+          <div class="avatar white">🤖</div>
+          <div>
+            <div class="chat-name">AloBot</div>
+            <div class="muted small">Online now</div>
+          </div>
+        </div>
+        <button class="close" id="closeChatModal">×</button>
+      </div>
+
+      <div class="chat-content">
+        <div class="welcome bubble">Welcome! I'm here to help with any questions about our drinks, locations, or services. What would you like to know?</div>
+
+        <div class="quick-options">
+          <button class="quick">Store locations</button>
+          <button class="quick">Menu recommendations</button>
+          <button class="quick">Nutritional info</button>
+          <button class="quick">Order status</button>
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <input id="chatInput" placeholder="Type your message..." />
+        <button id="sendChat" class="btn small"><span>📤</span></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
