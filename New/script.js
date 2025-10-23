@@ -294,7 +294,10 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Contour & Highlighter",
       price: 60.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/1381Lg3B/chanelbronze1.avif", "https://i.postimg.cc/6p20R11r/chanelbronze2.avif"],
+      image: [
+        "https://i.postimg.cc/sxq5qvSW/new002.avif",
+        "https://i.postimg.cc/XqGCf4hC/temp-Image4MRzdl.avif"
+      ], // <-- SỬA
       description: "Kem tạo khối dạng gel-cream cho làn da rám nắng tự nhiên.",
       isNew: true
     },
@@ -306,7 +309,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lipstick",
       price: 45.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/KzL2BY40/ysl-lipstick1.avif", "https://i.postimg.cc/L8y8YJq5/ysl-lipstick2.avif"],
+      image: [
+        "https://i.postimg.cc/L4n0sWDG/temp-Imager-Eg-Rz-W.avif",
+        "https://i.postimg.cc/Y9VRgpRy/temp-Imaged-Do6SU.avif",
+        "https://i.postimg.cc/76bXfC3b/temp-Image-Ijcp-Jv.avif"
+      ], // <-- SỬA
       description: "Son satin biểu tượng, sắc màu chuẩn, lên môi sang trọng.",
       isNew: true
     },
@@ -318,7 +325,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Foundation",
       price: 57.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/P5CqSbcK/lancome-fdt1.avif", "https://i.postimg.cc/yYxFDfJz/lancome-fdt2.avif"],
+      image: [
+        "https://i.postimg.cc/7LWdBNhC/new0091.avif",
+        "https://i.postimg.cc/rpP3h9sQ/new0093.avif",
+        "https://i.postimg.cc/YC8JF7wY/temp-Image0Zz5IW.avif"
+      ], // <-- SỬA
       description: "Kem nền lâu trôi, che phủ cao nhưng vẫn thoáng da.",
       isNew: true
     },
@@ -330,7 +341,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Blush",
       price: 23.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/Y0TYvjN3/rare-blush1.avif", "https://i.postimg.cc/tTz0M1sR/rare-blush2.avif"],
+      image: [
+        "https://i.postimg.cc/HLxF4NpZ/temp-Image1Oepj-X.avif",
+        "https://i.postimg.cc/T2DM4BnZ/temp-Image4exv-C0.avif",
+        "https://i.postimg.cc/K8QdTbyp/temp-Image60x-MFz.avif"
+      ], // <-- SỬA
       description: "Má hồng lỏng siêu pigment, tán mịn như mây.",
       isNew: true
     },
@@ -343,9 +358,9 @@ document.addEventListener('DOMContentLoaded', () => {
       price: 32.00,
       rating: 4.7,
       image: [
-        "https://i.postimg.cc/0ykcbQ00/temp-Image-OJ4QL6.avif",
-        "https://i.postimg.cc/qvJjzRxF/temp-Imagewbc9nl.avif",
-        "https://i.postimg.cc/cLxXrHBb/temp-Imagex-Da-DHj.avif"
+        "https://i.postimg.cc/0NQhd48L/temp-Image-Bf-Lw8v.avif",
+        "https://i.postimg.cc/MK0kWR38/temp-Imagedk-L6VF.avif",
+        "https://i.postimg.cc/9MwSsqqV/temp-Image-EJCIYh.avif"
       ],
       description: "Che khuyết điểm huyền thoại, mỏng nhẹ, không vón.",
       isNew: true
@@ -359,9 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
       price: 48.00,
       rating: 4.9,
       image: [
-        "https://i.postimg.cc/d07RyTk8/temp-Image-Etx-ZFg.avif",
-        "https://i.postimg.cc/hGJ8d7zT/temp-Imageg-T3Eb-I.avif",
-        "https://i.postimg.cc/6Q7VvG28/temp-Imageh-Se-QE8.avif"
+        "https://i.postimg.cc/HkTqjxFs/temp-Imageg-Oi3x-W.avif",
+        "https://i.postimg.cc/wvRPnssp/temp-Imagejgfcp-Z.avif",
+        "https://i.postimg.cc/5tRTPmyN/temp-Image-JTKe7d.avif"
       ],
       description: "Phấn nén làm mịn da như filter, hoàn thiện không tì vết.",
       isNew: true
@@ -375,9 +390,9 @@ document.addEventListener('DOMContentLoaded', () => {
       price: 21.00,
       rating: 4.6,
       image: [
-        "https://i.postimg.cc/9fqTM5KB/temp-Imagek-FE61A.avif",
-        "https://i.postimg.cc/Pq8Zxs9K/temp-Imagera3BI8.avif",
-        "https://i.postimg.cc/YSmg9KZb/temp-Image-Wjpsx6.avif"
+        "https://i.postimg.cc/Vkzx562z/temp-Image-Ksb-H6w.avif",
+        "https://i.postimg.cc/kg70D4LM/temp-Imageljf-Xjc.avif",
+        "https://i.postimg.cc/CKQXv45J/temp-Images3Hab-L.avif"
       ],
       description: "Son bóng kinh điển, môi căng mọng, không bết dính.",
       isNew: true
@@ -391,9 +406,9 @@ document.addEventListener('DOMContentLoaded', () => {
       price: 90.00,
       rating: 4.7,
       image: [
-        "https://i.postimg.cc/v8vnDvqq/new0091.avif",
-        "https://i.postimg.cc/sfJW1J68/new0093.avif",
-        "https://i.postimg.cc/ry94z9nv/temp-Imaged-Lj7qm.avif"
+        "https://i.postimg.cc/LXg7GZgP/temp-Imageso-HM3w.avif",
+        "https://i.postimg.cc/WbmR2rWY/temp-Image-Td8asz.avif",
+        "https://i.postimg.cc/cJb2DcC6/temp-Image-Uq-WEef.avif"
       ],
       description: "Bảng mắt 4 ô cao cấp, chất phấn mướt mịn, lên màu sang.",
       isNew: true
@@ -407,9 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
       price: 62.00,
       rating: 4.5,
       image: [
-        "https://i.postimg.cc/7hPfSpt4/temp-Image7FOfwp.avif",
-        "https://i.postimg.cc/1XRfDLCk/temp-Image-DR4dlo.avif",
-        "https://i.postimg.cc/RhCNwjpz/temp-Imagen-AT9Vx.avif"
+        "https://i.postimg.cc/nLPgd1rV/temp-Image-X4jiea.avif",
+        "https://i.postimg.cc/GmzZDR1K/temp-Imageyz-KWKc.avif",
+        "https://i.postimg.cc/SsY5HzYC/temp-Image-ZDYmf-A.avif"
       ],
       description: "Phấn phủ lì tự nhiên, bao bì xa xỉ đậm chất Gucci.",
       isNew: true
@@ -425,7 +440,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Foundation",
       price: 49.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/q7yC94sR/este-fdt1.avif", "https://i.postimg.cc/P5tXNqTj/este-fdt2.avif"],
+      image: [
+        "https://i.postimg.cc/L4yXRJ5K/temp-Imagej8VRQi.avif",
+        "https://i.postimg.cc/sfnXyMxW/temp-Image-JLX8j4.avif",
+        "https://i.postimg.cc/65yQQB4G/temp-Imageqd-SBIm.avif"
+      ], // <-- SỬA
       description: "Kem nền siêu bền màu, che phủ hoàn hảo, kiềm dầu tốt.",
       isNew: false
     },
@@ -439,7 +458,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Blush",
       price: 32.00,
       rating: 4.9,
-      image: ["https://i.postimg.cc/mkGyP0S1/nars-blush1.avif", "https://i.postimg.cc/JnXv9M6G/nars-blush2.avif"],
+      image: [
+        "https://i.postimg.cc/90cWVh5z/15a.avif",
+        "https://i.postimg.cc/zvqJ5rZV/15b.avif",
+        "https://i.postimg.cc/mkTbRsfF/15c.avif"
+      ], // <-- SỬA
       description: "Màu má hồng đào nhũ vàng huyền thoại, phù hợp mọi tông da.",
       isNew: false
     },
@@ -451,7 +474,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Blush",
       price: 40.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/Y0G3QYB6/dior-blush1.avif", "https://i.postimg.cc/MH98KgnC/dior-blush2.avif"],
+      image: [
+        "https://i.postimg.cc/VkJzzgT3/temp-Image0Ta-Lhe.avif",
+        "https://i.postimg.cc/VkJzzgT9/temp-Image0Yd4C9.avif",
+        "https://i.postimg.cc/nV1F2CBS/temp-Image1f-ACod.avif"
+      ], // <-- SỬA
       description: "Phấn má hồng phản ứng với độ pH, tạo màu sắc tự nhiên.",
       isNew: false
     },
@@ -465,7 +492,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Primer",
       price: 38.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/VLN81gW6/milk-primer1.avif", "https://i.postimg.cc/tY5qf9pS/milk-primer2.avif"],
+      image: [
+        "https://i.postimg.cc/bwZqqgMQ/temp-Image3i-Wn6Y.avif",
+        "https://i.postimg.cc/NGxsD5mJ/temp-Image4ku-QWn.avif",
+        "https://i.postimg.cc/3wp7vR3R/temp-Image6pqz2Z.avif"
+      ], // <-- SỬA
       description: "Kem lót dạng gel gốc nước, giữ lớp nền bám chặt suốt ngày.",
       isNew: false
     },
@@ -477,7 +508,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Primer",
       price: 54.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/ydK2YJjK/tatcha-primer1.avif", "https://i.postimg.cc/pT3rw83G/tatcha-primer2.avif"],
+      image: [
+        "https://i.postimg.cc/3JJKcYZT/temp-Image6TGULc.avif",
+        "https://i.postimg.cc/sxK3gNsS/temp-Image7q-Ek8x.avif",
+        "https://i.postimg.cc/vTXGZNbN/temp-Image8Wnl-NP.avif"
+      ], // <-- SỬA
       description: "Kem lót dạng sáp mịn màng, làm mờ lỗ chân lông và nếp nhăn.",
       isNew: false
     },
@@ -489,7 +524,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Primer",
       price: 58.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/J0jBPMT3/hourglass-primer1.avif", "https://i.postimg.cc/k4W1nLp7/hourglass-primer2.avif"],
+      image: [
+        "https://i.postimg.cc/ZnjJ5M4D/temp-Image8zy-EWe.avif",
+        "https://i.postimg.cc/qMbkfSmd/temp-Imagea-Mquy-P.avif",
+        "https://i.postimg.cc/63JWjZMZ/temp-Image-AQHp02.avif"
+      ], // <-- SỬA
       description: "Kem lót mỏng nhẹ, chống nước, tạo hiệu ứng mịn lì.",
       isNew: false
     },
@@ -503,7 +542,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Concealer",
       price: 31.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/PryN99S6/tarte-concealer1.avif", "https://i.postimg.cc/J4YtN9vb/tarte-concealer2.avif"],
+      image: [
+        "https://i.postimg.cc/0NmxwQ9z/temp-Imageb-CRIc-F.avif",
+        "https://i.postimg.cc/jddsFth5/temp-Imageb-D4rdf.avif",
+        "https://i.postimg.cc/MHtzpFqs/temp-Image-C6Zeo-V.avif"
+      ], // <-- SỬA
       description: "Che khuyết điểm 'quốc dân', che phủ siêu cao, không cakey.",
       isNew: false
     },
@@ -515,7 +558,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Concealer",
       price: 40.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/prgqbsqY/ysl-concealer1.avif", "https://i.postimg.cc/kG8NfXJ1/ysl-concealer2.avif"],
+      image: [
+        "https://i.postimg.cc/Z5WJJHgF/temp-Imagecz-Ta-WH.avif",
+        "https://i.postimg.cc/x1X9957R/temp-Image-CZy-Lf-Q.avif",
+        "https://i.postimg.cc/RZ24hf5b/temp-Image-D0tog-C.avif"
+      ], // <-- SỬA
       description: "Bút che khuyết điểm dạng lỏng, bắt sáng rạng rỡ cho vùng mắt.",
       isNew: false
     },
@@ -529,7 +576,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Finish Powder",
       price: 43.00,
       rating: 4.9,
-      image: ["https://i.postimg.cc/k5L2qS1v/laura-powder1.avif", "https://i.postimg.cc/gJ0S3cmf/laura-powder2.avif"],
+      image: [
+        "https://i.postimg.cc/SQGSdJCt/temp-Imaged-E3W3G.avif",
+        "https://i.postimg.cc/4yXJZgkv/temp-Image-DLr-Og-J.avif",
+        "https://i.postimg.cc/15C9x2W3/temp-Imagedp-Mqu-T.avif"
+      ], // <-- SỬA
       description: "Phấn phủ không màu, giữ lớp nền mịn lì và tự nhiên.",
       isNew: false
     },
@@ -543,7 +594,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Contour & Highlighter",
       price: 42.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/wMP3R3qZ/ct-contour1.avif", "https://i.postimg.cc/JnZpG0rL/ct-contour2.avif"],
+      image: [
+        "https://i.postimg.cc/fLcw6bFk/temp-Image-EQGg-Ya.avif",
+        "https://i.postimg.cc/Y08tCsMP/temp-Imageg0g-XVS.avif",
+        "https://i.postimg.cc/ZK7Tk2fx/temp-Image-HFIZ85.avif"
+      ], // <-- SỬA
       description: "Tạo khối dạng kem đầu mút, dễ tán, cho đường nét tự nhiên.",
       isNew: false
     },
@@ -555,7 +610,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Contour & Highlighter",
       price: 40.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/T3N3ND6T/fenty-hl1.avif", "https://i.postimg.cc/kGj71bLN/fenty-hl2.avif"],
+      image: [
+        "https://i.postimg.cc/4xjsytR4/temp-Image-HTHaew.avif",
+        "https://i.postimg.cc/Wp7N8hgX/temp-Image-Ihf-Tzt.avif",
+        "https://i.postimg.cc/d3JqvYPt/temp-Imagej-Oeg-DR.avif"
+      ], // <-- SỬA
       description: "Phấn bắt sáng hạt mịn, bám lâu, tạo hiệu ứng glowy.",
       isNew: false
     },
@@ -569,7 +628,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Makeup Cleansing Balm",
       price: 32.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/Hxfk91F1/glow-balm1.avif", "https://i.postimg.cc/CxWprSj0/glow-balm2.avif"],
+      image: [
+        "https://i.postimg.cc/6pFtqRxK/temp-Imagek-Ezi-La.avif",
+        "https://i.postimg.cc/63r9DQSB/temp-Image-KGKUz-N.avif",
+        "https://i.postimg.cc/MKPWkNsf/temp-Image-KJei5Z.avif"
+      ], // <-- SỬA
       description: "Sáp tẩy trang đu đủ, làm sạch sâu, da mềm mịn.",
       isNew: false
     },
@@ -581,7 +644,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Makeup Cleansing Balm",
       price: 38.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/k4Tq0yNt/clinique-balm1.avif", "https://i.postimg.cc/c12q0qgP/clinique-balm2.avif"],
+      image: [
+        "https://i.postimg.cc/XqnV3bSF/temp-Imagekp3c-QC.avif",
+        "https://i.postimg.cc/cLP0CYyj/temp-Image-Kp-Qchj.avif",
+        "https://i.postimg.cc/R0nCLdLK/temp-Imagel-ZKu-SN.avif"
+      ], // <-- SỬA
       description: "Sáp tẩy trang dịu nhẹ, tan chảy thành dầu, làm sạch mọi lớp makeup.",
       isNew: false
     },
@@ -593,7 +660,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Makeup Cleansing Balm",
       price: 36.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/y8YvY4s8/farmacy-balm1.avif", "https://i.postimg.cc/zvnGB0C2/farmacy-balm2.avif"],
+      image: [
+        "https://i.postimg.cc/V6QfGtKB/temp-Imagem2GNRi.avif",
+        "https://i.postimg.cc/J461wvT3/temp-Image-Me5JQk.avif",
+        "https://i.postimg.cc/7hXqZWwS/temp-Imagenx2BB4.avif"
+      ], // <-- SỬA
       description: "Sáp tẩy trang chiết xuất thiên nhiên, sạch sâu, không khô da.",
       isNew: false
     },
@@ -607,7 +678,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Makeup Palette",
       price: 128.00,
       rating: 4.9,
-      image: ["https://i.postimg.cc/3wQY2w0d/pmg-palette1.avif", "https://i.postimg.cc/tJnNQR2P/pmg-palette2.avif"],
+      image: [
+        "https://i.postimg.cc/XYt4qF6n/temp-Imageny65Uh.avif",
+        "https://i.postimg.cc/Y0tpkHK6/temp-Imageo7OLSn.avif",
+        "https://i.postimg.cc/RZ24hfxW/temp-Image-OH7e-G8.avif"
+      ], // <-- SỬA
       description: "Bảng mắt cao cấp với 10 ô màu siêu thực, chất phấn đỉnh cao.",
       isNew: false
     },
@@ -619,7 +694,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Makeup Palette",
       price: 129.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/85z11pWf/nd-palette1.avif", "https://i.postimg.cc/wMhH4jTz/nd-palette2.avif"],
+      image: [
+        "https://i.postimg.cc/HkrTTzKN/temp-Imagep-Mv-Vl0.avif",
+        "https://i.postimg.cc/XYrnnLhx/temp-Image-PSa-IRP.avif",
+        "https://i.postimg.cc/0QY8LN4H/temp-Image-Q8yf-GJ.avif"
+      ], // <-- SỬA
       description: "Bảng mắt trung tính hoàn hảo cho mọi dịp, dễ sử dụng.",
       isNew: false
     },
@@ -633,7 +712,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Eyebrow Enhancer",
       price: 25.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/8ck3dK1R/abh-brow1.avif", "https://i.postimg.cc/qMk2Gjft/abh-brow2.avif"],
+      image: [
+        "https://i.postimg.cc/Fzh9m45T/temp-Image-QJd-S2I.avif",
+        "https://i.postimg.cc/bYRygskW/temp-Imagernb-Os-D.avif",
+        "https://i.postimg.cc/7Z5qq9cQ/temp-Image-RPH1Um.avif"
+      ], // <-- SỬA
       description: "Chì kẻ mày đầu siêu mảnh, phẩy sợi tự nhiên, bền màu.",
       isNew: false
     },
@@ -645,7 +728,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Eyebrow Enhancer",
       price: 26.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/VLw1W33Y/benefit-brow1.avif", "https://i.postimg.cc/J00gCChB/benefit-brow2.avif"],
+      image: [
+        "https://i.postimg.cc/XqxnYz4d/temp-Image-TQd-BXR.avif",
+        "https://i.postimg.cc/v8vYhcfV/temp-Image-Tv-OWv-H.avif",
+        "https://i.postimg.cc/PJdthjsm/temp-Image-UVh-C1k.avif"
+      ], // <-- SỬA
       description: "Gel chân mày có sợi fiber, làm dày và định hình lông mày.",
       isNew: false
     },
@@ -657,7 +744,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Eyebrow Enhancer",
       price: 24.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/7YZN9xNL/kosas-brow1.avif", "https://i.postimg.cc/d1GZtYpC/kosas-brow2.avif"],
+      image: [
+        "https://i.postimg.cc/2S1CCGMR/temp-Imagexc-XQk-B.avif",
+        "https://i.postimg.cc/HxwpfLKr/temp-Imagey-CMx-WA.avif",
+        "https://i.postimg.cc/Dyy2MncK/temp-Image-YJi-Co3.avif"
+      ], // <-- SỬA
       description: "Gel mày tạo độ phồng, dưỡng mày, giữ nếp tự nhiên.",
       isNew: false
     },
@@ -671,7 +762,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Mascara",
       price: 32.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/XvjLqg0k/ysl-mascara1.avif", "https://i.postimg.cc/pT3Y3YCR/ysl-mascara2.avif"],
+      image: [
+        "https://i.postimg.cc/kXXnpqvj/temp-Image-YROe-JW.avif",
+        "https://i.postimg.cc/9F8W3Kxm/temp-Imagey-Uv-XYS.avif",
+        "https://i.postimg.cc/Dyj2VHCm/temp-Image-Zpr5NE.avif"
+      ], // <-- SỬA
       description: "Mascara làm dày và dài mi, đen tuyền, không vón cục.",
       isNew: false
     },
@@ -683,7 +778,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Mascara",
       price: 30.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/WbQ2JqgL/lancome-mascara1.avif", "https://i.postimg.cc/J7Bsdkyz/lancome-mascara2.avif"],
+      image: [
+        "https://i.postimg.cc/J4vwmkX1/32a.avif",
+        "https://i.postimg.cc/BQkWsKFn/32b.avif",
+        "https://i.postimg.cc/HkyqLk0j/32c.avif"
+      ], // <-- SỬA
       description: "Mascara làm cong và tơi mi, đầu cọ mảnh, giữ nếp cả ngày.",
       isNew: false
     },
@@ -695,7 +794,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Mascara",
       price: 29.00,
       rating: 4.4,
-      image: ["https://i.postimg.cc/vH4hXG8M/tf-mascara1.avif", "https://i.postimg.cc/Jhf92bS3/tf-mascara2.avif"],
+      image: [
+        "https://i.postimg.cc/cLnpJL7C/35a.avif",
+        "https://i.postimg.cc/HL1f813h/40a.avif",
+        "https://i.postimg.cc/zvvMYzXy/53a.avif"
+      ], // <-- SỬA
       description: "Mascara làm dày mi tối đa, cho hàng mi ấn tượng.",
       isNew: false
     },
@@ -709,7 +812,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Eyeliner",
       price: 25.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/L8g81nBw/kvd-liner1.avif", "https://i.postimg.cc/hG0nCJHp/kvd-liner2.avif"],
+      image: [
+        "https://i.postimg.cc/FzzqXrsk/53b.avif",
+        "https://i.postimg.cc/L557F96Y/53c.avif",
+        "https://i.postimg.cc/HsRGHyMY/temp-Image19Ic-Kr.avif"
+      ], // <-- SỬA
       description: "Bút kẻ mắt nước đầu lông siêu mảnh, chống nước tuyệt đối.",
       isNew: false
     },
@@ -721,7 +828,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Eyeliner",
       price: 24.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/4xwK5Qd8/stila-liner1.avif", "https://i.postimg.cc/9Q2fM8y8/stila-liner2.avif"],
+      image: [
+        "https://i.postimg.cc/SRR5bSNm/temp-Image1f7Tdo.avif",
+        "https://i.postimg.cc/hP6Fgdmf/temp-Image5Lldxv.avif",
+        "https://i.postimg.cc/6qqSxW5K/temp-Image72Kf9e.avif"
+      ], // <-- SỬA
       description: "Kẻ mắt nước bền màu, dễ thao tác, không lem trôi.",
       isNew: false
     },
@@ -733,7 +844,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Eyeliner",
       price: 34.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/sxGYbB2C/chanel-liner1.avif", "https://i.postimg.cc/q73bV9Gg/chanel-liner2.avif"],
+      image: [
+        "https://i.postimg.cc/QCCPZ8xM/temp-Image8Mu3Jw.avif",
+        "https://i.postimg.cc/3Rn6q4hS/temp-Image8roq-Xh.avif",
+        "https://i.postimg.cc/y8ZMN8hy/temp-Image8u-Hl-Do.avif"
+      ], // <-- SỬA
       description: "Chì kẻ mắt dạng vặn, chống nước, màu sắc đậm nét.",
       isNew: false
     },
@@ -747,7 +862,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Cream",
       price: 29.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/J4sKzJNt/huda-lip1.avif", "https://i.postimg.cc/k47Z19nK/huda-lip2.avif"],
+      image: [
+        "https://i.postimg.cc/MTWNt0CY/temp-Image8x1h27.avif",
+        "https://i.postimg.cc/jS7pjS6d/temp-Image9BKGAv.avif",
+        "https://i.postimg.cc/0Q8FZGTQ/temp-Image9Et-ETL.avif"
+      ], // <-- SỬA
       description: "Son kem lì, mỏng nhẹ, không gây khô môi, bám màu lâu.",
       isNew: false
     },
@@ -759,7 +878,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Cream",
       price: 45.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/4dZg8FjX/armani-lip1.avif", "https://i.postimg.cc/j2P19M9q/armani-lip2.avif"],
+      image: [
+        "https://i.postimg.cc/50xTp5h8/temp-Image9VU6C9.avif",
+        "https://i.postimg.cc/9fPsGgn0/temp-Image9Z8JLj.avif",
+        "https://i.postimg.cc/fLBFPtsK/temp-Imagebt-VB2W.avif"
+      ], // <-- SỬA
       description: "Son kem nhung, tạo hiệu ứng môi căng mọng, màu sắc sang trọng.",
       isNew: false
     },
@@ -771,7 +894,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Cream",
       price: 20.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/C14DwgHh/rare-lip1.avif", "https://i.postimg.cc/DZv1rV5L/rare-lip2.avif"],
+      image: [
+        "https://i.postimg.cc/G2cVzPWF/temp-Imagecmsxi-G.avif",
+        "https://i.postimg.cc/9MJSkR2K/temp-Imageco-L4xj.avif",
+        "https://i.postimg.cc/ZK2kZddX/temp-Image-Csus-FX.avif"
+      ], // <-- SỬA
       description: "Son kem xốp mịn, nhẹ môi, tạo hiệu ứng mờ ảo.",
       isNew: false
     },
@@ -785,7 +912,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lipstick",
       price: 39.00,
       rating: 4.9,
-      image: ["https://i.postimg.cc/d04VzQxG/pmg-lip1.avif", "https://i.postimg.cc/FKtTj5sJ/pmg-lip2.avif"],
+      image: [
+        "https://i.postimg.cc/vB3jKgyp/temp-Imagec-T11LD.avif",
+        "https://i.postimg.cc/q7cW8D5f/temp-Imaged-Cap7x.avif",
+        "https://i.postimg.cc/zB0MQb5D/temp-Image-Dm-M9IB.avif"
+      ], // <-- SỬA
       description: "Son thỏi siêu lì, mịn như nhung, sắc tố đậm đặc.",
       isNew: false
     },
@@ -797,7 +928,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lipstick",
       price: 45.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/Z5F1K9DF/chanel-lip1.avif", "https://i.postimg.cc/L8vSXBvM/chanel-lip2.avif"],
+      image: [
+        "https://i.postimg.cc/mgHvrg3w/temp-Image-EJ3IZK.avif",
+        "https://i.postimg.cc/bJ3M5DPV/temp-Image-Es-Tn65.avif",
+        "https://i.postimg.cc/BvfdPfM0/temp-Imagef-Dc-Vlc.avif"
+      ], // <-- SỬA
       description: "Son thỏi dưỡng ẩm, màu sắc tươi tắn, vỏ son sang trọng.",
       isNew: false
     },
@@ -811,7 +946,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Gloss",
       price: 40.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/7LDxgyM4/dior-gloss1.avif", "https://i.postimg.cc/j2J8J0Hq/dior-gloss2.avif"],
+      image: [
+        "https://i.postimg.cc/rp2vR2gf/temp-Imageg-HY748.avif",
+        "https://i.postimg.cc/26zMTdsB/temp-Image-GUss0h.avif",
+        "https://i.postimg.cc/FKX2kXGp/temp-Image-GZ5f5l.avif"
+      ], // <-- SỬA
       description: "Son bóng làm đầy môi, hiệu ứng căng mọng, a mát bạc hà.",
       isNew: false
     },
@@ -823,7 +962,10 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Gloss",
       price: 25.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/hPvYV0jB/buxom-gloss1.avif", "https://i.postimg.cc/kXFkLq5t/buxom-gloss2.avif"],
+      image: [
+        "https://i.postimg.cc/Xqqh6j70/temp-Image-HIw-Mxr.avif",
+        "https://i.postimg.cc/ZRVgQBmH/temp-Imagehw-BQrc.avif"
+      ], // <-- SỬA
       description: "Son bóng có nhũ lấp lánh, làm môi đầy đặn, the mát.",
       isNew: false
     },
@@ -837,7 +979,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Lacquer",
       price: 45.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/2jN2gh4Y/ysl-lacquer1.avif", "https://i.postimg.cc/JnR4xJ6n/ysl-lacquer2.avif"],
+      image: [
+        "https://i.postimg.cc/vZVJmZ7V/temp-Imagej5j-OL8.avif",
+        "https://i.postimg.cc/qRkSQcPL/temp-Imagejd-Ply8.avif",
+        "https://i.postimg.cc/wBYSRY0z/temp-Image-M58AVt.avif"
+      ], // <-- SỬA
       description: "Son lacquer bóng bẩy, bám màu như son tint, không dính.",
       isNew: false
     },
@@ -849,7 +995,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Lacquer",
       price: 45.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/PrYvPj0P/armani-lacquer1.avif", "https://i.postimg.cc/HkT5XzNn/armani-lacquer2.avif"],
+      image: [
+        "https://i.postimg.cc/Jzkfhz3y/temp-Image-Mjj80M.avif",
+        "https://i.postimg.cc/6qqSxW5x/temp-Imageo5x-BT6.avif",
+        "https://i.postimg.cc/W1kB41m7/temp-Imageo7fr-Wk.avif"
+      ], // <-- SỬA
       description: "Son lacquer độ bóng cao, dưỡng ẩm, màu sắc rực rỡ.",
       isNew: false
     },
@@ -861,7 +1011,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Lacquer",
       price: 27.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/wMP4B11F/shiseido-lacquer1.avif", "https://i.postimg.cc/BbrLz12G/shiseido-lacquer2.avif"],
+      image: [
+        "https://i.postimg.cc/MHH4J6KZ/temp-Image-OAx7Ig.avif",
+        "https://i.postimg.cc/br55z7ss/temp-Imagepcw-Y9t.avif",
+        "https://i.postimg.cc/9FK3V79z/temp-Image-PK0k-Nr.avif"
+      ], // <-- SỬA
       description: "Son lacquer mỏng nhẹ như mực, độ bóng cao, không trọng lượng.",
       isNew: false
     },
@@ -875,7 +1029,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Glaze",
       price: 16.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/d0Xh7hNs/rhode-glaze1.avif", "https://i.postimg.cc/sX1kPbLw/rhode-glaze2.avif"],
+      image: [
+        "https://i.postimg.cc/85t3YJDN/temp-Image-QLcx0b.avif",
+        "https://i.postimg.cc/qRkSQcPX/temp-Image-Qxrf-XP.avif",
+        "https://i.postimg.cc/fyyFQzT7/temp-Imager0w-JEA.avif"
+      ], // <-- SỬA
       description: "Son dưỡng có màu, bóng như glaze, phục hồi môi với peptide.",
       isNew: false
     },
@@ -887,7 +1045,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Glaze",
       price: 22.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/k5h9G1d1/kosas-lipoil1.avif", "https://i.postimg.cc/WbFv8R21/kosas-lipoil2.avif"],
+      image: [
+        "https://i.postimg.cc/7Z2FLZ1L/temp-Image-R9e-Xg8.avif",
+        "https://i.postimg.cc/QdT2Mdgd/temp-Image-RK124O.avif",
+        "https://i.postimg.cc/yxGGVMk3/temp-Imager-V8S6Q.avif"
+      ], // <-- SỬA
       description: "Son bóng dạng dầu, dưỡng ẩm sâu, hiệu ứng môi mọng nước.",
       isNew: false
     },
@@ -899,7 +1061,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Glaze",
       price: 26.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/T3sS0q0m/ilia-glaze1.avif", "https://i.postimg.cc/HkYQhFgQ/ilia-glaze2.avif"],
+      image: [
+        "https://i.postimg.cc/x1zwd1GL/temp-Image-Sb-QQa-I.avif",
+        "https://i.postimg.cc/Qt0Pz9Dk/temp-Imagess-Kizw.avif",
+        "https://i.postimg.cc/KjjVhGv2/temp-Image-Tj-Labf.avif"
+      ], // <-- SỬA
       description: "Son bóng dưỡng ẩm có màu, đầu cọ đệm độc đáo.",
       isNew: false
     },
@@ -913,7 +1079,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Jelly",
       price: 16.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/J0vMLYmQ/tower28-jelly1.avif", "https://i.postimg.cc/tJnNf4vK/tower28-jelly2.avif"],
+      image: [
+        "https://i.postimg.cc/ZRT2jPGC/temp-Imagetvt1ti.avif",
+        "https://i.postimg.cc/j5smv6pW/temp-Image-TZb-PNG.avif",
+        "https://i.postimg.cc/cHs2T7pY/temp-Image-U0ha-QR.avif"
+      ], // <-- SỬA
       description: "Son bóng dạng thạch, không dính, an toàn cho da nhạy cảm.",
       isNew: false
     },
@@ -925,7 +1095,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Jelly",
       price: 20.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/50tCg9k5/amicol-jelly1.avif", "https://i.postimg.cc/NfKjYhC2/amicol-jelly2.avif"],
+      image: [
+        "https://i.postimg.cc/T3DzP3jw/temp-Imageu9F3aa.avif",
+        "https://i.postimg.cc/4yyMRfNx/temp-Image-UIBC5h.avif",
+        "https://i.postimg.cc/pT24kQwX/temp-Image-Uvv-Syp.avif"
+      ], // <-- SỬA
       description: "Dầu dưỡng môi, tạo hiệu ứng căng bóng như thạch.",
       isNew: false
     },
@@ -937,7 +1111,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Jelly",
       price: 32.00,
       rating: 4.5,
-      image: ["https://i.postimg.cc/pT3Y0d40/gisou-lipoil1.avif", "https://i.postimg.cc/kG877YtM/gisou-lipoil2.avif"],
+      image: [
+        "https://i.postimg.cc/PJJcnXrG/temp-Image-Vl-Kbm-A.avif",
+        "https://i.postimg.cc/mrW01WVS/temp-Image-Wi-Jq-CO.avif",
+        "https://i.postimg.cc/FR98GbM3/temp-Image-Wub-JPq.avif"
+      ], // <-- SỬA
       description: "Dầu dưỡng môi mật ong, dưỡng ẩm sâu, mùi hương ngọt ngào.",
       isNew: false
     },
@@ -951,7 +1129,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Mask",
       price: 24.00,
       rating: 4.8,
-      image: ["https://i.postimg.cc/vH4yCsb3/laneige-mask1.avif", "https://i.postimg.cc/JhfSghHn/laneige-mask2.avif"],
+      image: [
+        "https://i.postimg.cc/KYhd3hQQ/temp-Imagex-Bmk-XG.avif",
+        "https://i.postimg.cc/7Z2FLZ1J/temp-Imagex-Jfng-V.avif",
+        "https://i.postimg.cc/9Q76fQPT/temp-Imagexo-U8mv.avif"
+      ], // <-- SỬA
       description: "Mặt nạ ngủ môi huyền thoại, làm mềm môi, hương dâu.",
       isNew: false
     },
@@ -963,7 +1145,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Mask",
       price: 29.00,
       rating: 4.7,
-      image: ["https://i.postimg.cc/ydKk2jWn/tatcha-mask1.avif", "https://i.postimg.cc/pT3Gk7Z3/tatcha-mask2.avif"],
+      image: [
+        "https://i.postimg.cc/9MJSkRV2/temp-Imagey-E9Jq2.avif",
+        "https://i.postimg.cc/T3DzP3jj/temp-Imagey-Eh-RQa.avif",
+        "https://i.postimg.cc/yNh2FprG/temp-Image-Yr-Ad4p.avif"
+      ], // <-- SỬA
       description: "Mặt nạ môi chiết xuất đào Nhật, phục hồi môi khô nẻ.",
       isNew: false
     },
@@ -975,7 +1161,11 @@ document.addEventListener('DOMContentLoaded', () => {
       subtype: "Lip Mask",
       price: 24.00,
       rating: 4.6,
-      image: ["https://i.postimg.cc/VLNn5hSg/summer-mask1.avif", "https://i.postimg.cc/tY5gP8xL/summer-mask2.avif"],
+      image: [
+        "https://i.postimg.cc/ZnngzbKN/temp-Imagey-VNi-JR.avif",
+        "https://i.postimg.cc/qRkSQcPv/temp-Image-Z9HIb-O.avif",
+        "https://i.postimg.cc/nLKNvSPQ/temp-Imagez-QB6Dl.avif"
+      ], // <-- SỬA
       description: "Bơ dưỡng môi đa năng, dùng như mặt nạ hoặc son dưỡng.",
       isNew: false
     }
