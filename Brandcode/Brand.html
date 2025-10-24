@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kama</title>
+    <!-- Tích hợp Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tích hợp Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FADADD;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Tùy chỉnh thanh cuộn cho trình duyệt Webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F9C6CF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E6A6B0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFF9F9;
+        }
+        /* Custom styles for quantity input */
+        input[type='number']::-webkit-inner-spin-button,
+        input[type='number']::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type='number'] {
+            -moz-appearance: textfield;
+        }
+        #main-product-image {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main container -->
+    <div class="relative min-h-screen w-full">
+
+        <!-- Header Section -->
+        <header class="w-full bg-[#FEFBFB] border-b border-pink-100 sticky top-0 z-30">
+            <!-- Top bar -->
+            <div class="container mx-auto px-4 md:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <!-- Search Icon (Left) -->
+                    <div class="w-1/3">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search h-6 w-6 text-gray-600 cursor-pointer"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    </div>
+
+                    <!-- Logo (Center) -->
+                    <div class="w-1/3 text-center">
+                        <h1 onclick="showHomePage()" class="font-playfair text-4xl md:text-5xl text-pink-800/80 italic cursor-pointer">Kama</h1>
+                    </div>
+
+                    <!-- User Icons (Right) -->
+                    <div class="w-1/3 flex justify-end items-center space-x-4 md:space-x-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user h-6 w-6 text-gray-600 cursor-pointer"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart h-6 w-6 text-gray-600 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag h-6 w-6 text-gray-600 cursor-pointer"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Bar -->
+            <nav class="hidden md:flex justify-center items-center h-14 text-sm tracking-widest font-medium text-gray-700">
+                <!-- Dropdown cho Brand -->
+                <div class="relative group">
+                    <a href="#" class="hover:text-pink-400 transition-colors py-4">BRAND</a>
+                    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 w-48 z-20 border border-pink-100 py-1">
+                        <!-- Lip -->
+                        <div class="relative group/item">
+                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Lip</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
+                                <a href="javascript:void(0)" onclick="showProductPage('dior_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son DIOR</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('chanel_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son CHANEL</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('ysl_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son YSL</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('gvc_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son Givenchy</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('fk_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son FLOWER KNOW</a>
+                            </div>
+                        </div>
+                        <!-- Foundation -->
+                        <div class="relative group/item">
+                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Foundation</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
+                                <a href="javascript:void(0)" onclick="showProductPage('dior_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền DIOR</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('chanel_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền CHANEL</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('lancome_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền Lancome</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('ysl_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền YSL</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('gvc_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền Givenchy</a>
+                            </div>
+                        </div>
+                        <!-- Eyeshadow -->
+                        <div class="relative group/item">
+                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Eyeshadow</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
+                                <a href="javascript:void(0)" onclick="showProductPage('dior_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng mắt DIOR</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('chanel_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Phấn Mắt Chanel</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('fk_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng Mắt Flower Know</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('ysl_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng Mắt YSL</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('gvc_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng Mắt Givenchy</a>
+                            </div>
+                        </div>
+                        <!-- Mascara -->
+                        <div class="relative group/item">
+                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Mascara</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
+                                <a href="javascript:void(0)" onclick="showProductPage('dior_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Dior</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('el_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Estee Lauder</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('chanel_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Chanel</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('ysl_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara YSL</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('gvc_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Givenchy</a>
+                            </div>
+                        </div>
+                        <!-- Blush -->
+                        <div class="relative group/item">
+                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Blush</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
+                                <a href="javascript:void(0)" onclick="showProductPage('dior_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má hồng Dior</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('chanel_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng Chanel</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('fk_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng Flower Know</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('ysl_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng YSL</a>
+                                <a href="javascript:void(0)" onclick="showProductPage('gvc_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng Givenchy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <div id="main-content-area">
+            <!-- Home Page Content -->
+            <main id="home-page-content" class="container mx-auto px-4 md:px-8 pt-8 md:pt-16 pb-16">
+                <div class="flex flex-col lg:flex-row items-center gap-8">
+                    <div class="w-full lg:w-2/5 text-center lg:text-left">
+                        <p class="text-gray-500 tracking-widest text-sm">OCT 16 - OCT 22</p>
+                        <h2 class="font-playfair text-5xl md:text-6xl text-pink-800/80 my-4">A Sweet 9th Birthday</h2>
+                        <p class="text-gray-600 max-w-md mx-auto lg:mx-0">It's our 9th anniversary! Join the party with sparkling deals and charming gifts you won't want to miss. ✨</p>
+                        <button class="mt-8 border border-gray-400 rounded-full px-8 py-3 text-gray-600 font-semibold tracking-widest text-sm hover:bg-gray-100 transition-colors">COMING SOON</button>
+                    </div>
+                    <div class="w-full lg:w-3/5">
+                        <div class="aspect-w-4 aspect-h-3 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cosmetic products on a pink background" class="w-full h-full object-cover"></div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Product Page Content (Initially Hidden) -->
+            <main id="product-page-content" class="hidden container mx-auto px-4 md:px-8 pt-8 md:pt-16 pb-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <!-- Product Image Gallery -->
+                    <div class="flex flex-col gap-4">
+                        <!-- Main Product Image -->
+                        <div class="w-full aspect-square bg-gray-100 rounded-2xl flex items-center justify-center overflow-hidden">
+                            <img id="main-product-image" src="" alt="Product Image" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Thumbnail Images -->
+                        <div id="thumbnail-container" class="grid grid-cols-3 gap-4">
+                            <!-- Thumbnails will be generated by JS here -->
+                        </div>
+                    </div>
+                    <!-- Product Details -->
+                    <div class="flex flex-col justify-center">
+                        <h2 id="product-name" class="font-playfair text-4xl md:text-5xl text-pink-800/80">Product Name</h2>
+                        <p id="product-price" class="text-2xl text-gray-700 my-4">Product Price</p>
+                        <p id="product-description" class="text-gray-600 mb-6 leading-relaxed">Mô tả ngắn gọn về sản phẩm sẽ được hiển thị ở đây.</p>
+                        
+                        <!-- Quantity Selector -->
+                        <div class="flex items-center gap-4 mb-6">
+                            <label for="quantity" class="font-semibold text-gray-700">Số lượng:</label>
+                            <div class="flex items-center border border-gray-300 rounded-full">
+                                <button onclick="changeQuantity(-1)" class="px-3 py-1 text-lg text-gray-600 hover:bg-gray-100 rounded-l-full">-</button>
+                                <input id="quantity-input" type="number" value="1" min="1" class="w-12 text-center border-l border-r border-gray-300 focus:outline-none">
+                                <button onclick="changeQuantity(1)" class="px-3 py-1 text-lg text-gray-600 hover:bg-gray-100 rounded-r-full">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Add to Cart Button -->
+                        <button class="w-full md:w-auto bg-pink-500 text-white font-bold tracking-wider py-3 px-10 rounded-full hover:bg-pink-600 transition-colors">
+                            THÊM VÀO GIỎ HÀNG
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Product Database
+        const products = {
+            'dior_lip': { 
+                name: 'Son Dior Rouge', 
+                price: '1.250.000đ',
+                imageUrls:[
+                    'https://i.postimg.cc/L89X0wTy/temp-Image8z1kv4.avif',
+                    'https://i.postimg.cc/zGfbcKPf/temp-Image6tb-FKq.avif',
+                    'https://i.postimg.cc/K8skSjdj/temp-Image-L6-Lb-BQ.avif'
+                ],
+                description: 'Rouge Dior là thỏi son biểu tượng của Dior, mang lại màu sắc rực rỡ, lâu trôi và cảm giác thoải mái trên môi suốt 16 giờ.'
+            },
+            'chanel_lip': { 
+                name: 'Son Chanel Rouge Allure', 
+                price: '1.100.000đ', 
+                imageUrls: [
+                    'https://i.postimg.cc/vBGd0L36/temp-Image8v50-Rk.avif',
+                    'https://i.postimg.cc/TwTXtqCQ/temp-Imageb-H46y9.avif',
+                    'https://i.postimg.cc/rmqLfCQQ/temp-Imagee-ESstp.avif'
+                ],
+                description: 'Một thỏi son satin đậm đặc, siêu mịn, mang lại màu sắc rạng rỡ và dưỡng ẩm cho đôi môi.'
+            },
+            'ysl_lip': { 
+                name: 'Son YSL Rouge Volupté Shine', 
+                price: '1.550.000đ', 
+                imageUrls: [
+                    'https://i.postimg.cc/hjRV6hd9/temp-Image-Np-Lvc-Z.avif',
+                    'https://i.postimg.cc/rm253zrR/temp-Imageyx9mb-X.avif',
+                    'https://i.postimg.cc/j5vCcjQV/temp-Imagey-QUB0y.avif'
+                ],
+                description: 'Dòng son dưỡng có màu bán chạy nhất của YSL, mang lại màu sắc tươi sáng, bóng mượt và dưỡng ẩm tức thì.'
+            },
+             'gvc_lip': { 
+                name: 'Son Givenchy Le Rouge', 
+                price: '1.050.000đ', 
+                imageUrls: [
+                    'https://i.postimg.cc/cLsx9WC8/temp-Image-GNI7h4.avif',
+                    'https://i.postimg.cc/13J9bdVw/temp-Image-HHi-DFl.avif',
+                    'https://i.postimg.cc/13J9bdVG/temp-Imagej-K5l-Oh.avif'
+
+                ],
+                description: 'Thỏi son mang tính biểu tượng với kết cấu mềm mịn, màu sắc đậm nét và lớp vỏ da sang trọng.'
+            },
+            'fk_lip': { 
+                name: 'Son Flower Knows Swan', 
+                price: '650.000đ', 
+                imageUrls: [
+                    'https://i.postimg.cc/C1ydgPhc/temp-Image-T77h-Iu.avif',
+                    'https://i.postimg.cc/Jhxdwgc5/temp-Imagec-Nz-Cf-T.avif',
+                    'https://i.postimg.cc/63QbB0Mw/temp-Image-ZXAWJW.avif'
+                ],
+                description: 'Lấy cảm hứng từ ballet, thỏi son này mang lại vẻ ngoài thanh lịch với chất son mịn mượt và màu sắc tinh tế.'
+            },
+            'dior_foundation': { 
+                name: 'Kem Nền Dior Forever', 
+                price: '1.500.000đ', 
+                imageUrls: [
+                    'https://dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dw83a05953/sp-slices/Y0996007/Y0996007_C0996007_E01_GHC.jpg?sw=1600&sh=1200',
+                    'https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dwe720e365/sp-merchandising/Y0996007/Y0996007_C09960072N_E02_GHC.jpg?sw=720&sh=520',
+                    'https://images.selfridges.com/is/image/selfridges/R03963405_M?%24PLP_SLICE_M%24'
+                ],
+                description: 'Kem nền mang tính biểu tượng của Dior, không lem trôi, mang lại lớp nền hoàn hảo suốt 24 giờ.'
+            },
+            'chanel_foundation': { 
+                name: 'Kem Nền Chanel Les Beiges', 
+                price: '1.600.000đ', 
+                imageUrls: [
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-h56a066601b17a1516e454460d37e583c-FDTLESBEIGESTOUCH-PACKSHOT-OPEN-shadow.jpg',
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-ha2956fa5f70bb0784dd7cd63d08f76e7-FDTLESBEIGESTOUCH-TEXTURE-Default.jpg',
+                    'https://sothebys-com.brightspotcdn.com/dims4/default/7300f27/2147483647/strip/true/crop/3543x3543+229+0/resize/2048x2048!/quality/90/?url=http%3A%2F%2Fsothebys-brightspot.s3.amazonaws.com%2Fdotcom%2F71%2F20%2Fd5ca2b9542a2b3765e998782a926%2F062422-mfm-lot-80-01.jpg'
+                ],
+                description: 'Mang lại vẻ rạng rỡ khỏe mạnh tự nhiên bằng cách tạo ra vẻ ngoài của làn da trần.'
+            },
+            'lancome_foundation': { 
+                name: 'Kem Nền Lancome Teint Idole', 
+                price: '1.450.000đ', 
+                imageUrls: [
+                    'https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dw10eda144/products/3605971434293_Lancome_TIU_Foundation_30ml_220C_v1_us_3840x2160_packshot.jpg?sw=900&sfrm=jpg&q=70',
+                    'https://www.lancome.com.my/dw/image/v2/BBLN_PRD/on/demandware.static/-/Sites-lancome-master-catalog/default/dw9e52545d/TEINT%20IDOLE%20ULTRA%20WEAR%20FOUNDATION%20SHADE%201.jpg?sw=650&sh=650&sm=cut&q=70',
+                    'https://images.ulta.com/is/image/Ulta/2568257_alt01?$lg$ '
+                ],
+                description: 'Kem nền dạng lỏng lâu trôi, thoáng khí, mang lại lớp nền mờ che phủ toàn diện lên đến 24 giờ.'
+            },
+            'ysl_foundation': { 
+                name: 'Kem Nền YSL All Hours', 
+                price: '1.926.000đ', 
+                imageUrls: [
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw9e472e34/Products/Makeup/Foundation/All-Hours-Foundation/3614273634351_all_hours_foundation_packshot.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw09d0a6fe/Products/Makeup/Foundation/All-Hours-Foundation/3614273634351_all_hours_foundation_texture.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://images.selfridges.com/is/image/selfridges/R03943399_M?%24PLP_SLICE_M%24'
+                ],
+                description: 'Lớp nền mờ tự nhiên, lâu trôi và thoáng khí, mang lại cảm giác nhẹ nhàng như không trang điểm.'
+            },
+            'gvc_foundation': { 
+                name: 'Kem Nền Givenchy Prisme Libre', 
+                price: '950.000đ', 
+                imageUrls: [
+                    'https://www.sephora.com/productimages/sku/s2427671-main-zoom.jpg',
+                    'https://www.sephora.com/productimages/product/p469225-av-02-zoom.jpg',
+                    'https://images.selfridges.com/is/image/selfridges/R03714574_M?%24PLP_SLICE_M%24'
+                ],
+                description: 'Kem nền chăm sóc da lai đầu tiên của Givenchy, mang lại lớp nền rạng rỡ, che phủ và dưỡng ẩm.'
+            },
+            'dior_eyeshadow': { 
+                name: 'Bảng mắt Dior', 
+                price: '1.800.000đ', 
+                imageUrls: [
+                    'https://media.dior.com/img/en_us/sku/800-800/c099600649_1.jpg',
+                    'https://media.dior.com/img/en_us/sku/800-800/c099600649_2.jpg',
+                    'https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dw8327d70a/sp-merchandising/C099600649/C099600649_C099600649_E04_GHC.jpg?sw=720&sh=520'
+                ],
+                description: 'Bảng màu mắt mang tính biểu tượng của Dior, với các sắc thái hài hòa, dễ phối và lâu trôi.'
+            },
+            'chanel_eyeshadow': { 
+                name: 'Phấn Mắt Chanel', 
+                price: '1.750.000đ', 
+                imageUrls: [
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-h45648589c44566f108d1679092497ba-LES4OMBRES-PACKSHOT-OPEN-shadow.jpg',
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-h33979ea298818c991e0d376d8b02444c-LES4OMBRES-TEXTURE-Default.jpg',
+                    'https://media.ulta.com/i/ulta/2558661_alt02?w=1020&h=1020'
+                ],
+                description: 'Bốn ô màu mắt với công thức độc đáo, kết hợp sự mềm mại và dễ dàng ứng dụng để thể hiện màu sắc tối đa.'
+            },
+            'fk_eyeshadow': { 
+                name: 'Bảng Mắt Flower Knows', 
+                price: '850.000đ', 
+                imageUrls: [
+                    'https://flowerknows.co/cdn/shop/products/MoonlightMermaidFive-ColorJewelryEyeshadowPalett_8_d3f37ab7-d4a9-467f-94a1-0268565a0c32_800x.jpg?v=1678184519',
+                    'https://flowerknows.co/cdn/shop/products/MoonlightMermaidFive-ColorJewelryEyeshadowPalett_9_9150b075-8149-436f-9878-5e87a2a16d82_800x.jpg?v=1678184519',
+                    'https://flowerknows.co/cdn/shop/products/MoonlightMermaidFive-ColorJewelryEyeshadowPalett_2_412f7188-466d-4767-961f-174825964096_800x.jpg?v=1678184519'
+                ],
+                description: 'Bảng màu mắt với thiết kế lãng mạn, kết hợp giữa các tông màu lì và nhũ lấp lánh.'
+            },
+            'ysl_eyeshadow': { 
+                name: 'Bảng Mắt YSL Couture Mini', 
+                price: '550.000đ', 
+                imageUrls: [
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw15d2a93b/Products/Makeup/Eyes/Eyeshadows/Couture-Mini-Clutch/WW-50931YSL/3614273894731_couture_mini_clutch_packshot.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dwb51d8b7a/Products/Makeup/Eyes/Eyeshadows/Couture-Mini-Clutch/WW-50931YSL/3614273894731_couture_mini_clutch_texture.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://www.sephora.com/productimages/product/p506927-av-10-zoom.jpg'
+                ],
+                description: 'Bảng màu mắt sang trọng với các sắc thái lấy cảm hứng từ thời trang cao cấp của Saint Laurent.'
+            },
+            'gvc_eyeshadow': { 
+                name: 'Bảng Mắt Givenchy Le 9', 
+                price: '550.000đ', 
+                imageUrls: [
+                    'https://www.sephora.com/productimages/sku/s2502128-main-zoom.jpg',
+                    'https://www.sephora.com/productimages/product/p459740-av-02-zoom.jpg',
+                    'https://www.sephora.com/productimages/product/p459740-av-06-zoom.jpg'
+                ],
+                description: 'Một bảng màu mắt gồm 9 sắc thái với các hiệu ứng lì, satin và ánh kim loại.'
+            },
+            'dior_mascara': { 
+                name: 'Mascara Dior', 
+                price: '950.000đ', 
+                imageUrls: [
+                    'https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dwa0694e96/sp-merchandising/Y0027000/Y0027000_C002700010_E01_GHC.jpg?sw=720&sh=520',
+                    'https://media.dior.com/img/en_us/sku/800-800/y0027000_2.jpg',
+                    'https://media.ulta.com/i/ulta/2522241_alt02?w=1020&h=1020'
+                ],
+                description: 'Mascara mang lại hiệu ứng mi cong, dài và dày tức thì, bền màu suốt 24 giờ.'
+            },
+            'el_mascara': { 
+                name: 'Mascara Estee Lauder', 
+                price: '890.000đ', 
+                imageUrls: [
+                    'https://www.esteelauder.com/media/export/cms/products/1920x1080/el_sku_6T1401_1920x1080.jpg',
+                    'https://www.esteelauder.com/media/export/cms/products/580x480/el_sku_6T1401_580x480.jpg',
+                    'https://m.media-amazon.com/images/I/71uK2s-g2+L.jpg'
+                ],
+                description: 'Mascara làm dày và cong mi, chống lem, chống trôi, cho đôi mi quyến rũ suốt cả ngày.'
+            },
+            'chanel_mascara': { 
+                name: 'Mascara Chanel', 
+                price: '1.050.000đ', 
+                imageUrls: [
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-ha425c28f323c21d8b9487c0fa211c479-LEVOLUMEREVOLUTION-PACKSHOT-OPEN-shadow.jpg',
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-h0d1a459207869676e1a49a888c7f9984-LEVOLUMEREVOLUTION-TEXTURE-Default.jpg',
+                    'https://media.ulta.com/i/ulta/2533355_alt02?w=1020&h=1020'
+                ],
+                description: 'Mascara với đầu cọ được in 3D độc quyền, mang lại độ dày và cong vượt trội cho hàng mi.'
+            },
+            'ysl_mascara': { 
+                name: 'Mascara YSL Lash Clash', 
+                price: '550.000đ', 
+                imageUrls: [
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw11652438/Products/Makeup/Eyes/Mascaras/Lash-Clash-Mascara/WW-20227YSL/3614273663207_lash_clash_mascara_packshot.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw11d95011/Products/Makeup/Eyes/Mascaras/Lash-Clash-Mascara/WW-20227YSL/3614273663207_lash_clash_mascara_texture.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://media.ulta.com/i/ulta/2585888_alt02?w=1020&h=1020'
+                ],
+                description: 'Mascara mang lại độ dày cực đại và màu đen ấn tượng, bền màu lên đến 24 giờ.'
+            },
+            'gvc_mascara': { 
+                name: 'Mascara Givenchy Volume Disturbia', 
+                price: '550.000đ', 
+                imageUrls: [
+                    'https://www.sephora.com/productimages/sku/s2254934-main-zoom.jpg',
+                    'https://www.sephora.com/productimages/product/p449339-av-02-zoom.jpg',
+                    'https://media.bergdorfgoodman.com/images/f_auto,q_auto:good,ar_4:5,c_fill,dpr_2.0,w_480/01/bg_b4r83_b1_m/bergdorfgoodman_b4r83_b1_m'
+                ],
+                description: 'Mang lại độ dày và cong mi ấn tượng chỉ sau một lần chuốt, cho đôi mắt nổi bật.'
+            },
+            'dior_blush': { 
+                name: 'Má hồng Dior', 
+                price: '1.150.000đ', 
+                imageUrls: [
+                    'https://media.dior.com/img/en_us/sku/800-800/y0996005_1.jpg',
+                    'https://media.dior.com/img/en_us/sku/800-800/y0996005_2.jpg',
+                    'https://www.sephora.com/productimages/product/p449536-av-02-zoom.jpg'
+                ],
+                description: 'Phấn má hồng mang lại vẻ ửng hồng tự nhiên cho đôi má, phản ứng với độ ẩm của da để tạo ra màu sắc riêng biệt.'
+            },
+            'chanel_blush': { 
+                name: 'Má Hồng Chanel', 
+                price: '1.200.000đ', 
+                imageUrls: [
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-h85040f2fef5268305615d18d413b0632-JOUESCONTRASTE-PACKSHOT-OPEN-shadow.jpg',
+                    'https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto,w_1920,c_fill,f_auto/w_1200,h_1200,c_fill/prod-emea/sys-master/content/P1-h0791475c4ad205c0ef75edb3be2868c2-JOUESCONTRASTE-TEXTURE-Default.jpg',
+                    'https://media.ulta.com/i/ulta/2215392_alt02?w=1020&h=1020'
+                ],
+                description: 'Phấn má hồng dạng nén với kết cấu mềm mại, mịn màng, dễ dàng tạo hiệu ứng ửng hồng tự nhiên.'
+            },
+            'fk_blush': { 
+                name: 'Má Hồng Flower Knows', 
+                price: '550.000đ', 
+                imageUrls: [
+                    'https://flowerknows.co/cdn/shop/products/CircusSeriesGradientBlush_6_77f48043-466d-4952-b81f-7463f82ed7c5_800x.jpg?v=1678184652',
+                    'https://flowerknows.co/cdn/shop/products/CircusSeriesGradientBlush_2_c155d9d7-83d3-48e0-a292-0b73a7261a86_800x.jpg?v=1678184652',
+                    'https://flowerknows.co/cdn/shop/files/8_800x.jpg?v=1686295796'
+                ],
+                description: 'Phấn má hồng với hiệu ứng chuyển màu độc đáo, thiết kế lãng mạn và chất phấn mịn mượt.'
+            },
+            'ysl_blush': { 
+                name: 'Má Hồng YSL Couture', 
+                price: '550.000đ', 
+                imageUrls: [
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw1da584d5/Products/Makeup/Face/Blushes/Couture-Blush/WW-50474YSL-2/3614273894816_couture_blush_packshot.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw32677461/Products/Makeup/Face/Blushes/Couture-Blush/WW-50474YSL-2/3614273894816_couture_blush_texture.jpg?sw=650&sh=650&sm=cut&q=85',
+                    'https://media.ulta.com/i/ulta/2598858_alt02?w=1020&h=1020'
+                ],
+                description: 'Phấn má hồng có thể điều chỉnh độ đậm nhạt, mang lại màu sắc rạng rỡ và tự nhiên.'
+            },
+            'gvc_blush': { 
+                name: 'Má Hồng Givenchy Prisme Libre', 
+                price: '550.000đ', 
+                imageUrls: [
+                    'https://www.sephora.com/productimages/sku/s2427697-main-zoom.jpg',
+                    'https://www.sephora.com/productimages/product/p469224-av-02-zoom.jpg',
+                    'https://www.sephora.com/productimages/product/p469224-av-03-zoom.jpg'
+                ],
+                description: 'Phấn má hồng dạng bột gồm 4 tông màu hài hòa, mang lại vẻ ửng hồng sống động và tự nhiên.'
+            },
+        };
+
+        const homePage = document.getElementById('home-page-content');
+        const productPage = document.getElementById('product-page-content');
+        
+        const mainProductImage = document.getElementById('main-product-image');
+        const thumbnailContainer = document.getElementById('thumbnail-container');
+
+        const productName = document.getElementById('product-name');
+        const productPrice = document.getElementById('product-price');
+        const productDescription = document.getElementById('product-description');
+        const quantityInput = document.getElementById('quantity-input');
+
+        function showProductPage(productId) {
+            const product = products[productId];
+            if (!product) return;
+
+            // Populate text data
+            productName.textContent = product.name;
+            productPrice.textContent = product.price;
+            productDescription.textContent = product.description;
+            quantityInput.value = 1;
+
+            // Clear previous thumbnails
+            thumbnailContainer.innerHTML = '';
+
+            // Populate image gallery
+            if (product.imageUrls && Array.isArray(product.imageUrls) && product.imageUrls.length > 0) {
+                // Set main image to the first one
+                mainProductImage.src = product.imageUrls[0];
+                mainProductImage.alt = product.name;
+
+                // Create and populate thumbnails
+                product.imageUrls.forEach((url, index) => {
+                    const thumbWrapper = document.createElement('div');
+                    thumbWrapper.className = 'aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer border-2 hover:border-pink-400 transition-all';
+                    
+                    // Highlight the first thumbnail by default
+                    if (index === 0) {
+                        thumbWrapper.classList.add('border-pink-500');
+                    } else {
+                        thumbWrapper.classList.add('border-transparent');
+                    }
+
+                    const thumbImg = document.createElement('img');
+                    thumbImg.src = url;
+                    thumbImg.alt = `${product.name} thumbnail ${index + 1}`;
+                    thumbImg.className = 'w-full h-full object-cover';
+
+                    thumbWrapper.appendChild(thumbImg);
+
+                    thumbWrapper.addEventListener('click', () => {
+                        // Fade out, change src, fade in
+                        mainProductImage.style.opacity = '0';
+                        setTimeout(() => {
+                            mainProductImage.src = url;
+                            mainProductImage.style.opacity = '1';
+                        }, 300);
+
+                        // Update active thumbnail border
+                        document.querySelectorAll('#thumbnail-container > div').forEach(div => {
+                            div.classList.remove('border-pink-500');
+                            div.classList.add('border-transparent');
+                        });
+                        thumbWrapper.classList.remove('border-transparent');
+                        thumbWrapper.classList.add('border-pink-500');
+                    });
+
+                    thumbnailContainer.appendChild(thumbWrapper);
+                });
+            }
+
+
+            // Switch page visibility
+            homePage.classList.add('hidden');
+            productPage.classList.remove('hidden');
+            window.scrollTo(0, 0); // Scroll to top
+        }
+
+        function showHomePage() {
+            productPage.classList.add('hidden');
+            homePage.classList.remove('hidden');
+        }
+
+        function changeQuantity(amount) {
+            let currentValue = parseInt(quantityInput.value);
+            let newValue = currentValue + amount;
+            if (newValue < 1) {
+                newValue = 1;
+            }
+            quantityInput.value = newValue;
+        }
+    </script>
+</body>
+</html>
+

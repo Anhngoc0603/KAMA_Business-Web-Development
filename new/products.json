@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
   {
     "id": 1,
@@ -149,4 +150,157 @@
     "launchDate": "2020-08-22",
     "usageInstructions": "Apply to imperfections, blend with a sponge."
   }
+=======
+[
+  {
+    "id": 1,
+    "name": "Dior Forever Foundation",
+    "brand": "Dior",
+    "price": 68.00,
+    "rating": 4.9,
+    "category": "Face",
+    "image": "../new/images/dior_foundation/figure-1655132157621.png",
+    "description": "A long-wear, high-perfection foundation that enhances your natural glow.",
+    "ingredients": "Water, Glycerin, Dimethicone, Titanium Dioxide, Iron Oxides",
+    "weight": "30ml",
+    "shade": "2N",
+    "launchDate": "2023-03-15",
+    "usageInstructions": "Apply with a brush or sponge for even coverage, blend well."
+  },
+  {
+    "id": 2,
+    "name": "Chanel Les Beiges Blush",
+    "brand": "Chanel",
+    "price": 52.00,
+    "rating": 4.8,
+    "category": "Face",
+    "image": "../new/images/ma-hong-dang-kem-chanel-les-beiges-water-fresh-blush-tone-light-peach-15ml-2-jpg-1686210006-08062023144006.webp",
+    "description": "Soft rosy blush that gives a healthy radiance with every sweep.",
+    "ingredients": "Talc, Silica, Mica, Titanium Dioxide, Red 7 Lake",
+    "weight": "15ml",
+    "shade": "Light Peach",
+    "launchDate": "2022-11-10",
+    "usageInstructions": "Sweep onto cheeks with a blush brush, build as needed."
+  },
+  {
+    "id": 3,
+    "name": "YSL Touche Éclat Concealer",
+    "brand": "YSL",
+    "price": 40.00,
+    "rating": 4.7,
+    "category": "Face",
+    "image": "../new/images/che-khuyet-diem-yves-saint-laurent-ysl-touche-eclat-high-cover-radiant-concealer-tone-3-almond-1-jpg-1719392975-26062024160935.webp",
+    "description": "Brightening pen that instantly highlights and conceals imperfections.",
+    "ingredients": "Water, Glycerin, Dimethicone, Iron Oxides, Vitamin E",
+    "weight": "2.5ml",
+    "shade": "3 Almond",
+    "launchDate": "2021-09-01",
+    "usageInstructions": "Apply to dark circles or blemishes, blend with fingertips."
+  },
+  {
+    "id": 4,
+    "name": "Lancôme Hypnôse Mascara",
+    "brand": "Lancôme",
+    "price": 33.00,
+    "rating": 4.9,
+    "category": "Eyes",
+    "image": "../new/images/61K1zuiyOhL._UF1000,1000_QL80_.jpg",
+    "description": "Buildable volume mascara for custom lash intensity and elegance.",
+    "ingredients": "Water, Beeswax, Carnauba Wax, Black 2",
+    "weight": "6.5g",
+    "shade": "Black",
+    "launchDate": "2020-05-20",
+    "usageInstructions": "Apply from root to tip, layer for more volume."
+  },
+  {
+    "id": 5,
+    "name": "Charlotte Tilbury Eyeshadow Palette",
+    "brand": "Charlotte Tilbury",
+    "price": 55.00,
+    "rating": 4.8,
+    "category": "Eyes",
+    "image": "../new/images/bang-phan-mat-charlotte-tilbury-luxury-eyeshadow-palette-mau-pillow-talk-dreams-5-1g-62636164dbdaf-23042022091604.webp",
+    "description": "Luxury palette with silky shades that blend effortlessly for any look.",
+    "ingredients": "Talc, Mica, Silica, Iron Oxides, Carmine",
+    "weight": "5g",
+    "shade": "Pillow Talk Dreams",
+    "launchDate": "2023-01-12",
+    "usageInstructions": "Apply with a brush, blend shades for a custom look."
+  },
+  {
+    "id": 6,
+    "name": "Fenty Beauty Flyliner",
+    "brand": "Fenty Beauty",
+    "price": 25.00,
+    "rating": 4.5,
+    "category": "Eyes",
+    "image": "../new/images/images (3).jpg",
+    "description": "Water-resistant eyeliner for sharp, precise, and bold lines.",
+    "ingredients": "Water, Styrene/Acrylates Copolymer, Carbon Black",
+    "weight": "0.5g",
+    "shade": "Onyx",
+    "launchDate": "2022-07-18",
+    "usageInstructions": "Draw along lash line for precise application."
+  },
+  {
+    "id": 7,
+    "name": "Dior Addict Lip Glow",
+    "brand": "Dior",
+    "price": 40.00,
+    "rating": 5.0,
+    "category": "Lips",
+    "image": "../new/images/son-duong-dior-addict-lip-glow-015-cherry-mau-do-cherry-67c661e4436fc-04032025091356.webp",
+    "description": "Iconic lip balm that enhances natural color with glossy glow.",
+    "ingredients": "Hydrogenated Polyisobutene, Shea Butter, Cherry Extract",
+    "weight": "3.5g",
+    "shade": "015 Cherry",
+    "launchDate": "2019-10-05",
+    "usageInstructions": "Apply directly to lips for hydration and color."
+  },
+  {
+    "id": 8,
+    "name": "YSL Rouge Pur Couture Lipstick",
+    "brand": "YSL",
+    "price": 45.00,
+    "rating": 4.9,
+    "category": "Lips",
+    "image": "../new/images/son-ysl-r1966.png",
+    "description": "High-pigment lipstick delivering luxurious color and comfort.",
+    "ingredients": "Octyldodecanol, Polybutene, Red 6 Lake",
+    "weight": "3.8g",
+    "shade": "Red Passion",
+    "launchDate": "2023-06-30",
+    "usageInstructions": "Apply evenly to lips, reapply as needed."
+  },
+  {
+    "id": 9,
+    "name": "Rare Beauty Lip Soufflé Tint",
+    "brand": "Rare Beauty",
+    "price": 22.00,
+    "rating": 4.8,
+    "category": "Lips",
+    "image": "../new/images/s2504413-main-zoom-jpg-1648524795-29032022103315.webp",
+    "description": "Airy tint that glides softly for a velvety-matte finish.",
+    "ingredients": "Water, Glycerin, Silica, Red 7 Lake",
+    "weight": "4g",
+    "shade": "Joy",
+    "launchDate": "2021-04-15",
+    "usageInstructions": "Swipe onto lips, blend for a natural finish."
+  },
+  {
+    "id": 10,
+    "name": "NARS Radiant Creamy Concealer",
+    "brand": "NARS",
+    "price": 38.00,
+    "rating": 4.6,
+    "category": "Face",
+    "image": "../new/images/images (4).jpg",
+    "description": "Award-winning concealer that brightens and hides dark circles.",
+    "ingredients": "Water, Dimethicone, Titanium Dioxide, Vitamin C",
+    "weight": "6ml",
+    "shade": "Medium",
+    "launchDate": "2020-08-22",
+    "usageInstructions": "Apply to imperfections, blend with a sponge."
+  }
+>>>>>>> c520dcef0b06d211d50cb50060c0d90b6af6e350
 ]
