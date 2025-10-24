@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sakura High-End Beauty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="announcement-container">
+      <div class="announcement-wrapper" id="announcementWrapper">
+        <div class="announcement-slide">Free Shipping On Orders Over $100</div>
+        <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
+      </div>
+    </div>
+    <div class="header">
+      <button class="menu-toggler" id="menu-toggler"><img src="../1 (1).Final/images/nav.png" alt="Menu Toggler" width="100px"></button>        
+      <img src="../1 (1).Final/images/LOGO.png" alt="LOGO" class="logo">
+      <nav>
+        <div class="search">
+          <img src="../1 (1).Final/images/find.png" class="icon">
+          <input type="text" placeholder="Search for...">
+        </div>
+        <a href="#"><img src="../1 (1).Final/images/account.png" alt="Account"></a>
+        <a href="#"><img src="../1 (1).Final/images/contact.png" alt="Contact"></a>
+        <a href="#" class="cart-icon"><img src="../1 (1).Final/images/shopping.png" alt="Shopping"></a>
+      </nav>
+    </div>
+    <nav class="navbar" id="navbar">
+      <a href="#">NEW</a>
+      <a href="#">COLLECTIONS</a>
+      <a href="#">BEST SELLERS</a>
+      <a href="#">SALE</a>
+      <a href="#" class="shop-all">CATEGORIES</a>
+      <div class="menu-categories">
+  <button class="back-btn">
+    <img src="../1 (1).Final/images/prev.png" alt="Back">
+    Back to Menu
+  </button>
+  <div class="categories-wrapper">
+    <div class="category" data-category="Face">
+      <div class="category-header">
+        <h3><a href="#">FACE</a></h3>
+        <button class="next-btn">
+          <img src="../1 (1).Final/images/next.png" alt="Next">
+        </button>
+      </div>
+      <ul class="product-list">
+        <li>Foundation</li>
+        <li>Concealer</li>
+        <li>Blush</li>
+        <li>Powder</li>
+      </ul>
+    </div>
+    <div class="category" data-category="Eyes">
+      <div class="category-header">
+        <h3><a href="#">EYES</a></h3>
+        <button class="next-btn">
+          <img src="../1 (1).Final/images/next.png" alt="Next">
+        </button>
+      </div>
+      <ul class="product-list">
+        <li>Eyeshadow</li>
+        <li>Mascara</li>
+        <li>Eyeliner</li>
+        <li>Brow Pencil</li>
+      </ul>
+    </div>
+    <div class="category" data-category="Lips">
+      <div class="category-header">
+        <h3><a href="#">LIPS</a></h3>
+        <button class="next-btn">
+          <img src="../1 (1).Final/images/next.png" alt="Next">
+        </button>
+      </div>
+      <ul class="product-list">
+        <li>Lipstick</li>
+        <li>Lip Gloss</li>
+        <li>Lip Balm</li>
+      </ul>
+    </div>
+  </div>
+</div>
+    </nav>
+  </header>
+
+  <!-- Video Hero Section -->
+  <section class="video-hero">
+    <div class="video-container">
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="../new/images/Gucci Beauty Limited-Edition Flora Makeup.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="video-overlay">
+        <div class="video-content">
+          <h1 class="video-title">New Arrivals</h1>
+          <p class="video-subtitle">Discover the essence of elegance with our latest Sakura-inspired collection.</p>
+          <a href="#products" class="btn-explore">Explore Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai-combo">
+    <button class="ai-btn">💡 Get AI Combo Suggestion</button>
+  </section>
+  
+  <section class="filter-bar">
+    <div class="search-wrapper placeholder"></div>
+    <div class="filters-inline">
+      <select id="price-filter">
+        <option value="default">Price</option>
+        <option value="low-high">Low → High</option>
+        <option value="high-low">High → Low</option>
+      </select>
+      <select id="rating-filter">
+        <option value="default">Rating</option>
+        <option value="5">5★</option>
+        <option value="4.5">≥ 4.5★</option>
+        <option value="4">≥ 4★</option>
+      </select>
+      <select id="brand-filter">
+        <option value="default">Brand</option>
+        <option value="Dior">Dior</option>
+        <option value="Chanel">Chanel</option>
+        <option value="YSL">YSL</option>
+        <option value="Lancôme">Lancôme</option>
+        <option value="Rare Beauty">Rare Beauty</option>
+        <option value="NARS">NARS</option>
+        <option value="Charlotte Tilbury">Charlotte Tilbury</option>
+        <option value="Fenty Beauty">Fenty Beauty</option>
+      </select>
+    </div>
+    <div class="filter-dropdown">
+      <button id="filter-toggle" class="filter-btn">☰ Filter</button>
+      <div id="filter-menu" class="filter-menu">
+        <button class="category-btn is-selected" data-category="All">All</button>
+        <button class="category-btn" data-category="Face">Face</button>
+        <button class="category-btn" data-category="Eyes">Eyes</button>
+        <button class="category-btn" data-category="Lips">Lips</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="products-grid" id="products"></main>
+
+  <div class="load-more">
+    <button id="load-more-button" class="btn-primary">Load More</button>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-newsletter">
+      <p>Sign up for updates:</p>
+      <p>Be the first to know about new collections and exclusive offers!</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter email here">
+        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+      </form>
+    </div>
+    <div class="footer-main">
+      <div class="footer-section">
+        <h3>ABOUT KAMA</h3>
+        <ul>
+          <li><a href="#">Loyalty Program</a></li>
+          <li><a href="#">Brand Story</a></li>
+          <li><a href="#">Affiliate Program</a></li>
+          <li><a href="#">Student Discount</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Become a Retailer</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>CUSTOMER CARE</h3>
+        <ul>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Refund & Return Policy</a></li>
+          <li><a href="#">Promotion Terms & Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms and Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>CUSTOMER SERVICE</h3>
+        <ul>
+          <li><a href="#">Track Your Order</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Submit a Fake</a></li>
+        </ul>
+      </div>
+      <div class="footer-section footer-social">
+        <h3>FOLLOW US</h3>
+        <div class="social-icons">
+          <button type="button" aria-label="Facebook"><i class="fab fa-facebook-f"></i></button>
+          <button type="button" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
+          <button type="button" aria-label="TikTok"><i class="fab fa-tiktok"></i></button>
+          <button type="button" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Kama. All rights reserved.</p>
+      <p>United States (USD $) <i class="fas fa-chevron-down"></i></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
