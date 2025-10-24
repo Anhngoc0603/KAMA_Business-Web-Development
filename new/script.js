@@ -518,8 +518,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Cart icon not found. Check HTML structure: .header nav a img[alt="Shopping"]');
     }
   }
-
-  // AI Combo Suggestion
   function setupAICombo() {
     if (aiButton) {
       aiButton.addEventListener('click', () => {
@@ -528,7 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
-
   function generateAICombo() {
     const categories = ['Face', 'Eyes', 'Lips'];
     const combo = categories.map(category => {
