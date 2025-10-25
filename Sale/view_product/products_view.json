@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Dior Forever Foundation",
+    "brand": "Dior",
+    "price": 68.00,
+    "originalPrice": 75.00,
+    "rating": 4.9,
+    "category": "Face",
+    "image": "../1 (1).Final/images/luxury-makeup-1.jpg",
+    "description": "A long-wear, high-perfection foundation that enhances your natural glow.",
+    "ingredients": "Water, Glycerin, Dimethicone, Titanium Dioxide, Iron Oxides",
+    "weight": "30ml",
+    "shade": "2N",
+    "launchDate": "2025-10-18T08:58:00+07:00",
+    "usageInstructions": "Apply with a brush or sponge for even coverage, blend well."
+  }
+]
