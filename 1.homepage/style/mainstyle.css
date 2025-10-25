@@ -528,77 +528,71 @@ nav a:hover {opacity: 0.6;}
 }
 /*===============FOOTER=============*/
 .footer {
-  background: linear-gradient(to top, var(--pale-pink), var(--petal-white));
-  color: var(--branch-brown);
-  padding: 2rem 1rem;
+  background: linear-gradient(to top, #FADADD, #E6A6B0);
+  color: #6B4C3B;
+  padding: 32px 16px;
   font-family: 'Playfair Display', serif;
   border-top: 1px solid rgba(230, 166, 176, 0.2);
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
-
 .footer-newsletter {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
-
 .footer-newsletter p {
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
-  color: var(--branch-brown);
-  opacity: 0.9;
+  font-size: 16px;
+  margin: 8px 0;
 }
-
+.footer-newsletter p:first-child {
+  font-size: 20px;
+  font-weight: 600;
+}
 .newsletter-form {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 8px;
+  margin-top: 16px;
 }
-
 .newsletter-form input {
-  padding: 0.6rem 1rem;
-  border: 1px solid var(--soft-rose);
-  border-radius: 20px;
+  padding: 8px 16px;
+  border: 1px solid #F9C6CF;
+  border-radius: 10px;
+  width: 250px;
+  max-width: 100%;
   font-family: 'Playfair Display', serif;
-  font-size: 0.9rem;
-  width: 100%;
-  max-width: 250px;
-  background: rgba(255, 255, 255, 0.8);
-  transition: border-color 0.3s ease;
 }
 .newsletter-form input:focus {
-  border-color: var(--warm-blush);
+  border-color: #E6A6B0;
   outline: none;
 }
 .newsletter-form button {
-  padding: 0.6rem 1rem;
+  background: #E6A6B0;
   border: none;
-  background: var(--warm-blush);
+  padding: 8px 16px;
+  border-radius: 10px;
   color: white;
-  border-radius: 20px;
   cursor: pointer;
-  font-size: 0.9rem;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 .newsletter-form button:hover {
-  background-color: var(--soft-rose);
+  background: #F9C6CF;
   transform: translateY(-2px);
 }
 .footer-main {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
+  gap: 32px;
+  margin-bottom: 24px;
 }
 .footer-section {
   flex: 1;
   min-width: 200px;
 }
 .footer-section h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--branch-brown);
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #6B4C3B;
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -607,68 +601,60 @@ nav a:hover {opacity: 0.6;}
   padding: 0;
 }
 .footer-section ul li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 }
 .footer-section ul a {
-  color: var(--branch-brown);
+  color: #6B4C3B;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 14.4px;
   transition: color 0.3s ease;
 }
-
 .footer-section ul a:hover {
-  color: var(--warm-blush);
+  color: #E6A6B0;
 }
-
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footer-social h3 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #6B4C3B;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
 .footer-social .social-icons {
   display: flex;
-  gap: 1rem;
+  gap: 16px;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 .footer-social button {
   background: none;
   border: none;
-  color: var(--branch-brown);
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-.footer-social button:hover {
-  color: var(--warm-blush);
-  transform: scale(1.2);
-}
-.footer-bottom {
-  text-align: center;
-  font-size: 0.8rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(230, 166, 176, 0.2);
-  color: var(--branch-brown);
-  opacity: 0.7;
-}
-.footer-bottom p {
-  margin: 0.3rem 0;
-}
-/* Fix and Style Social Buttons in Footer */
-.footer-social .social-icons button {
-  background: none;
-  border: none;
-  color: var(--branch-brown);
+  color: #6B4C3B;
   font-size: 24px;
   cursor: pointer;
   padding: 8px;
   transition: color 0.3s ease, transform 0.3s ease;
-  display: inline-flex; /* Đảm bảo nút hiển thị như một phần tử inline-flex */
-  align-items: center;
-  justify-content: center;
 }
-
-.footer-social .social-icons button:hover {
-  color: var(--warm-blush);
+.footer-social button:hover {
+  color: #E6A6B0;
   transform: scale(1.2);
 }
-
-.footer-social .social-icons button:focus {
+.footer-social button:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(230, 166, 176, 0.4);
+}
+.footer-bottom {
+  text-align: center;
+  font-size: 12.8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(230, 166, 176, 0.2);
+  color: #6B4C3B;
+  opacity: 0.7;
+}
+.footer-bottom p {
+  margin: 4.8px 0;
 }

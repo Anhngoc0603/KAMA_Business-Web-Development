@@ -1,0 +1,163 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Dior Forever Foundation",
+      "brand": "Dior",
+      "price": 68.00,
+      "originalPrice": 75.00,
+      "rating": 4.9,
+      "category": "Face",
+      "subtype": "Foundation",
+      "images": [
+        "../new/images/dior_foundation/figure-1655132157621.png",
+        "../new/images/dior_foundation/bang-mau-Diorskin-Forever.png",
+        "../new/images/dior_foundation/kem-nen-diorskin-forever-undercover-foundation.png",
+        "../new/images/dior_foundation/M128_FOREVER_S1_25_M13G_Jisoo_Glow_SW_2400x3000.png",
+        "../new/images/dior_foundation/3348901578240_7.webp"
+      ],
+      "description": "A long-wear, high-perfection foundation that enhances your natural glow.",
+      "detailedDescription": "Discover the latest addition to Dior's iconic lineup with the Dior Forever Foundation. This long-wear, high-perfection foundation enhances your natural glow with a flawless finish that lasts up to 24 hours. Crafted with a luxurious blend of Water, Glycerin, Dimethicone, Titanium Dioxide, and Iron Oxides, it provides medium to full coverage while keeping skin hydrated and smooth.",
+      "ingredients": "Water, Glycerin, Dimethicone, Titanium Dioxide, Iron Oxides",
+      "weight": "30ml",
+      "shades": [
+        {"value": "0W", "label": "0W Warm"},
+        {"value": "1N", "label": "1N Neutral"},
+        {"value": "1CR", "label": "1CR Cool Rosy"},
+        {"value": "2N", "label": "2N Neutral"},
+        {"value": "3N", "label": "3N Neutral"}
+      ],
+      "launchDate": "2023-03-15",
+      "usageInstructions": "Apply with a brush or sponge for even coverage, blend well.",
+      "isNew": true,
+      "benefits": [
+        "Long-Lasting Perfection: Provides up to 24-hour wear with a flawless, matte finish.",
+        "Hydration & Comfort: Infused with 86% skincare ingredients to keep skin hydrated.",
+        "Flawless Coverage: Offers medium to full coverage while maintaining a natural look.",
+        "Oil Control: Minimizes shine and controls excess oil.",
+        "Skin Protection: Contains Titanium Dioxide for natural SPF benefits."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Chanel Les Beiges Blush",
+      "brand": "Chanel",
+      "price": 52.00,
+      "originalPrice": 58.00,
+      "rating": 4.8,
+      "category": "Face",
+      "subtype": "Blush",
+      "images": [
+        "../new/images/ma-hong-dang-kem-chanel-les-beiges-water-fresh-blush-tone-light-peach-15ml-2-jpg-1686210006-08062023144006.webp"
+      ],
+      "description": "Soft rosy blush that gives a healthy radiance with every sweep.",
+      "detailedDescription": "Chanel Les Beiges Blush delivers a soft, natural-looking flush that enhances your complexion with a healthy radiance.",
+      "ingredients": "Talc, Silica, Mica, Titanium Dioxide, Red 7 Lake",
+      "weight": "15ml",
+      "shades": [
+        {"value": "light-peach", "label": "Light Peach"},
+        {"value": "rosy", "label": "Rosy"},
+        {"value": "coral", "label": "Coral"}
+      ],
+      "launchDate": "2022-11-10",
+      "usageInstructions": "Sweep onto cheeks with a blush brush, build as needed.",
+      "isNew": true,
+      "benefits": [
+        "Natural Finish: Provides a soft, natural-looking flush",
+        "Buildable Color: Can be layered for desired intensity",
+        "Long-Wearing: Stays put throughout the day"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Gucci Rouge à Lèvres Mat",
+      "brand": "Gucci",
+      "price": 46.00,
+      "originalPrice": null,
+      "rating": 4.7,
+      "category": "Lips",
+      "subtype": "Lipstick",
+      "images": [
+        "https://via.placeholder.com/300x300/E6A6B0/4D3319?text=Gucci+Lipstick+1",
+        "https://via.placeholder.com/300x300/E6A6B0/4D3319?text=Gucci+Lipstick+2"
+      ],
+      "description": "Rich, creamy matte lipstick with intense color payoff.",
+      "detailedDescription": "A new matte lipstick from Gucci Beauty. Delivers vibrant color with a soft, velvety feel. Long-lasting wear without drying the lips.",
+      "ingredients": "Dimethicone, Octyldodecanol, Polyethylene, Polysilicone-11...",
+      "weight": "3.5g",
+      "shades": [
+        {"value": "208-they-met-in-argentina", "label": "208 They Met in Argentina"},
+        {"value": "505-janet-rust", "label": "505 Janet Rust"},
+        {"value": "25-goldie-red", "label": "25 Goldie Red"}
+      ],
+      "launchDate": "2023-01-20",
+      "usageInstructions": "Apply directly to lips. Use the sharp edge for precise definition.",
+      "isNew": false,
+      "benefits": [
+        "Intense Matte Color: Delivers high pigment in one swipe.",
+        "Comfortable Wear: Non-drying formula feels lightweight.",
+        "Luxurious Packaging: Features vintage-inspired gold tube."
+      ]
+    },
+    {
+        "id": 4,
+        "name": "Lancôme Lash Idôle Mascara",
+        "brand": "Lancôme",
+        "price": 30.00,
+        "originalPrice": null,
+        "rating": 4.8,
+        "category": "Eyes",
+        "subtype": "Mascara",
+        "images": [
+          "https://via.placeholder.com/300x300/E8D4C8/4D3319?text=Lancome+Mascara+1",
+          "https://via.placeholder.com/300x300/E8D4C8/4D3319?text=Lancome+Mascara+2"
+        ],
+        "description": "Lash-lifting mascara for fanned-out volume.",
+        "detailedDescription": "Achieve lifted, defined lashes with Lancôme Lash Idôle Mascara. Its curved brush grabs every lash for instant lift, length, and clump-free volume.",
+        "ingredients": "Aqua/Water, Propylene Glycol, Styrene/Acrylates/Ammonium Methacrylate Copolymer...",
+        "weight": "8ml",
+        "shades": [
+          {"value": "01-glossy-black", "label": "01 Glossy Black"}
+        ],
+        "launchDate": "2022-09-01",
+        "usageInstructions": "Hold wand horizontally and apply from root to tip. Use curved side to lift and fan out lashes.",
+        "isNew": false,
+        "benefits": [
+          "Instant Lash Lift: Provides visible lift and curl.",
+          "Fanned-Out Volume: Separates and volumizes each lash.",
+          "Clump-Free Formula: Lightweight gel formula resists clumping.",
+          "Long-Lasting: Up to 24-hour wear."
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Fenty Beauty Pro Filt'r Primer",
+        "brand": "Fenty Beauty",
+        "price": 36.00,
+        "originalPrice": 40.00,
+        "rating": 4.6,
+        "category": "Face",
+        "subtype": "Primer",
+        "images": [
+            "https://via.placeholder.com/300x300/F0E8E8/6B4C3B?text=Fenty+Primer+1",
+            "https://via.placeholder.com/300x300/F0E8E8/6B4C3B?text=Fenty+Primer+2"
+        ],
+        "description": "Instant retouch primer that smooths pores and extends makeup wear.",
+        "detailedDescription": "Start your makeup routine with the Fenty Beauty Pro Filt'r Instant Retouch Primer. This oil-free primer smooths away the look of pores, evens skin tone and texture, and helps makeup last longer.",
+        "ingredients": "Dimethicone, Isododecane, Dimethicone/Vinyl Dimethicone Crosspolymer...",
+        "weight": "32ml",
+        "shades": [
+          {"value": "universal", "label": "Universal (Invisipink)"}
+        ],
+        "launchDate": "2021-05-15",
+        "usageInstructions": "Apply one pump to fingertips and spread evenly over face before foundation.",
+        "isNew": false,
+        "benefits": [
+          "Smooths Skin: Blurs pores and imperfections.",
+          "Extends Makeup Wear: Helps foundation apply better and last longer.",
+          "Oil-Free Formula: Lightweight and comfortable for all skin types.",
+          "Universal Shade: Works for all skin tones."
+        ]
+      }
+  ]
+}
