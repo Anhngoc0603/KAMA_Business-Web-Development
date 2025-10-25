@@ -22,29 +22,29 @@
     }
 
     /* Announcement */
-   .announcement-container {
-  position: relative;
-  background-color: #e89a98;
-  color: white;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  font-family: "Times New Roman", serif;
-}
-.announcement-wrapper {
-  display: flex;
-  width: 100%;
-  transition: transform 0.8s ease-in-out;
-}
-.announcement-slide {
-  flex: 0 0 100%;
-  font-size: 13px;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-}
+    .announcement-container {
+      position: relative;
+      background-color: #e89a98;
+      color: white;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: "Times New Roman", serif;
+    }
+    .announcement-wrapper {
+      display: flex;
+      width: 100%;
+      transition: transform 0.8s ease-in-out;
+    }
+    .announcement-slide {
+      flex: 0 0 100%;
+      font-size: 20px;
+      font-weight: 400;
+      text-align: center;
+      white-space: nowrap;
+    }
 
     /* Header */
     header {
@@ -73,7 +73,7 @@
       display: none;
       background: none;
       border: none;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
       padding: 5px;
       width: 20px;
@@ -177,7 +177,7 @@
       color: #6B4C3B;
       letter-spacing: 2px;
       position: relative;
-      font-size: 16px;
+      font-size: 20px;
       transition: color 0.3s ease, border-bottom-color 0.3s ease;
     }
     .navbar a:hover {
@@ -243,7 +243,7 @@
 
     .category h3 {
       margin-bottom: 8px;
-      font-size: 16px;
+      font-size: 20px;
       color: #E6A6B0;
       border-bottom: 1px solid #FADADD;
       padding-bottom: 4px;
@@ -324,7 +324,7 @@
 
     .product-list li {
       padding: 6px 0;
-      font-size: 14px;
+      font-size: 20px;
       color: #6B4C3B;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -353,7 +353,7 @@
       padding: 12px 20px;
       border-radius: 8px;
       margin-bottom: 15px;
-      font-size: 16px;
+      font-size: 20px;
       font-family: 'Playfair Display', serif !important;
       width: 100%;
       cursor: pointer;
@@ -402,7 +402,7 @@
       padding: 9.6px 16px;
       border-radius: 12px;
       border: 1px solid #F9C6CF;
-      font-size: 16px;
+      font-size: 20px;
       font-family: 'Playfair Display', serif;
       box-sizing: border-box;
     }
@@ -485,7 +485,7 @@
 
       .shop-all::after {
         content: "▼";
-        font-size: 12px;
+        font-size: 15px;
         transition: transform 0.3s ease;
       }
 
@@ -700,7 +700,7 @@
     <button class="menu-toggler" id="menu-toggler">
       <img src="../../1 (1).Final/images/nav.png" alt="Menu Toggler">
     </button>
-    <a href="../1.homepage/html/landingpage.html"><img src="../../1 (1).Final/images/LOGO.png" alt="Logo" class="logo"></a>
+    <a href="../../1.homepage/html/landingpage.html"><img src="../../1 (1).Final/images/LOGO.png" alt="Logo" class="logo"></a>
     <nav>
       <div class="search">
         <img src="../../1 (1).Final/images/find.png" alt="Search" class="icon">
@@ -1038,51 +1038,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Announcement slide
-function startAnnouncementSlider(wrapper) { // Pass wrapper
-        let currentSlide = 0;
-        const slides = wrapper.children;
-        // Check if there are slides and more than one slide to animate
-        if (!slides || slides.length <= 1) {
-             console.log("Announcement slider needs at least 2 slides to run.");
-            return; // Exit if not enough slides
-        }
-        const slideCount = slides.length; // Number of original slides (should be 2 based on your HTML)
-        const intervalTime = 4000; // Total time per slide view (e.g., 4 seconds: 1s slide + 3s pause)
-        const transitionDuration = 800; // Animation time in ms (match CSS: 0.8s)
-        const pauseDuration = intervalTime - transitionDuration; // Time to pause after sliding
-        let slideTimeout; // Variable to hold the timeout ID
+  if (announcementWrapper) {
+    let currentSlide = 0;
+    const slides = announcementWrapper.children;
+    let slideInterval;
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slideCount; // Cycle through 0 and 1
-
-            // Apply transition style *before* changing transform
-            wrapper.style.transition = `transform ${transitionDuration / 1000}s ease-in-out`;
-            // Calculate transform based on 2 slides (0% for first, -50% for second)
-            wrapper.style.transform = `translateX(-${currentSlide * 50}%)`;
-
-            // Schedule the *next* call to nextSlide after the pause duration
-            // This happens *after* the current transition finishes implicitly within intervalTime
-            clearTimeout(slideTimeout); // Clear previous timeout before setting a new one
-            slideTimeout = setTimeout(nextSlide, intervalTime);
-        }
-
-        // Initial start: Wait for the full interval before the first slide moves
-        slideTimeout = setTimeout(nextSlide, intervalTime);
-
-        // Optional: Pause on hover
-        wrapper.addEventListener('mouseenter', () => {
-            clearTimeout(slideTimeout); // Stop the timer
-            console.log("Announcement paused on hover.");
-        });
-
-        wrapper.addEventListener('mouseleave', () => {
-             clearTimeout(slideTimeout); // Clear just in case
-            // Resume sliding after a short delay (or immediately start next interval)
-            slideTimeout = setTimeout(nextSlide, 500); // Resume quicker after mouse leaves
-            console.log("Announcement resumed after hover.");
-        });
-        console.log("Announcement slider started with explicit pause logic.");
+    function startSlide() {
+      slideInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        announcementWrapper.style.transition = 'transform 0.8s ease-in-out';
+        announcementWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+      }, 3000);
     }
+
+    startSlide();
+
+    announcementWrapper.addEventListener('mouseenter', () => {
+      clearInterval(slideInterval);
+    });
+
+    announcementWrapper.addEventListener('mouseleave', () => {
+      startSlide();
+    });
+  }
 
   // Search overlay
   if (searchIcon && searchInput) {
