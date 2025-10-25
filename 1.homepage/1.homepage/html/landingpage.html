@@ -1,0 +1,639 @@
+<html>
+<head>
+    <title>KAMA</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='../style/mainstyle.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<header>
+<!--Thanh thông báo chính của web-->
+  <div class="announcement-container">
+    <div class="announcement-wrapper" id="announcementWrapper">
+      <div class="announcement-slide">Free Shipping On Orders Over $100</div>
+      <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
+    </div>
+  </div>
+<!--Header của trang-->
+    <div class="header">
+        <button class="menu-toggler" id="menu-toggler"><img src="../images/nav.png"></button>        
+        <img src="../images/LOGO.png" alt="LOGO" class="logo">
+        <nav>
+            <div class="search">
+                <img src="../images/find.png" class="icon">
+                <input type="search" placeholder="Search for...">
+            </div>
+            <a href="#"><img src="../images/account.png"></a>
+            <a href="#"><img src="../images/contact.png"></a>
+            <a href="#"><img src="../images/shopping.png"></a>
+        </nav>
+    </div>
+ <!--Menu điều hướng đến các trang sản phẩm-->
+    <nav class="navbar" id="navbar">
+            <a href="#">NEW</a>
+            <a href="#">COLLECTIONS</a>
+            <a href="#">BEST SELLERS</a>
+            <a href="#">SALE</a>
+            <a href="#" class="shop-all">CATEGORIES</a>
+ <!--              <div class="menu-categories">
+                    <div class="category">
+                        <h3><a href="#">FACE</a></h3>
+                        <ul>
+                            <li>Blush</li>
+                            <li>Primer</li>
+                            <li>Concealer</li>
+                            <li>Finish Powder</li>
+                            <li>Contour & Highlighter</li>
+                            <li>Makeup Cleansing Balm</li>
+                            <li>Shop All Face</li>
+                        </ul>
+                    </div>
+                    <div class="category">
+                        <h3><a href="#">EYES</a></h3>
+                        <ul>
+                            <li>Makeup Palette</li>
+                            <li>Eyebrow Enhancer</li>
+                            <li>Mascara</li>
+                            <li>Eyeliner</li>
+                            <li>Shop All Eyes</li>
+                        </ul>
+                    </div>
+                    <div class="category">
+                        <h3><a href="#">LIPS</a></h3>
+                        <ul>
+                            <li>Lip Cream</li>
+                            <li>Lipstick</li>
+                            <li>Lip Gloss</li>
+                            <li>Lip Lacquer</li>
+                            <li>Lip Glaze</li>
+                            <li>Lip Jelly</li>
+                            <li>Lip Mask</li>
+                            <li>Shop All Lips</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+--> 
+    </nav>
+</header>
+
+<!--slide bự nhất để giới thiệu-->
+    <section class="hero">
+    <div class="slide active">
+        <img src="../images/banner4.png" alt="">
+        <div class="hero-content">
+            <h2>Premium Milk Tea Experience</h2>
+            <p>Discover our signature blend of traditional tea with modern flavors.</p>
+            <button class="btn">Customize Your Tea</button>
+        </div>
+    </div>
+    <div class="slide active">
+        <img src="../images/banner5.jpg" alt="">
+        <div class="hero-content">
+            <h2>Sustainable Ingredients</h2>
+            <p>Made with organic tea leaves and locally-sourced ingredients.</p>
+            <button class="btn">Explore Menu</button>
+        </div>
+    </div>
+    <div class="dots"></div>
+    </section>
+<!--NEWCOLLECTION1-->
+    <section class="new-products">
+    <div class="new-left">
+        <div class="header-new">
+            <p>DISCOVER WHAT’S NEW 
+            <br/><span class="header2">The Sweetie Bear <br>Collection</span>
+            <button type="button" class="viewallnew" id="viewallnew">VIEW FULL COLLECTION</button></p>
+        </div>
+        <div class="slider-new">
+            <div class="new-wrapper" id="newwrapper">
+                <div class="newproduct">
+                <img src="../images/sp5.jpg" alt="Sweetie Bear Essential Set">
+                <p>Sweetie Bear Essential Set</p>
+                <div class="price-new">$89.00</div>
+                </div>
+                <div class="newproduct">
+                <img src="../images/sp6.webp" alt="Patisserie Charm Set">
+                <p>Patisserie Charm Set</p>
+                <div class="price-new">$89.00</div>
+                </div>
+                <div class="newproduct">
+                <img src="../images/sp2.webp" alt="Creamy Finish Set">
+                <p>Creamy Finish Set</p>
+                <div class="price-new">$89.00</div>
+                </div>
+            </div>
+            <!-- Nút điều hướng -->
+            <button class="navigation left" id="prevnew"><img src="../images/prev.png" alt="prev"></button>
+            <button class="navigation right" id="nextnew"><img src="../images/next.png" alt="next"></button>
+        </div>
+    </div>
+    <div class="new-visual">
+        <img src="../images/sp2.webp" alt="Sweetie Bear Decor">
+    </div>
+    </section>
+<!--BEST SELLERS-->
+    <section class="Bestsellers">
+    <p class="title">Shop Our Bestsellers</p>
+    <div class="sliderBestsellers"> 
+        <div class="wrapperBestseller" id="bestseller">
+            <!-- 10 sản phẩm -->
+            <!-- Product 1 -->
+            <!-- Product 1 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="../images/sp1.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="infos">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="action">
+                        <span class="price">$25.50</span>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="../images/sp1.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="infos">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="action">
+                        <span class="price">$25.50</span>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="../images/sp1.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="infos">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="action">
+                        <span class="price">$25.50</span>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 4 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="../images/sp1.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="infos">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="action">
+                        <span class="price">$25.50</span>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div> 
+            <!-- Product 5 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="../images/sp1.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="infos">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="action">
+                        <span class="price">$25.50</span>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 6 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="../images/sp1.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="infos">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="action">
+                        <span class="price">$25.50</span>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <!--Navigation-->
+        <button class="navigation left" id="preBestsellers"><img src="../images/prev.png"></button>
+        <button class="navigation right" id="nextBestsellers"><img src="../images/next.png"></button>
+        <button type="button" name="viewallBestsellers" id="viewallBestsellers" class="viewall">VIEW ALL</button>
+    </div>
+    </section>
+<!--NEWCOLLECTION2-->
+    <section class="new-products2">
+    <div class="new-visual">
+        <img src="../images/sp2.webp" alt="Sweetie Bear Decor">
+    </div>
+    <div class="new-right">
+        <div class="header-new">
+            <p>DISCOVER WHAT’S NEW 
+            <br/><span class="header2">The Sweetie Bear <br>Collection</span>
+            <button type="button" class="viewallnew" id="viewallnew">VIEW FULL COLLECTION</button></p>
+        </div>
+        <div class="slider-new">
+            <div class="new-wrapper" id="newwrapper2">
+                <div class="newproduct">
+                    <img src="../images/sp5.jpg" alt="Sweetie Bear Essential Set">
+                    <p>Sweetie Bear Essential Set</p>
+                    <div class="price-new">$89.00</div>
+                </div>
+                <div class="newproduct">
+                    <img src="../images/sp6.webp" alt="Patisserie Charm Set">
+                    <p>Patisserie Charm Set</p>
+                    <div class="price-new">$89.00</div>
+                </div>
+                <div class="newproduct">
+                    <img src="../images/sp2.webp" alt="Creamy Finish Set">
+                    <p>Creamy Finish Set</p>
+                    <div class="price-new">$89.00</div>
+                </div>
+            </div>
+            <!-- Nút điều hướng -->
+            <button class="navigation left" id="prevnew2"><img src="../images/prev.png" alt="prev"></button>
+            <button class="navigation right" id="nextnew2"><img src="../images/next.png" alt="next"></button>
+        </div>
+    </div>
+    </section>
+<!--FLASH SALE-->
+    <section class="product-slider">
+    <p class="title"><span style="font-size: 32px; color: var(--branch-brown)">Flash sale</span><br>Our collection is refreshed regularly. Secure your favorites while they last.</p>
+    <div class="slider-container"> 
+        <div class="slider-wrapper" id="flashsale">
+            <!-- 10 sản phẩm -->
+            <!-- Product 1 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="info">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="actions">
+                        <div class="allprice">
+                            <p class="oldprice">$26.50</p><span class="price">$25.50</span>
+                        </div>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="info">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="actions">
+                        <div class="allprice">
+                            <p class="oldprice">$26.50</p><span class="price">$25.50</span>
+                        </div>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="info">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="actions">
+                        <div class="allprice">
+                            <p class="oldprice">$26.50</p><span class="price">$25.50</span>
+                        </div>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 4 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="info">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="actions">
+                        <div class="allprice">
+                            <p class="oldprice">$26.50</p><span class="price">$25.50</span>
+                        </div>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div> 
+            <!-- Product 5 -->
+            <div class="product-card"
+                data-category="Face"
+                data-brand="Dior"
+                data-price="25.50"
+                data-rating="4.5">
+                <div class="image-wrap" style="position:relative; height:300px;">
+                    <img src="../images/dior.jpg" class="product-img" alt="Product 1">
+                    <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="Product 1 (hover)">
+                </div>
+
+                <div class="info">
+                        <h3>Product Name 2</h3>
+                        <p>Brand Name</p>
+                        <p class="meta">Ingredients, Weight, Shade</p>
+
+                    <div class="actions">
+                        <div class="allprice">
+                            <p class="oldprice">$26.50</p><span class="price">$25.50</span>
+                        </div>
+                        <span class="rating">
+                        <img src="../images/Star.png" class="star" alt="">
+                        4.5
+                        </span>
+                    </div>
+                    <div class="buttons">
+                        <a href="#" class="btn-outline">View Detail</a>
+                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Navigation-->
+        <button class="navigation left" id="prev"><img src="../images/prev.png"></button>
+        <button class="navigation right" id="next"><img src="../images/next.png"></button>
+        <button type="button" name="viewallflashsale" id="viewallflashsale" class="viewall">VIEW ALL</button>
+    </div>
+    </section>
+<!--REWARD-->
+    <section class="reward-section">
+        <div class="reward-text">
+            <p class="subtitle">JOIN WITH 100 POINTS</p>
+            <h2>Get Rewarded While You Shop</h2>
+            <button type="button">JOIN NOW</button>
+        </div>
+        <div class="reward-image">
+            <img src="../images/sp2.webp" alt="Celebration">
+        </div>
+    </section>
+<!--Explore Previous Collections
+    <section class="Prevcollections">
+        <h2>Explore Previous Collections</h2>
+        <div class="grid">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1708572727896-117b5ea25a86" alt="">
+                <div class="card-content">
+                    <h3>Matcha Dream</h3>
+                    <p class="price">$5.90</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1529474944862-bf4949bd2f1a" alt="">
+                <div class="card-content">
+                    <h3>Brown Sugar Bliss</h3>
+                    <p class="price">$6.50</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1603898579713-fd8250f9f1b4" alt="">
+                <div class="card-content">
+                    <h3>Tropical Passion</h3>
+                    <p class="price">$5.20</p>
+                </div>
+            </div>
+        </div>
+    </section>-->
+    <!--Banner-->
+    <div class="banner">
+        <img src="../images/banner.png">
+    </div>
+    <!--Footer-->
+    <footer class="footer">
+            <div class="footer-newsletter">
+                <p>Sign up for updates:</p>
+                <p>Be the first to know about new collections and exclusive offers!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter email here">
+                    <button type="submit"><i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+
+            <div class="footer-main">
+                <div class="footer-section">
+                    <h3>ABOUT KAMA </h3>
+                    <ul>
+                        <li><a href="#">Loyalty Program</a></li>
+                        <li><a href="#">Brand Story</a></li>
+                        <li><a href="#">Affiliate Program</a></li>
+                        <li><a href="#">Student Discount</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Become a Retailer</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>CUSTOMER CARE</h3>
+                    <ul>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Refund & Return Policy</a></li>
+                        <li><a href="#">Promotion Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms and Conditions</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>CUSTOMER SERVICE</h3>
+                    <ul>
+                        <li><a href="#">Track Your Order</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Submit a Fake</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section footer-social">
+                    <h3>FOLLOW US</h3>
+                    <div class="social-icons">
+                        <button type="button" aria-label="Facebook"><i class="fab fa-facebook-f"></i></button>
+                        <button type="button" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
+                        <button type="button" aria-label="TikTok"><i class="fab fa-tiktok"></i></button>
+                        <button type="button" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kama. All rights reserved.</p>
+                <p>United States (USD $) <i class="fas fa-chevron-down"></i></p>
+            </div>
+        </footer>
+<script src="../js/script.js"></script>
+</body>
+</html>
