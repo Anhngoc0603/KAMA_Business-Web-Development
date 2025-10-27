@@ -7,12 +7,12 @@
 <body>
 <header>
 <!--Thanh thông báo chính của web-->
-  <div class="announcement-container">
-    <div class="announcement-wrapper" id="announcementWrapper">
-      <div class="announcement-slide">Free Shipping On Orders Over $100</div>
-      <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
+    <div class="announcement-container">
+        <div class="announcement-wrapper" id="announcementWrapper">
+        <div class="announcement-slide">Free Shipping On Orders Over $100</div>
+        <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
+        </div>
     </div>
-  </div>
 <!--Header của trang-->
     <div class="header">
         <button class="menu-toggler" id="menu-toggler"><img src="../images/nav.png"></button>        
@@ -22,9 +22,10 @@
                 <img src="../images/find.png" class="icon">
                 <input type="search" placeholder="Search for...">
             </div>
-            <a href="#"><img src="../images/account.png"></a>
-            <a href="#"><img src="../images/contact.png"></a>
-            <a href="#"><img src="../images/shopping.png"></a>
+            
+            <a href="#" class="acc-icon"><img src="../images/account.png"></a>
+            <a href="#" class="contact-icon"><img src="../images/contact.png"></a>
+            <a href="#" class="cart-icon"><img src="../images/shopping.png"></a>
         </nav>
     </div>
  <!--Menu điều hướng đến các trang sản phẩm-->
@@ -34,48 +35,65 @@
             <a href="#">BEST SELLERS</a>
             <a href="#">SALE</a>
             <a href="#" class="shop-all">CATEGORIES</a>
- <!--              <div class="menu-categories">
-                    <div class="category">
-                        <h3><a href="#">FACE</a></h3>
-                        <ul>
+            <div class="menu-categories">
+                <div class="categories-wrapper">
+                    <div class="category" data-category="Face">
+                        <div class="category-header">
+                            <h3><a href="#">FACE</a></h3>
+                            <button class="next-btn"><img src="../images/next-arrow.png" alt="Next"></button>
+                        </div>
+                        <ul class="product-list">
                             <li>Blush</li>
                             <li>Primer</li>
                             <li>Concealer</li>
                             <li>Finish Powder</li>
                             <li>Contour & Highlighter</li>
                             <li>Makeup Cleansing Balm</li>
-                            <li>Shop All Face</li>
+                            <li class="shop-all-link">Shop All Face</li>
                         </ul>
                     </div>
-                    <div class="category">
-                        <h3><a href="#">EYES</a></h3>
-                        <ul>
-                            <li>Makeup Palette</li>
-                            <li>Eyebrow Enhancer</li>
-                            <li>Mascara</li>
-                            <li>Eyeliner</li>
-                            <li>Shop All Eyes</li>
-                        </ul>
+
+                    <div class="category" data-category="Eyes">
+                        <div class="category-header">
+                            <h3><a href="#">EYES</a></h3>
+                            <button class="next-btn"><img src="../images/next-arrow.png" alt="Next"></button>
+                        </div>
+                    <ul class="product-list">
+                        <li>Makeup Palette</li>
+                        <li>Eyebrow Enhancer</li>
+                        <li>Mascara</li>
+                        <li>Eyeliner</li>
+                        <li class="shop-all-link">Shop All Eyes</li>
+                    </ul>
                     </div>
-                    <div class="category">
-                        <h3><a href="#">LIPS</a></h3>
-                        <ul>
-                            <li>Lip Cream</li>
-                            <li>Lipstick</li>
-                            <li>Lip Gloss</li>
-                            <li>Lip Lacquer</li>
-                            <li>Lip Glaze</li>
-                            <li>Lip Jelly</li>
-                            <li>Lip Mask</li>
-                            <li>Shop All Lips</li>
-                        </ul>
+                    
+                    <div class="category" data-category="Lips">
+                        <div class="category-header">
+                            <h3><a href="#">LIPS</a></h3>
+                            <button class="next-btn"><img src="../images/next-arrow.png" alt="Next"></button>
+                        </div>
+                    <ul class="product-list">
+                        <li>Lip Cream</li>
+                        <li>Lipstick</li>
+                        <li>Lip Gloss</li>
+                        <li>Lip Lacquer</li>
+                        <li>Lip Glaze</li>
+                        <li>Lip Jelly</li>
+                        <li>Lip Mask</li>
+                        <li class="shop-all-link">Shop All Lips</li>
+                    </ul>
                     </div>
                 </div>
-            </li>
---> 
+            </div>
     </nav>
 </header>
-
+<div class="search-overlay" id="searchOverlay">
+    <div class="search-wrapper">
+        <img src="../images/find.png" class="icon">
+        <input type="search" placeholder="Search for..." autofocus>
+        <button class="close-search"><img src="../images/close.png"></button>
+    </div>
+</div>
 <!--slide bự nhất để giới thiệu-->
     <section class="hero">
     <div class="slide active">
