@@ -1,66 +1,102 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AloTra — Contact</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" />
+  <title>KAMA — Contact</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <main class="page">
-    <div class="container">
-      <!-- Header -->
-      <section id="header" class="header text-center">
-        <h1 class="title gradient-text">Get in Touch</h1>
-        <p class="subtitle">We'd love to hear from you! Reach out with questions, feedback, or just to say hello</p>
-      </section>
+  <!-- Announcement Bar -->
+  <div class="announcement-container">
+    <div class="announcement-wrapper" id="announcementWrapper">
+      <div class="announcement-slide">Free Shipping On Orders Over $100</div>
+      <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
+    </div>
+  </div>
 
+  <!-- Header -->
+  <header>
+    <div class="header">
+      <button class="menu-toggler" id="menu-toggler"><img src="../images/nav.png"></button>        
+      <img src="../images/LOGO.png" alt="LOGO" class="logo">
+      <nav>
+        <div class="search">
+          <img src="../images/find.png" class="icon">
+          <input type="search" placeholder="Search for...">
+        </div>
+        <a href="#"><img src="../images/account.png"></a>
+        <a href="#"><img src="../images/contact.png"></a>
+        <a href="#"><img src="../images/shopping.png"></a>
+      </nav>
+    </div>
+    <nav class="navbar" id="navbar">
+      <a href="#">NEW</a>
+      <a href="#">COLLECTIONS</a>
+      <a href="#">BEST SELLERS</a>
+      <a href="#">SALE</a>
+      <a href="#">SHOP ALL</a>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-text">Get Free Gifts</div>
+  </div>
+
+  <main class="page">
+    <!-- Hero Banner -->
+    <section class="contact-hero">
+      <h1 class="hero-title">Contact Us</h1>
+      <p class="hero-subtitle">We'd love to hear from you! Get in touch with us for any questions, feedback, or just to say hello.</p>
+    </section>
+
+    <div class="container">
       <!-- Contact Cards -->
       <section class="cards" id="contactCards">
         <article class="card" data-delay="0">
-          <div class="icon gradient-1">📍</div>
-          <h3>Visit Us</h3>
+          <div class="icon">📍</div>
+          <h3>Address</h3>
           <p class="muted small">123 Tea Street, Beverage District</p>
-          <p class="muted small">City Center, TC 12345</p>
+          <p class="muted small">Downtown City, ST 12345</p>
         </article>
 
         <article class="card" data-delay="1">
-          <div class="icon gradient-2">📞</div>
+          <div class="icon">📞</div>
           <h3>Call Us</h3>
           <p class="muted small">+1 (555) 123-4567</p>
           <p class="muted small">Mon-Fri: 9AM-8PM</p>
         </article>
 
         <article class="card" data-delay="2">
-          <div class="icon gradient-3">✉️</div>
-          <h3>Email Us</h3>
-          <p class="muted small">hello@alotra.com</p>
-          <p class="muted small">support@alotra.com</p>
+          <div class="icon">📧</div>
+          <h3>Email</h3>
+          <p class="muted small">hello@kama.com</p>
+          <p class="muted small">support@kama.com</p>
         </article>
 
         <article class="card" data-delay="3">
-          <div class="icon gradient-4">⏰</div>
-          <h3>Store Hours</h3>
-          <p class="muted small">Mon-Thu: 7AM-10PM</p>
-          <p class="muted small">Fri-Sun: 7AM-11PM</p>
+          <div class="icon">⏰</div>
+          <h3>Hours</h3>
+          <p class="muted small">Mon-Fri: 7AM-10PM</p>
+          <p class="muted small">Sat-Sun: 7AM-11PM</p>
         </article>
 
         <!-- Chat Panel as a Card -->
         <article class="card chat-panel" id="chatPanel" data-delay="4">
-          <div class="icon gradient-5">🤖</div>
-          <h3>Live Chat Support</h3>
+          <div class="icon">💬</div>
+          <h3>Live Chat</h3>
           <div class="chat-body">
             <div class="msg bot">
               <div class="avatar">🤖</div>
-              <div class="bubble">Hi! I'm AloBot. How can I help you today? 😊</div>
+              <div class="bubble">Hi there! How can we help you today? 😊</div>
             </div>
           </div>
           <div class="chat-actions">
             <button class="btn secondary" id="openChatBtn">
               <span class="icon">💬</span>
-              Start Live Chat
+              Start Chat
             </button>
           </div>
         </article>
@@ -71,12 +107,12 @@
         <!-- Left: Form -->
         <div class="left" id="formWrap">
           <div class="panel">
-            <h2>Send us a Message</h2>
+            <h2>Send us a message</h2>
             <form id="contactForm" class="form">
               <div class="row">
                 <div class="col">
                   <label class="label">Name</label>
-                  <input name="name" type="text" placeholder="Your full name" required />
+                  <input name="name" type="text" placeholder="Full name" required />
                 </div>
                 <div class="col">
                   <label class="label">Email</label>
@@ -86,7 +122,7 @@
 
               <div class="field">
                 <label class="label">Subject</label>
-                <input name="subject" type="text" placeholder="What's this about?" required />
+                <input name="subject" type="text" placeholder="What is this about?" required />
               </div>
 
               <div class="field">
@@ -94,10 +130,7 @@
                 <textarea name="message" rows="6" placeholder="Tell us more..." required></textarea>
               </div>
 
-              <button type="submit" class="btn primary">
-                <span class="icon">📤</span>
-                <span>Send Message</span>
-              </button>
+              <button type="submit" class="btn primary">SEND MESSAGE</button>
             </form>
           </div>
         </div>
@@ -106,7 +139,7 @@
         <div class="right">
           <!-- Map Panel -->
           <div class="panel" id="mapPanel">
-            <h2>Find Our Stores</h2>
+            <h2>Find our store</h2>
             <div class="map-mock">
               <div class="map-overlay">
                 <div class="dot dot-1"></div>
@@ -114,7 +147,7 @@
               </div>
               <div class="map-center">
                 <div class="map-icon">📍</div>
-                <p class="muted small">Interactive Map</p>
+                <p class="muted small">Interactive map</p>
               </div>
             </div>
             <div class="locations" id="locationsList"></div>
@@ -125,7 +158,7 @@
             <h2>Frequently Asked Questions</h2>
             <div class="faq-list" id="faqList"></div>
             <div class="center">
-              <button class="btn outline" id="viewMoreFaq">View More FAQs</button>
+              <button class="btn outline" id="viewMoreFaq">View More FAQ</button>
             </div>
           </div>
         </div>
@@ -143,21 +176,21 @@
         <div class="chat-top-left">
           <div class="avatar white">🤖</div>
           <div>
-            <div class="chat-name">AloBot</div>
-            <div class="muted small">Online now</div>
+            <div class="chat-name">KAMA Support</div>
+            <div class="muted small">Online</div>
           </div>
         </div>
         <button class="close" id="closeChatModal">×</button>
       </div>
 
       <div class="chat-content">
-        <div class="welcome bubble">Welcome! I'm here to help with any questions about our drinks, locations, or services. What would you like to know?</div>
+        <div class="welcome bubble">Welcome! I'm here to help you with any questions about our products, locations, or services. What can I help you with?</div>
 
         <div class="quick-options">
-          <button class="quick">Store locations</button>
-          <button class="quick">Menu recommendations</button>
-          <button class="quick">Nutritional info</button>
-          <button class="quick">Order status</button>
+          <button class="quick">📍 Store locations</button>
+          <button class="quick">🛍️ Product recommendations</button>
+          <button class="quick">📊 Nutritional info</button>
+          <button class="quick">📦 Order status</button>
         </div>
       </div>
 
@@ -168,179 +201,65 @@
     </div>
   </div>
 
-  <script src="./script.js"></script>
-</body>
-=======
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AloTra — Contact</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" />
-  <link rel="stylesheet" href="./style.css" />
-</head>
-<body>
-  <main class="page">
-    <div class="container">
-      <!-- Header -->
-      <section id="header" class="header text-center">
-        <h1 class="title gradient-text">Get in Touch</h1>
-        <p class="subtitle">We'd love to hear from you! Reach out with questions, feedback, or just to say hello</p>
-      </section>
-
-      <!-- Contact Cards -->
-      <section class="cards" id="contactCards">
-        <article class="card" data-delay="0">
-          <div class="icon gradient-1">📍</div>
-          <h3>Visit Us</h3>
-          <p class="muted small">123 Tea Street, Beverage District</p>
-          <p class="muted small">City Center, TC 12345</p>
-        </article>
-
-        <article class="card" data-delay="1">
-          <div class="icon gradient-2">📞</div>
-          <h3>Call Us</h3>
-          <p class="muted small">+1 (555) 123-4567</p>
-          <p class="muted small">Mon-Fri: 9AM-8PM</p>
-        </article>
-
-        <article class="card" data-delay="2">
-          <div class="icon gradient-3">✉️</div>
-          <h3>Email Us</h3>
-          <p class="muted small">hello@alotra.com</p>
-          <p class="muted small">support@alotra.com</p>
-        </article>
-
-        <article class="card" data-delay="3">
-          <div class="icon gradient-4">⏰</div>
-          <h3>Store Hours</h3>
-          <p class="muted small">Mon-Thu: 7AM-10PM</p>
-          <p class="muted small">Fri-Sun: 7AM-11PM</p>
-        </article>
-
-        <!-- Chat Panel as a Card -->
-        <article class="card chat-panel" id="chatPanel" data-delay="4">
-          <div class="icon gradient-5">🤖</div>
-          <h3>Live Chat Support</h3>
-          <div class="chat-body">
-            <div class="msg bot">
-              <div class="avatar">🤖</div>
-              <div class="bubble">Hi! I'm AloBot. How can I help you today? 😊</div>
-            </div>
-          </div>
-          <div class="chat-actions">
-            <button class="btn secondary" id="openChatBtn">
-              <span class="icon">💬</span>
-              Start Live Chat
-            </button>
-          </div>
-        </article>
-      </section>
-
-      <!-- Main two columns -->
-      <section class="two-col">
-        <!-- Left: Form -->
-        <div class="left" id="formWrap">
-          <div class="panel">
-            <h2>Send us a Message</h2>
-            <form id="contactForm" class="form">
-              <div class="row">
-                <div class="col">
-                  <label class="label">Name</label>
-                  <input name="name" type="text" placeholder="Your full name" required />
-                </div>
-                <div class="col">
-                  <label class="label">Email</label>
-                  <input name="email" type="email" placeholder="your@email.com" required />
-                </div>
-              </div>
-
-              <div class="field">
-                <label class="label">Subject</label>
-                <input name="subject" type="text" placeholder="What's this about?" required />
-              </div>
-
-              <div class="field">
-                <label class="label">Message</label>
-                <textarea name="message" rows="6" placeholder="Tell us more..." required></textarea>
-              </div>
-
-              <button type="submit" class="btn primary">
-                <span class="icon">📤</span>
-                <span>Send Message</span>
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- Right: Map + FAQ -->
-        <div class="right">
-          <!-- Map Panel -->
-          <div class="panel" id="mapPanel">
-            <h2>Find Our Stores</h2>
-            <div class="map-mock">
-              <div class="map-overlay">
-                <div class="dot dot-1"></div>
-                <div class="dot dot-2"></div>
-              </div>
-              <div class="map-center">
-                <div class="map-icon">📍</div>
-                <p class="muted small">Interactive Map</p>
-              </div>
-            </div>
-            <div class="locations" id="locationsList"></div>
-          </div>
-
-          <!-- FAQ Panel -->
-          <div class="panel" id="faqPanel">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-list" id="faqList"></div>
-            <div class="center">
-              <button class="btn outline" id="viewMoreFaq">View More FAQs</button>
-            </div>
-          </div>
-        </div>
-      </section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-newsletter">
+      <p>Sign up for updates:</p>
+      <p>Be the first to know about new collections and exclusive offers!</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter email here">
+        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+      </form>
     </div>
-  </main>
 
-  <!-- Floating Chat Button -->
-  <button id="floatingChat" class="floating" aria-label="Open chat">💬</button>
-
-  <!-- Chat Modal -->
-  <div id="chatModal" class="chat-modal hidden" role="dialog" aria-modal="true">
-    <div class="chat-window">
-      <div class="chat-top">
-        <div class="chat-top-left">
-          <div class="avatar white">🤖</div>
-          <div>
-            <div class="chat-name">AloBot</div>
-            <div class="muted small">Online now</div>
-          </div>
-        </div>
-        <button class="close" id="closeChatModal">×</button>
+    <div class="footer-main">
+      <div class="footer-section">
+        <h3>ABOUT KAMA</h3>
+        <ul>
+          <li><a href="#">Loyalty Program</a></li>
+          <li><a href="#">Brand Story</a></li>
+          <li><a href="#">Affiliate Program</a></li>
+          <li><a href="#">Student Discount</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
       </div>
 
-      <div class="chat-content">
-        <div class="welcome bubble">Welcome! I'm here to help with any questions about our drinks, locations, or services. What would you like to know?</div>
-
-        <div class="quick-options">
-          <button class="quick">Store locations</button>
-          <button class="quick">Menu recommendations</button>
-          <button class="quick">Nutritional info</button>
-          <button class="quick">Order status</button>
-        </div>
+      <div class="footer-section">
+        <h3>CUSTOMER CARE</h3>
+        <ul>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Refund & Return Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms and Conditions</a></li>
+        </ul>
       </div>
 
-      <div class="chat-input">
-        <input id="chatInput" placeholder="Type your message..." />
-        <button id="sendChat" class="btn small"><span>📤</span></button>
+      <div class="footer-section">
+        <h3>CUSTOMER SERVICE</h3>
+        <ul>
+          <li><a href="#">Track Your Order</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Submit Feedback</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section footer-social">
+        <h3>FOLLOW US</h3>
+        <div class="social-icons">
+          <button type="button" aria-label="Facebook"><i class="fab fa-facebook-f"></i></button>
+          <button type="button" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
+          <button type="button" aria-label="TikTok"><i class="fab fa-tiktok"></i></button>
+          <button type="button" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
+        </div>
       </div>
     </div>
-  </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 KAMA. All rights reserved.</p>
+    </div>
+  </footer>
 
   <script src="./script.js"></script>
 </body>
->>>>>>> c520dcef0b06d211d50cb50060c0d90b6af6e350
 </html>
