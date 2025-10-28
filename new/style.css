@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 /* Fireworks Animation (giữ nguyên) */
->>>>>>> ed4d9c8af07e4ee1615cd64dbf06c9a157043b66
 .fireworks-container {
   position: fixed;
   top: 0;
@@ -464,11 +461,8 @@
   color: #6B4C3B;
 }
 .info p {
-<<<<<<< HEAD
   font-size: 16px;
-=======
   font-size: 14.4px;
->>>>>>> ed4d9c8af07e4ee1615cd64dbf06c9a157043b66
   color: #8c7b7b;
   margin: 4.8px 0;
 }
