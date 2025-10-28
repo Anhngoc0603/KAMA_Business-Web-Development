@@ -1,200 +1,387 @@
 {
-  "products": [
-    {
-      "id": 1,
-      "name": "Dior Forever Foundation",
-      "brand": "Dior",
-      "price": 68.00,
-      "originalPrice": 75.00,
-      "rating": 4.9,
-      "category": "Face",
-      "subtype": "Foundation",
-      "images": [
-        "../../new/images/dior_foundation/figure-1655132157621.png",
-        "../../new/images/dior_foundation/bang-mau-Diorskin-Forever.png",
-        "../../new/images/dior_foundation/kem-nen-diorskin-forever-undercover-foundation.png"
-      ],
-      "description": "A long-wear, high-perfection foundation that enhances your natural glow.",
-      "detailedDescription": "Experience 24 hours* of flawless wear and radiant perfection with the iconic Dior Forever Foundation. Newly arrived on October 18, 2025, this transfer-proof formula creates a naturally matte, shine-free finish while visibly improving skin quality day after day. Its breathable texture allows the skin to feel comfortable and hydrated, thanks to an enriched skincare base. Perfect for resisting heat, humidity, and life's daily stresses, it ensures your complexion remains impeccable from morning to night. (*Instrumental test on 20 subjects).",
-      "ingredients": "Aqua (Water), Methyl Trimethicone, Isododecane, Alcohol, Dimethicone, PEG-9 Polydimethylsiloxyethyl Dimethicone, Silica, Acrylates/Dimethicone Copolymer, Diphenyl Dimethicone/Vinyl Diphenyl Dimethicone/Silsesquioxane Crosspolymer...",
-      "weight": "30ml / 1.0 FL.OZ",
-      "shades": [
-        {"value": "0W", "label": "0W Warm"},
-        {"value": "1N", "label": "1N Neutral"},
-        {"value": "1CR", "label": "1CR Cool Rosy"},
-        {"value": "2N", "label": "2N Neutral"},
-        {"value": "3N", "label": "3N Neutral"}
-      ],
-      "launchDate": "2023-03-15", 
-      "usageInstructions": "Begin by patting a small amount onto zones that require correction, then blend outwards with smoothing strokes using fingertips, a foundation brush, or a damp sponge.",
-      "isNew": true, 
-      "ingredientsInfo": "Formulated with an impressive 86% skincare base, Dior Forever is infused with carefully selected floral extracts for visible skin improvement. It features Iris Extract for antioxidant protection, Wild Pansy Extract for boosting hydration circulation, Rose Extract for refining skin texture, and Nasturtium Extract for boosting radiance.",
-      "ingredientList": [
-        "Iris Extract: Known for its protective properties against oxidative stress.",
-        "Wild Pansy Extract: Helps maintain skin hydration by promoting aquaporin circulation.",
-        "Rose Extract: Contributes to refining the appearance of pores and overall skin texture.",
-        "Nasturtium Extract: Rich in Vitamin C, known to boost skin radiance and vitality.",
-        "Mineral Pigments: Provide adaptable, long-lasting color without heaviness.",
-        "Hydrating Agents (Glycerin, etc.): Ensure continuous comfort and prevent dryness."
-      ],
-      "textureInfo": "A weightless, velvety fluid texture that melts seamlessly into the skin, creating a second-skin feel. It sets to a luminous natural matte finish that doesn't feel tight or look cakey.",
-      "shadeInfo": "Dior Forever Foundation boasts a comprehensive shade range developed to match diverse skin tones and undertones precisely. Find your perfect match based on intensity (lightest to deepest) and undertone.",
-      "shadeList": [
-        "Neutral (N): For skin with balanced pink and golden tones.",
-        "Warm (W): For skin with golden or olive tones that tans easily.",
-        "Cool Rosy (CR): For skin with visible pink tones that burns easily."
-      ],
-      "benefits": [
-        "Long-Lasting Perfection: Delivers up to 24 hours of transfer-proof, high-perfection wear with a natural matte finish.",
-        "Skincare Infused: 86% skincare base visibly improves skin clarity, hydration, and pore appearance over time.",
-        "Breathable Comfort: Lightweight formula allows skin to breathe while resisting heat, sweat, and humidity.",
-        "Flawless Buildable Coverage: Offers medium-to-full coverage that effectively conceals imperfections without masking skin's natural texture.",
-        "Radiance Enhancing: Floral extracts work to boost the skin's natural luminosity day after day."
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Chanel Les Beiges Blush",
-      "brand": "Chanel",
-      "price": 52.00,
-      "originalPrice": 58.00,
-      "rating": 4.8,
-      "category": "Face",
-      "subtype": "Blush",
-      "images": [
-        "../../new/images/ma-hong-dang-kem-chanel-les-beiges-water-fresh-blush-tone-light-peach-15ml-2-jpg-1686210006-08062023144006.webp",
-         "https://via.placeholder.com/300x300/FADADD/6B4C3B?text=Chanel+Blush+2",
-         "https://via.placeholder.com/300x300/FADADD/6B4C3B?text=Chanel+Blush+3"
-      ],
-      "description": "Soft rosy blush that gives a healthy radiance with every sweep.",
-      "detailedDescription": "Discover the innovative Chanel Les Beiges Water-Fresh Blush. This ultra-lightweight formula features patented microfluidic technology, encapsulating pure pigment droplets within a hydrating gel serum. Upon application, it bursts to deliver a sheer wash of color, mimicking a natural, pinched-cheek flush with a comfortable, barely-there feel.",
-      "ingredients": "Aqua (Water), Hydrogenated Polyisobutene, Glycerin, Butylene Glycol, Ethylhexyl Palmitate, Caprylic/Capric Triglyceride...", 
-      "shades": [
-        {"value": "light-peach", "label": "Light Peach"},
-        {"value": "warm-pink", "label": "Warm Pink"}, 
-        {"value": "intense-coral", "label": "Intense Coral"} 
-      ],
-      "launchDate": "2022-11-10",
-      "usageInstructions": "Dispense one pump onto the back of your hand. Gently tap onto the apples of the cheeks using fingertips or the included brush, blending outwards for a natural effect. Layer for more intensity.",
-      "isNew": true,
-       "ingredientsInfo": "Composed of approximately 75% water, the formula provides an immediate refreshing sensation and lasting hydration. Tamarind seed extract contributes to skin comfort.",
-       "ingredientList": [
-           "Microfluidic Pigments: Pure colorants suspended for seamless blending.",
-           "Hydrating Gel Base: Provides moisture and a refreshing feel.",
-           "Tamarind Seed Extract: Known for its hydrating and skin-comforting properties.",
-           "Film-Forming Polymers: Help ensure lasting wear."
-       ],
-       "textureInfo": "An exceptionally lightweight, water-based gel serum with visible pigment micro-droplets. Feels cooling and refreshing on the skin, blending effortlessly without texture.",
-       "shadeInfo": "Available in subtle, luminous shades designed to give a natural 'bonne mine' effect, enhancing the complexion's healthy glow.",
-       "shadeList": [
-           "Light Peach: A soft, warm peachy tone.",
-           "Warm Pink: A universally flattering delicate pink.",
-           "Intense Coral: A vibrant coral for a bolder flush."
-       ],
-      "benefits": [
-        "Instant Healthy Glow: Micro-droplets provide a sheer, natural-looking flush like a 'just pinched' effect.",
-        "Ultra-Lightweight Comfort: Water-based serum feels weightless and refreshing on the skin.",
-        "Hydrating Formula: Composed mainly of water, it offers lasting hydration and comfort.",
-        "Seamless Blending: Pigments merge effortlessly with the skin for an undetectable finish.",
-        "Buildable Intensity: Easily layerable from a subtle hint to a more noticeable pop of color."
-      ]
-    },
-    {
-      "id": 3,
-      "name": "YSL Touche Éclat Concealer",
-      "brand": "YSL",
-      "price": 40.00,
-      "originalPrice": null,
-      "rating": 4.7,
-      "category": "Face",
-      "subtype": "Concealer",
-      "images": [
-        "../../new/images/che-khuyet-diem-yves-saint-laurent-ysl-touche-eclat-high-cover-radiant-concealer-tone-3-almond-1-jpg-1719392975-26062024160935.webp",
-        "https://via.placeholder.com/300x300/FCEEEE/6B4C3B?text=YSL+Concealer+2",
-        "https://via.placeholder.com/300x300/FCEEEE/6B4C3B?text=YSL+Concealer+3"
-      ],
-      "description": "Brightening pen that instantly highlights and conceals imperfections.",
-      "detailedDescription": "The cult-favorite YSL Touche Éclat High Cover Radiant Concealer pen offers flawless coverage alongside the original's brightening magic. It effortlessly conceals dark circles, redness, and blemishes with a natural, luminous finish that never looks cakey or heavy. Perfect for targeted correction and adding radiance.",
-      "ingredients": "Aqua/Water, Cyclopentasiloxane, Hydrogenated Polyisobutene, Sorbitan Isostearate, Propanediol...", 
-      "weight": "2.5ml / 0.08 FL.OZ",
-      "shades": [
-        {"value": "1", "label": "1 Luminous Silk (Fair Rosy)"},
-        {"value": "2", "label": "2 Ivory (Fair Neutral)"},
-        {"value": "3", "label": "3 Almond (Light Neutral)"},
-        {"value": "4.5", "label": "4.5 Golden (Medium Warm)"} 
-      ],
-      "launchDate": "2021-09-01",
-      "usageInstructions": "Click the pen 1-2 times to dispense product. Apply directly onto areas needing coverage or brightening (under eyes, sides of nose, smile lines, blemishes). Gently tap to blend using fingertips, a brush, or sponge.",
-      "isNew": false,
-       "ingredientsInfo": "Infused with skin-loving ingredients like Calendula Extract and Vitamin E for soothing and antioxidant benefits, along with caffeine to help reduce under-eye puffiness.",
-       "ingredientList": [
-           "Calendula Extract: Known for its soothing properties.",
-           "Vitamin E: Provides antioxidant protection.",
-           "Caffeine: Helps to visibly de-puff the under-eye area.",
-           "Micro-Pearls: Catch light for a luminous, non-shimmery glow.",
-           "Hyaluronic Acid Derivative: Helps retain moisture."
-       ],
-       "textureInfo": "A lightweight, creamy fluid that blends seamlessly into the skin without settling into fine lines. Provides comfortable wear throughout the day.",
-       "shadeInfo": "Available in various shades with different undertones (Neutral, Warm, Cool) to perfectly match your skin tone for concealing and brightening.",
-       "shadeList": [
-           "Fair Shades: Suitable for very light skin tones.",
-           "Light Shades: For light complexions.",
-           "Medium Shades: For medium skin tones.",
-           "Deep Shades: For deeper complexions."
-       ],
-      "benefits": [
-        "High Coverage, Radiant Finish: Effectively conceals imperfections while maintaining a natural luminosity.",
-        "Brightens & Reduces Fatigue: Instantly diminishes the look of dark circles and signs of tiredness.",
-        "Crease-Proof Wear: Lightweight formula blends easily and resists settling into lines.",
-        "Skincare Benefits: Contains soothing and antioxidant ingredients.",
-        "Precise Application: Convenient click-pen allows for targeted application."
-      ]
-    },
-    {
-      "id": 4,
-      "name": "Lancôme Hypnôse Mascara",
-      "brand": "Lancôme",
-      "price": 33.00,
-      "originalPrice": null,
-      "rating": 4.9,
-      "category": "Eyes",
-      "subtype": "Mascara",
-      "images": [
-        "../../new/images/61K1zuiyOhL._UF1000,1000_QL80_.jpg",
-        "https://via.placeholder.com/300x300/E8D4C8/4D3319?text=Lancome+Mascara+2",
-        "https://via.placeholder.com/300x300/E8D4C8/4D3319?text=Lancome+Mascara+3"
-      ],
-      "description": "Buildable volume mascara for custom lash intensity and elegance.",
-      "detailedDescription": "Achieve truly hypnotic eyes with Lancôme's Hypnôse Custom-Wear Volume Mascara. Its exclusive PowerFull™ brush features 1000 sensor bristles to coat lashes evenly from root to tip, allowing you to build intensity layer by layer for up to 8 times the volume without clumping. The SoftSculpt™ formula, enriched with Pro-Vitamin B5, leaves lashes feeling soft and supple.",
-      "ingredients": "Aqua / Water / Eau, Paraffin, Cera Alba / Beeswax / Cire Dabeille, Stearic Acid, Copernicia Cerifera Cera / Carnauba Wax / Cire De Carnauba, Acacia Senegal Gum...",
-      "weight": "6.2ml / 0.20 FL OZ",
-      "shades": [
-        {"value": "01-black", "label": "01 Black"},
-        {"value": "02-brown", "label": "02 Brown"} 
-      ],
-      "launchDate": "2020-05-20",
-      "usageInstructions": "Place the brush at the base of your lashes. Gently comb from root to tip using a zigzag motion. Repeat for added volume until desired intensity is achieved.",
-      "isNew": false,
-       "ingredientsInfo": "Features the unique SoftSculpt™ formula combining emollient waxes and polymers for buildable volume without stiffness. Enriched with Pro-Vitamin B5 to condition lashes.",
-       "ingredientList": [
-           "Pro-Vitamin B5: Known for its conditioning and strengthening properties for lashes.",
-           "Acacia Senegal Gum: Helps the formula adhere smoothly to lashes.",
-           "Carnauba Wax & Beeswax: Provide structure and volume.",
-           "Jojoba Oil (often included): Adds suppleness."
-       ],
-       "textureInfo": "A smooth, fluid cream formula that glides easily onto lashes. Does not flake or smudge throughout the day. Allows for multiple coats without clumping.",
-       "shadeInfo": "Primarily available in deep, rich shades like black and brown to define the eyes.",
-       "shadeList": [
-           "Black: A classic, intense black for maximum definition.",
-           "Brown: A softer alternative for a more natural look."
-       ],
-      "benefits": [
-        "Customizable Volume: Build your desired lash look from natural to dramatic (up to 8x volume).",
-        "Precise Separation: PowerFull™ brush coats and separates each lash without clumping.",
-        "Soft & Supple Lashes: Formula enriched with Pro-Vitamin B5 keeps lashes flexible, not brittle.",
-        "Long-Wearing & Smudge-Proof: Stays put throughout the day without flaking.",
-        "Suitable for Sensitive Eyes: Ophthalmologist-tested and safe for contact lens wearers."
-      ]
-    }
-  ]
+"products": [
+  {
+    "id": 1,
+    "name": "Dior Forever Foundation",
+    "brand": "Dior",
+    "price": 68.00,
+    "originalPrice": 75.00,
+    "rating": 4.9,
+    "category": "Face",
+    "subtype": "Foundation",
+    "images": [
+      "https://i.postimg.cc/nzZ438dW/0w.webp",
+      "https://i.postimg.cc/1tHpTW2S/1a.jpg",
+      "https://i.postimg.cc/hjr9wC6S/1cr.jpg",
+      "https://i.postimg.cc/ydPF5ft6/1n.jpg",
+      "https://i.postimg.cc/76VgcBdZ/2n.webp",
+      "https://i.postimg.cc/rswSL12q/3n.jpg"
+    ],
+    "description": "A long-wear, high-perfection foundation that enhances your natural glow.",
+    "detailedDescription": "Discover the latest addition to Dior's iconic lineup with the Dior Forever Foundation. This long-wear, high-perfection foundation enhances your natural glow with a flawless finish that lasts up to 24 hours. Crafted with a luxurious blend of Water, Glycerin, Dimethicone, Titanium Dioxide, and Iron Oxides, it provides medium to full coverage while keeping skin hydrated and smooth.",
+    "ingredients": "Water, Glycerin, Dimethicone, Titanium Dioxide, Iron Oxides",
+    "weight": "30ml",
+    "shades": [
+      {"value": "0w", "label": "0W Warm"},
+      {"value": "1n", "label": "1N Neutral"},
+      {"value": "1cr", "label": "1CR Cool Rosy"},
+      {"value": "2n", "label": "2N Neutral"},
+      {"value": "3n", "label": "3N Neutral"}
+    ],
+    "launchDate": "2025-03-15",
+    "usageInstructions": "Apply with a brush or sponge for even coverage, blend well.",
+    "isNew": true,
+    "benefits": [
+      "Long-Lasting Perfection: Provides up to 24-hour wear with a flawless, matte finish.",
+      "Hydration & Comfort: Infused with 86% skincare ingredients to keep skin hydrated.",
+      "Flawless Coverage: Offers medium to full coverage while maintaining a natural look.",
+      "Oil Control: Minimizes shine and controls excess oil.",
+      "Skin Protection: Contains Titanium Dioxide for natural SPF benefits."
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Chanel Les Beiges Blush",
+    "brand": "Chanel",
+    "price": 52.00,
+    "originalPrice": 58.00,
+    "rating": 4.8,
+    "category": "Face",
+    "subtype": "Blush",
+    "images": [
+      "https://i.postimg.cc/TPPL1RH4/2-1.avif",
+      "https://i.postimg.cc/mrrzkb54/2-2.avif",
+      "https://i.postimg.cc/ZqqBnTMh/2-3.avif"
+    ],
+    "description": "Soft rosy blush that gives a healthy radiance with every sweep.",
+    "detailedDescription": "Chanel Les Beiges Blush delivers a soft, natural-looking flush that enhances your complexion with a healthy radiance.",
+    "ingredients": "Talc, Silica, Mica, Titanium Dioxide, Red 7 Lake",
+    "weight": "15ml",
+    "shades": [
+      {"value": "light-peach", "label": "Light Peach"},
+      {"value": "rosy", "label": "Rosy"},
+      {"value": "coral", "label": "Coral"}
+    ],
+    "launchDate": "2025-11-10",
+    "usageInstructions": "Sweep onto cheeks with a blush brush, build as needed.",
+    "isNew": true,
+    "benefits": [
+      "Natural Finish: Provides a soft, natural-looking flush",
+      "Buildable Color: Can be layered for desired intensity",
+      "Long-Wearing: Stays put throughout the day"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Gucci Rouge à Lèvres Mat",
+    "brand": "Gucci",
+    "price": 46.00,
+    "originalPrice": null,
+    "rating": 4.7,
+    "category": "Lips",
+    "subtype": "Lipstick",
+    "images": [
+      "https://i.postimg.cc/hPkgKkTz/temp-Image-K271Ih.avif",
+      "https://i.postimg.cc/m2vRTvC7/temp-Imagec-UV5Hh.avif",
+      "https://i.postimg.cc/zBB4C7K2/temp-Imaget-EBc-IL.avif"
+    ],
+    "description": "Rich, creamy matte lipstick with intense color payoff.",
+    "detailedDescription": "A new matte lipstick from Gucci Beauty. Delivers vibrant color with a soft, velvety feel. Long-lasting wear without drying the lips.",
+    "ingredients": "Dimethicone, Octyldodecanol, Polyethylene, Polysilicone-11...",
+    "weight": "3.5g",
+    "shades": [
+      {"value": "208-they-met-in-argentina", "label": "208 They Met in Argentina"},
+      {"value": "505-janet-rust", "label": "505 Janet Rust"},
+      {"value": "25-goldie-red", "label": "25 Goldie Red"}
+    ],
+    "launchDate": "2023-01-20",
+    "usageInstructions": "Apply directly to lips. Use the sharp edge for precise definition.",
+    "isNew": false,
+    "benefits": [
+      "Intense Matte Color: Delivers high pigment in one swipe.",
+      "Comfortable Wear: Non-drying formula feels lightweight.",
+      "Luxurious Packaging: Features vintage-inspired gold tube."
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Lancôme Lash Idôle Mascara",
+    "brand": "Lancôme",
+    "price": 30.00,
+    "originalPrice": null,
+    "rating": 4.8,
+    "category": "Eyes",
+    "subtype": "Mascara",
+    "images": [
+      "https://i.postimg.cc/R0FzdvzY/temp-Image-JZPynl.avif",
+      "https://i.postimg.cc/s2NC0bVk/temp-Imaget2Vt-LJ.avif"
+    ],
+    "description": "Lash-lifting mascara for fanned-out volume.",
+    "detailedDescription": "Achieve lifted, defined lashes with Lancôme Lash Idôle Mascara. Its curved brush grabs every lash for instant lift, length, and clump-free volume.",
+    "ingredients": "Aqua/Water, Propylene Glycol, Styrene/Acrylates/Ammonium Methacrylate Copolymer...",
+    "weight": "8ml",
+    "shades": [
+      {"value": "01-glossy-black", "label": "01 Glossy Black"}
+    ],
+    "launchDate": "2022-09-01",
+    "usageInstructions": "Hold wand horizontally and apply from root to tip. Use curved side to lift and fan out lashes.",
+    "isNew": false,
+    "benefits": [
+      "Instant Lash Lift: Provides visible lift and curl.",
+      "Fanned-Out Volume: Separates and volumizes each lash.",
+      "Clump-Free Formula: Lightweight gel formula resists clumping.",
+      "Long-Lasting: Up to 24-hour wear."
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Fenty Beauty Pro Filt'r Primer",
+    "brand": "Fenty Beauty",
+    "price": 36.00,
+    "originalPrice": 40.00,
+    "rating": 4.6,
+    "category": "Face",
+    "subtype": "Primer",
+    "images": [
+      "https://i.postimg.cc/hvnyC0dt/temp-Image-Et-LOYr.avif",
+      "https://i.postimg.cc/Bb3YhCK6/temp-Imageh-EDjuc.avif",
+      "https://i.postimg.cc/QCD46qTh/temp-Imageura-YOd.avif"
+    ],
+    "description": "Instant retouch primer that smooths pores and extends makeup wear.",
+    "detailedDescription": "Start your makeup routine with the Fenty Beauty Pro Filt'r Instant Retouch Primer. This oil-free primer smooths away the look of pores, evens skin tone and texture, and helps makeup last longer.",
+    "ingredients": "Dimethicone, Isododecane, Dimethicone/Vinyl Dimethicone Crosspolymer...",
+    "weight": "32ml",
+    "shades": [
+      {"value": "universal", "label": "Universal (Invisipink)"}
+    ],
+    "launchDate": "2021-05-15",
+    "usageInstructions": "Apply one pump to fingertips and spread evenly over face before foundation.",
+    "isNew": false,
+    "benefits": [
+      "Smooths Skin: Blurs pores and imperfections.",
+      "Extends Makeup Wear: Helps foundation apply better and last longer.",
+      "Oil-Free Formula: Lightweight and comfortable for all skin types.",
+      "Universal Shade: Works for all skin tones."
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Tom Ford Traceless Soft Matte Foundation",
+    "brand": "Tom Ford",
+    "price": 90.00,
+    "originalPrice": null,
+    "rating": 4.7,
+    "category": "Face",
+    "subtype": "Foundation",
+    "images": [
+      "https://i.postimg.cc/fbXf69sG/temp-Image29o318.avif"
+    ],
+    "description": "A hydrating matte foundation that blurs imperfections and lasts all day.",
+    "detailedDescription": "Experience luxury with Tom Ford's Traceless Soft Matte Foundation. This innovative formula offers medium-to-full coverage with a natural matte finish, while hydrating skin for comfortable, long wear.",
+    "ingredients": "Dimethicone, Water, Phenyl Trimethicone, Methyl Trimethicone...",
+    "weight": "30ml",
+    "shades": [
+      {"value": "1-3-nude", "label": "1.3 Nude"},
+      {"value": "4-0-fawn", "label": "4.0 Fawn"},
+      {"value": "6-0-natural", "label": "6.0 Natural"}
+    ],
+    "launchDate": "2022-08-20",
+    "usageInstructions": "Shake well. Apply to clean face using fingertips, sponge, or foundation brush.",
+    "isNew": false,
+    "benefits": [
+      "Soft Matte Finish: Provides a natural, shine-free look.",
+      "Hydrating Formula: Contains hyaluronic acid for moisture.",
+      "Long-Wearing: Resists humidity and sweat.",
+      "Buildable Coverage: Customizable from medium to full."
+    ]
+  },
+  {
+    "id": 7,
+    "name": "YSL Touche Éclat Radiant Concealer Pen",
+    "brand": "YSL",
+    "price": 40.00,
+    "originalPrice": null,
+    "rating": 4.9,
+    "category": "Face",
+    "subtype": "Concealer",
+    "images": [
+      "https://i.postimg.cc/6qT2xkRH/temp-Image4M5ylr.avif",
+      "https://i.postimg.cc/fyktQGX5/temp-Imaged9tn65.avif",
+      "https://i.postimg.cc/3Rt468y4/temp-Imagewzjay-R.avif"
+    ],
+    "description": "The iconic highlighting pen that brightens, smooths, and perfects.",
+    "detailedDescription": "YSL's Touche Éclat is a cult classic for a reason. This light-infused pen instantly brightens dark circles, smooths fine lines, and highlights features without shimmer or glitter.",
+    "ingredients": "Aqua/Water, Cyclopentasiloxane, Talc, Glycerin...",
+    "weight": "2.5ml",
+    "shades": [
+      {"value": "1-luminous-radiance", "label": "1 Luminous Radiance"},
+      {"value": "2-luminous-ivory", "label": "2 Luminous Ivory"},
+      {"value": "4-5-luminous-sand", "label": "4.5 Luminous Sand"}
+    ],
+    "launchDate": "1992-01-01",
+    "usageInstructions": "Click pen to dispense product. Apply to areas needing brightening (under eyes, brow bone, cupid's bow) and blend.",
+    "isNew": false,
+    "benefits": [
+      "Instant Radiance: Brightens complexion and adds light.",
+      "Smooths Imperfections: Visibly reduces signs of fatigue.",
+      "Versatile Use: Can be used for concealing, highlighting, and contouring.",
+      "Lightweight Feel: Non-cakey formula blends seamlessly."
+    ]
+  },
+  {
+    "id": 8,
+    "name": "La Mer The Moisturizing Soft Cream",
+    "brand": "La Mer",
+    "price": 200.00,
+    "originalPrice": null,
+    "rating": 4.8,
+    "category": "Skincare",
+    "subtype": "Moisturizer",
+    "images": [
+      "https://i.postimg.cc/c4RgyBt2/temp-Image-Do-Frpv.avif",
+      "https://i.postimg.cc/kXQ63vRf/temp-Image-Eo4c-MA.avif"
+    ],
+    "description": "A luxurious cream that delivers healing moisture for a vibrant appearance.",
+    "detailedDescription": "Indulge in La Mer's Moisturizing Soft Cream. Infused with the legendary Miracle Broth™, this ultra-soft cream deeply hydrates, heals dryness, and restores radiance for a youthful look.",
+    "ingredients": "Algae (Seaweed) Extract, Cyclopentasiloxane, Petrolatum, Glyceryl Distearate...",
+    "weight": "30ml",
+    "shades": [],
+    "launchDate": "2012-09-01",
+    "usageInstructions": "Pat a small amount between fingertips and press gently into cleansed skin, morning and night.",
+    "isNew": false,
+    "benefits": [
+      "Deep Hydration: Provides lasting moisture and heals dryness.",
+      "Renews Radiance: Restores skin's natural vibrancy.",
+      "Smooths Fine Lines: Diminishes the look of lines and wrinkles.",
+      "Legendary Miracle Broth™: Soothes and revitalizes skin."
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Pat McGrath Labs Mothership Eyeshadow Palette",
+    "brand": "Pat McGrath Labs",
+    "price": 128.00,
+    "originalPrice": null,
+    "rating": 4.9,
+    "category": "Eyes",
+    "subtype": "Eyeshadow Palette",
+    "images": [
+      "https://i.postimg.cc/GtzWGfSf/temp-Imagenr-N2d-G.avif",
+      "https://i.postimg.cc/7PV8FCY1/temp-Imageum-ZHLf.avif"
+    ],
+    "description": "Iconic eyeshadow palettes with extraordinary textures and cosmic colors.",
+    "detailedDescription": "Unleash your inner artist with Pat McGrath Labs Mothership Palettes. Featuring a curated selection of stunning mattes, shimmering metallics, and otherworldly special shades with unparalleled pigment and blendability.",
+    "ingredients": "Talc, Mica, Octyldodecyl Stearoyl Stearate, Zinc Stearate...",
+    "weight": "13.2g",
+    "shades": [
+      {"value": "divine-rose-i", "label": "Divine Rose I"},
+      {"value": "sublime-bronze-ambition", "label": "Sublime Bronze Ambition"},
+      {"value": "subversive-la-vie-en-rose", "label": "Subversive La Vie en Rose"}
+    ],
+    "launchDate": "2017-09-01",
+    "usageInstructions": "Apply shadows using brushes or fingertips. Use damp brush for intensified pigment.",
+    "isNew": false,
+    "benefits": [
+      "Exceptional Pigment: Rich, vibrant color payoff.",
+      "Unique Textures: Creamy mattes, dazzling shimmers, and special effects.",
+      "Blendable Formula: Shadows blend seamlessly for endless looks.",
+      "Luxurious Packaging: Housed in sleek, collectible palettes."
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Charlotte Tilbury Magic Cream",
+    "brand": "Charlotte Tilbury",
+    "price": 100.00,
+    "originalPrice": null,
+    "rating": 4.7,
+    "category": "Skincare",
+    "subtype": "Moisturizer",
+    "images": [
+      "https://i.postimg.cc/PxnJRLrh/temp-Image9Rbzzd.avif",
+      "https://i.postimg.cc/QMTVmgDY/temp-Imageck-Xdgy.avif"
+    ],
+    "description": "An instant turnaround moisturizer for hydrated, glowing, plumper-looking skin.",
+    "detailedDescription": "Charlotte's famous Magic Cream is a secret weapon for celebrities and models. This rich, hydrating cream features Hyaluronic Acid, Vitamin C, and BioNymph Peptide Complex to flood skin with moisture and create a dewy canvas.",
+    "ingredients": "Water, Homosalate, Glyceryl Stearate SE, Ethylhexyl Salicylate...",
+    "weight": "50ml",
+    "shades": [],
+    "launchDate": "2013-09-01",
+    "usageInstructions": "Apply to face and neck using Charlotte's 'Tilbury Tap' massage technique.",
+    "isNew": false,
+    "benefits": [
+      "Instant Hydration Boost: Plumps skin with moisture.",
+      "Creates Glowing Canvas: Perfect base for makeup.",
+      "Reduces Wrinkles: Firms and smooths the look of skin.",
+      "Contains SPF15: Provides daily sun protection."
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Hourglass Ambient Lighting Powder",
+    "brand": "Hourglass",
+    "price": 52.00,
+    "originalPrice": null,
+    "rating": 4.8,
+    "category": "Face",
+    "subtype": "Finish Powder",
+    "images": [
+      "https://i.postimg.cc/158SDmsk/temp-Image-Ml952C.avif",
+      "https://i.postimg.cc/kXLmc05r/temp-Imageis-N873.avif",
+      "https://i.postimg.cc/L6GpTc8c/temp-Imageq8j-T6t.avif"
+    ],
+    "description": "Finishing powders that recreate the most flattering types of light.",
+    "detailedDescription": "Hourglass Ambient Lighting Powders use Photoluminescent Technology to filter out harsh light and refine the appearance of the complexion. Each powder captures, diffuses, and softens surrounding light.",
+    "ingredients": "Mica, Synthetic Fluorphlogopite, Boron Nitride, HDI/Trimethylol Hexyllactone Crosspolymer...",
+    "weight": "10g",
+    "shades": [
+      {"value": "dim-light", "label": "Dim Light"},
+      {"value": "luminous-light", "label": "Luminous Light"},
+      {"value": "diffused-light", "label": "Diffused Light"}
+    ],
+    "launchDate": "2013-02-01",
+    "usageInstructions": "Dust all over the face with a powder brush as the final step in your makeup routine.",
+    "isNew": false,
+    "benefits": [
+      "Photoluminescent Technology: Creates a soft-focus effect.",
+      "Filters Harsh Light: Blurs imperfections and minimizes pores.",
+      "Enhances Complexion: Adds a subtle, natural glow.",
+      "Versatile Shades: Different powders create different lighting effects."
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Armani Beauty Luminous Silk Foundation",
+    "brand": "Armani Beauty",
+    "price": 69.00,
+    "originalPrice": null,
+    "rating": 4.9,
+    "category": "Face",
+    "subtype": "Foundation",
+    "images": [
+      "https://i.postimg.cc/FR6WvQ8H/temp-Image-Bhs80b.avif",
+      "https://i.postimg.cc/LXWCSMw5/temp-Image-UMZ0SF.avif",
+      "https://i.postimg.cc/B6bYRvhY/temp-Image35pk15.avif"
+    ],
+    "description": "Award-winning, oil-free foundation that delivers a luminous, buildable finish.",
+    "detailedDescription": "Inspired by charmeuse silk, Armani's Luminous Silk Foundation offers a flawless, radiant finish. The Micro–fil™ technology allows for buildable coverage from sheer to medium, gliding seamlessly onto the skin.",
+    "ingredients": "Aqua/Water, Cyclopentasiloxane, Glycerin, Isododecane...",
+    "weight": "30ml",
+    "shades": [
+      {"value": "3-very-fair-golden", "label": "3 Very Fair, Golden"},
+      {"value": "5-medium-neutral", "label": "5 Medium, Neutral"},
+      {"value": "9-deep-peach", "label": "9 Deep, Peach"}
+    ],
+    "launchDate": "2000-01-01",
+    "usageInstructions": "Apply with fingertips or foundation brush, starting from the center of the face and blending outwards.",
+    "isNew": false,
+    "benefits": [
+      "Radiant Finish: Creates a lit-from-within glow.",
+      "Buildable Coverage: Perfect for customizing your look.",
+      "Oil-Free Formula: Suitable for most skin types.",
+      "Seamless Application: Blends effortlessly for a natural look."
+    ]
+  }
+]
 }
+

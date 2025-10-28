@@ -1,4 +1,31 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  // Fetch data from product.json
+  fetch('product.json')
+    .then(response => response.json())
+    .then(data => {
+      const newProducts = data.products.filter(product => product.isNew); // Lọc các sản phẩm mới
+
+      let productsHTML = '';
+      newProducts.forEach(product => {
+        productsHTML += `
+          <div class="product-card">
+            <img src="${product.image}" alt="${product.name}" class="product-img">
+            <div class="product-info">
+              <h3>${product.name}</h3>
+              <p>${product.brand} • ${product.category}</p>
+              <p>${product.description}</p>
+              <span class="price">$${product.price.toFixed(2)}</span>
+              <div class="rating">★★★★☆ (${product.rating})</div>
+              <button class="btn-primary">View Details</button>
+            </div>
+          </div>
+        `;
+      });
+
+      // Chèn các sản phẩm mới vào trong container
+      document.getElementById('new-products-container').innerHTML = productsHTML;
+    })
+    .catch(error => console.error('Error loading products:', error));
   // Fetch and load header
   try {
     const headerResponse = await fetch('../header_footer/header.html');
