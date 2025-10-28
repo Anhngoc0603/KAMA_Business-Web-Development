@@ -13,7 +13,7 @@
       font-family: 'Playfair Display', serif;
       background-color: #FFF9F9;
       color: #6B4C3B;
-      margin: 0;
+      margin: 10px;
       transition: all 0.3s ease;
       overflow-x: hidden;
       overflow-y: scroll;
@@ -23,7 +23,7 @@
     main {
       /* Khoảng cách từ top = chiều cao header + navbar + khoảng trống nhỏ */
       /* Sẽ được tính bởi JS sau khi header load, nhưng tạm đặt giá trị dự phòng */
-       padding-top: 150px; /* Điều chỉnh giá trị này nếu cần */
+       padding-top: 0px; /* Điều chỉnh giá trị này nếu cần */
        min-height: 60vh; /* Đảm bảo main có chiều cao tối thiểu */
     }
 
@@ -93,7 +93,7 @@
     .products-grid-container { flex: 1; }
     .products-grid-container h2 { text-align: left; margin-bottom: 10px; } /* Override default center */
     .products-grid-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-    .products-grid-header p { font-size: 14px; color: #8c7b7b; margin: 0; }
+    .products-grid-header p { font-size: 14px; color: #8c7b7b; margin: 15px; }
     .products-grid-header .sort-by select { padding: 8px 12px; border: 1px solid #eee; border-radius: 8px; background: white; color: #6B4C3B; font-size: 14px; cursor: pointer; outline: none; font-family: 'Playfair Display', serif; }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; width: 100%; margin: 0; padding: 0; }
 
@@ -152,7 +152,7 @@
     
     /* === MEDIA QUERIES === */
     @media (max-width: 900px) {
-      main { padding-top: 130px; /* Adjust based on actual mobile header height */ }
+      main { padding-top: 50px; /* Adjust based on actual mobile header height */ }
       .header { padding: 10px 15px; }
       .menu-toggler { display: block !important; width: 28px; height: 28px; z-index: 1011; position: relative; }
       #header-placeholder nav { gap: 10px; } /* Target nav inside placeholder */
@@ -207,13 +207,13 @@
       .product-list li:hover a { color: #E6A6B0; padding-left: 10px; background: none; }
 
       /* Main Content Mobile */
-      .products-page-container { flex-direction: column; margin-top: 20px; gap: 20px; width: 100%; padding: 20px 10px; box-sizing: border-box;} /* Ensure width and box-sizing */
-      .products-filter-sidebar { position: static; height: auto; overflow-y: visible; margin-bottom: 30px; padding-right: 0; flex-basis: auto; width: 100%;} /* Ensure width */
+      .products-page-container { flex-direction: column; margin-top: 0px; gap: 0px; width: 100%; padding: 0px; box-sizing: border-box;} /* Ensure width and box-sizing */
+      .products-filter-sidebar { position: static; height: auto; overflow-y: visible; margin-bottom: 30px; padding-right: 20px; padding-left: 20px; flex-basis: auto; width: 100%;} /* Ensure width */
       .products-grid-container h2 { text-align: center; }
       .products-grid-container .products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
       .product-card { border-radius: 10px; }
       .product-image-container { position: relative; overflow: hidden; }
-      .product-img, .product-img.hover-image { height: auto; aspect-ratio: 1/1; }
+      .product-img, .product-img.hover-image { height: auto; aspect-ratio: 1/1; margin-left: 5px; }
       .info { padding: 10px; }
       .info h3 { font-size: 25px; margin-bottom: 4px;}
       .info p { font-size: 17px; margin-bottom: 6px;}
@@ -252,7 +252,7 @@
 
     /* Smaller Mobile */
     @media (max-width: 480px) {
-      main { padding-top: 115px; /* Adjust based on actual smaller mobile header height */ }
+      main { padding-top: 50px; /* Adjust based on actual smaller mobile header height */ }
       .header { padding: 8px 10px; height: 50px; }
       #header-placeholder nav { gap: 8px; }
       #header-placeholder nav a img { width: 22px; height: 22px; }
@@ -271,8 +271,8 @@
 
       .products-page-container { gap: 15px; padding: 20px 10px; }
       .products-grid-container h2, .category-showcase-section h2, .brand-showcase-section h2 { font-size: 24px; margin-bottom: 15px; }
-      .products-filter-sidebar .filter-group h4 { font-size: 15px; margin-bottom: 12px;}
-      .products-filter-sidebar .filter-tags .tag { padding: 4px 10px; font-size: 12px;}
+      .products-filter-sidebar .filter-group h4 { font-size: 15px; margin-bottom: 12px; margin-top: 12px;}
+      .products-filter-sidebar .filter-tags .tag { padding: 10px 10px; font-size: 12px;}
       .products-grid-header { margin-bottom: 15px; padding-bottom: 10px; flex-direction: column; align-items: flex-start; gap: 8px;}
       .products-grid-header p { font-size: 13px;}
       .products-grid-header .sort-by select { font-size: 13px; padding: 6px 10px;}
