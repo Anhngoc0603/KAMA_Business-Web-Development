@@ -79,7 +79,14 @@
     .products-filter-sidebar::-webkit-scrollbar { width: 5px; }
     .products-filter-sidebar::-webkit-scrollbar-thumb { background-color: rgba(230, 166, 176, 0.4); border-radius: 3px; }
     .products-filter-sidebar::-webkit-scrollbar-track { background-color: transparent; }
-    .products-filter-sidebar .filter-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #FADADD; padding-bottom: 10px; margin-bottom: 25px; }
+.products-filter-sidebar .filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #FADADD;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+}
     .products-filter-sidebar .filter-header h3 { font-size: 20px; color: #6B4C3B; margin: 0; text-transform: uppercase; }
     .products-filter-sidebar .filter-header a { font-size: 13px; color: #aaa; text-decoration: none; transition: color 0.3s ease; }
     .products-filter-sidebar .filter-header a:hover { color: #E6A6B0; }
@@ -337,7 +344,7 @@
   <main>
     <div class="products-page-container">
       <aside class="products-filter-sidebar">
-        <div class="filter-header">
+        <div class="filter-header" style="margin-bottom: 0;">
           <h3>FILTER</h3>
           <a href="#">Clear All</a>
         </div>
@@ -503,10 +510,15 @@
         }
 
         // Adjust padding immediately after fetch completes *if* header loaded
-        if (loadedHeader) {
-            // Use setTimeout to ensure styles are applied and height is calculable
-             setTimeout(adjustMainPadding, 0);
-        }
+if (loadedHeader) {
+  let retryCount = 0;
+  const interval = setInterval(() => {
+    adjustMainPadding();
+    retryCount++;
+    if (retryCount > 10) clearInterval(interval);
+  }, 300);
+}
+
         // Also adjust on window resize
         window.addEventListener('resize', adjustMainPadding);
 
