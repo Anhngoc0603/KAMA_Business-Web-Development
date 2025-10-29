@@ -527,635 +527,137 @@ background: url('../1.homepage/images/shopping.png') no-repeat center center;  b
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-      // --- 1. Fetch Header and Footer ---
-      const loadHTML = async (url, elementId) => {
-        const element = document.getElementById(elementId);
-        if (!element) {
-          console.error(`Placeholder element with id '${elementId}' not found.`);
-          return null; // Return null if placeholder doesn't exist
-        }
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch ${url}: ${response.statusText} (${response.status})`);
-          }
-          const html = await response.text();
-          element.innerHTML = html;
-          console.log(`${elementId} loaded successfully.`);
-          // Return the loaded element itself for potential chaining or height calculation
-          return element.firstElementChild; // Assuming the fetched HTML has one top-level element (like <header> or <footer>)
-        } catch (error) {
-          console.error(`Failed to load HTML for ${elementId}:`, error);
-          element.innerHTML = `<p style="color:red; text-align:center;">Error loading content (${url}). Check console.</p>`;
-          return null;
-        }
-      };
+  // --- 1. Fetch Header and Footer ---
+  const loadHTML = async (url, elementId) => {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(response.statusText);
+      const html = await response.text();
+      element.innerHTML = html;
+      return element.firstElementChild;
+    } catch (error) {
+      console.error(`Lỗi tải ${url}:`, error);
+      element.innerHTML = `<p style="color:red;text-align:center;">Error loading ${url}</p>`;
+    }
+  };
 
-      // Use Promise.all to load header and footer concurrently
-      const [loadedHeader, loadedFooter] = await Promise.all([
-          loadHTML('../header_footer/header.html', 'header-placeholder'),
-          loadHTML('../header_footer/footer.html', 'footer-placeholder')
-      ]);
+  const [loadedHeader, loadedFooter] = await Promise.all([
+    loadHTML('../header_footer/header.html', 'header-placeholder'),
+    loadHTML('../header_footer/footer.html', 'footer-placeholder')
+  ]);
 
-      // --- Adjust Main Padding Top after Header Load ---
-        function adjustMainPadding() {
-            const headerElement = document.querySelector('#header-placeholder > header');
-            if (headerElement) {
-                const headerHeight = headerElement.offsetHeight;
-                const mainElement = document.querySelector('main');
-                if (mainElement) {
-                    mainElement.style.paddingTop = `${headerHeight + 20}px`; // Add 20px gap
-                    console.log(`Adjusted main padding-top to: ${headerHeight + 20}px`);
-                }
-            } else {
-                 console.log("Header element not found yet for padding adjustment, retrying...");
-                 // Retry after a short delay if header wasn't ready immediately
-                 // Be cautious with recursive calls or infinite loops
-                 // setTimeout(adjustMainPadding, 100);
-            }
-        }
+  function adjustMainPadding() {
+    const headerElement = document.querySelector('#header-placeholder > header');
+    if (headerElement) {
+      const headerHeight = headerElement.offsetHeight;
+      const mainElement = document.querySelector('main');
+      if (mainElement) mainElement.style.paddingTop = `${headerHeight + 20}px`;
+    }
+  }
 
-        // Adjust padding immediately after fetch completes *if* header loaded
-if (loadedHeader) {
-  let retryCount = 0;
-  const interval = setInterval(() => {
-    adjustMainPadding();
-    retryCount++;
-    if (retryCount > 10) clearInterval(interval);
-  }, 300);
-}
+  if (loadedHeader) {
+    let retry = 0;
+    const timer = setInterval(() => {
+      adjustMainPadding();
+      if (++retry > 10) clearInterval(timer);
+    }, 300);
+  }
+  window.addEventListener('resize', adjustMainPadding);
 
-        // Also adjust on window resize
-        window.addEventListener('resize', adjustMainPadding);
+  // --- 2. Load Products from full.json ---
+  async function loadProducts() {
+    const grid = document.getElementById('products-grid');
+    const productCountEl = document.querySelector('.products-grid-header p');
+    if (!grid || !productCountEl) return;
 
+    try {
+      const res = await fetch('full.json');
+      if (!res.ok) throw new Error(res.statusText);
+      const data = await res.json();
+      const products = data.products || [];
 
-      // --- 2. Fetch Products ---
-      async function loadProducts() {
-        const grid = document.getElementById('products-grid');
-        const productCountEl = document.querySelector('.products-grid-header p'); // Select the count paragraph
-
-        if (!grid || !productCountEl) {
-          console.error("Required elements for products ('products-grid' or count paragraph) not found!");
-           if(grid) grid.innerHTML = '<p style="color:red;">Error: Product grid element missing.</p>';
-          return;
-        }
-
-        try {
-          const response = await fetch('full.json'); // Ensure 'products.json' is correct
-          if (!response.ok) {
-            throw new Error(`Failed to fetch products.json: ${response.statusText} (${response.status})`);
-          }
-          const data = await response.json();
-
-          if (!data || !Array.isArray(data.products)) {
-             throw new Error('Invalid JSON structure. Expected an object with a "products" array.');
-          }
-
-          let productsHTML = '';
-          for (const product of data.products) {
-            // Basic validation for product object
-            if (!product || typeof product !== 'object' || !product.id || !product.name) {
-                console.warn('Skipping invalid product data:', product);
-                continue; // Skip this iteration
-            }
-            // Ensure price and rating are numbers, provide defaults if not
-            const price = typeof product.price === 'number' ? product.price : 0;
-            const rating = typeof product.rating === 'number' ? product.rating : 0;
-            const image = product.image || 'https://via.placeholder.com/300x300/CCC/999?text=No+Image'; // Default image
-
-            productsHTML += `
-              <div class="product-card">
-                <img src="${image}" alt="${product.name || 'Product'}" class="product-img">
-                <div class="info">
-                  <h3>${product.name || 'Unnamed Product'}</h3>
-                  <p>${product.description || ''}</p>
-                  <div class="meta">SKU: ${product.id}</div>
-                  <div class="actions">
-                    <span class="price">$${price.toFixed(2)}</span>
-                    <div class="rating"><i class="fas fa-star star"></i> ${rating.toFixed(1)}</div>
-                  </div>
-                        <div class="buttons">
-                        <input type="number" value="1" min="1" class="quantity-input">
-                        <button class="btn-outline" aria-label="Add to cart"></button>
-                         <button class="btn-view-details">View Details</button>
-                        </div>
-                </div>
+      let html = '';
+      for (const p of products) {
+        html += `
+          <div class="product-card">
+            <img src="${p.image || 'https://via.placeholder.com/300x300'}" class="product-img" alt="${p.name}">
+            <div class="info">
+              <h3>${p.name}</h3>
+              <p>${p.description || ''}</p>
+              <div class="meta">SKU: ${p.id}</div>
+              <div class="actions">
+                <span class="price">$${p.price.toFixed(2)}</span>
+                <div class="rating"><i class="fas fa-star star"></i> ${p.rating.toFixed(1)}</div>
               </div>
-            `;
-          }
-
-          grid.innerHTML = productsHTML || '<p>No products found.</p>'; // Handle empty product list
-          productCountEl.textContent = `${data.products.length} products`;
-          console.log(`Loaded ${data.products.length} products.`);
-
-        } catch (error) {
-          console.error('Failed to load products:', error);
-          grid.innerHTML = `<p style="color:red; text-align:center;">Error loading products. Check console. (${error.message})</p>`;
-          productCountEl.textContent = 'Error';
-        }
+              <div class="buttons">
+                <input type="number" value="1" min="1" class="quantity-input">
+                <button class="btn-outline" aria-label="Add to cart"></button>
+                <button class="btn-view-details">View Details</button>
+              </div>
+            </div>
+          </div>`;
       }
 
-      await loadProducts(); // Load products after header/footer attempt
+      grid.innerHTML = html || '<p>No products found.</p>';
+      productCountEl.textContent = `${products.length} products`;
+    } catch (err) {
+      console.error('Lỗi load sản phẩm:', err);
+    }
+  }
 
+  await loadProducts();
 
-      // --- 3. Initialize UI Components (Menu, Search, etc.) ---
-      // IMPORTANT: Select elements *after* header/footer have been potentially loaded.
-      // Use more robust selection that accounts for elements possibly not being ready yet.
+  // --- 3. Xử lý nút View Details ---
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-view-details');
+    if (!btn) return;
 
-      function initializeUIComponents() {
-          console.log("Attempting to initialize UI components...");
+    const card = btn.closest('.product-card');
+    const meta = card.querySelector('.meta');
+    if (!meta) return;
 
-          // Select elements *now* after fetch attempts
-          const fireworksContainer = document.querySelector('.fireworks-container'); // Might be in header
-          const menuToggler = document.getElementById('menu-toggler');
-          const navbar = document.getElementById('navbar');
-          const announcementWrapper = document.getElementById('announcementWrapper');
-          const searchIcon = document.querySelector('#header-placeholder .search .icon'); // Be specific
-          const searchInputHeader = document.querySelector('#header-placeholder .search input'); // Be specific
-          const productListPopup = document.getElementById('productListPopup');
+    const productId = meta.textContent.replace('SKU:', '').trim();
+    window.location.href = `../categories/categories_detail.html?id=${encodeURIComponent(productId)}`;
+  });
 
+  // --- 4. Các phần UI khác (menu, fireworks, announcement, search...) ---
+  function setupFireworks(container) {
+    if (!container) return;
+    const colors = ['pink-1', 'pink-2', 'pink-3', 'pink-4'];
+    const num = window.innerWidth > 768 ? 60 : 30;
+    container.innerHTML = '';
+    for (let i = 0; i < num; i++) {
+      const p = document.createElement('div');
+      p.classList.add('firework-particle', colors[Math.floor(Math.random() * colors.length)]);
+      p.style.setProperty('--tx', `${Math.random() * 150 - 75}vw`);
+      p.style.setProperty('--ty', `${Math.random() * 150 - 75}vh`);
+      p.style.setProperty('--i', i);
+      container.appendChild(p);
+      p.addEventListener('animationend', () => p.remove(), { once: true });
+    }
+  }
 
-          // Check if essential elements exist before proceeding
-          if (!navbar || !menuToggler || !searchIcon) {
-              console.warn("Essential header elements not found yet. UI components might not initialize correctly. Retrying might be needed depending on fetch speed.");
-              // Optionally retry initialization after a delay, but be careful
-              // setTimeout(initializeUIComponents, 200);
-              // return; // Stop initialization for now if critical elements are missing
-          } else {
-               console.log("Essential elements found. Proceeding with UI initialization.");
-          }
+  const fireworksContainer = document.querySelector('.fireworks-container');
+  if (fireworksContainer) setupFireworks(fireworksContainer);
 
+  function startAnnouncementSlider(wrapper) {
+    if (!wrapper || wrapper.children.length <= 1) return;
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % wrapper.children.length;
+      wrapper.style.transform = `translateX(-${i * 100}%)`;
+    }, 3000);
+  }
 
-          // UI Initialization Logic (Your original code, adapted slightly)
-          const navLinks = navbar ? navbar.querySelectorAll(':scope > a:not(.shop-all)') : [];
-          const shopAllLink = navbar ? navbar.querySelector(':scope > .shop-all') : null;
-          const menuCategories = navbar ? navbar.querySelector('.menu-categories') : null;
-          const backBtn = menuCategories ? menuCategories.querySelector('.back-btn') : null;
-          const categoryItems = menuCategories ? menuCategories.querySelectorAll('.category') : [];
+  const announcementWrapper = document.getElementById('announcementWrapper');
+  if (announcementWrapper) startAnnouncementSlider(announcementWrapper);
 
-          // Search Overlay Elements (Create dynamically)
-          const searchOverlay = document.createElement('div');
-          const searchInputOverlay = document.createElement('input');
-          const closeSearchBtn = document.createElement('button');
-
-          // Initialize Fireworks (if container exists)
-          if (fireworksContainer) {
-            setupFireworks(fireworksContainer);
-          } else {
-            console.log("Fireworks container not found (might be in header).")
-          }
-
-          // Initialize Announcement Slider (if wrapper exists)
-          if (announcementWrapper && announcementWrapper.children.length > 1) {
-            startAnnouncementSlider(announcementWrapper);
-          } else {
-            console.log("Announcement wrapper not found or has only one slide.")
-          }
-
-          // Initialize Menu Interactions (if navbar elements exist)
-          if (navbar && shopAllLink && menuCategories) {
-            setupMenuInteractions(navbar, navLinks, shopAllLink, menuCategories, backBtn, categoryItems, menuToggler);
-          } else {
-              console.warn("Navbar elements missing, cannot initialize menu interactions.");
-          }
-
-
-          // Initialize Search Overlay (if search icon exists)
-           if (searchIcon) {
-                setupSearchOverlay(searchOverlay, searchInputOverlay, closeSearchBtn, searchIcon, searchInputHeader);
-           } else {
-               console.warn("Search icon missing, cannot initialize search overlay.");
-           }
-
-
-          // Initialize Product List Popup (if it exists)
-          if(productListPopup) {
-            const productListPopupCloseBtn = productListPopup.querySelector('.product-list-close'); // Select close button inside
-            setupProductListPopup(productListPopup, productListPopupCloseBtn);
-          } else {
-              console.log("Product list popup not found.");
-          }
-
-      }
-
-      // Call the initialization function *after* fetch attempts
-       initializeUIComponents();
-
-
-      // ============================================
-      // === FUNCTIONS (Your original functions, pass elements as arguments) ===
-      // ============================================
-
-      function setupFireworks(container) { // Pass container
-        const colors = ['pink-1', 'pink-2', 'pink-3', 'pink-4'];
-        const numParticles = window.innerWidth > 768 ? 60 : 30;
-        if (!container) return;
-        while (container.firstChild) {
-          container.removeChild(container.firstChild);
-        }
-        for (let i = 0; i < numParticles; i++) {
-          const particle = document.createElement('div');
-          particle.classList.add('firework-particle', colors[Math.floor(Math.random() * colors.length)]);
-          particle.style.setProperty('--tx', `${Math.random() * 150 - 75}vw`);
-          particle.style.setProperty('--ty', `${Math.random() * 150 - 75}vh`);
-          particle.style.setProperty('--i', i);
-          container.appendChild(particle);
-          particle.addEventListener('animationend', function handler() {
-            if (particle.parentNode === container) {
-              container.removeChild(particle);
-            }
-            particle.removeEventListener('animationend', handler);
-          }, { once: true });
-        }
-         console.log("Fireworks setup complete.");
-      }
-
-      function startAnnouncementSlider(wrapper) { // Pass wrapper
-        let currentSlide = 0;
-        const slides = wrapper.children;
-        const intervalTime = 3000;
-        let slideInterval;
-        function nextSlide() {
-          if (!slides || slides.length <= 1) { // Check length > 1
-            clearInterval(slideInterval);
-            return;
-          }
-          currentSlide = (currentSlide + 1) % slides.length;
-          wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-        }
-        if (slides.length > 1) {
-          slideInterval = setInterval(nextSlide, intervalTime);
-          wrapper.addEventListener('mouseenter', () => clearInterval(slideInterval));
-          wrapper.addEventListener('mouseleave', () => {
-            clearInterval(slideInterval);
-            slideInterval = setInterval(nextSlide, intervalTime);
-          });
-          console.log("Announcement slider started.");
-        }
-      }
-
-      function setupMenuInteractions(navbar, navLinks, shopAllLink, menuCategories, backBtn, categoryItems, menuToggler) { // Pass elements
-         if (!navbar || !shopAllLink || !menuCategories || !menuToggler) {
-            console.error("Cannot setup menu interactions - essential elements missing.");
-            return;
-         }
-        let pcMenuTimeoutId;
-        let isMobile = window.innerWidth <= 900;
-
-        const showPcMenu = () => { /* ... (keep original logic) ... */
-             if (isMobile) return;
-            clearTimeout(pcMenuTimeoutId);
-            menuCategories.style.display = 'block';
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                menuCategories.style.opacity = '1';
-                menuCategories.style.visibility = 'visible';
-                menuCategories.style.transform = 'translateY(0)';
-                });
-            });
-         };
-        const hidePcMenu = () => { /* ... (keep original logic) ... */
-             if (isMobile) return;
-            clearTimeout(pcMenuTimeoutId);
-            pcMenuTimeoutId = setTimeout(() => {
-                menuCategories.style.opacity = '0';
-                menuCategories.style.visibility = 'hidden';
-                menuCategories.style.transform = 'translateY(-10px)';
-                const transitionEndHandler = () => {
-                if (menuCategories.style.opacity === '0') {
-                    menuCategories.style.display = 'none';
-                }
-                menuCategories.removeEventListener('transitionend', transitionEndHandler);
-                };
-                menuCategories.removeEventListener('transitionend', transitionEndHandler);
-                menuCategories.addEventListener('transitionend', transitionEndHandler, { once: true });
-            }, 150);
-        };
-        const handleMobileCategoryClick = (e) => { /* ... (keep original logic) ... */
-             if (!isMobile) return;
-            e.preventDefault();
-            e.stopPropagation();
-            menuCategories.classList.add('active');
-            if (backBtn) backBtn.style.display = 'flex';
-            navLinks.forEach(link => link.style.display = 'none');
-            shopAllLink.style.display = 'none';
-        };
-        const handleMobileBackClick = (e) => { /* ... (keep original logic) ... */
-             if (!isMobile || !backBtn) return; // Added check for backBtn
-            e.stopPropagation();
-            menuCategories.style.animation = 'slideOutRight 0.4s ease forwards';
-            menuCategories.addEventListener('animationend', function handler() {
-                menuCategories.classList.remove('active');
-                 if (backBtn) backBtn.style.display = 'none'; // Check again
-                navLinks.forEach(link => link.style.display = 'block');
-                shopAllLink.style.display = 'flex';
-                categoryItems.forEach(cat => {
-                cat.classList.remove('active');
-                const productList = cat.querySelector('.product-list');
-                if (productList) productList.style.display = 'none';
-                });
-                menuCategories.style.animation = '';
-                menuCategories.removeEventListener('animationend', handler);
-            }, { once: true });
-        };
-        const toggleMobileSubList = (e) => { /* ... (keep original logic) ... */
-            if (!isMobile) return;
-            e.stopPropagation();
-            const categoryItem = e.currentTarget.closest('.category');
-            if (!categoryItem) return;
-
-            const isActive = categoryItem.classList.toggle('active');
-            const productList = categoryItem.querySelector('.product-list');
-
-            categoryItems.forEach(otherItem => {
-                if (otherItem !== categoryItem && otherItem.classList.contains('active')) {
-                otherItem.classList.remove('active');
-                const otherList = otherItem.querySelector('.product-list');
-                if (otherList) otherList.style.display = 'none';
-                }
-            });
-
-            if (productList) {
-                productList.style.display = isActive ? 'block' : 'none';
-            }
-        };
-        const closeMobileNav = () => { /* ... (keep original logic) ... */
-             if (navbar && navbar.classList.contains('active')) {
-                navbar.classList.remove('active');
-                document.body.style.overflow = '';
-                if (menuCategories) menuCategories.classList.remove('active');
-                 if (backBtn) backBtn.style.display = 'none'; // Check if backBtn exists
-                navLinks.forEach(link => link.style.display = 'block');
-                if (shopAllLink) shopAllLink.style.display = 'flex';
-                categoryItems.forEach(cat => {
-                cat.classList.remove('active');
-                const productList = cat.querySelector('.product-list');
-                if (productList) productList.style.display = 'none';
-                });
-            }
-        };
-
-        const setupDesktopListeners = () => { /* ... (keep original logic, ensure elements exist) ... */
-            if (!shopAllLink || !menuCategories) return;
-            shopAllLink.addEventListener('mouseenter', showPcMenu);
-            shopAllLink.addEventListener('mouseleave', hidePcMenu);
-            menuCategories.addEventListener('mouseenter', showPcMenu);
-            menuCategories.addEventListener('mouseleave', hidePcMenu);
-            shopAllLink.removeEventListener('click', handleMobileCategoryClick);
-            if (backBtn) backBtn.removeEventListener('click', handleMobileBackClick);
-            categoryItems.forEach(item => {
-                const header = item.querySelector('.category-header');
-                if (header && header.mobileClickHandler) {
-                    header.removeEventListener('click', header.mobileClickHandler);
-                    delete header.mobileClickHandler;
-                }
-            });
-             if (backBtn) backBtn.style.display = 'none'; // Check if backBtn exists
-            navLinks.forEach(link => link.style.display = 'inline-block');
-            shopAllLink.style.display = 'inline-block';
-            menuCategories.classList.remove('active');
-             // Reset styles carefully, check if menuCategories exists
-            if (menuCategories) {
-                menuCategories.style.position = 'absolute';
-                menuCategories.style.height = '';
-                menuCategories.style.left = '';
-                menuCategories.style.width = '100vw';
-                menuCategories.style.marginLeft = 'calc(-50vw + 50%)';
-                // Reset display/opacity if hidden by mobile logic
-                menuCategories.style.display = 'none';
-                menuCategories.style.opacity = '0';
-                menuCategories.style.visibility = 'hidden';
-                menuCategories.style.transform = 'translateY(-10px)';
-            }
-            categoryItems.forEach(cat => {
-                cat.classList.remove('active');
-                const productList = cat.querySelector('.product-list');
-                if (productList) productList.style.display = 'block';
-            });
-            closeMobileNav();
-        };
-        const removeDesktopListeners = () => { /* ... (keep original logic, ensure elements exist) ... */
-             if (!shopAllLink || !menuCategories) return;
-            shopAllLink.removeEventListener('mouseenter', showPcMenu);
-            shopAllLink.removeEventListener('mouseleave', hidePcMenu);
-            menuCategories.removeEventListener('mouseenter', showPcMenu);
-            menuCategories.removeEventListener('mouseleave', hidePcMenu);
-            clearTimeout(pcMenuTimeoutId);
-             if (menuCategories) { // Check if menuCategories exists
-                menuCategories.style.display = 'none';
-                menuCategories.style.opacity = '0';
-                menuCategories.style.visibility = 'hidden';
-                menuCategories.style.transform = 'translateY(-10px)';
-            }
-        };
-        const setupMobileListeners = () => { /* ... (keep original logic, ensure elements exist) ... */
-             if (!shopAllLink || !menuCategories) return;
-            shopAllLink.addEventListener('click', handleMobileCategoryClick);
-            if (backBtn) backBtn.addEventListener('click', handleMobileBackClick);
-            categoryItems.forEach(item => {
-                const header = item.querySelector('.category-header');
-                if (header) {
-                header.mobileClickHandler = toggleMobileSubList;
-                header.addEventListener('click', header.mobileClickHandler);
-                }
-                const productList = item.querySelector('.product-list');
-                if (productList) productList.style.display = 'none';
-            });
-             if (menuCategories) { // Check if menuCategories exists
-                // Ensure correct initial state for mobile animation
-                menuCategories.style.display = 'none'; // Will be shown by .active class
-                menuCategories.style.opacity = '1';
-                menuCategories.style.visibility = 'visible';
-                menuCategories.style.transform = 'none';
-                menuCategories.style.position = 'absolute';
-                menuCategories.style.height = '100%';
-                menuCategories.style.left = '0';
-                menuCategories.style.width = '100%';
-                menuCategories.style.marginLeft = '0';
-             }
-        };
-        const removeMobileListeners = () => { /* ... (keep original logic, ensure elements exist) ... */
-             if (!shopAllLink || !menuCategories) return;
-            shopAllLink.removeEventListener('click', handleMobileCategoryClick);
-            if (backBtn) backBtn.removeEventListener('click', handleMobileBackClick);
-            categoryItems.forEach(item => {
-                const header = item.querySelector('.category-header');
-                if (header && header.mobileClickHandler) {
-                header.removeEventListener('click', header.mobileClickHandler);
-                delete header.mobileClickHandler;
-                }
-            });
-            if (menuCategories) menuCategories.classList.remove('active'); // Check if menuCategories exists
-        };
-
-        const handleResize = () => { /* ... (keep original logic) ... */
-             const newIsMobile = window.innerWidth <= 900;
-            if (newIsMobile !== isMobile) {
-                isMobile = newIsMobile;
-                removeDesktopListeners();
-                removeMobileListeners();
-                if (isMobile) {
-                setupMobileListeners();
-                } else {
-                setupDesktopListeners();
-                }
-            }
-            if (!isMobile) {
-                closeMobileNav();
-            }
-        };
-
-        // --- Event Listeners ---
-        // Menu Toggler
-         if (menuToggler) { // Check if menuToggler exists
-            menuToggler.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (!isMobile || !navbar) return; // Check navbar too
-
-                const isActive = navbar.classList.toggle('active');
-                document.body.style.overflow = isActive ? 'hidden' : '';
-                if (!isActive && menuCategories && backBtn) {
-                menuCategories.classList.remove('active');
-                backBtn.style.display = 'none';
-                navLinks.forEach(link => link.style.display = 'block');
-                if (shopAllLink) shopAllLink.style.display = 'flex';
-                categoryItems.forEach(cat => {
-                    cat.classList.remove('active');
-                    const productList = cat.querySelector('.product-list');
-                    if (productList) productList.style.display = 'none';
-                });
-                }
-            });
-         }
-
-
-        // Click outside mobile nav
-        document.addEventListener('click', (e) => {
-          if (isMobile && navbar && navbar.classList.contains('active') && !navbar.contains(e.target) && menuToggler && !menuToggler.contains(e.target) && e.target !== menuToggler) {
-            closeMobileNav();
-          }
-        });
-
-        // Resize Listener
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-          clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(handleResize, 100);
-        });
-
-        // --- Initial Setup Call ---
-        if (isMobile) {
-          setupMobileListeners();
-        } else {
-          setupDesktopListeners();
-        }
-        console.log("Menu interactions setup complete.");
-      }
-
-
-        function setupSearchOverlay(searchOverlay, searchInputOverlay, closeSearchBtn, searchIcon, searchInputHeader) { // Pass elements
-            if (!searchIcon) {
-                console.error("Search icon not found, cannot initialize search overlay.");
-                return;
-            }
-            // Style and append overlay elements
-            searchOverlay.classList.add('search-overlay');
-            searchInputOverlay.classList.add('search-input');
-            searchInputOverlay.placeholder = 'Search here...';
-            searchInputOverlay.setAttribute('type', 'search');
-            closeSearchBtn.classList.add('close-search');
-            closeSearchBtn.innerHTML = '&times;';
-            closeSearchBtn.setAttribute('aria-label', 'Close search');
-            searchOverlay.appendChild(searchInputOverlay);
-            searchOverlay.appendChild(closeSearchBtn);
-            document.body.appendChild(searchOverlay); // Append to body
-
-            const openSearch = (e) => { /* ... (keep original logic) ... */
-                if (e) e.stopPropagation();
-                searchOverlay.classList.add('active');
-                setTimeout(() => searchInputOverlay.focus(), 50);
-                document.body.style.overflow = 'hidden';
-            };
-            const closeSearch = () => { /* ... (keep original logic) ... */
-                 searchOverlay.classList.remove('active');
-                 document.body.style.overflow = '';
-            };
-
-            // Attach listeners
-            searchIcon.addEventListener('click', openSearch);
-            if (searchInputHeader) {
-                searchInputHeader.addEventListener('click', (e) => { if (window.innerWidth <= 900) { e.preventDefault(); openSearch(e); } });
-                searchInputHeader.addEventListener('focus', (e) => { if (window.innerWidth <= 900) { e.target.blur(); openSearch(e); } });
-            }
-            closeSearchBtn.addEventListener('click', closeSearch);
-            searchOverlay.addEventListener('click', (e) => { if (e.target === searchOverlay) { closeSearch(); } });
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && searchOverlay.classList.contains('active')) { closeSearch(); } });
-             // Sync input (optional)
-             searchInputOverlay.addEventListener('input', () => {
-                 if (searchInputHeader) { searchInputHeader.value = searchInputOverlay.value; }
-             });
-             console.log("Search overlay setup complete.");
-        }
-
-
-        function setupProductListPopup(popupElement, closeButton) { // Pass elements
-            if (!popupElement) {
-                console.log("Product list popup element not found.");
-                return;
-            }
-             // Make the global functions available
-            window.showProductList = function(brandOrCategory) {
-                 const title = popupElement.querySelector('.product-list-title');
-                 const itemsContainer = popupElement.querySelector('.product-list-items');
-                 if (!title || !itemsContainer) {
-                     console.error("Popup title or items container not found.");
-                     return;
-                 }
-                 title.textContent = `${brandOrCategory} Products`;
-                 // --- Example data loading ---
-                 const sampleProducts = [ /* ... (your sample data) ... */
-                     { name: `${brandOrCategory} Item 1`, price: '$25.99', img: 'https://via.placeholder.com/200x200/FADADD/6B4C3B?text=Item+1' },
-                     { name: `${brandOrCategory} Item 2`, price: '$30.50', img: 'https://via.placeholder.com/200x200/FADADD/6B4C3B?text=Item+2' }
-                 ];
-                 itemsContainer.innerHTML = sampleProducts.map(product => `
-                     <div class="product-list-item" onclick="window.location.href='#'">
-                     <img src="${product.img}" alt="${product.name}" loading="lazy"> <h4>${product.name}</h4>
-                     <p class="price">${product.price}</p>
-                     </div>
-                 `).join('');
-                 popupElement.classList.add('active');
-                 document.body.style.overflow = 'hidden';
-            };
-
-             window.closeProductList = function() { // Make close function global
-                 if (popupElement) {
-                     popupElement.classList.remove('active');
-                     document.body.style.overflow = '';
-                 }
-             };
-
-             // Attach listeners if close button exists
-             if (closeButton) {
-                 closeButton.addEventListener('click', window.closeProductList);
-             } else {
-                 console.warn("Product list popup close button not found.");
-             }
-             popupElement.addEventListener('click', (e) => {
-                 if (e.target === popupElement) window.closeProductList(); // Close on background click
-             });
-             document.addEventListener('keydown', (e) => {
-                 if (e.key === 'Escape' && popupElement.classList.contains('active')) {
-                     window.closeProductList(); // Close on Escape key
-                 }
-             });
-              console.log("Product list popup setup complete.");
-        }
-
-
-    }); // <-- End of DOMContentLoaded
-  </script>
+}); // end DOMContentLoaded
+</script>
 
 </body>
 </html>
