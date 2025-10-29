@@ -77,6 +77,7 @@ body {
     }
 
     .header {
+      cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -142,32 +143,27 @@ body {
                 left: 12px;
                 width: 16px;
                 height: 16px;
-                opacity: 0.6;
+                opacity: 0.8;
                 gap:30px
               }
 .search input {
                 width: 100%;
                 padding: 8px 12px 8px 38px;
-                border: 1px solid var(--soft-rose); /* Thay #828282 bằng --soft-rose để hài hòa */
+                border: 1px solid var(--soft-rose);
                 border-radius: 20px;
                 outline: none;
                 background-color: var(--petal-white);
                 transition: all 0.2s ease;
               }
-/* Chung cho tất cả input search */
 .search input[type="search"] {
-    font-size: 12px;     /* ✅ Chữ nhỏ hơn */
+    font-size: 12px; 
     color: #333;
 }
-
-/* Placeholder */
 .search input[type="search"]::placeholder {
-    font-size: 12px;     /* ✅ Chữ placeholder đồng bộ */
+    font-size: 12px;
     opacity: 0.7;
 }
 
-    /* PC mode: show input, hide overlay icon behavior */
-    /* PC mode */
 @media (min-width: 900px) {
     .search input[type="search"],
     .search input[type="search"]::placeholder {
@@ -175,7 +171,7 @@ body {
     }
     .search input {
         display: block !important;
-        padding-left: 38px !important; /* Đẩy chữ tránh icon */
+        padding-left: 38px !important;
         border-radius:50px;
         height: 32px;
         background: rgba(255, 255, 255, 0.8)
@@ -232,7 +228,18 @@ body {
         transition: opacity 0.35s;
         z-index: 999;
     }
-
+.search-overlay a img {
+      width: 28px;
+      height: 28px;
+      opacity: 0.8;
+      object-fit: contain;
+      cursor: pointer;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    nav a:hover img {
+      opacity: 0.6;
+      transform: scale(1.1);
+    }
     .search-overlay.active {
         opacity: 1;
         pointer-events: auto;
@@ -250,7 +257,7 @@ body {
         box-shadow: 0 4px 18px rgba(0,0,0,0.15);
         animation: dropDown 0.35s ease;
     }
-    .search-wrapper .icon {width:24px; height:24px}
+    .search-wrapper .icon {width:24px; height:24px; cursor: pointer;}
     .search-wrapper input {
         width: 100%;
         border: none;
@@ -1325,7 +1332,7 @@ opacity:0.4;
       align-items: center;
       justify-content: space-between;
       background-color: var(--pale-pink); /* Thay #fff8f8 bằng --pale-pink */
-      height: 480px;
+      height: 390px;
       padding:0px
     }
 .reward-text {
@@ -1358,20 +1365,22 @@ opacity:0.4;
 
 .reward-text button:hover {background: var(--soft-rose);} /* Thay #d17880 bằng --soft-rose */
 .reward-image {
-  flex: 1;
+  flex: 0 0 40%;      /* Chiếm 40% chiều ngang container */
+  height: 390px;      /* Chiều cao cố định */
+  min-width:650px;
+  overflow: hidden;   
   display: flex;
   align-items: stretch;
-  overflow: hidden;      
-  height: 100%;          
 }
+
 .reward-image img {
-  width: 100%;
-  height: 100%;           
-  object-fit: cover;      
-  padding: 0;
+  width: 100%;        /* Chiều rộng full khung 40% */
+  height: 100%;       /* Chiều cao full 390px */
+  object-fit: cover;  /* Phủ đầy khung, cắt thừa nếu cần */
   transition: transform 0.6s ease;
   display: block;
 }
+
 @media (max-width: 900px) {
       .reward-section {
         flex-direction: column;
@@ -1381,7 +1390,7 @@ opacity:0.4;
       .reward-image {
         order: -1;
         width: 100%;
-        height: 50%;
+        max-height: 390px;
       }
 
       .reward-text {

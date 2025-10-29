@@ -65,7 +65,7 @@
       min-width: 200px;
     }
     .footer-section h3 {
-      font-size: 24px;
+      font-size: 18px;
       margin-bottom: 16px;
       color: #6B4C3B;
       font-weight: 600;
@@ -90,82 +90,65 @@
     .footer-social {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start; /* căn trái tiêu đề h3 và các phần tử */
+      text-align: left;
     }
+
     .footer-social h3 {
-      font-size: 24px;
+      font-size: 18px;
       margin-bottom: 16px;
       color: #6B4C3B;
       font-weight: 600;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    .footer-social .social-icons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 16px;
-    }
-    .footer-social button {
-      background: none;
-      border: none;
-      color: #6B4C3B;
-      font-size: 24px;
-      cursor: pointer;
-      padding: 8px;
-      transition: color 0.3s ease, transform 0.3s ease;
-    }
-    .footer-social button:hover {
-      color: #E6A6B0;
-      transform: scale(1.2);
-    }
-    .footer-social button:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(230, 166, 176, 0.4);
-    }
-    .footer-bottom {
-      text-align: center;
-      font-size: 12.8px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(230, 166, 176, 0.2);
-      color: #6B4C3B;
-      opacity: 0.7;
-    }
-    .footer-bottom p {
-      margin: 4.8px 0;
+      text-align:left;
     }
 
-    /* Mobile Styles for Footer */
-    @media (max-width: 900px) {
-      .footer-newsletter {
-        margin-bottom: 24px;
-      }
+/* FOLLOW US – căn trái icon */
+.footer-section .footer-social{text-align: left; cursor:pointer}
+.footer-social .social-icons {display: flex;align-items: center;justify-content: flex-start;gap: 20px; margin-top: 1.2rem;}
+.footer-social .social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  position: relative; 
+}
 
-      .footer-newsletter p {
-        font-size: 14px;
-      }
+.footer-social .social-icons img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: invert(40%) sepia(20%) saturate(300%) hue-rotate(330deg);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
 
-      .footer-newsletter p:first-child {
-        font-size: 18px;
-      }
+.footer-social .social-icons a:hover {
+  transform: scale(1.1);
+  background-color: rgba(230, 166, 176, 0.15);
+}
 
-      .newsletter-form input {
-        width: 200px;
-      }
-    }
+.footer-social .social-icons a:hover img {
+  transform: scale(1.05); }
 
-    @media (max-width: 480px) {
-      .footer-newsletter p {
-        font-size: 12px;
-      }
+/* Bottom line */
+.footer-bottom {
+text-align: center; font-size: var(--footer-bottom-size); padding-top: 1rem;
+border-top: 1px solid var(--footer-border-color); color: var(--branch-brown); opacity: .7;
+}
+.footer-bottom p { margin: .3rem 0; }
 
-      .footer-newsletter p:first-child {
-        font-size: 16px;
-      }
-
-      .newsletter-form input {
-        width: 150px;
-      }
-    }
+/* Responsive footer */
+@media (max-width: 900px){
+.footer-main{ grid-template-columns: repeat(2, 1fr); gap: 28px; }
+}
+@media (max-width: 540px){
+.footer-main{ grid-template-columns: 1fr; gap: 22px; }
+.footer-section.footer-social{ width: 100%; }
+.footer-social .social-icons{ gap: 20px; }
+}
   </style>
 
   <!-- HTML của footer -->
@@ -211,10 +194,10 @@
     <div class="footer-section footer-social">
       <h3>FOLLOW US</h3>
       <div class="social-icons">
-        <button type="button" aria-label="Facebook"><i class="fab fa-facebook-f"></i></button>
-        <button type="button" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
-        <button type="button" aria-label="TikTok"><i class="fab fa-tiktok"></i></button>
-        <button type="button" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
+        <a hres="#"><img src="../1.homepage/images/fblogo.png"></a>
+        <a hres="#"><img src="../1.homepage/images/twlogo.png"></a>
+        <a hres="#"><img src="../1.homepage/images/inslogo.png"></a>
+        <a hres="#"><img src="../1.homepage/images/tiklogo.png"></a>
       </div>
     </div>
   </div>
