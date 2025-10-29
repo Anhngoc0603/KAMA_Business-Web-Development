@@ -9,7 +9,7 @@
   <style>
     /* === CÀI ĐẶT CHUNG === */
     body { font-family: 'Playfair Display', serif; background-color: #FFF9F9; color: #6B4C3B; margin: 0; overflow-x: hidden; }
-    main { padding: 20px 0; min-height: 60vh; }
+    main { padding: 120px 0 40px; min-height: 60vh; }
 
     /* === FIREWORKS === */
     .fireworks-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
@@ -26,15 +26,18 @@
     /* === LAYOUT === */
     .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
     .products-page-container { display: flex; gap: 30px; align-items: flex-start; margin-bottom: 60px; }
-    .products-filter-sidebar { flex: 0 0 260px; position: sticky; top: 150px; height: calc(100vh - 170px); overflow-y: auto; padding-right: 15px; }
-    .products-filter-sidebar .filter-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #FADADD; padding-bottom: 10px; margin-bottom: 25px; }
+    .products-filter-sidebar { 
+      flex: 0 0 260px; position: sticky; top: 100px; 
+      height: calc(100vh - 120px); overflow-y: auto; padding-right: 15px; z-index: 10;
+    }
+    .products-filter-sidebar .filter-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #FADADD; padding-bottom: 10px; margin-bottom: 25px; padding-top: 50px; }
     .products-filter-sidebar .filter-header a { font-size: 13px; color: #aaa; text-decoration: none; transition: color 0.3s ease; }
     .products-filter-sidebar .filter-header a:hover { color: #E6A6B0; }
 
     /* === FILTER TAGS === */
     .filter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .filter-tags .tag { padding: 6px 14px; background: #fff; border: 1px solid #eee; border-radius: 20px; font-size: 13px; cursor: pointer;
-      transition: all 0.3s ease; color: #888; }
+      transition: all 0.3s ease; color: #888; white-space: nowrap; }
     .filter-tags .tag:hover { background: #fdf5f5; border-color: #FADADD; color: #E6A6B0; }
     .filter-tags .tag.active { background: #E6A6B0; color: white; border-color: #E6A6B0; }
 
@@ -50,22 +53,88 @@
 
     /* === PRODUCTS GRID === */
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; width: 100%; }
-    .product-card { background: #fff; border: 1px solid rgba(230,166,176,0.3); border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-      overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column; }
+    .product-card { 
+      background: #fff; border: 1px solid rgba(230,166,176,0.3); border-radius: 16px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden; transition: all 0.3s ease; 
+      display: flex; flex-direction: column; position: relative;
+    }
     .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(230,166,176,0.15); border-color: #E6A6B0; }
-    .product-img { width: 100%; height: 260px; object-fit: cover; }
-    .info { padding: 16px; flex-grow: 1; }
-    .info h3 { font-size: 1.1rem; margin: 0 0 6px; color: #6B4C3B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .price { color: #E6A6B0; font-weight: bold; font-size: 1.2rem; }
-    .rating { color: #9b7c7c; font-size: 0.9rem; }
 
-    /* === SHOP BY SECTIONS (DI CHUYỂN XUỐNG DƯỚI) === */
+    .product-image-container { position: relative; overflow: hidden; }
+    .product-img { width: 100%; height: 260px; object-fit: cover; transition: opacity 0.4s ease; }
+    .hover-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; z-index: 1; }
+    .product-card:hover .product-img { opacity: 0; }
+    .product-card:hover .hover-image { opacity: 1; }
+
+    /* === BADGE NEW / SALE === */
+    .badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .badge-new { background: #E6A6B0; color: white; }
+    .badge-sale { background: #FF6B6B; color: white; }
+
+    .info { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; }
+    .info h3 { font-size: 1.1rem; margin: 0 0 6px; color: #6B4C3B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .info p { font-size: 0.9rem; color: #866e6e; margin: 4px 0; flex-grow: 1; }
+    .meta { font-size: 0.8rem; color: #9b7c7c; margin: 4px 0; }
+    .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f5f5f5; }
+    .price { color: #E6A6B0; font-weight: bold; font-size: 1.2rem; }
+    .original-price { text-decoration: line-through; color: #aaa; font-size: 0.9rem; margin-left: 6px; }
+    .rating { display: flex; align-items: center; font-size: 0.9rem; color: #9b7c7c; }
+    .star { width: 16px; height: 16px; color: gold; margin-right: 3px; }
+
+    /* === NÚT ADD TO CART + VIEW DETAILS === */
+    .buttons { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+    .quantity-input { width: 50px; padding: 6px; border: 1px solid #eee; border-radius: 6px; font-size: 14px; text-align: center; }
+    .quantity-input:focus { border-color: #E6A6B0; outline: none; }
+
+    /* NÚT CART DÙNG ẢNH shopping.png - FONT ĐẸP */
+    .btn-outline {
+      width: 40px; height: 40px;
+      background: url('../1.homepage/images/shopping.png') no-repeat center center;
+      background-size: 22px;
+      border: 1.5px solid #E6A6B0;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+    }
+    .btn-outline:hover {
+      background-color: #fdf5f5;
+      border-color: #F9C6CF;
+      transform: scale(1.1);
+    }
+
+    .btn-view-details {
+      flex: 1; height: 44px; background: linear-gradient(135deg, #E6A6B0, #F9C6CF); color: white;
+      font-size: 15px; font-weight: 600; border: none; border-radius: 25px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(230, 166, 176, 0.3); position: relative; overflow: hidden;
+      font-family: 'Playfair Display', serif;
+    }
+    .btn-view-details::after {
+      content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0;
+      background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+    .btn-view-details:hover {
+      background: linear-gradient(135deg, #F9C6CF, #E6A6B0); transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(230, 166, 176, 0.4);
+    }
+    .btn-view-details:hover::after { width: 200px; height: 200px; }
+
+    /* === SHOP BY SECTIONS === */
     .shop-section { margin: 80px 0 60px; }
     .shop-title { text-align: center; font-size: 1.8rem; margin-bottom: 30px; color: #6B4C3B; }
     .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
     .shop-card { position: relative; height: 340px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.12); cursor: pointer; transition: transform 0.3s ease; }
     .shop-card:hover { transform: translateY(-12px); }
-    .shop-card img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; }
+    .shop-card img { width: 100%; height: 100%; object-fit: cover; }
     .shop-card .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.75)); padding: 40px 20px 25px; color: white; text-align: center; }
     .shop-card h3 { margin: 0; font-size: 1.6rem; font-weight: 600; }
     .shop-card p { margin: 8px 0 0; font-size: 1rem; opacity: 0.9; }
@@ -82,9 +151,8 @@
   <main>
     <div class="container">
 
-      <!-- FILTER + PRODUCTS (TRÊN CÙNG) -->
+      <!-- FILTER + PRODUCTS -->
       <div class="products-page-container">
-        <!-- FILTER SIDEBAR -->
         <aside class="products-filter-sidebar">
           <div class="filter-header">
             <h3>FILTER</h3>
@@ -101,6 +169,7 @@
               <span class="tag">PRIMER</span>
               <span class="tag">FRAGRANCE</span>
               <span class="tag">ACCESSORIES & TOOLS</span>
+              <span class="tag">SKINCARE</span>
             </div>
           </div>
 
@@ -115,18 +184,15 @@
             </div>
           </div>
 
+          <!-- BRAND ĐÚNG VỚI full.json -->
           <div class="filter-group">
             <h4>BRAND</h4>
             <div class="checkbox-group" id="brandFilters">
-              <label><input type="checkbox" value="Sakura"> Sakura</label>
-              <label><input type="checkbox" value="Cherry"> Cherry</label>
-              <label><input type="checkbox" value="Blossom"> Blossom</label>
-              <label><input type="checkbox" value="Lux"> Lux</label>
+              <!-- JS sẽ tự động sinh -->
             </div>
           </div>
         </aside>
 
-        <!-- PRODUCTS GRID -->
         <section style="flex:1;">
           <h2 style="text-align:center;margin-bottom:20px;">All Products</h2>
           <div style="text-align:center;margin-bottom:15px;">
@@ -138,12 +204,13 @@
         </section>
       </div>
 
-      <!-- === 2 PHẦN SHOP BY ĐƯỢC ĐƯA XUỐNG DƯỚI === -->
+      <!-- SHOP BY CATEGORY -->
       <section class="shop-section">
         <h2 class="shop-title">Shop By Category</h2>
         <div class="shop-grid" id="shopByCategory"></div>
       </section>
 
+      <!-- SHOP BY BRAND -->
       <section class="shop-section">
         <h2 class="shop-title">Shop By Brand</h2>
         <div class="shop-grid" id="shopByBrand"></div>
@@ -170,9 +237,18 @@
         }
       };
       await Promise.all([
-        loadHTML('../header_footer/header.html', 'header-placeholder'),
-        loadHTML('../header_footer/footer.html', 'footer-placeholder')
+        loadHTML('./header.html', 'header-placeholder'),
+        loadHTML('./footer.html', 'footer-placeholder')
       ]);
+
+      // === GIỎ HÀNG ===
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const updateCartCount = () => {
+        const count = cart.reduce((sum, item) => sum + item.qty, 0);
+        const cartIcon = document.querySelector('.cart-count');
+        if (cartIcon) cartIcon.textContent = count;
+      };
+      updateCartCount();
 
       // === GLOBAL DATA ===
       let allProducts = [];
@@ -184,6 +260,13 @@
           const res = await fetch('full.json');
           const data = await res.json();
           allProducts = data.products || [];
+
+          // === TỰ ĐỘNG TẠO BRAND FILTER ===
+          const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
+          const brandContainer = document.getElementById('brandFilters');
+          brandContainer.innerHTML = brands.map(brand => `
+            <label><input type="checkbox" value="${brand}"> ${brand}</label>
+          `).join('');
 
           // SHOP BY CATEGORY
           const categories = [...new Set(allProducts.map(p => p.category).filter(Boolean))].sort();
@@ -198,7 +281,6 @@
           }).join('');
 
           // SHOP BY BRAND
-          const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
           const brandGrid = document.getElementById('shopByBrand');
           brandGrid.innerHTML = brands.map(brand => {
             const img = allProducts.find(p => p.brand === brand)?.images[0] || 'https://via.placeholder.com/300x400/F5E6E6/999?text=No+Image';
@@ -224,23 +306,63 @@
           return;
         }
         const html = list.map(p => {
-          const img = p.images?.[0] || 'https://via.placeholder.com/260x260/FADADD/FFFFFF?text=No+Image';
+          const img1 = p.images?.[0] || 'https://via.placeholder.com/260x260/FADADD/FFFFFF?text=No+Image';
+          const img2 = p.images?.[1] || img1;
+          const hasSale = p.originalPrice && p.originalPrice > p.price;
+          const isNew = p.isNew === true;
+
           return `
             <div class="product-card">
-              <img src="${img}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/260x260/FADADD/FFFFFF?text=Error'">
+              <div class="product-image-container">
+                ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
+                ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
+                <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/260x260/FADADD/FFFFFF?text=Error'">
+                <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
+              </div>
               <div class="info">
                 <h3 title="${p.name}">${p.name}</h3>
-                <p style="font-size:0.9rem;color:#888;margin:4px 0;">${p.description || ''}</p>
-                <div style="font-size:0.8rem;color:#aaa;">SKU: ${p.id}</div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-                  <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
-                  <div class="rating"><i class="fas fa-star" style="color:#E6A6B0;"></i> ${p.rating.toFixed(1)}</div>
+                <p>${p.description || ''}</p>
+                <div class="meta">SKU: ${p.id} • ${p.brand}</div>
+                <div class="actions">
+                  <div>
+                    <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
+                    ${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}
+                  </div>
+                  <div class="rating"><i class="fas fa-star star"></i> ${p.rating.toFixed(1)}</div>
+                </div>
+                <div class="buttons">
+                  <input type="number" value="1" min="1" class="quantity-input">
+                  <button class="btn-outline" onclick="addToCart(${p.id}, this)"></button>
+                  <button class="btn-view-details" onclick="viewDetail(${p.id})">View Details</button>
                 </div>
               </div>
             </div>`;
         }).join('');
         grid.innerHTML = html;
       }
+
+      // === ADD TO CART ===
+      window.addToCart = (id, btn) => {
+        const qtyInput = btn.previousElementSibling;
+        const qty = parseInt(qtyInput.value) || 1;
+        const product = allProducts.find(p => p.id === id);
+        if (!product) return;
+        const existing = cart.find(item => item.id === id);
+        if (existing) {
+          existing.qty += qty;
+        } else {
+          cart.push({ ...product, qty });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        triggerFireworks();
+        alert(`${product.name} đã thêm ${qty} vào giỏ!`);
+      };
+
+      // === VIEW DETAIL ===
+      window.viewDetail = (id) => {
+        window.location.href = `product-detail.html?id=${id}`;
+      };
 
       // === UPDATE COUNT ===
       function updateCount() {
@@ -264,7 +386,6 @@
 
       // === EVENT LISTENERS ===
       function setupEvents() {
-        // Category Tags
         document.querySelectorAll('#categoryTags .tag').forEach(tag => {
           tag.addEventListener('click', () => {
             document.querySelectorAll('#categoryTags .tag').forEach(t => t.classList.remove('active'));
@@ -276,7 +397,6 @@
           });
         });
 
-        // Shop By Cards (xuống dưới nhưng vẫn click được)
         document.querySelectorAll('.shop-card').forEach(card => {
           card.addEventListener('click', () => {
             const type = card.getAttribute('data-filter');
@@ -299,7 +419,6 @@
           });
         });
 
-        // Price Slider
         const slider = document.getElementById('priceSlider');
         const valueEl = document.getElementById('priceValue');
         slider.addEventListener('input', () => {
@@ -309,7 +428,6 @@
           updateCount();
         });
 
-        // Brand Checkboxes
         document.querySelectorAll('#brandFilters input').forEach(cb => {
           cb.addEventListener('change', () => {
             const checked = Array.from(document.querySelectorAll('#brandFilters input:checked')).map(c => c.value);
@@ -319,7 +437,6 @@
           });
         });
 
-        // Clear All
         document.getElementById('clearFilters').addEventListener('click', e => {
           e.preventDefault();
           currentFilters = { category: 'ALL-IN', brand: null, price: 300 };
@@ -354,6 +471,7 @@
       applyFilters();
       updateCount();
     });
+    
   </script>
 </body>
 </html>
