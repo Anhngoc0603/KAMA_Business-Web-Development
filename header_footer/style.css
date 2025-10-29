@@ -1359,7 +1359,7 @@ opacity:0.4;
 .card:hover { transform: translateY(-10px); }
 .card img { width: 100%; height: 220px; object-fit: cover; }
 .card-content { padding: 20px; }
-.price { color: #7c9885; font-size: 24px; font-weight: bold; } /* Giữ #7c9885 vì là phần của gradient */
+.price { color: #E6A6B0;; font-size: 24px; font-weight: bold; } /* Giữ #7c9885 vì là phần của gradient */
 
 /*===============BANNER=============*/
 .banner img{
