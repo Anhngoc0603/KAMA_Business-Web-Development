@@ -1,0 +1,26 @@
+{
+  "events": [
+    {
+      "image": "https://i0.wp.com/beautyvelle.com/wp-content/uploads/2024/12/Dior-Glowmania-Collection-Banner-3.png?resize=780%2C780&ssl=1",
+      "title": "Dior Beauty Week - 10% OFF All Dior Products",
+      "description": "Enjoy 10% off across all Dior makeup and skincare collections. Indulge in timeless luxury and elegance.",
+      "link": "https://www.dior.com/",
+      "deadline": "Ends Nov 30"
+    },
+    {
+      "image": "https://images.unidays.world/i/perks/native/raw-banner/66560086-367b-4609-b718-773b2d672e23?format=webp&w=3840",
+      "title": "YSL Lipstick Treat – Buy 2 Get 1 Free",
+      "description": "Collect the hottest shades from YSL Rouge Volupté and get your 3rd lipstick free!",
+      "link": "https://www.yslbeauty.com/",
+      "deadline": "Valid until Dec 15"
+    },
+    {
+      "image": "https://m.cremedelamer.com/media/export/cms/2022LaMer/Global%20CMS/FY26%20October%20Promo/US%20Promo/HP%20MODULE/LM_US_2025_FY26_OctPromo_AdHoc_HP_Module_Desktop_Slice1.jpg",
+      "title": " Skincare Glow Set - 15% OFF Combo",
+      "description": "Get a glowing skin combo featuring La Mer and Charlotte Tilbury — limited offer only.",
+      "link": "#",
+      "deadline": "While stocks last"
+    }
+   
+  ]
+}
