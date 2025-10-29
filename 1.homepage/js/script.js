@@ -481,3 +481,12 @@ document.addEventListener('click', () => {
     closeSearchOverlay();
   }
 });
+ const introVideo = document.getElementById('introVideo');
+    introVideo.addEventListener('ended', () => {
+      document.body.classList.add('loaded');
+      setTimeout(() => {
+        document.getElementById('introContainer').remove();
+        document.body.style.overflow = 'auto';
+      }, 1000);
+    });
+
