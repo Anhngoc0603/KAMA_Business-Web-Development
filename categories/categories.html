@@ -547,7 +547,7 @@
 
             productsHTML += `
               <div class="product-card">
-                <img src="${image}" alt="${product.name || 'Product'}" class="product-img">
+                <img src="${product.images[0]}" alt="${product.name || 'Product'}" class="product-img">
                 <div class="info">
                   <h3>${product.name || 'Unnamed Product'}</h3>
                   <p>${product.description || ''}</p>
