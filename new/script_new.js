@@ -102,6 +102,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadPartial('../header_footer/header.html', 'header-placeholder'),
     loadPartial('../header_footer/footer.html', 'footer-placeholder')
   ]);
+  // === Reattach header events after loading ===
+initHeaderEvents();
+
+function initHeaderEvents() {
+  const menuToggler = document.querySelector('.menu-toggler');
+  const navbar = document.querySelector('.navbar');
+  const shopAll = document.querySelector('.shop-all');
+  const menuCategories = document.querySelector('.menu-categories');
+
+  // ✅ Nút nav.png mở / đóng menu mobile
+  if (menuToggler && navbar) {
+    menuToggler.addEventListener('click', () => {
+      navbar.classList.toggle('active');
+    });
+  }
+
+  // ✅ Nút "Shop All" mở / đóng danh mục con
+  if (shopAll && menuCategories) {
+    shopAll.addEventListener('click', () => {
+      menuCategories.classList.toggle('active');
+      shopAll.classList.toggle('active');
+    });
+  }
+}
+
 
   // ===================================================================
   // 4. FIREWORKS

@@ -16,7 +16,7 @@ setInterval(() => {
 
 document.addEventListener('DOMContentLoaded', () => {
   // ================== MENU TOGGLE ==================
-  // Elements for header
+  // Elements for header 
   const menuToggler = document.getElementById('menu-toggler');
   const navbar = document.getElementById('navbar');
   const shopAll = document.querySelector('.shop-all');

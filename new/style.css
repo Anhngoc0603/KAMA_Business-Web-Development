@@ -858,7 +858,7 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Nhịp thở nhẹ */
+/* Nhịp thở nhẹ */ 
 @keyframes badgePulse {
   0%, 100% {
     transform: scale(1);
@@ -869,3 +869,4 @@
     box-shadow: 0 0 18px rgba(249,198,207,0.9), 0 0 40px rgba(230,166,176,0.7);
   }
 }
+
