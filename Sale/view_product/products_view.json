@@ -1,18 +1,381 @@
-[
-  {
-    "id": 1,
-    "name": "Dior Forever Foundation",
-    "brand": "Dior",
-    "price": 68.00,
-    "originalPrice": 75.00,
-    "rating": 4.9,
-    "category": "Face",
-    "image": "../1 (1).Final/images/luxury-makeup-1.jpg",
-    "description": "A long-wear, high-perfection foundation that enhances your natural glow.",
-    "ingredients": "Water, Glycerin, Dimethicone, Titanium Dioxide, Iron Oxides",
-    "weight": "30ml",
-    "shade": "2N",
-    "launchDate": "2025-10-18T08:58:00+07:00",
-    "usageInstructions": "Apply with a brush or sponge for even coverage, blend well."
-  }
-]
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Luxury Palette Pillow Talk",
+      "brand": "Charlotte Tilbury",
+      "price": 125.50,
+      "originalPrice": null,
+      "rating": 4.9,
+      "category": "Eyes",
+      "subtype": "Eyeshadow Palette",
+      "images": [
+        "../images/Chartlotte Tilbury.webp",
+        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQl-PPkfOvgoE3NY5crZUHhJBpUEuh04GUFVRxj4Qne8wfXSkOyk4NYt86eCRZn4NAW82asc615Dj7BLZ8Ey4vvBTg-Y1xw_Uhm5f7lvZM"
+      ],
+      "description": "Iconic eyeshadow quad in the dreamy Pillow Talk shade for a romantic, wide-awake look.",
+      "detailedDescription": "The Charlotte Tilbury Luxury Palette in Pillow Talk features four harmonious shades — Prime, Enhance, Smoke, and Pop — designed to create a soft, sultry eye look. Ultra-blendable and long-wearing, perfect for day-to-night transitions.",
+      "ingredients": "Talc, Mica, Silica, Dimethicone, Magnesium Myristate, Caprylic/Capric Triglyceride...",
+      "weight": "5.2g",
+      "shades": [
+        { "value": "prime", "label": "Prime" },
+        { "value": "enhance", "label": "Enhance" },
+        { "value": "smoke", "label": "Smoke" },
+        { "value": "pop", "label": "Pop" }
+      ],
+      "launchDate": "2020-10-01",
+      "usageInstructions": "Apply Prime all over the lid. Blend Enhance into the crease. Use Smoke to define the outer corner. Finish with Pop on the center for a glow.",
+      "isNew": false,
+      "benefits": [
+        "Universally flattering nude-pink tones",
+        "Creamy, blendable texture with no fallout",
+        "Buildable from soft to dramatic",
+        "Luxurious gold compact with mirror"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Addict Lip Glow Button",
+      "brand": "Dior",
+      "price": 50.21,
+      "originalPrice": 55.00,
+      "rating": 4.5,
+      "category": "Lips",
+      "subtype": "Lip Balm",
+      "images": [
+        "../images/dior.jpg",
+        "images/products/p1-hover.jpg"
+      ],
+      "description": "Custom-color reviving balm that enhances your natural lip tone with a glossy finish.",
+      "detailedDescription": "Dior Addict Lip Glow uses Color Reviver technology to react with your lips' pH for a unique pink shade. Provides 24-hour hydration and a subtle shine.",
+      "ingredients": "Ricinus Communis Seed Oil, Beeswax, Shea Butter, Vitamin E, Mango Butter...",
+      "weight": "3.2g",
+      "shades": [
+        { "value": "001-pink", "label": "001 Pink" },
+        { "value": "004-coral", "label": "004 Coral" },
+        { "value": "012-rosewood", "label": "012 Rosewood" }
+      ],
+      "launchDate": "2015-03-01",
+      "usageInstructions": "Apply directly to lips as needed. Can be used alone or under lipstick.",
+      "isNew": false,
+      "benefits": [
+        "Personalized pink tint for every user",
+        "Intense 24-hour hydration",
+        "Natural glossy finish",
+        "Elegant push-button packaging"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Gucci Blush De Beauté",
+      "brand": "Gucci",
+      "price": 325.50,
+      "originalPrice": null,
+      "rating": 4.3,
+      "category": "Face",
+      "subtype": "Blush",
+      "images": [
+        "../images/Gucci.jpg",
+        "../images/products/p1-hover.jpg"
+      ],
+      "description": "Silky blush that blends like cream and finishes like powder for a natural flush.",
+      "detailedDescription": "Gucci Blush De Beauté is a multi-use powder that acts as blush, bronzer, and highlighter. Its melt-in texture delivers buildable color with a soft-focus glow.",
+      "ingredients": "Talc, Mica, Silica, Nylon-12, Dimethicone, Magnesium Stearate...",
+      "weight": "5.5g",
+      "shades": [
+        { "value": "01-soft-peach", "label": "01 Soft Peach" },
+        { "value": "03-radiant-rose", "label": "03 Radiant Rose" },
+        { "value": "05-silky-berry", "label": "05 Silky Berry" }
+      ],
+      "launchDate": "2021-04-01",
+      "usageInstructions": "Swirl a brush over the powder and apply to the apples of the cheeks. Blend upward toward the temples.",
+      "isNew": false,
+      "benefits": [
+        "3-in-1: blush, contour, highlight",
+        "Buildable, natural-looking color",
+        "Long-wearing and fade-resistant",
+        "Signature Gucci fragrance"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Bloom Couture Eyes",
+      "brand": "Fenty Beauty",
+      "price": 100.00,
+      "originalPrice": null,
+      "rating": 4.0,
+      "category": "Eyes",
+      "subtype": "Eyeshadow Palette",
+      "images": [
+        "../images/Màu hồng.jpg",
+        "images/products/p1-hover.jpg"
+      ],
+      "description": "Vibrant pink-themed eyeshadow palette designed for bold, inclusive looks.",
+      "detailedDescription": "Fenty Beauty Bloom Couture Eyes features 10 high-pigment shades from soft pastels to electric pinks. Formulated for zero fallout and 12-hour wear.",
+      "ingredients": "Talc, Mica, Zinc Stearate, Silica, Dimethicone...",
+      "weight": "12g",
+      "shades": [
+        { "value": "petal-pop", "label": "Petal Pop" },
+        { "value": "rose-rave", "label": "Rose Rave" },
+        { "value": "bloom-bomb", "label": "Bloom Bomb" }
+      ],
+      "launchDate": "2023-06-01",
+      "usageInstructions": "Use dry for soft color, wet brush for foiled effect. Layer for intensity.",
+      "isNew": true,
+      "benefits": [
+        "Inclusive for all skin tones, especially deep",
+        "High-impact pigment with easy blending",
+        "No fallout, smudge-proof",
+        "Compact and travel-friendly"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Pillow Talk Multi-Glow",
+      "brand": "Charlotte Tilbury",
+      "price": 302.00,
+      "originalPrice": null,
+      "rating": 4.6,
+      "category": "Face",
+      "subtype": "Highlighter",
+      "images": [
+        "../images/NARS.jpg",
+        "images/products/p5-hover.jpg"
+      ],
+      "description": "Cream-powder highlighter that delivers a candlelit glow from within.",
+      "detailedDescription": "Pillow Talk Multi-Glow is a hybrid highlighter with a soft-focus pearl finish. Use on cheekbones, brow bones, or lips for multidimensional radiance.",
+      "ingredients": "Mica, Synthetic Fluorphlogopite, Calcium Sodium Borosilicate, Silica...",
+      "weight": "8g",
+      "shades": [
+        { "value": "dream-light", "label": "Dream Light" },
+        { "value": "romance-light", "label": "Romance Light" }
+      ],
+      "launchDate": "2022-11-01",
+      "usageInstructions": "Apply with fingertips or a small brush to high points of the face. Blend for a seamless glow.",
+      "isNew": false,
+      "benefits": [
+        "Soft, diffused glow without glitter",
+        "Multi-use: face, eyes, lips",
+        "Cream-to-powder texture",
+        "Suitable for all skin types"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Rouge Volupté Shine",
+      "brand": "YSL",
+      "price": 29.00,
+      "originalPrice": 42.00,
+      "rating": 4.4,
+      "category": "Lips",
+      "subtype": "Lipstick",
+      "images": [
+        "../images/son.jpg",
+        "images/products/p6-hover.jpg"
+      ],
+      "description": "Oil-in-stick lipstick that melts on lips for shine and comfort.",
+      "detailedDescription": "YSL Rouge Volupté Shine combines vibrant color with 65% caring oils. Delivers a glossy, balm-like feel with medium coverage and fruity scent.",
+      "ingredients": "Pomegranate Extract, Macadamia Oil, Jojoba Oil, Candelilla Wax...",
+      "weight": "3.2g",
+      "shades": [
+        { "value": "12-corail-dolman", "label": "12 Corail Dolman" },
+        { "value": "45-rouge-tuxedo", "label": "45 Rouge Tuxedo" }
+      ],
+      "launchDate": "2011-09-01",
+      "usageInstructions": "Apply directly from the bullet. Blot lightly for a stained effect or layer for full opacity.",
+      "isNew": false,
+      "benefits": [
+        "Hydrating oil-infused formula",
+        "Juicy shine with buildable color",
+        "Pleasant fruity fragrance",
+        "Iconic gold bullet design"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Diorshow Mascara",
+      "brand": "Dior",
+      "price": 27.00,
+      "originalPrice": null,
+      "rating": 4.7,
+      "category": "Eyes",
+      "subtype": "Mascara",
+      "images": [
+        "../images/Dior phấn.jpg",
+        "images/products/p7-hover.jpg"
+      ],
+      "description": "Iconic volumizing mascara with XXL brush for panoramic lashes.",
+      "detailedDescription": "Diorshow Mascara builds dramatic volume and length in one coat. Its oversized brush coats every lash for a false-lash effect without clumping.",
+      "ingredients": "Aqua/Water, Paraffin, Potassium Cetyl Phosphate, Acrylates Copolymer...",
+      "weight": "10ml",
+      "shades": [
+        { "value": "090-black", "label": "090 Pro Black" }
+      ],
+      "launchDate": "1999-01-01",
+      "usageInstructions": "Wiggle brush from root to tip. Apply second coat for extra volume.",
+      "isNew": false,
+      "benefits": [
+        "Instant volume and length",
+        "Oversized brush for full coverage",
+        "Long-wearing, smudge-proof",
+        "Cult-favorite formula"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Orgasm Blush",
+      "brand": "NARS",
+      "price": 31.00,
+      "originalPrice": null,
+      "rating": 4.6,
+      "category": "Face",
+      "subtype": "Blush",
+      "images": [
+        "../images/Nars má.jpg",
+        "images/products/p8-hover.jpg"
+      ],
+      "description": "Peachy-pink blush with golden sheen for a universal flush.",
+      "detailedDescription": "NARS Orgasm Blush is a globally bestselling shade that flatters all skin tones. Finely milled powder blends seamlessly for a natural, radiant finish.",
+      "ingredients": "Talc, Mica, Silica, Magnesium Myristate, Dimethicone...",
+      "weight": "4.8g",
+      "shades": [
+        { "value": "orgasm", "label": "Orgasm" }
+      ],
+      "launchDate": "1999-01-01",
+      "usageInstructions": "Smile and apply to the apples of the cheeks, blending upward toward the temples.",
+      "isNew": false,
+      "benefits": [
+        "Universally flattering shade",
+        "Subtle golden shimmer",
+        "Buildable color payoff",
+        "Iconic sleek black compact"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Forever Cushion",
+      "brand": "Dior",
+      "price": 68.00,
+      "originalPrice": null,
+      "rating": 4.8,
+      "category": "Face",
+      "subtype": "Cushion Foundation",
+      "images": [
+        "../images/Dior cushion.png",
+        "images/products/p8-hover.jpg"
+      ],
+      "description": "Long-wear cushion foundation with floral skincare benefits.",
+      "detailedDescription": "Dior Forever Cushion delivers 24-hour flawless coverage with a luminous matte finish. Infused with pansy extract for hydration and pore refinement.",
+      "ingredients": "Water, Dimethicone, Titanium Dioxide, Glycerin, Pansy Extract...",
+      "weight": "14g",
+      "shades": [
+        { "value": "0n", "label": "0N Neutral" },
+        { "value": "1n", "label": "1N Neutral" },
+        { "value": "2n", "label": "2N Neutral" }
+      ],
+      "launchDate": "2021-03-01",
+      "usageInstructions": "Press puff into cushion and pat onto skin. Build for desired coverage.",
+      "isNew": false,
+      "benefits": [
+        "24-hour wear and hydration",
+        "Pore-minimizing effect",
+        "Natural luminous matte finish",
+        "Portable with refillable case"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Prisme Libre Powder",
+      "brand": "Givenchy",
+      "price": 59.00,
+      "originalPrice": null,
+      "rating": 4.7,
+      "category": "Face",
+      "subtype": "Loose Powder",
+      "images": [
+        "../images/givenchy.jpg",
+        "images/products/p8-hover.jpg"
+      ],
+      "description": "Four-color loose powder that perfects and mattifies with a soft glow.",
+      "detailedDescription": "Givenchy Prisme Libre harmonizes four complementary shades to correct, illuminate, and set makeup. Ultra-fine texture blurs imperfections.",
+      "ingredients": "Silica, Mica, Synthetic Fluorphlogopite, Nylon-12...",
+      "weight": "12g",
+      "shades": [
+        { "value": "1-mousseline-pastel", "label": "1 Mousseline Pastel" },
+        { "value": "3-voile-rose", "label": "3 Voile Rosé" }
+      ],
+      "launchDate": "2007-01-01",
+      "usageInstructions": "Shake bottle, tap puff, and press lightly over face to set makeup.",
+      "isNew": false,
+      "benefits": [
+        "Color-correcting and illuminating",
+        "Soft-focus blur effect",
+        "Long-lasting matte finish",
+        "Iconic four-chamber design"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Le Rouge Sheer Velvet",
+      "brand": "Givenchy",
+      "price": 42.00,
+      "originalPrice": null,
+      "rating": 4.5,
+      "category": "Lips",
+      "subtype": "Lipstick",
+      "images": [
+        "../images/givenchy 1.jpg",
+        "images/products/p8-hover.jpg"
+      ],
+      "description": "Sheer matte lipstick with a soft velvet blur finish.",
+      "detailedDescription": "Le Rouge Sheer Velvet offers buildable sheer-to-medium coverage with a blurred, second-skin effect. Infused with hyaluronic acid for comfort.",
+      "ingredients": "Dimethicone, Silica, Hyaluronic Acid, Mango Butter...",
+      "weight": "3.4g",
+      "shades": [
+        { "value": "23-nude-boheme", "label": "23 Nude Bohème" },
+        { "value": "37-rouge-grain", "label": "37 Rouge Grain" }
+      ],
+      "launchDate": "2022-09-01",
+      "usageInstructions": "Apply from the center of lips outward. Blot for a stained look.",
+      "isNew": false,
+      "benefits": [
+        "Blurred velvet matte finish",
+        "Comfortable, non-drying",
+        "Buildable sheer color",
+        "Elegant couture case"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Capture Totale Foundation",
+      "brand": "Dior",
+      "price": 82.00,
+      "originalPrice": null,
+      "rating": 4.9,
+      "category": "Face",
+      "subtype": "Foundation",
+      "images": [
+        "../images/dior 1.jpg",
+        "images/products/p8-hover.jpg"
+      ],
+      "description": "Anti-aging foundation with firming and radiance-boosting benefits.",
+      "detailedDescription": "Dior Capture Totale Foundation combines full coverage with skincare actives from the Longoza flower. Visibly firms and illuminates in 4 weeks.",
+      "ingredients": "Water, Dimethicone, Glycerin, Longoza Extract, Titanium Dioxide...",
+      "weight": "30ml",
+      "shades": [
+        { "value": "1n", "label": "1N Neutral" },
+        { "value": "2n", "label": "2N Neutral" },
+        { "value": "3w", "label": "3W Warm" }
+      ],
+      "launchDate": "2023-01-15",
+      "usageInstructions": "Shake well. Apply with brush or sponge, blending from center outward.",
+      "isNew": true,
+      "benefits": [
+        "Full coverage with natural finish",
+        "Firming and anti-aging actives",
+        "24-hour hydration and wear",
+        "Radiance-enhancing pearls"
+      ]
+    }
+  ]
+}

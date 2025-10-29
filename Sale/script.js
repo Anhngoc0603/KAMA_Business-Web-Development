@@ -1,189 +1,282 @@
-// ---------------------- script.js (final) ----------------------
-document.addEventListener('DOMContentLoaded', () => {
-  /* =============== Announcement Banner Carousel =============== */
-  const announcementWrapper = document.getElementById('announcementWrapper');
-  const prevBtn = document.getElementById('prev');
-  const nextBtn = document.getElementById('next');
+document.addEventListener('DOMContentLoaded', async () => {
+  'use strict';
 
-  if (announcementWrapper) {
-    let currentSlide = 0;
-    const slides = Array.from(announcementWrapper.children);
-    const totalSlides = slides.length;
+  // ===================================================================
+  // 1. UTILS
+  // ===================================================================
+  const escapeHTML = (str) => {
+    if (typeof str !== 'string') return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  };
 
-    function goTo(i) {
-      currentSlide = (i + totalSlides) % totalSlides;
-      announcementWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+  const log = (msg, type = 'log') => console[type](`[Script] ${msg}`);
+  const safeGet = (obj, path, def = null) => {
+    try {
+      return path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : def), obj);
+    } catch {
+      return def;
     }
-    const next = () => goTo(currentSlide + 1);
-    const prev = () => goTo(currentSlide - 1);
+  };
 
-    let timer = setInterval(next, 3000);
-    const restart = () => { clearInterval(timer); timer = setInterval(next, 3000); };
+  // ===================================================================
+  // 2. LOAD NEW ARRIVALS
+  // ===================================================================
+  async function loadNewArrivals() {
+    const container = document.getElementById('new-products-container');
+    if (!container) {
+      log('#new-products-container not found', 'warn');
+      return;
+    }
 
-    nextBtn?.addEventListener('click', () => { next(); restart(); });
-    prevBtn?.addEventListener('click', () => { prev(); restart(); });
+    let newProducts = [];
+
+    try {
+      const res = await fetch('./products.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      if (!data || !Array.isArray(safeGet(data, 'products'))) {
+        throw new Error('Invalid JSON: missing products array');
+      }
+
+      newProducts = data.products.filter(p => p && p.isNew === true);
+      log(`Loaded ${newProducts.length} new arrival(s)`);
+
+    } catch (err) {
+      log(`Failed to load products.json: ${err.message}`, 'error');
+    }
+
+    if (!Array.isArray(newProducts) || newProducts.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:50px 20px;color:#9b7c7c;font-style:italic;">
+          <p>No new arrivals at the moment.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = newProducts.map(p => `
+      <div class="product-card">
+        <div class="product-image-container">
+          <img src="${safeGet(p, 'images.0', 'https://via.placeholder.com/300')}" 
+               alt="${escapeHTML(p.name || 'Product')}" 
+               class="product-img"
+               onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+${p.originalPrice && p.originalPrice > p.price 
+  ? `<span class="product-badge sale">-${Math.round((1 - p.price / p.originalPrice) * 100)}%</span>` 
+  : ''}
+        </div>
+        <div class="product-info">
+          <h3>${escapeHTML(p.name || 'Unknown')}</h3>
+          <p>${escapeHTML(p.brand || 'Brand')} • ${escapeHTML(p.category || 'Category')}</p>
+          <p>${escapeHTML(p.description || 'No description')}</p>
+          <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
+          <div class="rating">
+            ${'★'.repeat(Math.floor(p.rating || 0))}${'☆'.repeat(5 - Math.floor(p.rating || 0))} 
+            (${p.rating || 'N/A'})
+          </div>
+          <button class="btn-primary" onclick="window.location.href='./view_product/view_sale.html?id=${p.id}'">
+            View Details
+          </button>
+        </div>
+      </div>
+    `).join('');
   }
 
-  /* =============== Mobile Menu Toggler =============== */
-  const menuToggler = document.getElementById('menu-toggler');
-  const navbar = document.getElementById('navbar');
+  // ===================================================================
+  // 3. LOAD HEADER & FOOTER
+  // ===================================================================
+  const loadPartial = async (url, placeholderId) => {
+    const el = document.getElementById(placeholderId);
+    if (!el) return log(`${placeholderId} not found`, 'warn');
+    try {
+      const res = await fetch(url);
+      if (res.ok) el.innerHTML = await res.text();
+      else throw new Error(`HTTP ${res.status}`);
+    } catch (e) {
+      log(`Failed to load ${url}: ${e.message}`, 'error');
+    }
+  };
 
-  if (menuToggler && navbar) {
-    menuToggler.addEventListener('click', () => {
-      navbar.classList.toggle('active');
-      menuToggler.classList.toggle('active');
+  await Promise.all([
+    loadPartial('../header_footer/header.html', 'header-placeholder'),
+    loadPartial('../header_footer/footer.html', 'footer-placeholder')
+  ]);
 
-      // luôn đóng mega menu & reset các trạng thái khi bật/tắt navbar
-      const menuCategories = document.querySelector('.menu-categories');
-      menuCategories?.classList.remove('active');
-      document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.product-list').forEach(list => (list.style.display = 'none'));
-    });
+  // ===================================================================
+  // 4. FIREWORKS
+  // ===================================================================
+  const fireworks = document.querySelector('.fireworks-container');
+  if (fireworks) {
+    const colors = ['pink-1', 'pink-2', 'pink-3', 'pink-4'];
+    for (let i = 0; i < 120; i++) {
+      const p = document.createElement('div');
+      p.className = `firework-particle ${colors[Math.floor(Math.random() * colors.length)]}`;
+      p.style.setProperty('--tx', `${Math.random() * 200 - 100}vw`);
+      p.style.setProperty('--ty', `${Math.random() * 200 - 100}vh`);
+      p.style.setProperty('--i', i);
+      fireworks.appendChild(p);
+      p.addEventListener('animationend', () => p.remove());
+    }
+  }
 
-    // click ngoài để đóng trên mobile
-    document.addEventListener('click', (ev) => {
-      if (window.innerWidth <= 900 && navbar.classList.contains('active')) {
-        if (!navbar.contains(ev.target) && !menuToggler.contains(ev.target)) {
-          navbar.classList.remove('active');
-          menuToggler.classList.remove('active');
+  // ===================================================================
+  // 5. MAIN VARIABLES
+  // ===================================================================
+  let products = [], filtered = [], displayed = [];
+  let page = 1, perPage = 8, filteredFlag = false;
+
+  const els = {
+    filterToggle: document.getElementById('filter-toggle'),
+    filterMenu: document.getElementById('filter-menu'),
+    priceFilter: document.getElementById('price-filter'),
+    ratingFilter: document.getElementById('rating-filter'),
+    brandFilter: document.getElementById('brand-filter'),
+    loadMore: document.getElementById('load-more-button'),
+    grid: document.getElementById('products'),
+    aiBtn: document.querySelector('.ai-btn')
+  };
+
+  // ===================================================================
+  // 6. LOAD PRODUCTS
+  // ===================================================================
+  async function loadMainProducts() {
+    try {
+      const res = await fetch('./products.json');
+      if (!res.ok) throw new Error('Not found');
+      const data = await res.json();
+      if (!Array.isArray(data?.products)) throw new Error('Invalid data');
+      products = data.products;
+    } catch (e) {
+      log('Using fallback products', 'warn');
+      products = [{ id: 999, name: 'Sample', brand: 'Demo', category: 'Face', price: 29.99, rating: 4.5, description: 'Demo', images: ['https://via.placeholder.com/300'] }];
+    }
+    filtered = [...products];
+    page = 1;
+    displayed = [];
+    renderGrid();
+    updateResultCount();
+  }
+
+  // ===================================================================
+  // 7. RENDER GRID
+  // ===================================================================
+  function renderGrid() {
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    const show = filtered.slice(start, end);
+    displayed = [...displayed, ...show];
+
+    els.grid.innerHTML = displayed.map(p => {
+const badge = (p.originalPrice && p.originalPrice > p.price)
+  ? `<span class="product-badge sale">-${Math.round((1 - p.price / p.originalPrice) * 100)}%</span>`
+  : '';
+      return `
+        <div class="product-card">
+          <div class="product-image-container">
+            <img src="${p.images?.[0] || 'https://via.placeholder.com/300'}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/300';">
+            <img src="${p.hoverImage || p.images?.[1] || p.images?.[0] || 'https://via.placeholder.com/300'}" alt="${p.name}" class="product-img hover-image" onerror="this.src='https://via.placeholder.com/300';">
+            ${badge}
+          </div>
+          <div class="info">
+            <h3>${escapeHTML(p.name)}</h3>
+            <p class="meta">${escapeHTML(p.brand)} • ${escapeHTML(p.category)}</p>
+            <p>${escapeHTML(p.description)}</p>
+         <div class="actions">
+  <div class="price">
+    ${p.originalPrice && p.originalPrice > p.price
+      ? `<span class="old-price">$${p.originalPrice.toFixed(2)}</span>
+         <span class="new-price">$${p.price.toFixed(2)}</span>`
+      : `<span class="new-price">$${p.price.toFixed(2)}</span>`}
+  </div>
+  <span class="rating">
+    ${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5 - Math.floor(p.rating))} (${p.rating})
+  </span>
+</div>
+
+            <div class="buttons">
+              <input type="number" class="quantity-input" value="1" min="1" max="99">
+              <button class="btn-outline" data-id="${p.id}"></button>
+<button class="btn-primary" 
+  onclick="window.location.href='view_product/view_sale.html?id=${p.id}'">
+  View Details
+</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.querySelectorAll('.btn-outline').forEach(btn => {
+      btn.onclick = () => {
+        const id = btn.dataset.id;
+        const product = products.find(p => p.id == id);
+        const qty = btn.closest('.buttons').querySelector('.quantity-input').value;
+        if (product) {
+          addToCart(product, qty);
+          showCartPopup(product.name, qty);
         }
-      }
+      };
     });
+
+    els.loadMore.style.display = end < filtered.length ? 'block' : 'none';
   }
 
-  /* =============== Mega Menu (desktop hover / mobile click) =============== */
-  const shopAllLink = document.querySelector('.navbar .shop-all');
-  const menuCategories = document.querySelector('.menu-categories');
-
-  // Desktop – hover
-  if (shopAllLink && menuCategories && window.innerWidth > 900) {
-    let hoverTimeout;
-    const showMenu = () => { clearTimeout(hoverTimeout); menuCategories.classList.add('active'); };
-    const hideMenu = () => { hoverTimeout = setTimeout(() => menuCategories.classList.remove('active'), 300); };
-    shopAllLink.addEventListener('mouseenter', showMenu);
-    menuCategories.addEventListener('mouseenter', showMenu);
-    shopAllLink.addEventListener('mouseleave', hideMenu);
-    menuCategories.addEventListener('mouseleave', hideMenu);
+  // ===================================================================
+  // 8. KẾT QUẢ & KHỞI ĐỘNG
+  // ===================================================================
+  function updateResultCount() {
+    let el = document.querySelector('.search-result-count');
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'search-result-count';
+      els.grid.before(el);
+    }
+    if (filteredFlag && filtered.length) {
+      el.textContent = `${filtered.length} product${filtered.length > 1 ? 's' : ''} found`;
+      el.classList.add('active');
+    } else el.classList.remove('active');
   }
 
-  // Mobile – click
-  if (shopAllLink && menuCategories && window.innerWidth <= 900) {
-    shopAllLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      menuCategories.classList.toggle('active');
-      shopAllLink.classList.toggle('active');
-      const backBtn = menuCategories.querySelector('.back-btn');
-      if (backBtn) backBtn.style.display = 'flex';
-    });
+  if (els.loadMore) els.loadMore.onclick = () => { page++; renderGrid(); };
+  
 
-    const backBtn = menuCategories.querySelector('.back-btn');
-    backBtn?.addEventListener('click', () => {
-      menuCategories.classList.remove('active');
-      shopAllLink.classList.remove('active');
-      document.querySelectorAll('.category').forEach(cat => {
-        cat.classList.remove('active');
-        const list = cat.querySelector('.product-list');
-        if (list) list.style.display = 'none';
-      });
-    });
-
-    // Mở/đóng danh sách con
-    document.querySelectorAll('.category').forEach(category => {
-      const header = category.querySelector('.category-header');
-      const list = category.querySelector('.product-list');
-      if (header && list) {
-        header.addEventListener('click', (e) => {
-          e.preventDefault();
-          category.classList.toggle('active');
-          list.style.display = category.classList.contains('active') ? 'block' : 'none';
-        });
-      }
-    });
-  }
-
-  /* =============== Filter Dropdown (chuẩn .filter-dropdown) =============== */
-  const filterToggle = document.getElementById('filter-toggle');
-  const filterMenu = document.getElementById('filter-menu');
-  const filterDropdown = document.getElementById('filterDropdown');
-
-  if (filterToggle && filterMenu && filterDropdown) {
-    // bật/tắt menu
-    filterToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      filterMenu.classList.toggle('show');
-      filterToggle.setAttribute('aria-expanded', filterMenu.classList.contains('show') ? 'true' : 'false');
-    });
-
-    // click ra ngoài để đóng
-    document.addEventListener('click', (e) => {
-      if (!filterDropdown.contains(e.target)) {
-        filterMenu.classList.remove('show');
-        filterToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // ESC để đóng
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        filterMenu.classList.remove('show');
-        filterToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Chọn category
-    filterMenu.addEventListener('click', (e) => {
-      const btn = e.target.closest('.category-btn');
-      if (!btn) return;
-      filterMenu.querySelectorAll('.category-btn').forEach(b => b.classList.remove('is-selected'));
-      btn.classList.add('is-selected');
-      filterMenu.classList.remove('show');
-      filterToggle.setAttribute('aria-expanded', 'false');
-      // TODO: gọi hàm filter sản phẩm theo btn.dataset.category nếu cần
-    });
-  }
-
-  /* =============== Load More (ONE CLICK = SHOW ALL) =============== */
-  const grid = document.getElementById('products');
-  const loadMoreBtn = document.getElementById('load-more-button');
-
-  if (grid && loadMoreBtn) {
-    // 1) Ẩn từ sản phẩm thứ 5 trở đi lúc đầu
-    const cards = Array.from(grid.querySelectorAll('.product-card'));
-    cards.forEach((c, i) => {
-      if (i >= 4) c.classList.add('is-hidden');
-      else c.classList.remove('is-hidden');
-    });
-    loadMoreBtn.textContent = 'Click Here To See All ✿';
-    loadMoreBtn.removeAttribute('disabled');
-    loadMoreBtn.setAttribute('aria-disabled', 'false');
-
-    // 2) XÓA mọi listener cũ có thể đã gắn (nếu file bị import nhiều lần)
-    const clone = loadMoreBtn.cloneNode(true);
-    loadMoreBtn.parentNode.replaceChild(clone, loadMoreBtn);
-    const btn = document.getElementById('load-more-button');
-
-    // 3) Gắn 1 listener duy nhất: mở hết & khóa nút
-    btn.addEventListener('click', () => {
-      grid.querySelectorAll('.product-card.is-hidden')
-        .forEach(card => card.classList.remove('is-hidden'));
-
-      btn.textContent = 'All items shown';
-      btn.disabled = true;
-      btn.setAttribute('aria-disabled', 'true');
-      // Nếu muốn ẩn hẳn nút sau khi mở hết:
-      // btn.closest('.load-more')?.remove();
-    }, { once: true });
-  }
-
-  /* =============== Smooth scroll cho .btn-explore (nếu có) =============== */
-  const exploreBtn = document.querySelector('.btn-explore');
-  if (exploreBtn) {
-    exploreBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = exploreBtn.getAttribute('href');
-      const target = targetId ? document.querySelector(targetId) : null;
-      target?.scrollIntoView({ behavior: 'smooth' });
-    });
-  }
+  // ===================================================================
+  // 9. KHỞI ĐỘNG
+  // ===================================================================
+  loadNewArrivals();
+  loadMainProducts();
 });
-// ---------------------- /script.js ----------------------
+// ================= LOAD SALE EVENTS (BLOG STYLE) =================
+async function loadSaleEvents() {
+  const container = document.getElementById('sale-blog');
+  if (!container) return;
+
+  try {
+    const res = await fetch('./sale_events.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    container.innerHTML = data.events.map(ev => `
+      <div class="sale-row">
+        <div class="sale-img">
+          <img src="${ev.image}" alt="${ev.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+        </div>
+        <div class="sale-info">
+          <h3>${ev.title}</h3>
+          <p>${ev.description}</p>
+          <a href="${ev.link}" target="_blank" class="sale-link">Learn More →</a>
+          <span class="deadline">${ev.deadline}</span>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error('Failed to load sale_events.json:', err);
+    container.innerHTML = '<p style="text-align:center;color:#9b7c7c;">Failed to load sale events.</p>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadSaleEvents);
+
