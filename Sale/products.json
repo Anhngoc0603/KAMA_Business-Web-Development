@@ -11,7 +11,7 @@
       "subtype": "Eyeshadow Palette",
       "images": [
         "images/Chartlotte Tilbury.webp",
-        "images/products/p1-hover.jpg"
+        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQl-PPkfOvgoE3NY5crZUHhJBpUEuh04GUFVRxj4Qne8wfXSkOyk4NYt86eCRZn4NAW82asc615Dj7BLZ8Ey4vvBTg-Y1xw_Uhm5f7lvZM"
       ],
       "description": "Iconic eyeshadow quad in the dreamy Pillow Talk shade for a romantic, wide-awake look.",
       "detailedDescription": "The Charlotte Tilbury Luxury Palette in Pillow Talk features four harmonious shades — Prime, Enhance, Smoke, and Pop — designed to create a soft, sultry eye look. Ultra-blendable and long-wearing, perfect for day-to-night transitions.",
@@ -44,7 +44,7 @@
       "subtype": "Lip Balm",
       "images": [
         "images/dior.jpg",
-        "images/products/p1-hover.jpg"
+        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQEtc2lzllMym74_7eI-zJ7BoIKnO0jpJFn6nygj040OEZi6MLhlYHRSno3D0TQUS7iRjSvRFDpFfVlu0g74NIfUOgLlxn611vTM5JDAQ0u"
       ],
       "description": "Custom-color reviving balm that enhances your natural lip tone with a glossy finish.",
       "detailedDescription": "Dior Addict Lip Glow uses Color Reviver technology to react with your lips' pH for a unique pink shade. Provides 24-hour hydration and a subtle shine.",
@@ -76,7 +76,7 @@
       "subtype": "Blush",
       "images": [
         "images/Gucci.jpg",
-        "images/products/p1-hover.jpg"
+        "https://product.hstatic.net/200000883197/product/upload_e51d15c567424c7bb24b7f154bc5a17b_master.jpg"
       ],
       "description": "Silky blush that blends like cream and finishes like powder for a natural flush.",
       "detailedDescription": "Gucci Blush De Beauté is a multi-use powder that acts as blush, bronzer, and highlighter. Its melt-in texture delivers buildable color with a soft-focus glow.",
@@ -108,7 +108,7 @@
       "subtype": "Eyeshadow Palette",
       "images": [
         "images/Màu hồng.jpg",
-        "images/products/p1-hover.jpg"
+        "https://www.jillstuart-beauty.com/en-jp/products/eyes/SIED/SIED001_open_.jpg"
       ],
       "description": "Vibrant pink-themed eyeshadow palette designed for bold, inclusive looks.",
       "detailedDescription": "Fenty Beauty Bloom Couture Eyes features 10 high-pigment shades from soft pastels to electric pinks. Formulated for zero fallout and 12-hour wear.",
@@ -140,7 +140,7 @@
       "subtype": "Highlighter",
       "images": [
         "images/NARS.jpg",
-        "images/products/p5-hover.jpg"
+        "https://images.ctfassets.net/wlke2cbybljx/2cVKg7iXUN9isOsPGnPNx7/9d4c93a13199c5e008ed891b6baff378/039_220072_PILLOW_TALK_PLUMP_AS_MULTIGLOW_RJ_2402__1_.jpg?q=80&w=660&h=660&fit=fill&bg=&fm=jpg"
       ],
       "description": "Cream-powder highlighter that delivers a candlelit glow from within.",
       "detailedDescription": "Pillow Talk Multi-Glow is a hybrid highlighter with a soft-focus pearl finish. Use on cheekbones, brow bones, or lips for multidimensional radiance.",
@@ -171,7 +171,7 @@
       "subtype": "Lipstick",
       "images": [
         "images/son.jpg",
-        "images/products/p6-hover.jpg"
+        "https://vilip.vn/wp-content/uploads/2022/02/ysl-rouge-volupte-shine-collector-i-love-you-take-my-red-away-120-9.png?v=1645969411"
       ],
       "description": "Oil-in-stick lipstick that melts on lips for shine and comfort.",
       "detailedDescription": "YSL Rouge Volupté Shine combines vibrant color with 65% caring oils. Delivers a glossy, balm-like feel with medium coverage and fruity scent.",
@@ -202,7 +202,7 @@
       "subtype": "Mascara",
       "images": [
         "images/Dior phấn.jpg",
-        "images/products/p7-hover.jpg"
+        "https://alison.com.vn/file/Makeup/Dior/1743824701-387.jpg"
       ],
       "description": "Iconic volumizing mascara with XXL brush for panoramic lashes.",
       "detailedDescription": "Diorshow Mascara builds dramatic volume and length in one coat. Its oversized brush coats every lash for a false-lash effect without clumping.",
@@ -232,7 +232,7 @@
       "subtype": "Blush",
       "images": [
         "images/Nars má.jpg",
-        "images/products/p8-hover.jpg"
+        "https://cdn.salla.sa/DGdDlG/f47e89b9-1fcc-465e-bb46-dc9d417e0301-1000x1000-JjRiywVl8IOuoye51EkrKjnshcyDSoeaHeNfia0k.jpg"
       ],
       "description": "Peachy-pink blush with golden sheen for a universal flush.",
       "detailedDescription": "NARS Orgasm Blush is a globally bestselling shade that flatters all skin tones. Finely milled powder blends seamlessly for a natural, radiant finish.",

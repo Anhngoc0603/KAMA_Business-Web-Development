@@ -581,26 +581,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       const products = data.products || [];
 
       let html = '';
-      for (const p of products) {
-        html += `
-          <div class="product-card">
-            <img src="${product.images[0]}" alt="${product.name || 'Product'}" class="product-img">
-            <div class="info">
-              <h3>${p.name}</h3>
-              <p>${p.description || ''}</p>
-              <div class="meta">SKU: ${p.id}</div>
-              <div class="actions">
-                <span class="price">$${p.price.toFixed(2)}</span>
-                <div class="rating"><i class="fas fa-star star"></i> ${p.rating.toFixed(1)}</div>
-              </div>
-              <div class="buttons">
-                <input type="number" value="1" min="1" class="quantity-input">
-                <button class="btn-outline" aria-label="Add to cart"></button>
-                <button class="btn-view-details">View Details</button>
-              </div>
-            </div>
-          </div>`;
-      }
+     for (const p of products) {
+  html += `
+    <div class="product-card">
+      <img src="${p.images[0]}" alt="${p.name || 'Product'}" class="product-img">
+      <div class="info">
+        <h3>${p.name}</h3>
+        <p>${p.description || ''}</p>
+        <div class="meta">SKU: ${p.id}</div>
+        <div class="actions">
+          <span class="price">$${p.price.toFixed(2)}</span>
+          <div class="rating"><i class="fas fa-star star"></i> ${p.rating.toFixed(1)}</div>
+        </div>
+        <div class="buttons">
+          <input type="number" value="1" min="1" class="quantity-input">
+          <button class="btn-outline" aria-label="Add to cart"></button>
+          <button class="btn-view-details">View Details</button>
+        </div>
+      </div>
+    </div>`;
+}
 
       grid.innerHTML = html || '<p>No products found.</p>';
       productCountEl.textContent = `${products.length} products`;
