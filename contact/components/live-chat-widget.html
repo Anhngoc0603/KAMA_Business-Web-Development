@@ -1,0 +1,35 @@
+<!-- Live Chat Widget - Reusable Component -->
+<!-- Floating Chat Button -->
+<button id="floatingChat" class="floating-chat" aria-label="Open chat">💬</button>
+
+<!-- Chat Modal -->
+<div id="chatModal" class="chat-modal hidden" role="dialog" aria-modal="true">
+  <div class="chat-window">
+    <div class="chat-top">
+      <div class="chat-top-left">
+        <div class="avatar white">🤖</div>
+        <div>
+          <div class="chat-name">Support Team</div>
+          <div class="muted small">Online</div>
+        </div>
+      </div>
+      <button class="close" id="closeChatModal">×</button>
+    </div>
+
+    <div class="chat-content">
+      <div class="welcome bubble">Welcome! I'm here to help you with any questions. What can I help you with?</div>
+
+      <div class="quick-options">
+        <button class="quick">Store locations</button>
+        <button class="quick">Product info</button>
+        <button class="quick">Details</button>
+        <button class="quick">Orders</button>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Type your message..." />
+      <button id="sendChat" class="btn-send"><span>📤</span></button>
+    </div>
+  </div>
+</div>
