@@ -7,8 +7,8 @@ const locations = [
 
 const faqItems = [
   {
-    question: "What is your most popular drink?",
-    answer: "Our bestsellers include Matcha Supreme, Brown Sugar Delight, and Traditional Milk Tea with boba!",
+    question: "Do you ship overseas?",
+    answer: "Yes, we offer international shipping to select countries. Please check our shipping policy for more details.",
   },
   {
     question: "Do you offer vegan options?",
@@ -123,81 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
         successMsg.remove()
         form.reset()
       }, 2000)
-    })
-  }
-
-  // Chat toggle
-  const floating = document.getElementById("floatingChat")
-  const chatModal = document.getElementById("chatModal")
-  const closeChat = document.getElementById("closeChatModal")
-  const openChatBtn = document.getElementById("openChatBtn")
-  const sendChat = document.getElementById("sendChat")
-  const chatInput = document.getElementById("chatInput")
-
-  function openChat() {
-    if (chatModal) chatModal.classList.remove("hidden")
-  }
-
-  function closeChatModal() {
-    if (chatModal) chatModal.classList.add("hidden")
-  }
-
-  if (floating) floating.addEventListener("click", openChat)
-  if (closeChat) closeChat.addEventListener("click", closeChatModal)
-  if (openChatBtn) openChatBtn.addEventListener("click", openChat)
-
-  // Quick options
-  document.querySelectorAll(".quick").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const msg = document.createElement("div")
-      msg.textContent = "You selected: " + btn.textContent
-      msg.className = "bubble"
-      msg.style.cssText = "margin-left: auto; margin-right: 0; background: var(--warm-blush); color: white;"
-
-      const content = document.querySelector(".chat-content")
-      if (content) {
-        content.appendChild(msg)
-
-        setTimeout(() => {
-          const botReply = document.createElement("div")
-          botReply.textContent = "We received your request! Please wait for a response..."
-          botReply.className = "bubble"
-          content.appendChild(botReply)
-          content.scrollTop = content.scrollHeight
-        }, 500)
-      }
-    })
-  })
-
-  // Send chat
-  if (sendChat && chatInput) {
-    sendChat.addEventListener("click", () => {
-      const txt = chatInput.value.trim()
-      if (!txt) return
-
-      const content = document.querySelector(".chat-content")
-      if (content) {
-        const userBubble = document.createElement("div")
-        userBubble.className = "bubble"
-        userBubble.style.cssText = "margin-left: auto; margin-right: 0; background: var(--warm-blush); color: white;"
-        userBubble.textContent = txt
-        content.appendChild(userBubble)
-
-        chatInput.value = ""
-        content.scrollTop = content.scrollHeight
-
-        setTimeout(() => {
-          const botReply = document.createElement("div")
-          botReply.className = "bubble"
-          botReply.textContent = "Thank you for contacting us! We'll respond as soon as possible. 💬"
-          content.appendChild(botReply)
-          content.scrollTop = content.scrollHeight
-        }, 800)
-      }
-    })
-
-    chatInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendChat.click()
     })
   }
 

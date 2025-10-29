@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KAMA — Contact</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./components/live-chat-styles.css" />
 </head>
 <body>
   <!-- Announcement Bar -->
@@ -56,49 +58,31 @@
       <!-- Contact Cards -->
       <section class="cards" id="contactCards">
         <article class="card" data-delay="0">
-          <div class="icon">📍</div>
+          <div class="icon"><img src="images/c2.png"></div>
           <h3>Address</h3>
           <p class="muted small">123 Tea Street, Beverage District</p>
           <p class="muted small">Downtown City, ST 12345</p>
         </article>
 
         <article class="card" data-delay="1">
-          <div class="icon">📞</div>
+          <div class="icon"><img src="images/c8.png"></div>
           <h3>Call Us</h3>
           <p class="muted small">+1 (555) 123-4567</p>
           <p class="muted small">Mon-Fri: 9AM-8PM</p>
         </article>
 
         <article class="card" data-delay="2">
-          <div class="icon">📧</div>
+          <div class="icon"><img src="images/c6.png"></div>
           <h3>Email</h3>
           <p class="muted small">hello@kama.com</p>
           <p class="muted small">support@kama.com</p>
         </article>
 
         <article class="card" data-delay="3">
-          <div class="icon">⏰</div>
+          <div class="icon"> <img src="images/c4.png"></div>
           <h3>Hours</h3>
           <p class="muted small">Mon-Fri: 7AM-10PM</p>
           <p class="muted small">Sat-Sun: 7AM-11PM</p>
-        </article>
-
-        <!-- Chat Panel as a Card -->
-        <article class="card chat-panel" id="chatPanel" data-delay="4">
-          <div class="icon">💬</div>
-          <h3>Live Chat</h3>
-          <div class="chat-body">
-            <div class="msg bot">
-              <div class="avatar">🤖</div>
-              <div class="bubble">Hi there! How can we help you today? 😊</div>
-            </div>
-          </div>
-          <div class="chat-actions">
-            <button class="btn secondary" id="openChatBtn">
-              <span class="icon">💬</span>
-              Start Chat
-            </button>
-          </div>
         </article>
       </section>
 
@@ -107,7 +91,7 @@
         <!-- Left: Form -->
         <div class="left" id="formWrap">
           <div class="panel">
-            <h2>Send us a message</h2>
+            <h2>Can't find what you're looking for?</h2>
             <form id="contactForm" class="form">
               <div class="row">
                 <div class="col">
@@ -138,18 +122,9 @@
         <!-- Right: Map + FAQ -->
         <div class="right">
           <!-- Map Panel -->
-          <div class="panel" id="mapPanel">
+         <div class="panel" id="mapPanel">
             <h2>Find our store</h2>
-            <div class="map-mock">
-              <div class="map-overlay">
-                <div class="dot dot-1"></div>
-                <div class="dot dot-2"></div>
-              </div>
-              <div class="map-center">
-                <div class="map-icon">📍</div>
-                <p class="muted small">Interactive map</p>
-              </div>
-            </div>
+            
             <div class="locations" id="locationsList"></div>
           </div>
 
@@ -166,8 +141,9 @@
     </div>
   </main>
 
+  <!-- Live Chat Widget (Reusable Component) -->
   <!-- Floating Chat Button -->
-  <button id="floatingChat" class="floating" aria-label="Open chat">💬</button>
+  <button id="floatingChat" class="floating-chat" aria-label="Open chat">💬</button>
 
   <!-- Chat Modal -->
   <div id="chatModal" class="chat-modal hidden" role="dialog" aria-modal="true">
@@ -176,7 +152,7 @@
         <div class="chat-top-left">
           <div class="avatar white">🤖</div>
           <div>
-            <div class="chat-name">KAMA Support</div>
+            <div class="chat-name">Support Team</div>
             <div class="muted small">Online</div>
           </div>
         </div>
@@ -184,19 +160,19 @@
       </div>
 
       <div class="chat-content">
-        <div class="welcome bubble">Welcome! I'm here to help you with any questions about our products, locations, or services. What can I help you with?</div>
+        <div class="welcome bubble">Welcome! I'm here to help you with any questions. What can I help you with?</div>
 
         <div class="quick-options">
-          <button class="quick">📍 Store locations</button>
-          <button class="quick">🛍️ Product recommendations</button>
-          <button class="quick">📊 Nutritional info</button>
-          <button class="quick">📦 Order status</button>
+          <button class="quick">Store locations</button>
+          <button class="quick">Product info</button>
+          <button class="quick">Details</button>
+          <button class="quick">Orders</button>
         </div>
       </div>
 
       <div class="chat-input">
         <input id="chatInput" placeholder="Type your message..." />
-        <button id="sendChat" class="btn small"><span>📤</span></button>
+        <button id="sendChat" class="btn-send"><span>📤</span></button>
       </div>
     </div>
   </div>
@@ -260,6 +236,7 @@
     </div>
   </footer>
 
+  <script src="./components/live-chat-script.js"></script>
   <script src="./script.js"></script>
 </body>
 </html>
