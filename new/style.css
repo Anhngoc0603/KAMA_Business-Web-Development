@@ -814,5 +814,58 @@
 .menu-categories {
   transition: all 0.2s ease !important;
   transition-delay: 0s !important;
+}}
+/* === PRODUCT BADGE (NEW) – Sakura Glow === */
+.product-image-container { position: relative; }
+
+.product-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 7px 14px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+  background: linear-gradient(135deg, #E6A6B0, #F9C6CF, #fff0f5);
+  background-size: 200% 200%;
+  animation: badgeGradient 3s ease-in-out infinite, badgePulse 2s ease-in-out infinite;
+  box-shadow: 0 0 15px rgba(249, 198, 207, 0.8), 0 0 30px rgba(230, 166, 176, 0.6);
+  text-shadow: 0 0 5px rgba(255,255,255,0.9), 0 0 12px rgba(249, 198, 207, 0.8);
+  border: 1px solid rgba(255,255,255,0.4);
+  z-index: 3;
+  transform: translateY(0);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
+
+/* Biến thể theo loại nhãn (nếu cần) */
+.product-badge.new {}
+
+/* Hover: nổi hơn */
+.product-card:hover .product-badge {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 0 22px rgba(249,198,207,0.95), 0 0 48px rgba(230,166,176,0.8);
+  filter: brightness(1.05);
+}
+
+/* Hiệu ứng gradient */
+@keyframes badgeGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Nhịp thở nhẹ */
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(249,198,207,0.6), 0 0 25px rgba(230,166,176,0.3);
+  }
+  50% {
+    transform: scale(1.07);
+    box-shadow: 0 0 18px rgba(249,198,207,0.9), 0 0 40px rgba(230,166,176,0.7);
+  }
 }
