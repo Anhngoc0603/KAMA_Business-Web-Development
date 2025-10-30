@@ -1,0 +1,160 @@
+<!-- Sakura-style shader background -->
+<div id="shader-bg"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js"></script>
+<script id="vertexShader" type="x-shader/x-vertex">
+  void main() {
+    gl_Position = vec4(position, 1.0);
+  }
+</script>
+<script id="fragmentShader" type="x-shader/x-fragment">
+  precision highp float;
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_time;
+  uniform sampler2D u_noise;
+  uniform sampler2D u_buffer;
+  uniform bool u_renderpass;
+
+  const float blurMultiplier = 0.95;
+  const float circleSize = 0.25;
+  const float blurStrength = 0.98;
+  const float threshold = 0.5;
+  const float scale = 4.;
+
+  #define PI 3.141592653589793
+  #define TAU 6.283185307179586
+
+  vec3 pastelMix(float t){
+    // chuyển dần giữa hồng nhạt → trắng → nâu phấn
+    vec3 pink1 = vec3(230.0,166.0,176.0)/255.0; // #E6A6B0
+    vec3 pink2 = vec3(249.0,198.0,207.0)/255.0; // #F9C6CF
+    vec3 brown = vec3(107.0,76.0,59.0)/255.0;   // #6B4C3B
+    return mix(mix(pink1,pink2,abs(sin(t*1.2))),brown,0.3+0.2*sin(t));
+  }
+
+  vec3 hsb2rgb(in vec3 c){
+    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0,0.0,1.0);
+    rgb = rgb*rgb*(3.0-2.0*rgb);
+    return c.z * mix(vec3(1.0), rgb, c.y);
+  }
+
+  vec3 colour(vec2 z){
+    float hue = atan(z.y,z.x)/TAU + 0.5;
+    return pastelMix(hue*3.0 + u_time*0.3);
+  }
+
+  const int samples = 8;
+  const float sigma = float(samples)*0.25;
+  float pow2(float x){return x*x;}
+  float gaussian(vec2 i){
+    return 1.0/(2.0*PI*pow2(sigma))*exp(-((pow2(i.x)+pow2(i.y))/(2.0*pow2(sigma))));
+  }
+
+  vec3 blur(sampler2D sp, vec2 uv, vec2 scale){
+    vec3 col = vec3(0.0); float accum = 0.0;
+    for(int x=-samples/2; x<samples/2; ++x)
+      for(int y=-samples/2; y<samples/2; ++y){
+        vec2 off = vec2(x,y);
+        float w = gaussian(off);
+        col += texture2D(sp, uv + scale*off).rgb*w;
+        accum += w;
+      }
+    return col/accum;
+  }
+
+  void main(){
+    vec2 uv = (gl_FragCoord.xy - 0.5*u_resolution.xy)/u_resolution.y * scale;
+    vec2 mouse = u_mouse*scale;
+    vec2 ps = vec2(1.0)/u_resolution.xy;
+    vec2 sample = gl_FragCoord.xy/u_resolution.xy;
+    vec2 o = mouse*0.2+vec2(0.65,0.5);
+    float d=0.98;
+    sample = d*(sample-o)+o;
+    sample += vec2(sin((u_time+uv.y*0.5)*10.)*0.001,0.0);
+
+    vec3 frag = vec3(0.0);
+    vec4 tex;
+    if(u_renderpass){
+      tex = vec4(blur(u_buffer,sample,ps*blurStrength)*blurMultiplier,1.);
+      float df = length(mouse-uv);
+      frag = colour(uv) * smoothstep(circleSize,0.0,df);
+    }else{
+      tex = texture2D(u_buffer,sample,2.)*0.97;
+      tex.rgb = mix(tex.rgb, colour(uv+mouse*0.1),0.3);
+    }
+    gl_FragColor = vec4(frag,1.0)+tex;
+  }
+</script>
+
+<script>
+let scene, camera, renderer, uniforms, rt1, rt2, tex;
+let newmouse = {x:0,y:0}, divisor=0.1;
+let loader=new THREE.TextureLoader();
+loader.setCrossOrigin("anonymous");
+loader.load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/982762/noise.png",t=>{
+  tex=t; tex.wrapS=tex.wrapT=THREE.RepeatWrapping; tex.minFilter=THREE.LinearFilter;
+  init(); animate();
+});
+function init(){
+  const container=document.getElementById("shader-bg");
+  camera=new THREE.Camera(); camera.position.z=1;
+  scene=new THREE.Scene();
+  const geo=new THREE.PlaneBufferGeometry(2,2);
+  rt1=new THREE.WebGLRenderTarget(innerWidth*0.2,innerHeight*0.2);
+  rt2=new THREE.WebGLRenderTarget(innerWidth*0.2,innerHeight*0.2);
+  uniforms={
+    u_time:{value:1.0},u_resolution:{value:new THREE.Vector2()},
+    u_mouse:{value:new THREE.Vector2()},u_noise:{value:tex},
+    u_buffer:{value:rt1.texture},u_renderpass:{value:false}
+  };
+  const mat=new THREE.ShaderMaterial({
+    uniforms,vertexShader:vertexShader.textContent,fragmentShader:fragmentShader.textContent
+  });
+  scene.add(new THREE.Mesh(geo,mat));
+  renderer=new THREE.WebGLRenderer({alpha:true});
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.domElement.style.position="fixed";
+  renderer.domElement.style.zIndex="0";
+  renderer.domElement.style.top="0";renderer.domElement.style.left="0";
+  renderer.setClearColor(0xFFF9F9,1); // pastel background
+  container.appendChild(renderer.domElement);
+  onResize(); addEventListener("resize",onResize);
+  addEventListener("pointermove",e=>{
+    const r=innerHeight/innerWidth;
+    newmouse.x=(e.pageX-innerWidth/2)/innerWidth/r;
+    newmouse.y=(e.pageY-innerHeight/2)/innerHeight*-1;
+  });
+}
+function onResize(){
+  renderer.setSize(innerWidth,innerHeight);
+  uniforms.u_resolution.value.set(renderer.domElement.width,renderer.domElement.height);
+}
+function animate(t){
+  requestAnimationFrame(animate);
+  uniforms.u_time.value=t*0.0005;
+  uniforms.u_mouse.value.x+=(newmouse.x-uniforms.u_mouse.value.x)*divisor;
+  uniforms.u_mouse.value.y+=(newmouse.y-uniforms.u_mouse.value.y)*divisor;
+  renderTexture(); renderer.render(scene,camera);
+}
+function renderTexture(){
+  const od=uniforms.u_resolution.value.clone();
+  uniforms.u_resolution.value.set(innerWidth*0.2,innerHeight*0.2);
+  uniforms.u_buffer.value=rt2.texture;
+  uniforms.u_renderpass.value=true;
+  renderer.render(scene,camera,rt1,true);
+  let tmp=rt1;rt1=rt2;rt2=tmp;
+  uniforms.u_buffer.value=rt1.texture;
+  uniforms.u_resolution.value.copy(od);
+  uniforms.u_renderpass.value=false;
+}
+</script>
+
+<style>
+#shader-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+</style>

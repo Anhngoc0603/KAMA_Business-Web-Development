@@ -389,26 +389,32 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    checkoutBtn.addEventListener('click', function() {
-      const fullname = document.getElementById('fullname')?.value.trim();
-      const phone = document.getElementById('phone')?.value.trim();
-      const province = provinceSelect.value;
-      const district = districtSelect.value;
-      const address = document.getElementById('address')?.value.trim();
+checkoutBtn.addEventListener('click', function() {
+  const fullname = document.getElementById('fullname')?.value.trim();
+  const phone = document.getElementById('phone')?.value.trim();
+  const province = provinceSelect.value;
+  const district = districtSelect.value;
+  const address = document.getElementById('address')?.value.trim();
 
-      if (cartItems.length === 0) return showMessage('Your cart is empty!', 'error');
-      if (!fullname) return showMessage('Please enter full name!', 'error');
-      if (!phone) return showMessage('Please enter phone number!', 'error');
-      if (!province) return showMessage('Please select a province/city!', 'error');
-      if (!district) return showMessage('Please select a district!', 'error');
-      if (!address) return showMessage('Please enter detailed address!', 'error');
+  if (cartItems.length === 0) return showMessage('Your cart is empty!', 'error');
+  if (!fullname) return showMessage('Please enter full name!', 'error');
+  if (!phone) return showMessage('Please enter phone number!', 'error');
+  if (!province) return showMessage('Please select a province/city!', 'error');
+  if (!district) return showMessage('Please select a district!', 'error');
+  if (!address) return showMessage('Please enter detailed address!', 'error');
 
-      saveToLocalStorage();
-      showMessage('Redirecting to checkout...', 'info');
-      setTimeout(() => {
-        window.location.href = '../checkout/checkout.html';
-      }, 1000);
-    });
+  saveToLocalStorage();
+
+  // Hiện animation trước khi chuyển trang
+  const truckOverlay = document.getElementById('truckAnimation');
+  truckOverlay.classList.remove('hidden');
+  document.body.style.overflow = "hidden";
+
+  setTimeout(() => {
+    window.location.href = '../checkout/checkout.html';
+  }, 1800); // chờ 3.5s cho animation chạy
+});
+
 
     renderCart();
   }

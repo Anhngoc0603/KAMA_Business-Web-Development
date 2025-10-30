@@ -197,6 +197,72 @@
     .shop-card .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.75)); padding: 40px 20px 25px; color: white; text-align: center; }
     .shop-card h3 { margin: 0; font-size: 1.6rem; font-weight: 600; }
     .shop-card p { margin: 8px 0 0; font-size: 1rem; opacity: 0.9; }
+    .btn-view-details {
+  position: relative;
+  flex: 1;
+  height: 44px;
+  background: linear-gradient(135deg, #E6A6B0, #F9C6CF);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  box-shadow: 0 4px 12px rgba(230, 166, 176, 0.3);
+  transition: all 0.3s ease;
+  overflow: visible;
+}
+
+/* hiệu ứng trái tim trong suốt */
+.btn-view-details::before,
+.btn-view-details::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(249,198,207,0.9) 60%, rgba(230,166,176,0.6) 100%);
+  border-radius: 50% 50% 0 0;
+  top: -9px;
+  opacity: 0.9;
+  transform-origin: bottom center;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+  filter: blur(0.3px) drop-shadow(0 2px 4px rgba(230,166,176,0.25));
+}
+
+/* ghép 2 nửa lại thành 1 trái tim mềm */
+.btn-view-details::before {
+  left: 47%;
+  transform: translateX(-50%) rotate(-45deg);
+}
+.btn-view-details::after {
+  left: 53%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* hover: tim bay nhẹ ra */
+.btn-view-details:hover::before {
+  animation: heartPopLeft 0.8s ease-out;
+}
+.btn-view-details:hover::after {
+  animation: heartPopRight 0.8s ease-out;
+}
+
+@keyframes heartPopLeft {
+  0%   { transform: translateX(-50%) rotate(-45deg) scale(1); opacity:0.95; }
+  40%  { transform: translateX(-50%) rotate(-35deg) scale(1.25) translate(-4px,-8px); opacity:1; }
+  100% { transform: translateX(-50%) rotate(-45deg) scale(1) translate(-10px,-20px); opacity:0; }
+}
+@keyframes heartPopRight {
+  0%   { transform: translateX(-50%) rotate(45deg) scale(1); opacity:0.95; }
+  40%  { transform: translateX(-50%) rotate(35deg) scale(1.25) translate(4px,-8px); opacity:1; }
+  100% { transform: translateX(-50%) rotate(45deg) scale(1) translate(10px,-20px); opacity:0; }
+}
+
+    
   </style>
 </head>
 <body>
