@@ -9,6 +9,151 @@
 
 </head>
 <body>
+    
+<!-- Truck animation overlay -->
+<div id="truckAnimation" class="truck-overlay hidden">
+  <div class="loop-wrapper">
+    <div class="mountain"></div>
+    <div class="hill"></div>
+    <div class="tree"></div>
+    <div class="tree"></div>
+    <div class="tree"></div>
+    <div class="rock"></div>
+    <div class="truck"></div>
+    <div class="wheels"></div>
+  </div>
+</div>
+
+<style>
+.truck-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #FFF9F9 0%, #F9C6CF 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.loop-wrapper {
+  width: 600px;
+  height: 250px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid #E6A6B0;
+}
+
+/* ===== CẢNH NÚI ===== */
+.mountain {
+  position: absolute;
+  right: -900px;
+  bottom: -20px;
+  width: 2px;
+  height: 2px;
+  box-shadow:
+    0 0 0 50px #FADADD,
+    60px 50px 0 70px #F9C6CF,
+    90px 90px 0 50px #E6A6B0,
+    250px 250px 0 50px #E6A6B0,
+    290px 320px 0 50px #FADADD,
+    320px 400px 0 50px #F9C6CF;
+  transform: rotate(130deg);
+  animation: mtn 10s linear infinite;
+}
+
+/* ===== ĐỒI ===== */
+.hill {
+  position: absolute;
+  right: -900px;
+  bottom: -50px;
+  width: 400px;
+  border-radius: 50%;
+  height: 20px;
+  box-shadow:
+    0 0 0 50px #E6A6B0,
+    -20px 0 0 20px #FADADD,
+    -90px 0 0 50px #E6A6B0,
+    250px 0 0 50px #E6A6B0,
+    290px 0 0 50px #F9C6CF,
+    620px 0 0 50px #FADADD;
+  animation: hill 2s linear infinite;
+}
+
+/* ===== CÂY ===== */
+.tree, .tree:nth-child(2), .tree:nth-child(3) {
+  position: absolute;
+  height: 100px;
+  width: 35px;
+  bottom: 0;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/tree.svg) no-repeat center/contain;
+  filter: sepia(0.3) hue-rotate(320deg) brightness(1.25);
+}
+
+/* ===== ĐÁ ===== */
+.rock {
+  margin-top: -17%;
+  height: 2%;
+  width: 2%;
+  bottom: -2px;
+  border-radius: 20px;
+  position: absolute;
+  background: #A47061;
+}
+
+/* ===== XE ===== */
+.truck, .wheels {
+  width: 85px;
+  bottom: 0;
+  right: 50%;
+  position: absolute;
+}
+.truck {
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/truck.svg) no-repeat center/contain;
+  height: 60px;
+  /* Tone matte: giảm sáng, giảm tương phản, thêm độ ấm */
+  filter: invert(68%) sepia(32%) saturate(320%) hue-rotate(330deg) brightness(0.93) contrast(0.95)
+          drop-shadow(0 0 6px rgba(107, 76, 59, 0.25));
+  animation: truck 1.8s ease-in-out infinite;
+}
+
+
+
+.wheels {
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/wheels.svg) no-repeat center/contain;
+  height: 15px;
+  filter: brightness(1.1) sepia(0.8) hue-rotate(330deg) saturate(120%);
+  animation: truck 1.8s ease-in-out infinite;
+}
+
+
+/* ===== GIÓ ===== */
+.truck:before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  box-shadow:
+    -30px 28px 0 1.5px #FFECEC,
+    -35px 18px 0 1.5px #FFF0F0;
+  animation: wind 1s ease infinite;
+}
+
+/* ===== KEYFRAMES ===== */
+@keyframes tree { 0% { transform: translate(1350px); } 100% { transform: translate(-50px); } }
+@keyframes tree2 { 0% { transform: translate(650px); } 100% { transform: translate(-50px); } }
+@keyframes tree3 { 0% { transform: translate(2750px); } 100% { transform: translate(-50px); } }
+@keyframes rock { 0% { right: -200px; } 100% { right: 2000px; } }
+@keyframes truck {
+  0%,100%{transform:translateY(0)}
+  6%{transform:translateY(-6px)}
+  9%{transform:translateY(0)}
+  10%{transform:translateY(-2px)}
+}
+@keyframes wind { 50% { transform: translateY(3px); } }
+@keyframes mtn { 100% { transform: translateX(-2000px) rotate(130deg); } }
+@keyframes hill { 100% { transform: translateX(-2000px); } }
+
+</style>
 
     <div class="container">
         <div class="header">

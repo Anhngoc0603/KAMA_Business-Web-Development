@@ -1,4 +1,19 @@
-:root {
+.panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 1.25rem;
+  border-radius: 0; /* Xóa bo góc */
+  box-shadow: 0 8px 32px rgba(251, 249, 249, 0.1);
+  border: 1px solid var(--border); /* Thêm màu viền từ biến CSS của trang */
+  transition: all 0.3s ease;
+}:root {
+  --pink-primary: #f5a9bc;
+  --pink-light: #f8c8d4;
+  --brown-primary: #8d7d6b;
+  --brown-light: #a69080;
+  --beige-primary: #f5d0c8;
+  --beige-light: #f7d6d0;
+
   --pale-pink: #fff0f0;
   --soft-rose: #f9c6cf;
   --warm-blush: #e6a6b0;
@@ -13,7 +28,7 @@
 
   --text-primary: #2c2c2c;
   --text-secondary: #6c757d;
-  --text-muted: #9ca3af;
+  --text-muted: #1e2023;
 
   --border: #e8e0dc;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -254,6 +269,7 @@ h3 {
   font-weight: 600;
   color: var(--branch-brown);
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 /* ===== CARDS ===== */
@@ -266,21 +282,23 @@ h3 {
 }
 
 .cards .card {
-  background: var(--bg-primary);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 24px;
   text-align: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
 }
 
 .cards .card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .cards .card.enter {
@@ -289,15 +307,53 @@ h3 {
 }
 
 .cards .icon {
-  font-size: 2.5rem;
-  margin: 0 auto 1rem;
-  width: 72px;
-  height: 72px;
-  border-radius: 8px;
+  position: relative; /* Đổi từ absolute sang relative */
+  border: 2px solid var(--pink-primary);
+  background: #fff;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto; /* Căn giữa icon */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden; /* Nền trắng */
+  transition: background 0.3s ease, border 0.3s ease; /* Hiệu ứng chuyển đổi */
+}
+
+.cards .icon:hover {
+  border: none; /* Không viền khi hover */
+  background: var(--pink-primary); /* Nền hồng khi hover */
+   /* Hình ảnh c4.png khi hover */
+}
+.cards .icon img {
+  position: absolute;
+  width: 120%; /* Tăng kích thước ảnh lên 120% */
+  height: 120%; /* Tăng kích thước ảnh lên 120% */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Căn giữa hình ảnh */
+  object-fit: cover;
+  z-index: 1; 
+}
+.cards .card:nth-child(1) .icon {
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-light) 100%);
+}
+
+.cards .card:nth-child(2) .icon {
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-light) 100%);
+}
+
+.cards .card:nth-child(3) .icon {
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-light) 100%);
+}
+
+.cards .card:nth-child(4) .icon {
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-light) 100%);
+}
+
+.cards .card:nth-child(5) .icon {
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-light) 100%);
 }
 
 .cards .card:hover .icon {
@@ -325,16 +381,17 @@ h3 {
 }
 
 .panel {
-  background: var(--bg-primary);
+  background: rgba(255, 255, 255, 0.7);
   padding: 2.5rem;
-  border-radius: 8px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
+  border-radius: 0px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(215, 41, 41, 0.5);
   transition: all 0.3s ease;
 }
 
 .panel:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .form .row {
@@ -365,13 +422,15 @@ h3 {
 .form textarea {
   width: 100%;
   padding: 0.875rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
   font-family: "Times New Roman", Times, serif;
   font-size: 0.95rem;
   transition: all 0.3s ease;
-  background: var(--bg-primary);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   color: var(--text-primary);
+  
 }
 
 .form input::placeholder,
@@ -382,8 +441,9 @@ h3 {
 .form input:focus,
 .form textarea:focus {
   outline: none;
-  border-color: var(--warm-blush);
-  box-shadow: 0 0 0 2px rgba(230, 166, 176, 0.1);
+  border-color: var(--green-primary);
+  box-shadow: 0 0 0 3px rgba(124, 152, 133, 0.1);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .form textarea {
@@ -394,7 +454,7 @@ h3 {
 .btn {
   padding: 0.875rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 16px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -407,17 +467,16 @@ h3 {
 }
 
 .btn.primary {
-  background: var(--warm-blush);
+  background: linear-gradient(135deg, var(--warm-blush) 0%, var(--warm-blush) 100%);
   color: #fff;
   width: 100%;
   justify-content: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 24px rgba(124, 152, 133, 0.3);
 }
 
 .btn.primary:hover {
-  background: var(--soft-rose);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 32px rgba(124, 152, 133, 0.4);
 }
 
 .btn.primary:active {
@@ -425,27 +484,27 @@ h3 {
 }
 
 .btn.secondary {
-  background: var(--soft-rose);
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-light) 100%);
   color: #fff;
   width: 100%;
   justify-content: center;
+  box-shadow: 0 8px 24px rgba(245, 169, 188, 0.3);
 }
 
 .btn.secondary:hover {
-  background: var(--warm-blush);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 32px rgba(245, 169, 188, 0.4);
 }
 
 .btn.outline {
   background: transparent;
-  border: 1px solid var(--warm-blush);
-  color: var(--branch-brown);
+  border: 2px solid var(--green-primary);
+  color: var(--green-primary);
 }
 
 .btn.outline:hover {
-  background: var(--pale-pink);
-  color: var(--branch-brown);
+  background: rgba(124, 152, 133, 0.1);
+  color: var(--green-primary);
   transform: translateY(-2px);
 }
 
@@ -471,12 +530,14 @@ h3 {
 
 /* ===== MAP ===== */
 .map-mock {
-  background: linear-gradient(135deg, var(--soft-rose) 0%, var(--warm-blush) 100%);
+  background: linear-gradient(135deg, rgba(124, 152, 133, 0.2) 0%, rgba(245, 169, 188, 0.2) 100%);
+  backdrop-filter: blur(10px);
   height: 220px;
-  border-radius: 8px;
+  border-radius: 24px;
   margin-bottom: 1.5rem;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .map-overlay .dot {
@@ -563,18 +624,20 @@ h3 {
 }
 
 .faq-item {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   padding: 1.25rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-item:hover {
-  background: var(--bg-tertiary);
+  background: rgba(255, 255, 255, 0.8);
   transform: translateX(4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .faq-item.enter {
@@ -638,7 +701,7 @@ h3 {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: var(--warm-blush);
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-light) 100%);
   border: none;
   border-radius: 50%;
   width: 60px;
@@ -647,7 +710,7 @@ h3 {
   color: white;
   cursor: pointer;
   z-index: 1000;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 32px rgba(245, 169, 188, 0.4);
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -656,7 +719,7 @@ h3 {
 
 .floating:hover {
   transform: scale(1.1);
-  box-shadow: 0 8px 24px rgba(230, 166, 176, 0.4);
+  box-shadow: 0 12px 48px rgba(245, 169, 188, 0.5);
 }
 
 .floating:active {
@@ -674,14 +737,16 @@ h3 {
   right: 2rem;
   width: 380px;
   max-height: 600px;
-  background: var(--bg-primary);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
   z-index: 1001;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 @keyframes slideUp {
@@ -702,7 +767,7 @@ h3 {
 }
 
 .chat-top {
-  background: var(--warm-blush);
+  background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 100%);
   padding: 1.25rem;
   display: flex;
   justify-content: space-between;
@@ -781,10 +846,11 @@ h3 {
 }
 
 .quick {
-  background: var(--bg-primary);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   padding: 0.875rem 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   text-align: left;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -794,10 +860,10 @@ h3 {
 }
 
 .quick:hover {
-  background: var(--warm-blush);
+  background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 100%);
   color: #fff;
   transform: translateX(4px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 24px rgba(124, 152, 133, 0.3);
 }
 
 .chat-input {
@@ -811,23 +877,26 @@ h3 {
 .chat-input input {
   flex: 1;
   padding: 0.875rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
   font-family: "Times New Roman", Times, serif;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 .chat-input input:focus {
   outline: none;
-  border-color: var(--warm-blush);
-  box-shadow: 0 0 0 2px rgba(230, 166, 176, 0.1);
+  border-color: var(--green-primary);
+  box-shadow: 0 0 0 3px rgba(124, 152, 133, 0.1);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .btn.small {
-  background: var(--warm-blush);
+  background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 100%);
   padding: 0.875rem;
-  border-radius: 4px;
+  border-radius: 16px;
   border: none;
   cursor: pointer;
   color: #fff;
@@ -835,11 +904,12 @@ h3 {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(124, 152, 133, 0.2);
 }
 
 .btn.small:hover {
-  background: var(--soft-rose);
   transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(124, 152, 133, 0.3);
 }
 
 .btn.small:active {
@@ -1026,6 +1096,7 @@ h3 {
 /* ===== UTILITY ===== */
 .muted {
   color: var(--text-muted);
+  font-family: 'Playfair Display', serif !important;
 }
 
 .small {
@@ -1113,4 +1184,65 @@ h3 {
   .sidebar-text {
     font-size: 0.75rem;
   }
+}
+/* ==== CONTACT CARDS REFINED ==== */
+.cards .card {
+  background: #fff;
+  border: 1.5px solid #e8e0dc;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  backdrop-filter: none;
+  transition: all 0.3s ease;
+}
+
+.cards .card:hover {
+  border: 3px solid var(--warm-blush);
+  box-shadow: 0 8px 24px rgba(230, 166, 176, 0.2);
+  transform: translateY(-6px);
+}
+
+.cards .card h3 {
+  color: var(--branch-brown);
+}
+
+.cards .card .icon {
+  background: none;
+  border: 2px solid var(--warm-blush);
+  color: var(--warm-blush);
+  transition: all 0.3s ease;
+}
+
+.cards .card:hover .icon {
+  background: var(--warm-blush);
+  color: white;
+  transform: scale(1.1);
+}
+/* ===== Inputs: viền mảnh, hover/focus dày & đậm ===== */
+.form input,
+.form textarea {
+  background: #fff;
+  backdrop-filter: none;
+  border: 1px solid #f3d0d6;   /* hồng rất nhạt */
+  border-radius: 8px;           /* bớt bo tròn cho gọn */
+  transition: border-color .2s ease, border-width .15s ease, box-shadow .2s ease;
+  color: var(--text-primary);
+}
+
+.form input::placeholder,
+.form textarea::placeholder {
+  color: #b7c0cb; /* xám xanh nhẹ như ảnh */
+}
+
+.form input:hover,
+.form textarea:hover {
+  border-color: var(--warm-blush); /* đậm hơn khi hover */
+}
+
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-width: 2px;                     /* dày hơn khi focus */
+  border-color: var(--warm-blush);       /* hồng đậm */
+  box-shadow: 0 0 0 4px rgba(230,166,176,.12); /* halo mềm */
+  background: #fff;
 }

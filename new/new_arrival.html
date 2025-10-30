@@ -7,34 +7,169 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div id="header-placeholder"></div> <!-- Placeholder for header fetch -->
 
+  <style>
+    html, body {
+      height: 100%;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      background: #FFF9F9;
+      color: #6B4C3B;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* 🌸 SVG WAVE SECTION */
+   .svg-container {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+  margin-top: 150px;
+  z-index: 1;
+  will-change: transform, filter;
+}
+
+.svg-container svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  animation: gentleWave 6s ease-in-out infinite alternate;
+}
+
+@keyframes gentleWave {
+  0%, 100% { transform: translateY(0px) scaleY(1); }
+  50% { transform: translateY(8px) scaleY(1.03); }
+}
+
+path {
+  fill: url(#grad);
+  transition: d 0.15s ease-out;
+  filter: drop-shadow(0 10px 20px rgba(230,166,176,0.4));
+}
+
+.wave-content {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 3;
+}
+
+
+.wave-content h1 {
+  font-size: 56px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #6B4C3B, #A77A6F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  text-shadow: 0 3px 8px rgba(255,255,255,0.4);
+}
+
+.wave-content p {
+  font-size: 18px;
+  color: #7b5c4d;
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+
+    .btn-explore {
+      display: inline-block;
+      padding: 12px 28px;
+      background: linear-gradient(90deg, #E6A6B0, #F9C6CF);
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-explore:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(230,166,176,0.4);
+    }
+
+    /* 🎥 VIDEO HERO DƯỚI CÙNG */
+    .video-hero {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      overflow: hidden;
+      margin-top: 100px;
+      z-index: 0;
+    }
+
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(1.05);
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-content {
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    }
+
+    .video-content .video-title {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .video-content .video-subtitle {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .ai-combo { margin-top: 80px; }
+  </style>
+</head>
+
+<body>
+  <div id="header-placeholder"></div>
   <div class="fireworks-container"></div>
 
-  <section class="video-hero">
-    <div class="video-container">
-      <video autoplay muted loop playsinline class="hero-video">
-        <source src="../new/images/Gucci Beauty Limited-Edition Flora Makeup.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <div class="video-overlay">
-        <div class="video-content">
-          <h1 class="video-title">New Arrivals</h1>
-          <p class="video-subtitle">Discover the essence of elegance with our latest Sakura-inspired collection.</p>
-          <a href="#products" class="btn-explore">Explore Now</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- 🌸 SVG WAVE ÔM CHỮ NEW ARRIVALS -->
+  <!-- 🌸 SVG WAVE ĐỘNG THẬT -->
+<section class="svg-container">
+  <svg viewBox="0 0 800 400" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#E6A6B0" />
+        <stop offset="60%" stop-color="#F9C6CF" />
+        <stop offset="100%" stop-color="#FFF9F9" />
+      </linearGradient>
+    </defs>
+    <path id="curve" d="M 800 300 Q 400 350 0 300 L 0 0 L 800 0 L 800 300 Z"></path>
+  </svg>
 
+  <div class="wave-content">
+    <h1>New Arrivals</h1>
+    <p>Discover the essence of elegance with our latest Sakura-inspired collection.</p>
+    <a href="#products" class="btn-explore">Explore Now</a>
+  </div>
+</section>
+
+
+  <!-- 🌸 AI Combo -->
   <section class="ai-combo">
     <button class="ai-btn">💡 Get AI Combo Suggestion</button>
   </section>
 
+  <!-- 🌸 Filter bar -->
   <section class="filter-bar">
-    <div class="search-wrapper placeholder"></div>
     <div class="filters-inline">
       <select id="price-filter">
         <option value="default">Price</option>
@@ -58,23 +193,83 @@
         <option value="Charlotte Tilbury">Charlotte Tilbury</option>
         <option value="Fenty Beauty">Fenty Beauty</option>
       </select>
-      <button id="filter-toggle" class="filter-btn">☰ Filter</button>
-      <div id="filter-menu" class="filter-menu">
-        <button class="category-btn is-selected" data-category="All">All</button>
-        <button class="category-btn" data-category="Face">Face</button>
-        <button class="category-btn" data-category="Eyes">Eyes</button>
-        <button class="category-btn" data-category="Lips">Lips</button>
-      </div>
     </div>
   </section>
+
+  <!-- 🌸 Product list -->
   <main class="products-grid" id="products"></main>
 
   <div class="load-more">
     <button id="load-more-button" class="btn-primary">Load More</button>
   </div>
 
-  <div id="footer-placeholder"></div> <!-- Placeholder for footer fetch -->
+  <!-- 🎥 VIDEO HERO Ở DƯỚI -->
+  <section class="video-hero">
+    <video autoplay muted loop playsinline class="hero-video">
+      <source src="../new/images/Gucci Beauty Limited-Edition Flora Makeup.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay">
+      <div class="video-content">
+        <h1 class="video-title">Luxury Glow</h1>
+        <p class="video-subtitle">Where every shade meets timeless beauty.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+<script>
+(function() {
+  const curve = document.getElementById("curve");
+  const svgContainer = document.querySelector(".svg-container");
+  const defaultCurveValue = 350;   // cong đầu
+const flatCurveValue = 100;      // giảm sâu hơn để phẳng rõ
+const maxScroll = 600;           // scroll ngắn hơn, hiệu ứng rõ hơn
+         // scroll tới đây thì phẳng hoàn toàn
+  let ticking = false;
+
+  function scrollEvent(scrollPos) {
+    const progress = Math.min(scrollPos / maxScroll, 1);
+    // cubic easing để chuyển mềm
+    const eased = 1 - Math.pow(1 - progress, 3);
+    // giá trị Y của điểm cong giữa
+const curveValue = defaultCurveValue - scrollPos / 3;
+    const opacity = 1 - progress * 0.6;
+curve.style.opacity = opacity;
+if (curveValue < flatCurveValue) curveValue = flatCurveValue;
+
+
+    // cập nhật đường path Q 400 Y
+    curve.setAttribute(
+      "d",
+      `M 800 300 Q 400 ${curveValue} 0 300 L 0 0 L 800 0 L 800 300 Z`
+    );
+
+    // hiệu ứng di chuyển + sáng tối
+    const translateY = progress * 150;      // trôi xuống xa hơn
+    const scaleY = 1 - progress * 0.08;     // nén nhẹ hơn
+    const brightness = 1 - progress * 0.25; // tối dần
+
+    svgContainer.style.transform = `translateY(${translateY}px) scaleY(${scaleY})`;
+    svgContainer.style.filter = `brightness(${brightness})`;
+  }
+
+  window.addEventListener("scroll", () => {
+    const scrollY = window.scrollY;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        scrollEvent(scrollY);
+        ticking = false;
+      });
+    }
+    ticking = true;
+  });
+})();
+</script>
+
+
 
   <script src="script_new.js"></script>
 </body>
-</html> 
+</html>

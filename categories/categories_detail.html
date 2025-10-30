@@ -830,6 +830,8 @@
   </style>
 </head>
 <body>
+  <div id="shader-bg"></div>
+
   <!-- Header Placeholder -->
   <div id="header-placeholder">
     <div class="loading">
@@ -1088,6 +1090,7 @@
             <button class="btn-primary" id="addToCartBtn">ADD TO CART</button>
           </div>
         `;
+          window.currentProduct = product;
 
         // Hiển thị thông tin mở rộng với các section riêng biệt
         displayExtendedInfo(product);
@@ -1307,29 +1310,84 @@
       });
     }
 
-    function generateSampleReviews(reviews) {
-      // Placeholder sample reviews if no data
-      const sampleReviews = reviews.length > 0 ? reviews : [
-        { name: 'Anna L.', rating: 5, date: 'October 20, 2025', text: 'Absolutely love this foundation! It blends perfectly and lasts all day.' },
-        { name: 'John D.', rating: 4, date: 'October 18, 2025', text: 'Great coverage, but a bit heavy for summer. Still recommend!' },
-        { name: 'Sarah K.', rating: 5, date: 'October 15, 2025', text: 'My new favorite! Skin feels hydrated and natural.' }
-      ];
+  // ==================== SAMPLE REVIEWS BY CATEGORY ====================
+const SAMPLE_REVIEWS = {
+  makeup: [
+    { name: "Isabella R.", rating: 5, text: "The finish is absolutely stunning — luminous yet natural." },
+    { name: "Chloe M.", rating: 4, text: "Beautiful texture, feels high-end and blends like a dream." },
+    { name: "Sophia D.", rating: 5, text: "One of the best luxury products I've tried. Worth every penny." },
+    { name: "Emma J.", rating: 4, text: "Elegant packaging and a formula that truly performs." },
+    { name: "Olivia K.", rating: 5, text: "Gives my skin such a soft-focus glow, love it!" },
+    { name: "Mia T.", rating: 5, text: "Feels like silk on the skin — effortlessly flawless." },
+    { name: "Luna V.", rating: 4, text: "The pigments are rich, and the scent feels luxurious." },
+    { name: "Grace P.", rating: 5, text: "Truly a masterpiece — both in formula and design." },
+    { name: "Ella F.", rating: 5, text: "Every use feels like a beauty ritual. Absolutely divine!" },
+    { name: "Harper C.", rating: 4, text: "It’s luxurious and long-lasting — can’t ask for more!" }
+  ],
+  skincare: [
+    { name: "Lily A.", rating: 5, text: "Leaves my skin radiant and deeply hydrated." },
+    { name: "Sophie N.", rating: 4, text: "Soft texture, absorbs quickly without any stickiness." },
+    { name: "Amelia G.", rating: 5, text: "My skin has never felt this smooth and fresh!" },
+    { name: "Hazel L.", rating: 5, text: "A luxurious skincare essential — love the glow!" }
+  ],
+  perfume: [
+    { name: "Nora S.", rating: 5, text: "An unforgettable scent — elegant and timeless." },
+    { name: "Ava C.", rating: 5, text: "Smells like sophistication bottled up. Just perfect." },
+    { name: "Ruby H.", rating: 4, text: "Subtle yet powerful. I get compliments all day." },
+    { name: "Emily Z.", rating: 5, text: "The fragrance feels like pure luxury — a must-have." }
+  ]
+};
 
-      return sampleReviews.map(review => `
-        <div class="review-item">
-          <div class="review-avatar">${review.name.charAt(0)}</div>
-          <div class="review-content">
-            <div class="review-header">
-              <span class="review-name">${review.name}</span>
-              <span class="review-date">${review.date}</span>
-              <div class="review-stars">${generateStarRating(review.rating)}</div>
-            </div>
-            <p class="review-text">${review.text}</p>
-            <div class="review-helpful">Was this helpful? <a href="#">Yes (5)</a> | <a href="#">No (0)</a></div>
+// ==================== RANDOM REVIEW GENERATOR ====================
+function generateSampleReviews(reviews) {
+  // Nếu sản phẩm có review thực tế thì giữ nguyên
+  if (reviews && reviews.length > 0) {
+    return reviews.map(review => `
+      <div class="review-item">
+        <div class="review-avatar">${review.name.charAt(0)}</div>
+        <div class="review-content">
+          <div class="review-header">
+            <span class="review-name">${review.name}</span>
+            <span class="review-date">${review.date || 'October 2025'}</span>
+            <div class="review-stars">${generateStarRating(review.rating)}</div>
           </div>
+          <p class="review-text">${review.text}</p>
+          <div class="review-helpful">Was this helpful? <a href="#">Yes (5)</a> | <a href="#">No (0)</a></div>
         </div>
-      `);
-    }
+      </div>
+    `);
+  }
+
+  // Nếu chưa có review → random 3 câu theo loại sản phẩm
+  const category = (window.currentProduct?.category || 'makeup').toLowerCase();
+  const pool = SAMPLE_REVIEWS[category] || SAMPLE_REVIEWS.makeup;
+
+  // Lấy ngẫu nhiên 3 review không trùng
+  const randomSet = [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
+
+  // Thêm ngày ngẫu nhiên
+  const today = new Date();
+  return randomSet.map((r, i) => {
+    const date = new Date(today - i * 86400000 * (1 + Math.random() * 2));
+    const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    return `
+      <div class="review-item">
+        <div class="review-avatar">${r.name.charAt(0)}</div>
+        <div class="review-content">
+          <div class="review-header">
+            <span class="review-name">${r.name}</span>
+            <span class="review-date">${dateStr}</span>
+            <div class="review-stars">${generateStarRating(r.rating)}</div>
+          </div>
+          <p class="review-text">${r.text}</p>
+          <div class="review-helpful">Was this helpful? <a href="#">Yes (3)</a> | <a href="#">No (0)</a></div>
+        </div>
+      </div>
+    `;
+  });
+}
+
 
     function initializeProductEvents(product) {
       // Sự kiện thumbnail
@@ -1817,6 +1875,125 @@
 
     // Khởi chạy
     document.addEventListener('DOMContentLoaded', initializePage);
+    
   </script>
+<div id="shader-bg"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js"></script>
+<script id="vertexShader" type="x-shader/x-vertex">
+void main() {
+  gl_Position = vec4(position, 1.0);
+}
+</script>
+
+<script id="fragmentShader" type="x-shader/x-fragment">
+precision highp float;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+const vec3 pink1 = vec3(230.0,166.0,176.0) / 255.0; // #E6A6B0
+const vec3 pink2 = vec3(249.0,198.0,207.0) / 255.0; // #F9C6CF
+const vec3 white = vec3(1.0);
+
+void main() {
+  // Chuẩn hóa tọa độ pixel
+  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+  uv -= 0.5;
+  uv.x *= u_resolution.x / u_resolution.y;
+
+  // Lấy vị trí chuột
+  vec2 m = u_mouse;
+  m.x *= u_resolution.x / u_resolution.y;
+
+  // Khoảng cách từ chuột tới pixel
+  float d = length(uv - m);
+
+  // Gradient hồng pastel theo thời gian
+  vec3 glowColor = mix(pink1, pink2, 0.5 + 0.5*sin(u_time*0.8));
+
+  // Tạo quầng sáng mềm
+  float intensity = smoothstep(0.45, 0.0, d);
+  vec3 col = mix(white, glowColor, intensity * 0.8);
+
+  gl_FragColor = vec4(col, 1.0);
+}
+</script>
+
+<script>
+let scene, camera, renderer, uniforms;
+let newmouse = {x:0,y:0}, divisor = 0.08;
+
+function initShader() {
+  const container = document.getElementById("shader-bg");
+  camera = new THREE.Camera();
+  camera.position.z = 1;
+  scene = new THREE.Scene();
+
+  const geometry = new THREE.PlaneBufferGeometry(2, 2);
+  uniforms = {
+    u_time: {value: 1.0},
+    u_resolution: {value: new THREE.Vector2()},
+    u_mouse: {value: new THREE.Vector2()}
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    vertexShader: document.getElementById("vertexShader").textContent,
+    fragmentShader: document.getElementById("fragmentShader").textContent,
+    transparent: true
+  });
+
+  scene.add(new THREE.Mesh(geometry, material));
+
+  renderer = new THREE.WebGLRenderer({alpha: true});
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0xFFFDFD, 1); // nền trắng hồng nhẹ
+  renderer.domElement.style.position = "fixed";
+  renderer.domElement.style.top = "0";
+  renderer.domElement.style.left = "0";
+  renderer.domElement.style.zIndex = "-1"; // nằm dưới sản phẩm
+  renderer.domElement.style.pointerEvents = "none";
+  container.appendChild(renderer.domElement);
+
+  onWindowResize();
+  window.addEventListener("resize", onWindowResize, false);
+
+  document.addEventListener("pointermove", e => {
+    const ratio = window.innerHeight / window.innerWidth;
+    newmouse.x = (e.pageX / window.innerWidth - 0.5) * 1.2;
+    newmouse.y = (e.pageY / window.innerHeight - 0.5) * -1.2;
+  });
+}
+
+function onWindowResize() {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  uniforms.u_resolution.value.x = renderer.domElement.width;
+  uniforms.u_resolution.value.y = renderer.domElement.height;
+}
+
+function animate(t) {
+  requestAnimationFrame(animate);
+  uniforms.u_time.value = t * 0.001;
+  uniforms.u_mouse.value.x += (newmouse.x - uniforms.u_mouse.value.x) * divisor;
+  uniforms.u_mouse.value.y += (newmouse.y - uniforms.u_mouse.value.y) * divisor;
+  renderer.render(scene, camera);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initShader();
+  animate();
+});
+</script>
+
+<style>
+#shader-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* nằm dưới mọi thứ */
+  pointer-events: none;
+}
+</style>
+</style>
 </body>
 </html>

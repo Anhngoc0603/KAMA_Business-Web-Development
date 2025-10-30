@@ -279,4 +279,32 @@ async function loadSaleEvents() {
 }
 
 document.addEventListener('DOMContentLoaded', loadSaleEvents);
+fetch('sale_events.json')
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('sale-3d');
+    if (!container) return;
+// sau khi container.innerHTML tạo <div class="title">...</div>
+const events = data.events;                   // 4 sự kiện
+const spacing = 100 / (events.length + 1);    // chia đều theo % ngang
 
+events.forEach((event, i) => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'card-wrapper';
+  wrapper.style.left = `calc(${spacing * (i + 1)}% - 125px)`; // 125 = 250/2 để chuẩn giữa
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.background = `linear-gradient(145deg, ${event.color1}, ${event.color2})`;
+  card.innerHTML = `
+    <img src="${event.image}" alt="${event.title}">
+    <h3>${event.title}</h3>
+    <p>${event.description}</p>
+  `;
+  wrapper.appendChild(card);
+  container.appendChild(wrapper);
+
+  wrapper.addEventListener('click', () => event.link && window.open(event.link, '_blank'));
+});
+
+  });

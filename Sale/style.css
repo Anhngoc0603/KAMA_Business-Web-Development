@@ -904,114 +904,237 @@
   }
 }
 /* ================= SALE EVENT BLOG STYLE ================= */
+/* === SALE EVENT 3D CARDS === */
+/* === SALE EVENT ELEVATED STYLE === */
 .sale-event {
-  width: 90%;
-  max-width: 1100px;
-  margin: 60px auto 80px;
-  background: rgba(255, 249, 249, 0.97);
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(230, 166, 176, 0.2);
-  border: 2px solid rgba(249, 198, 207, 0.5);
-  padding: 32px 40px;
-  font-family: 'Playfair Display', serif;
-}
-
-.sale-event-title {
-  font-size: 28px;
+  position: relative;
+  background: linear-gradient(180deg, #FFF9F9 0%, #FADADD 60%, #F9C6CF 100%);
+  padding: 60px 0 70px;
   text-align: center;
-  font-weight: 700;
-  color: #6B4C3B;
-  margin-bottom: 30px;
-  text-shadow: 0 2px 4px rgba(230, 166, 176, 0.3);
+  overflow: hidden;
+  box-shadow: 0 -10px 40px rgba(107, 76, 59, 0.08),
+              inset 0 15px 30px rgba(255, 255, 255, 0.8),
+              inset 0 -20px 40px rgba(107, 76, 59, 0.05);
+  animation: shimmer-bg 12s linear infinite;
+  background-size: 200% 200%;
 }
 
-.sale-blog {
+/* hiệu ứng ánh sáng pastel chạy chậm */
+@keyframes shimmer-bg {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ==== tiêu đề chính ==== */
+/* ==== TITLE “✨ Current Sale Events ✨” – GRADIENT EDITION ==== */
+/* ==== TITLE “✨ Current Sale Events ✨” – LUXURY BOLD EDITION ==== */
+/* ==== TITLE “✨ Current Sale Events ✨” – LUXURY BROWN GRADIENT ==== */
+.sale-event-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  background: linear-gradient(90deg, #5B3A2C, #6B4C3B, #8C6B5B, #6B4C3B);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: brown-glow 8s ease-in-out infinite;
+  text-shadow:
+    0 3px 8px rgba(107, 76, 59, 0.25),
+    0 6px 20px rgba(107, 76, 59, 0.3),
+    0 0 35px rgba(200, 150, 130, 0.3);
+  margin-bottom: 10px;
+}
+
+/* ánh sáng nâu quét nhẹ */
+@keyframes brown-glow {
+  0%   { background-position: 0% center; }
+  50%  { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* ánh sáng quét chậm */
+@keyframes shine-title-bold {
+  0%   { background-position: 0% center; }
+  50%  { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* ánh sáng quét nhẹ qua chữ */
+@keyframes shine-title {
+  0%   { background-position: 0% center; }
+  50%  { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+
+/* ==== chữ “Luxury Beauty” ==== */
+.sale-3d .title {
+  margin-top: 0;
+}
+.sale-3d .title h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #E6A6B0, #FADADD, #E6A6B0);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine-text 8s linear infinite;
+  letter-spacing: 1.5px;
+  margin-bottom: 50px;
+  text-shadow: 0 2px 6px rgba(107, 76, 59, 0.1);
+}
+
+/* ánh sáng quét ngang qua chữ */
+@keyframes shine-text {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* === khu vực card === */
+.sale-3d {
+  width: 100%;
+  height: 340px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  perspective: 1000px;
+}
+
+/* card nghiêng & nổi bật */
+.card-wrapper {
+  position: absolute;
+  width: 250px;
+  height: 340px;
+  transform-style: preserve-3d;
+  transform: rotateX(70deg) translateY(-140px) translateZ(-70px);
+  transition: all 0.6s ease;
+  cursor: pointer;
+}
+.card-wrapper:hover {
+  transform: rotateX(0deg) translateY(0) translateZ(0);
+  filter: brightness(1.1);
+  z-index: 5;
+}
+
+/* card có shadow mềm */
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #FBE0E4, #F9C6CF);
+  box-shadow: 0 18px 60px rgba(107, 76, 59, 0.25);
   display: flex;
   flex-direction: column;
-  gap: 32px;
-}
-
-.sale-row {
-  display: flex;
   align-items: center;
-  gap: 32px;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  justify-content: flex-start;
+  padding-top: 15px;
+  transition: all 0.4s ease;
 }
-.sale-row:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 18px rgba(230, 166, 176, 0.25);
+.card:hover {
+  box-shadow: 0 25px 80px rgba(107, 76, 59, 0.3),
+              0 0 30px rgba(249, 198, 207, 0.4);
 }
 
-.sale-img img {
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-right: 2px solid #F9C6CF;
+/* ảnh trong card */
+.card img {
+  width: 160px;
+  border-radius: 12px;
+  transform: translateZ(22px);
+  transition: transform 0.35s;
+}
+.card-wrapper:hover img {
+  transform: translateZ(40px) scale(1.08);
 }
 
-.sale-info {
-  flex: 1;
-  text-align: left;
-  padding: 16px 8px;
-}
-
-.sale-info h3 {
-  font-size: 20px;
+/* text trong card */
+.card h3 {
+  font-size: 18px;
+  margin: 10px 0 4px;
   color: #6B4C3B;
-  margin-bottom: 8px;
+  transform: translateZ(18px);
+}
+.card p {
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: #8c6b5b;
+  width: 86%;
+  margin: 2px auto 0;
+  transform: translateZ(14px);
 }
 
-.sale-info p {
-  font-size: 15px;
-  color: #9b7c7c;
-  margin-bottom: 12px;
-  line-height: 1.5;
+/* glow bóng dưới */
+.card-wrapper::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -16px;
+  transform: translateX(-50%) scale(0.9);
+  width: 88%;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(107, 76, 59, 0.25), transparent 70%);
+  filter: blur(5px);
+  opacity: 0.75;
+  transition: all 0.4s ease;
+}
+.card-wrapper:hover::after {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
 }
 
-.sale-link {
-  display: inline-block;
-  background: linear-gradient(135deg, #E6A6B0, #F9C6CF);
-  color: white;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 14px;
-  transition: background 0.3s ease, transform 0.3s ease;
+/* animation fade */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.sale-link:hover {
-  background: linear-gradient(135deg, #F9C6CF, #E6A6B0);
-  transform: translateY(-2px);
+/* ==== PARTICLE GLOW – LIGHT ORBS AROUND SALE EVENT ==== */
+.sale-event::before,
+.sale-event::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255, 230, 240, 0.9) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 40%, rgba(255, 210, 230, 0.8) 0%, transparent 55%),
+                    radial-gradient(circle at 60% 80%, rgba(250, 220, 230, 0.6) 0%, transparent 55%),
+                    radial-gradient(circle at 30% 70%, rgba(255, 180, 200, 0.5) 0%, transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  animation: floatGlow 15s ease-in-out infinite alternate;
+  filter: blur(30px);
 }
 
-.deadline {
-  display: block;
-  margin-top: 8px;
-  color: #E86C6C;
-  font-size: 14px;
-  font-weight: 600;
+.sale-event::after {
+  animation-delay: 7.5s; /* bay lệch nhau cho tự nhiên */
+  opacity: 0.4;
+  filter: blur(45px);
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .sale-row {
-    flex-direction: column;
-    text-align: center;
+/* ánh sáng di chuyển chậm */
+@keyframes floatGlow {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
-
-  .sale-img img {
-    width: 100%;
-    height: 180px;
-    border-right: none;
-    border-bottom: 2px solid #F9C6CF;
+  50% {
+    transform: translate3d(20px, -30px, 0) scale(1.05);
   }
-
-  .sale-info {
-    padding: 16px;
+  100% {
+    transform: translate3d(-25px, 20px, 0) scale(1);
   }
 }
 
+/* tăng độ nổi của card lên trên particle layer */
+.sale-3d {
+  position: relative;
+  z-index: 2;
+}

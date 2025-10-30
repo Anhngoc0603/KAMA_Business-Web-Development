@@ -75,19 +75,24 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  margin-top: 100px;
+  background: linear-gradient(180deg, #E6A6B0, #F9C6CF 70%, #FFF9F9);
 }
 
-.video-container {
+.video-mask {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  -webkit-clip-path: path("M 0 0 H 100% V 90% Q 50% 100% 100% 90% V 0 Z");
+  clip-path: path("M 0 0 H 100% V 90% Q 50% 100% 100% 90% V 0 Z");
 }
 
 .hero-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  filter: brightness(1.05);
 }
 
 .video-overlay {
@@ -96,28 +101,89 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.35);
+  z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 .video-content {
   text-align: center;
+  z-index: 6;
+
+}
+/* 🌸 WAVE DƯỚI VIDEO */
+.wave-bg {
+  position: absolute;
+  top: 90%; /* vị trí để phần tròn che cạnh video */
+  left: 0;
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(180deg, #E6A6B0 0%, #F9C6CF 40%, #FFF9F9 100%);
+  border-top-left-radius: 50% 80%;
+  border-top-right-radius: 50% 80%;
+  z-index: 0; /* nằm dưới video */
+  box-shadow: 0 -10px 30px rgba(230, 166, 176, 0.25);
+}
+
+/* Video nằm trên */
+.video-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
 }
 
-.video-title {
-  font-size: 48px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.video-content {
+  text-align: center;
+  z-index: 2;
 }
 
-.video-subtitle {
-  font-size: 20px;
-  margin-bottom: 24px;
-  opacity: 0.9;
+/* 🌸 CỤC CONG HỒNG DƯỚI VIDEO */
+.sakura-wave {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(to bottom, #F9C6CF 0%, #FFF9F9 80%);
+  border-top-left-radius: 50% 100%;
+  border-top-right-radius: 50% 100%;
+  z-index: 1;
+  box-shadow: 0 -5px 30px rgba(230,166,176,0.3);
+}
+
+/* 🌊 hiệu ứng chuyển động nhẹ */
+@keyframes gentleWave {
+  0%, 100% {
+    transform: scaleY(1) translateY(0);
+  }
+  50% {
+    transform: scaleY(1.05) translateY(-5px);
+  }
+}
+
+.sakura-wave {
+  animation: gentleWave 6s ease-in-out infinite alternate;
 }
 
 .btn-explore {
@@ -858,7 +924,7 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Nhịp thở nhẹ */
+/* Nhịp thở nhẹ */ 
 @keyframes badgePulse {
   0%, 100% {
     transform: scale(1);
@@ -868,4 +934,59 @@
     transform: scale(1.07);
     box-shadow: 0 0 18px rgba(249,198,207,0.9), 0 0 40px rgba(230,166,176,0.7);
   }
+}
+/* 🌸 WAVE HEADER */
+.wave-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 260px;
+  background: linear-gradient(180deg, #E6A6B0, #F9C6CF 70%, #FFF9F9);
+  border-bottom-left-radius: 50% 25%;
+  border-bottom-right-radius: 50% 25%;
+  z-index: 0;
+  transition: transform 0.2s ease-out;
+  transform: translateY(0);
+  box-shadow: 0 6px 20px rgba(230, 166, 176, 0.25);
+}
+
+/* tạo hiệu ứng bóng sáng nhẹ trên sóng */
+.wave-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.4) 0%, transparent 70%);
+  opacity: 0.4;
+}
+html, body {
+  height: 100%;
+  overflow-y: auto; /* đảm bảo có scroll */
+  scroll-behavior: smooth;
+}
+
+/* wave-section cao hơn, để parallax rõ hơn */
+.wave-section {
+  position: relative;
+  width: 100%;
+  height: 600px; /* tăng từ 420px -> 600px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 120px;
+  z-index: 1;
+}
+.svg-container {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  overflow: hidden;
+  margin-top: 120px;
+  z-index: 1;
+  will-change: transform, filter;
+  transition: none; /* ⚠ tắt transition để JS điều khiển trực tiếp */
 }
