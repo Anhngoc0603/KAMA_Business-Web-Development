@@ -1,3 +1,29 @@
+(function() {
+  const mask = document.querySelector('.video-mask');
+  if (!mask) return;
+
+  let lastScrollY = 0;
+  let ticking = false;
+
+  function updateWave(scrollY) {
+    const curveY = 90 - Math.min(scrollY / 30, 10);
+    mask.style.clipPath = `path("M 0 0 H 100% V ${curveY}% Q 50% 100% 100% ${curveY}% V 0 Z")`;
+    mask.style.webkitClipPath = `path("M 0 0 H 100% V ${curveY}% Q 50% 100% 100% ${curveY}% V 0 Z")`;
+  }
+
+  window.addEventListener('scroll', () => {
+    lastScrollY = window.scrollY;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        updateWave(lastScrollY);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+
+
 document.addEventListener('DOMContentLoaded', async () => {
   'use strict';
 
@@ -190,10 +216,38 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   if (els.loadMore) els.loadMore.onclick = () => { page++; renderGrid(); };
+  
 
   // ===================================================================
   // 6. RUN
   // ===================================================================
   loadNewArrivals();
   loadMainProducts();
+  document.addEventListener("DOMContentLoaded", () => {
+  const wave = document.querySelector(".wave-bg");
+  const section = document.querySelector(".wave-section");
+  if (!wave || !section) return;
+
+  function updateWave() {
+    const scrollY = window.scrollY;
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const windowHeight = window.innerHeight;
+
+    // Tính phần cuộn trong viewport
+    const distance = scrollY + windowHeight - sectionTop;
+    const progress = Math.min(1, Math.max(0, distance / (windowHeight + sectionHeight)));
+
+    // Cập nhật hiệu ứng parallax
+    const translateY = progress * 60;  // di chuyển mượt
+    const scaleY = 1 + progress * 0.1; // phồng nhẹ
+    const brightness = 1 - progress * 0.25; // tối dần
+
+    wave.style.transform = `translateY(${translateY}px) scaleY(${scaleY})`;
+    wave.style.filter = `brightness(${brightness})`;
+  }
+
+  window.addEventListener("scroll", updateWave, { passive: true });
+  updateWave();
+});
 });

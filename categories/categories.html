@@ -191,78 +191,330 @@
     .shop-section { margin: 80px 0 60px; }
     .shop-title { text-align: center; font-size: 1.8rem; margin-bottom: 30px; color: #6B4C3B; }
     .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+    .shop-grid.brand-canvas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
     .shop-card { position: relative; height: 340px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.12); cursor: pointer; transition: transform 0.3s ease; }
     .shop-card:hover { transform: translateY(-12px); }
     .shop-card img { width: 100%; height: 100%; object-fit: cover; }
     .shop-card .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.75)); padding: 40px 20px 25px; color: white; text-align: center; }
     .shop-card h3 { margin: 0; font-size: 1.6rem; font-weight: 600; }
     .shop-card p { margin: 8px 0 0; font-size: 1rem; opacity: 0.9; }
-    .btn-view-details {
+    /* === SAKURA HEART BUTTON (phiên bản tím 3D, không che chữ) === */
+/* === Sửa lại nút: GIỮ MÀU HỒNG GỐC === */
+/* === Nút Sakura với trái tim hồng không nền === */
+.sakura-btn {
+  all: unset;
   position: relative;
-  flex: 1;
-  height: 44px;
-  background: linear-gradient(135deg, #E6A6B0, #F9C6CF);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
-  border: none;
-  border-radius: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 1.4em;
+  border-radius: 999px;
   cursor: pointer;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  isolation: isolate;
+  transition: transform .25s ease;
+  z-index: 0;
+}
+
+/* nền hồng gradient như cũ */
+.sakura-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #E6A6B0, #F9C6CF);
+  transform: scale(0.93);
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+  z-index: 0;
+  box-shadow: 0 4px 12px rgba(230,166,176,0.3);
+}
+
+.sakura-btn:hover::before {
+  transform: scale(1.04);
+  background: linear-gradient(135deg, #F9C6CF, #E6A6B0);
+  box-shadow: 0 6px 16px rgba(230,166,176,0.4);
+}
+
+.sakura-btn:active::before {
+  transform: scale(0.96);
+}
+
+/* trái tim hồng trong suốt, không nền */
+.sakura-btn::after {
+  content: "";
+  position: absolute;
+  top: -0.8em;
+  right: -0.6em;
+  width: 1.6em;
+  height: 1.6em;
+  background: radial-gradient(circle at 40% 35%, #FAD0E9 15%, #F59AB8 50%, #F27AA8 75%, transparent 100%);
+  clip-path: path("M24 4C24 4 18 0 12 6C6 0 0 4 0 10C0 18 12 24 12 24C12 24 24 18 24 10C24 4 18 0 12 6Z");
+  filter: drop-shadow(0 3px 6px rgba(230,166,176,0.45));
+  transform: scale(0);
+  opacity: 0;
+  transition: transform .35s ease, opacity .35s ease;
+  z-index: 1; /* dưới chữ */
+  pointer-events: none;
+}
+
+/* hover tim nổi */
+.sakura-btn:hover::after {
+  transform: scale(1.15);
+  opacity: 1;
+  animation: heartFloatSoft 1.5s ease-in-out infinite;
+}
+
+/* chữ nổi rõ */
+.sakura-btn span {
+  position: relative;
+  z-index: 3;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(230,166,176,0.45);
+}
+
+/* hiệu ứng tim bay nhẹ */
+@keyframes heartFloatSoft {
+  0%,100% { transform: scale(1.15) translateY(0); }
+  50% { transform: scale(1.25) translateY(-6px); }
+}
+
+
+/* === Trái tim hồng 3D không nền === */
+.sakura-btn::after {
+  content: "";
+  position: absolute;
+  top: -0.9em;
+  right: -0.55em;
+  width: 1.7em;
+  height: 1.7em;
+  background: radial-gradient(circle at 40% 35%, #FFD6E8 15%, #F9A7C3 45%, #E36C9D 75%, transparent 100%);
+  clip-path: path("M24 4C24 4 18 0 12 6C6 0 0 4 0 10C0 18 12 24 12 24C12 24 24 18 24 10C24 4 18 0 12 6Z");
+  filter: drop-shadow(0 2px 5px rgba(230,166,176,0.5));
+  transform: scale(0);
+  opacity: 0;
+  transition: transform .35s ease, opacity .35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sakura-btn:hover::after {
+  transform: scale(1.2);
+  opacity: 1;
+  animation: heartFloatSoft 1.6s ease-in-out infinite;
+}
+
+@keyframes heartFloatSoft {
+  0%,100% { transform: scale(1.2) translateY(0); }
+  50% { transform: scale(1.25) translateY(-6px); }
+}
+/* === SHOP BY BRAND - Sakura Compact Style === */
+.shop-grid.brand-canvas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  justify-items: center;
+  align-items: center;
+  margin-top: 40px;
+  perspective: 1200px;
+}
+
+@media (max-width: 1200px) {
+  .shop-grid.brand-canvas {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .shop-grid.brand-canvas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .shop-grid.brand-canvas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Canvas nhỏ gọn === */
+.canvas {
+  position: relative;
+  display: block;
+  width: 250px;
+  height: 250px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  font-family: 'Playfair Display', serif;
+  opacity: 0;
+  transform: translateY(40px) rotateX(15deg) scale(0.9);
+  animation: brandEnter 1s ease forwards;
+}
+
+.canvas:nth-child(1) { animation-delay: 0.1s; }
+.canvas:nth-child(2) { animation-delay: 0.2s; }
+.canvas:nth-child(3) { animation-delay: 0.3s; }
+.canvas:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes brandEnter {
+  0% { opacity: 0; transform: translateY(40px) rotateX(15deg) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); }
+}
+
+/* === Border Sakura === */
+.canvas_border {
+  position: absolute;
+  top: 25px;
+  left: -25px;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  transform: rotate(-10deg) skew(-10deg);
+  transition: all 0.35s ease-in-out;
+}
+.canvas_border svg { height: 100%; width: 100%; }
+.canvas_border rect {
+  fill: none;
+  stroke: url(#grad-pink);
+  stroke-width: 3;
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  stroke-linecap: square;
+  stroke-miterlimit: 30;
+  animation: erase-line 1s ease-in-out forwards;
+}
+@keyframes draw-line {
+  from { stroke-dashoffset: 1500; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes erase-line {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 1500; }
+}
+
+/* === Logo Wrapper === */
+.canvas_img-wrapper {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Playfair Display', serif;
-  box-shadow: 0 4px 12px rgba(230, 166, 176, 0.3);
-  transition: all 0.3s ease;
-  overflow: visible;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transform: rotate(-10deg) skew(-10deg);
+  background: #fff;
+  border-radius: 16px;
+  transition: all 0.35s ease;
+  box-shadow: 0 4px 12px rgba(230,166,176,0.2);
+}
+.canvas_img {
+  transform: scale(0.9);
+  opacity: 0.4;
+  max-width: 140px;
+  max-height: 140px;
+  transition: all 0.4s ease;
 }
 
-/* hiệu ứng trái tim trong suốt */
-.btn-view-details::before,
-.btn-view-details::after {
+/* === Text === */
+.canvas_copy {
+  position: absolute;
+  bottom: 10px;
+  right: -16%;
+  text-transform: uppercase;
+  color: #6B4C3B;
+  z-index: 2;
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.canvas_copy_subtitle {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: #E6A6B0;
+}
+.canvas_copy_title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #6B4C3B;
+  display: block;
+  animation: heartbeat 2.2s ease-in-out infinite;
+}
+
+/* === Hover === */
+.canvas:hover .canvas_border rect {
+  animation: draw-line 1.8s ease-in-out forwards;
+  stroke-width: 4;
+}
+.canvas:hover .canvas_border,
+.canvas:hover .canvas_img-wrapper {
+  transform: rotate(-14deg) skew(-14deg) scale(1.04);
+  box-shadow: 0 8px 20px rgba(230,166,176,0.35);
+}
+.canvas:hover .canvas_img {
+  transform: scale(1.08);
+  opacity: 0.9;
+  filter: brightness(1.15) saturate(1.1);
+}
+.canvas:hover .canvas_copy {
+  opacity: 1;
+  right: -8%;
+}
+
+/* === Shimmer và Glow === */
+.canvas:hover::before {
   content: "";
   position: absolute;
-  width: 16px;
-  height: 14px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(249,198,207,0.9) 60%, rgba(230,166,176,0.6) 100%);
-  border-radius: 50% 50% 0 0;
-  top: -9px;
-  opacity: 0.9;
-  transform-origin: bottom center;
-  transition: transform 0.4s ease, opacity 0.3s ease;
-  filter: blur(0.3px) drop-shadow(0 2px 4px rgba(230,166,176,0.25));
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.15) 100%);
+  transform: skewX(-20deg);
+  animation: shimmer 2s infinite;
+  border-radius: 16px;
+  z-index: 3;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
-/* ghép 2 nửa lại thành 1 trái tim mềm */
-.btn-view-details::before {
-  left: 47%;
-  transform: translateX(-50%) rotate(-45deg);
+.canvas:hover .canvas_img-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 20px 8px rgba(230,166,176,0.3);
+  animation: glowPulse 2s ease-in-out infinite;
+  z-index: 1;
 }
-.btn-view-details::after {
-  left: 53%;
-  transform: translateX(-50%) rotate(45deg);
-}
-
-/* hover: tim bay nhẹ ra */
-.btn-view-details:hover::before {
-  animation: heartPopLeft 0.8s ease-out;
-}
-.btn-view-details:hover::after {
-  animation: heartPopRight 0.8s ease-out;
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.7; box-shadow: 0 0 20px 8px rgba(230,166,176,0.3); }
+  50% { opacity: 1; box-shadow: 0 0 25px 10px rgba(249,198,207,0.55); }
 }
 
-@keyframes heartPopLeft {
-  0%   { transform: translateX(-50%) rotate(-45deg) scale(1); opacity:0.95; }
-  40%  { transform: translateX(-50%) rotate(-35deg) scale(1.25) translate(-4px,-8px); opacity:1; }
-  100% { transform: translateX(-50%) rotate(-45deg) scale(1) translate(-10px,-20px); opacity:0; }
-}
-@keyframes heartPopRight {
-  0%   { transform: translateX(-50%) rotate(45deg) scale(1); opacity:0.95; }
-  40%  { transform: translateX(-50%) rotate(35deg) scale(1.25) translate(4px,-8px); opacity:1; }
-  100% { transform: translateX(-50%) rotate(45deg) scale(1) translate(10px,-20px); opacity:0; }
+/* === Heartbeat nhẹ cho text === */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
-    
+/* === Gradient Sakura === */
+svg defs linearGradient#grad-pink stop:first-child { stop-color: #E6A6B0; }
+svg defs linearGradient#grad-pink stop:last-child { stop-color: #F9C6CF; }
+
+
+
   </style>
 </head>
 <body>
@@ -330,16 +582,315 @@
       </div>
 
       <!-- SHOP BY CATEGORY -->
-      <section class="shop-section">
-        <h2 class="shop-title">Shop By Category</h2>
-        <div class="shop-grid" id="shopByCategory"></div>
-      </section>
+      <!-- SHOP BY CATEGORY (luxury Sakura refined) -->
+<section class="shop-section">
+  <h2 class="shop-title">Shop By Category</h2>
+  <div class="luxury-circles" id="categoryCircles"></div>
+</section>
+
+<style>
+.luxury-circles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 40px;
+}
+
+/* === Circle === */
+.circle {
+  position: relative;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(230,166,176,0.25);
+  transition: transform .7s cubic-bezier(0.23,1,0.32,1), box-shadow .6s;
+  opacity: 0;
+  transform: scale(0.85) translateY(30px);
+  animation: fadePop 1s ease forwards;
+}
+.circle:nth-child(1) { animation-delay: 0.1s; }
+.circle:nth-child(2) { animation-delay: 0.3s; }
+.circle:nth-child(3) { animation-delay: 0.5s; }
+.circle:nth-child(4) { animation-delay: 0.7s; }
+
+@keyframes fadePop {
+  0% { opacity: 0; transform: scale(0.85) translateY(30px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.circle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 40px rgba(230,166,176,0.45);
+}
+
+/* === Image + dark gradient bottom === */
+.circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all .7s ease;
+}
+.circle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 60%, rgba(0,0,0,0.35) 100%);
+  opacity: 0;
+  transition: opacity .5s ease;
+  z-index: 1;
+}
+.circle:hover::before {
+  opacity: 1;
+}
+.circle:hover img {
+  filter: brightness(0.85) saturate(1.1);
+  transform: scale(1.08);
+}
+
+/* === Border Glow Rotation === */
+.circle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(from 0deg, #E6A6B0 0%, #F9C6CF 25%, #FADADD 50%, #E6A6B0 75%, #F9C6CF 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotateBorder 5s linear infinite;
+  opacity: 0.8;
+  z-index: 2;
+}
+@keyframes rotateBorder {
+  to { transform: rotate(360deg); }
+}
+
+/* === Overlay Pink Glow === */
+.overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(249,198,207,0.1) 0%, rgba(230,166,176,0.7) 85%);
+  opacity: 0;
+  transition: opacity .6s ease;
+  z-index: 1;
+}
+.circle:hover .overlay { opacity: 1; }
+
+/* === Moving light reflection === */
+.reflection {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.4) 100%);
+  transform: translateX(-100%) rotate(20deg);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+.circle:hover .reflection {
+  animation: lightSweep 2.8s ease-in-out forwards;
+}
+@keyframes lightSweep {
+  0% { transform: translateX(-100%) rotate(20deg); }
+  50% { transform: translateX(0%) rotate(20deg); }
+  100% { transform: translateX(100%) rotate(20deg); }
+}
+
+/* === Text === */
+.text {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #6B4C3B; /* chữ nâu branch brown */
+  z-index: 3;
+  opacity: 0;
+  transition: all .7s ease;
+}
+.circle:hover .text {
+  opacity: 1;
+  transform: translate(-50%, -5px);
+}
+.text h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+  margin-bottom: 6px;
+}
+.text svg {
+  width: 26px;
+  fill: url(#heartGradient);
+  margin-top: 8px;
+  animation: pulse 1.6s infinite ease-in-out;
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: .85; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .circle { width: 180px; height: 180px; }
+  .luxury-circles { gap: 30px; }
+}
+/* === Sakura Background Effect cho Shop By Category === */
+.shop-section {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+  background: radial-gradient(circle at 30% 20%, rgba(249,198,207,0.35), transparent 60%),
+              radial-gradient(circle at 80% 70%, rgba(230,166,176,0.25), transparent 65%),
+              #FFF9F9;
+}
+
+/* Vầng sáng mềm hồng mờ bay nhẹ */
+.shop-section::before,
+.shop-section::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: floatGlow 10s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+.shop-section::before {
+  top: -100px;
+  left: -120px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(249,198,207,0.5), transparent 70%);
+  animation-delay: 0s;
+}
+.shop-section::after {
+  bottom: -120px;
+  right: -150px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(230,166,176,0.45), transparent 70%);
+  animation-delay: 2s;
+}
+
+@keyframes floatGlow {
+  0% { transform: translateY(0) scale(1); opacity: 0.55; }
+  50% { transform: translateY(-15px) scale(1.1); opacity: 0.7; }
+  100% { transform: translateY(0) scale(1); opacity: 0.55; }
+}
+
+/* Hạt sáng lấp lánh mờ */
+.sakura-sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  animation: sparkleFloat 6s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 1;
+}
+@keyframes sparkleFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 0.7; }
+}
+/* === Scroll Overlay Effect === */
+.product-hero {
+  position: relative;
+  z-index: 1;
+  transition: opacity 1s ease, transform 1.2s ease;
+  will-change: opacity, transform;
+}
+
+.product-description {
+  position: relative;
+  z-index: 2;
+  margin-top: -100px; /* cho trượt phủ lên hero */
+  background: linear-gradient(to top, rgba(255,249,249,1) 0%, rgba(255,249,249,0.8) 40%, transparent 100%);
+  padding: 120px 8% 80px;
+  opacity: 0;
+  transform: translateY(80px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  box-shadow: 0 -30px 80px rgba(230,166,176,0.25);
+  border-radius: 40px 40px 0 0;
+}
+
+/* Khi scroll xuất hiện */
+.product-description.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero fade khi description xuất hiện */
+.hero-fade {
+  opacity: 0.4;
+  transform: scale(0.96) translateY(-40px);
+  filter: blur(2px);
+}
+
+</style>
+
+<svg width="0" height="0">
+  <defs>
+    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E6A6B0"/>
+      <stop offset="100%" stop-color="#F9C6CF"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<script>
+// === SHOP BY CATEGORY - luxury circle ===
+fetch('./full.json')
+  .then(res => res.json())
+  .then(data => {
+    const products = data.products;
+    const categories = [...new Set(products.map(p => p.category))];
+    const catContainer = document.getElementById('categoryCircles');
+    catContainer.innerHTML = "";
+
+    categories.forEach(cat => {
+      const catProd = products.find(p => p.category === cat);
+      const img = catProd?.images?.[0] || './images/default.jpg';
+      const html = `
+        <div class="circle" data-filter="category" data-value="${cat}">
+          <img src="${img}" alt="${cat}">
+          <div class="overlay"></div>
+          <div class="reflection"></div>
+          <div class="text">
+            <h3>${cat}</h3>
+            <svg viewBox="0 0 24 24">
+              <path d="M12.1,18.55L12,18.65L11.89,18.55
+              C7.14,14.24,4,11.39,4,8.5
+              C4,6.5,5.5,5,7.5,5
+              C9.04,5,10.54,6,11.07,7.36H12.93
+              C13.46,6,14.96,5,16.5,5
+              C18.5,5,20,6.5,20,8.5
+              C20,11.39,16.86,14.24,12.1,18.55Z"/>
+            </svg>
+          </div>
+        </div>
+      `;
+      catContainer.insertAdjacentHTML('beforeend', html);
+    });
+  })
+  .catch(err => console.error('Error loading category circles:', err));
+</script>
+
 
       <!-- SHOP BY BRAND -->
-      <section class="shop-section">
-        <h2 class="shop-title">Shop By Brand</h2>
-        <div class="shop-grid" id="shopByBrand"></div>
-      </section>
+<section class="shop-section">
+  <h2 class="shop-title">Shop By Brand</h2>
+  <div class="shop-grid brand-canvas" id="brandGrid"></div>
+</section>
+
 
     </div>
   </main>
@@ -382,7 +933,7 @@
       // === LOAD PRODUCTS & GENERATE SHOP BY ===
       async function loadProducts() {
         try {
-          const res = await fetch('full.json');
+          const res = await fetch('./full.json');
           const data = await res.json();
           allProducts = data.products || [];
 
@@ -406,14 +957,7 @@
           }).join('');
 
           // SHOP BY BRAND
-          const brandGrid = document.getElementById('shopByBrand');
-          brandGrid.innerHTML = brands.map(brand => {
-            const img = allProducts.find(p => p.brand === brand)?.images[0] || 'https://via.placeholder.com/300x400/F5E6E6/999?text=No+Image';
-            return `<div class="shop-card" data-filter="brand" data-value="${brand}">
-              <img src="${img}" alt="${brand}">
-              <div class="overlay"><h3>${brand}</h3></div>
-            </div>`;
-          }).join('');
+         
 
           renderProducts(allProducts);
           updateCount();
@@ -458,7 +1002,7 @@
                 <div class="buttons">
                   <input type="number" value="1" min="1" class="quantity-input">
                   <button class="btn-outline" onclick="addToCart(${p.id}, this)"></button>
-                  <button class="btn-view-details" onclick="viewDetail(${p.id})">View Details</button>
+<button class="sakura-btn" onclick="viewDetail(${p.id})"><span>View Details</span></button>
                 </div>
               </div>
             </div>`;
@@ -598,5 +1142,60 @@
     });
     
   </script>
+  <script>
+fetch('./full.json')
+  .then(res => res.json())
+  .then(data => {
+    const products = data.products;
+    const brands = [...new Set(products.map(p => p.brand))];
+    const brandGrid = document.getElementById('brandGrid');
+    brandGrid.innerHTML = ""; // clear cũ
+
+    brands.forEach(brand => {
+      const brandProd = products.find(p => p.brand === brand);
+      const img = brandProd?.images?.[0] || './images/default.jpg';
+      const html = `
+        <a href="#" class="canvas">
+          <div class="canvas_border">
+            <svg>
+              <defs>
+                <linearGradient id="grad-pink-${brand.replace(/\s+/g,'-')}" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#E6A6B0"></stop>
+                  <stop offset="100%" stop-color="#F9C6CF"></stop>
+                </linearGradient>
+              </defs>
+              <rect width="100%" height="100%" fill="none"
+                stroke="url(#grad-pink-${brand.replace(/\s+/g,'-')})"
+                stroke-linecap="square" stroke-width="4"
+                stroke-miterlimit="30" />
+            </svg>
+          </div>
+          <div class="canvas_img-wrapper">
+            <img class="canvas_img" src="${img}" alt="${brand}">
+          </div>
+          <div class="canvas_copy">
+            <span class="canvas_copy_subtitle">Luxury Brand</span>
+            <strong class="canvas_copy_title">${brand}</strong>
+          </div>
+        </a>
+      `;
+      brandGrid.insertAdjacentHTML('beforeend', html);
+    });
+  })
+  .catch(err => console.error('Error loading JSON:', err));
+  // === Hiệu ứng sparkle Sakura trong background ===
+const section = document.querySelector('.shop-section');
+for (let i = 0; i < 14; i++) {
+  const s = document.createElement('div');
+  s.className = 'sakura-sparkle';
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 100 + '%';
+  s.style.animationDelay = (Math.random() * 6).toFixed(2) + 's';
+  s.style.animationDuration = (4 + Math.random() * 3).toFixed(1) + 's';
+  section.appendChild(s);
+}
+
+  </script>
+  
 </body>
 </html>
