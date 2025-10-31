@@ -134,6 +134,19 @@ path {
     }
 
     .ai-combo { margin-top: 80px; }
+    /* --- FIX SVG CONFLICT & FORCE STYLES --- */
+#hero-wave { position: relative; width: 100%; height: 520px; overflow: hidden; margin-top: 150px; z-index: 1; will-change: transform, filter; }
+#hero-wave svg { width: 100%; height: 100%; display: block; animation: gentleWave 6s ease-in-out infinite alternate; }
+#hero-wave #hero-curve-path {
+  fill: url(#grad) !important;
+  stroke: none !important;
+  transition: d 0.15s ease-out;
+  filter: drop-shadow(0 10px 20px rgba(230,166,176,0.4));
+}
+
+/* Nếu file style.css có quy tắc chung “svg path { fill:none }”, đoạn dưới sẽ chặn lại */
+svg path#hero-curve-path { fill: url(#grad) !important; }
+
   </style>
 </head>
 
@@ -142,7 +155,6 @@ path {
   <div class="fireworks-container"></div>
 
   <!-- 🌸 SVG WAVE ÔM CHỮ NEW ARRIVALS -->
-  <!-- 🌸 SVG WAVE ĐỘNG THẬT -->
 <section class="svg-container">
   <svg viewBox="0 0 800 400" preserveAspectRatio="none">
     <defs>
@@ -161,6 +173,8 @@ path {
     <a href="#products" class="btn-explore">Explore Now</a>
   </div>
 </section>
+
+
 
 
   <!-- 🌸 AI Combo -->
@@ -219,57 +233,51 @@ path {
 
   <div id="footer-placeholder"></div>
 
+<script src="script_new.js"></script>
 <script>
-(function() {
+window.addEventListener("load", () => {
   const curve = document.getElementById("curve");
   const svgContainer = document.querySelector(".svg-container");
-  const defaultCurveValue = 350;   // cong đầu
-const flatCurveValue = 100;      // giảm sâu hơn để phẳng rõ
-const maxScroll = 600;           // scroll ngắn hơn, hiệu ứng rõ hơn
-         // scroll tới đây thì phẳng hoàn toàn
-  let ticking = false;
+  const scrollContainer = window; // vì giờ đã fix scroll được rồi 💪
 
-  function scrollEvent(scrollPos) {
-    const progress = Math.min(scrollPos / maxScroll, 1);
-    // cubic easing để chuyển mềm
-    const eased = 1 - Math.pow(1 - progress, 3);
-    // giá trị Y của điểm cong giữa
-const curveValue = defaultCurveValue - scrollPos / 3;
-    const opacity = 1 - progress * 0.6;
-curve.style.opacity = opacity;
-if (curveValue < flatCurveValue) curveValue = flatCurveValue;
-
-
-    // cập nhật đường path Q 400 Y
-    curve.setAttribute(
-      "d",
-      `M 800 300 Q 400 ${curveValue} 0 300 L 0 0 L 800 0 L 800 300 Z`
-    );
-
-    // hiệu ứng di chuyển + sáng tối
-    const translateY = progress * 150;      // trôi xuống xa hơn
-    const scaleY = 1 - progress * 0.08;     // nén nhẹ hơn
-    const brightness = 1 - progress * 0.25; // tối dần
-
-    svgContainer.style.transform = `translateY(${translateY}px) scaleY(${scaleY})`;
-    svgContainer.style.filter = `brightness(${brightness})`;
+  if (!curve || !svgContainer) {
+    console.error("Không tìm thấy #curve hoặc .svg-container");
+    return;
   }
 
-  window.addEventListener("scroll", () => {
-    const scrollY = window.scrollY;
+  // 🌸 Bắt đầu cong xuống (võng) rồi dần thẳng lại khi scroll
+  const topY = 380;   // võng xuống ban đầu
+  const bottomY = 300; // thẳng lại khi scroll xuống
+  const maxScroll = 600;
+  let ticking = false;
+
+  function updateWave(scrollY) {
+    const progress = Math.min(scrollY / maxScroll, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const y = topY - eased * (topY - bottomY); // 👈 đổi dấu để đi từ cong xuống → thẳng lên
+
+    curve.setAttribute("d", `M 800 300 Q 400 ${y} 0 300 L 0 0 L 800 0 L 800 300 Z`);
+    curve.style.opacity = 1 - progress * 0.4;
+    svgContainer.style.transform = `translateY(${progress * 100}px) scaleY(${1 - progress * 0.05})`;
+    svgContainer.style.filter = `brightness(${1 - progress * 0.2})`;
+  }
+
+  updateWave(scrollContainer.scrollY || 0);
+
+  scrollContainer.addEventListener("scroll", () => {
+    const scrollPos = scrollContainer.scrollY;
     if (!ticking) {
       window.requestAnimationFrame(() => {
-        scrollEvent(scrollY);
+        updateWave(scrollPos);
         ticking = false;
       });
+      ticking = true;
     }
-    ticking = true;
   });
-})();
+});
 </script>
 
 
 
-  <script src="script_new.js"></script>
 </body>
 </html>

@@ -990,3 +990,23 @@ html, body {
   will-change: transform, filter;
   transition: none; /* ⚠ tắt transition để JS điều khiển trực tiếp */
 }
+/* === FIX SCROLL BỊ CHẶN VÀ WAVE KHÔNG CHẠY === */
+html, body {
+  height: auto !important;
+  min-height: 100vh;
+  overflow-y: auto !important;
+}
+
+.video-hero {
+  height: 70vh !important; /* cho thấp lại để còn chỗ cuộn */
+}
+
+.fireworks-container {
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 3100;
+  overflow: visible !important; /* tránh chặn layout */
+}
+

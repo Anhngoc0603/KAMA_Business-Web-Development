@@ -2,101 +2,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   'use strict';
 
   // ===================================================================
-  // 1. UTILS
-  // ===================================================================
-  const escapeHTML = (str) => {
-    if (typeof str !== 'string') return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  };
-
-  const log = (msg, type = 'log') => console[type](`[Script] ${msg}`);
-  const safeGet = (obj, path, def = null) => {
-    try {
-      return path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : def), obj);
-    } catch {
-      return def;
-    }
-  };
-
-  // ===================================================================
-  // 2. LOAD NEW ARRIVALS
-  // ===================================================================
-  async function loadNewArrivals() {
-    const container = document.getElementById('new-products-container');
-    if (!container) {
-      log('#new-products-container not found', 'warn');
-      return;
-    }
-
-    let newProducts = [];
-
-    try {
-      const res = await fetch('./products.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-      const data = await res.json();
-      if (!data || !Array.isArray(safeGet(data, 'products'))) {
-        throw new Error('Invalid JSON: missing products array');
-      }
-
-      newProducts = data.products.filter(p => p && p.isNew === true);
-      log(`Loaded ${newProducts.length} new arrival(s)`);
-
-    } catch (err) {
-      log(`Failed to load products.json: ${err.message}`, 'error');
-    }
-
-    if (!Array.isArray(newProducts) || newProducts.length === 0) {
-      container.innerHTML = `
-        <div style="text-align:center;padding:50px 20px;color:#9b7c7c;font-style:italic;">
-          <p>No new arrivals at the moment.</p>
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = newProducts.map(p => `
-      <div class="product-card">
-        <div class="product-image-container">
-          <img src="${safeGet(p, 'images.0', 'https://via.placeholder.com/300')}" 
-               alt="${escapeHTML(p.name || 'Product')}" 
-               class="product-img"
-               onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
-${p.originalPrice && p.originalPrice > p.price 
-  ? `<span class="product-badge sale">-${Math.round((1 - p.price / p.originalPrice) * 100)}%</span>` 
-  : ''}
-        </div>
-        <div class="product-info">
-          <h3>${escapeHTML(p.name || 'Unknown')}</h3>
-          <p>${escapeHTML(p.brand || 'Brand')} • ${escapeHTML(p.category || 'Category')}</p>
-          <p>${escapeHTML(p.description || 'No description')}</p>
-          <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
-          <div class="rating">
-            ${'★'.repeat(Math.floor(p.rating || 0))}${'☆'.repeat(5 - Math.floor(p.rating || 0))} 
-            (${p.rating || 'N/A'})
-          </div>
-          <button class="btn-primary" onclick="window.location.href='./view_product/view_sale.html?id=${p.id}'">
-            View Details
-          </button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // ===================================================================
-  // 3. LOAD HEADER & FOOTER
+  // 1. LOAD HEADER & FOOTER (Giữ nguyên)
   // ===================================================================
   const loadPartial = async (url, placeholderId) => {
     const el = document.getElementById(placeholderId);
-    if (!el) return log(`${placeholderId} not found`, 'warn');
+    if (!el) {
+      console.warn(`${placeholderId} not found`);
+      return;
+    }
     try {
       const res = await fetch(url);
-      if (res.ok) el.innerHTML = await res.text();
-      else throw new Error(`HTTP ${res.status}`);
+      if (res.ok) {
+        el.innerHTML = await res.text();
+      } else {
+        throw new Error(`HTTP ${res.status}`);
+      }
     } catch (e) {
-      log(`Failed to load ${url}: ${e.message}`, 'error');
+      console.error(`Failed to load ${url}:`, e);
+      // Fallback content...
+      if (placeholderId === 'header-placeholder') {
+        el.innerHTML = `<header style="background: #E6A6B0; padding: 1rem; color: white; text-align: center;"><h1>🎀 Sakura Beauty 🎀</h1><nav><a href="#" style="color: white; margin: 0 1rem;">Home</a></nav></header>`;
+      } else if (placeholderId === 'footer-placeholder') {
+        el.innerHTML = `<footer style="background: #333; padding: 2rem; color: white; text-align: center;"><p>© 2024 Sakura Beauty</p></footer>`;
+      }
     }
   };
 
@@ -106,7 +34,7 @@ ${p.originalPrice && p.originalPrice > p.price
   ]);
 
   // ===================================================================
-  // 4. FIREWORKS
+  // 2. FIREWORKS (Giữ nguyên)
   // ===================================================================
   const fireworks = document.querySelector('.fireworks-container');
   if (fireworks) {
@@ -123,188 +51,457 @@ ${p.originalPrice && p.originalPrice > p.price
   }
 
   // ===================================================================
-  // 5. MAIN VARIABLES
+  // 3. FAN LAYOUT CLASS (ĐÃ SỬA LẠI CARD HTML)
   // ===================================================================
-  let products = [], filtered = [], displayed = [];
-  let page = 1, perPage = 8, filteredFlag = false;
+  class FanLayout {
+    constructor(products, container) {
+      this.products = products;
+      this.container = container;
+      this.currentIndex = 0; 
+      this.cardsPerGroup = 5;
+      this.isAnimating = false;
+      this.animationTime = 300; // Tốc độ chạy 1.2s
+      this.autoplayInterval = null;
+      this.autoplayTime = 2000; // Nghỉ 3s
+      this.init();
+    }
 
-  const els = {
-    filterToggle: document.getElementById('filter-toggle'),
-    filterMenu: document.getElementById('filter-menu'),
-    priceFilter: document.getElementById('price-filter'),
-    ratingFilter: document.getElementById('rating-filter'),
-    brandFilter: document.getElementById('brand-filter'),
-    loadMore: document.getElementById('load-more-button'),
-    grid: document.getElementById('products'),
-    aiBtn: document.querySelector('.ai-btn')
-  };
+    init() {
+      if (!this.container) {
+        console.error('Container not found for FanLayout');
+        return;
+      }
+      
+      this.createFanLayout();
+      this.renderInitialCards();
+      this.setupEventListeners(); 
+      this.startAutoPlay();
+    }
+
+    createFanLayout() {
+      // Dùng nút có chữ cho an toàn 100%
+      this.fanHTML = `
+        <div class="fan-viewport">
+          <div class="fan-cards" id="fan-cards"></div>
+        </div>
+        <div class="fan-navigation">
+          <button class="fan-nav-btn" id="fan-prev">
+            ←
+          </button>
+          <div class="fan-dots" id="fan-dots"></div>
+          <button class="fan-nav-btn" id="fan-next">
+            →
+          </button>
+        </div>
+      `;
+
+      this.container.innerHTML = this.fanHTML;
+      
+      this.fanCards = document.getElementById('fan-cards');
+      this.fanPrev = document.getElementById('fan-prev');
+      this.fanNext = document.getElementById('fan-next');
+      this.fanDots = document.getElementById('fan-dots');
+    }
+
+    renderInitialCards() {
+      if (!this.fanCards) return;
+      this.fanCards.innerHTML = '';
+      for (let i = 0; i < this.cardsPerGroup; i++) {
+        const product = this.products[this.currentIndex + i] || null;
+        const card = this.createFanCard(product);
+        card.dataset.position = 'hidden-left';
+        this.fanCards.appendChild(card);
+        setTimeout(() => {
+          card.dataset.position = i.toString();
+        }, i * 150);
+      }
+      this.updateDots();
+      this.updateNavigation();
+    }
+
+    // *** BẮT ĐẦU SỬA LỖI (DÁN CODE HTML CŨ VÀO ĐÂY) ***
+    createFanCard(product) {
+      const card = document.createElement('div');
+      card.className = 'fan-card';
+      
+      if (product) {
+        card.dataset.productId = product.id;
+        
+        const badge = (product.originalPrice && product.originalPrice > product.price)
+          ? `<span class="product-badge sale" style="position:absolute; top:15px; right:15px; background:#E86C6C; color:white; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold; z-index:56;">-${Math.round((1 - product.price / product.originalPrice) * 100)}%</span>`
+          : '';
+
+        // ĐÂY LÀ CODE HTML ĐẦY ĐỦ TỪ FILE CŨ CỦA BẠN
+        card.innerHTML = `
+          <div class="product-image-container" style="position:relative;">
+            <img src="${product.images?.[0] || 'https://via.placeholder.com/300'}" 
+                 alt="${product.name}" 
+                 class="product-img"
+                 onerror="this.src='https://via.placeholder.com/300'">
+            ${badge}
+          </div>
+          <div class="info">
+            <h3>${this.escapeHTML(product.name)}</h3>
+            <p class="meta">${this.escapeHTML(product.brand)} • ${this.escapeHTML(product.category)}</p>
+            <p class="description">${this.escapeHTML(product.description)}</p>
+            
+            <div class="actions">
+              <div class="price">
+                ${product.originalPrice && product.originalPrice > product.price
+                  ? `<span class="old-price">$${product.originalPrice.toFixed(2)}</span>
+                     <span class="new-price">$${product.price.toFixed(2)}</span>`
+                  : `<span class="new-price">$${product.price.toFixed(2)}</span>`}
+              </div>
+              <span class="rating">
+                ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} (${product.rating})
+              </span>
+            </div>
+            
+            <div class="buttons">
+              <button class="btn-outline" data-id="${product.id}"></button>
+              <button class="btn-primary view-detail-btn" data-id="${product.id}">
+                View Details
+              </button>
+            </div>
+          </div>
+        `;
+        // Phải gọi hàm này để các nút mới có thể bấm được
+        this.attachCardEventListeners(card, product); 
+      } else {
+        // Card trống
+        card.innerHTML = `
+          <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#9b7c7c; background: rgba(255,255,255,0.9); border: 2px dashed #F9C6CF;">
+            <div style="text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 15px;">🎀</div>
+              <p style="font-size: 16px; font-weight: 600;">No Product</p>
+            </div>
+          </div>
+        `;
+      }
+      return card;
+    }
+
+    // Hàm này RẤT QUAN TRỌNG để nút "cart" và "view" hoạt động
+    attachCardEventListeners(card, product) {
+        const cartBtn = card.querySelector('.btn-outline');
+        cartBtn?.addEventListener('click', (e) => {
+            e.stopPropagation(); // Ngăn card bị click
+            const id = cartBtn.dataset.id;
+            const product = this.products.find(p => p.id == id);
+            const qtyInput = card.querySelector('.quantity-input');
+            const qty = qtyInput ? qtyInput.value : 1;
+            if (product) {
+              this.addToCart(product, parseInt(qty));
+            }
+        });
+
+        const detailBtn = card.querySelector('.view-detail-btn');
+        detailBtn?.addEventListener('click', (e) => {
+            e.stopPropagation(); // Ngăn card bị click
+            const id = detailBtn.dataset.id;
+            window.location.href = `view_product/view_sale.html?id=${id}`;
+        });
+    }
+    // *** KẾT THÚC SỬA LỖI ***
+
+    // (Các hàm next, prev, jumpTo, autoPlay... giữ nguyên)
+    next() {
+      if ((this.currentIndex + this.cardsPerGroup) >= this.products.length) {
+        this.jumpTo(0, 'next'); 
+        return;
+      }
+      if (this.isAnimating) return;
+      this.isAnimating = true;
+
+      const cardToRemove = this.fanCards.querySelector('[data-position="0"]');
+      if (cardToRemove) {
+        cardToRemove.dataset.position = 'hidden-left';
+        cardToRemove.addEventListener('transitionend', () => cardToRemove.remove(), { once: true });
+      }
+      for (let i = 1; i < this.cardsPerGroup; i++) {
+        const cardToShift = this.fanCards.querySelector(`[data-position="${i}"]`);
+        if (cardToShift) cardToShift.dataset.position = (i - 1).toString(); 
+      }
+      const newProductIndex = this.currentIndex + this.cardsPerGroup;
+      const newProduct = this.products[newProductIndex] || null;
+      const newCard = this.createFanCard(newProduct);
+      newCard.dataset.position = 'hidden-right';
+      this.fanCards.appendChild(newCard);
+      setTimeout(() => { newCard.dataset.position = (this.cardsPerGroup - 1).toString(); }, 50); 
+      this.currentIndex++;
+      this.updateDots();
+      this.updateNavigation();
+      setTimeout(() => { this.isAnimating = false; }, this.animationTime);
+    }
+
+    prev() {
+      if (this.isAnimating || this.currentIndex <= 0) return;
+      this.isAnimating = true;
+
+      const cardToRemove = this.fanCards.querySelector(`[data-position="${this.cardsPerGroup - 1}"]`);
+      if (cardToRemove) {
+        cardToRemove.dataset.position = 'hidden-right';
+        cardToRemove.addEventListener('transitionend', () => cardToRemove.remove(), { once: true });
+      }
+      for (let i = this.cardsPerGroup - 2; i >= 0; i--) {
+        const cardToShift = this.fanCards.querySelector(`[data-position="${i}"]`);
+        if (cardToShift) cardToShift.dataset.position = (i + 1).toString();
+      }
+      const newProductIndex = this.currentIndex - 1;
+      const newProduct = this.products[newProductIndex] || null;
+      const newCard = this.createFanCard(newProduct);
+      newCard.dataset.position = 'hidden-left';
+      this.fanCards.prepend(newCard); 
+      setTimeout(() => { newCard.dataset.position = "0"; }, 50);
+      this.currentIndex--;
+      this.updateDots();
+      this.updateNavigation();
+      setTimeout(() => { this.isAnimating = false; }, this.animationTime);
+    }
+
+    jumpTo(newIndex, direction = 'jump') {
+      if (this.isAnimating || newIndex === this.currentIndex) return;
+      this.isAnimating = true;
+      const outDirection = (direction === 'next' || newIndex > this.currentIndex) ? 'hidden-left' : 'hidden-right';
+      const inDirection = (direction === 'next' || newIndex > this.currentIndex) ? 'hidden-right' : 'hidden-left';
+      this.currentIndex = newIndex;
+
+      const oldCards = this.fanCards.querySelectorAll('.fan-card');
+      oldCards.forEach((card, i) => {
+        card.dataset.position = outDirection;
+        card.addEventListener('transitionend', () => card.remove(), { once: true });
+      });
+
+      for (let i = 0; i < this.cardsPerGroup; i++) {
+        const product = this.products[this.currentIndex + i] || null; 
+        const card = this.createFanCard(product);
+        card.dataset.position = inDirection;
+        this.fanCards.appendChild(card);
+        setTimeout(() => {
+          card.dataset.position = i.toString();
+        }, i * 100);
+      }
+      this.updateDots();
+      this.updateNavigation();
+      setTimeout(() => { this.isAnimating = false; }, this.animationTime + 150);
+    }
+
+    startAutoPlay() {
+      if (this.autoplayInterval) return;
+      this.autoplayInterval = setInterval(() => {
+        this.next();
+      }, this.autoplayTime);
+    }
+
+    stopAutoPlay() {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
+        
+    setupEventListeners() {
+      if (!this.fanPrev || !this.fanNext) return;
+      
+      this.fanPrev.addEventListener('click', () => {
+        this.stopAutoPlay();
+        this.prev();
+      });
+      this.fanNext.addEventListener('click', () => {
+        this.stopAutoPlay();
+        this.next();
+      });
+
+      this.container.addEventListener('mouseenter', () => this.stopAutoPlay());
+      this.container.addEventListener('mouseleave', () => this.startAutoPlay());
+    }
+
+    updateDots() {
+      if (!this.fanDots) return;
+      // Sửa lỗi logic: Phải có đủ sản phẩm để tạo dot
+      const totalValidProducts = this.products.filter(p => p).length;
+      if (totalValidProducts < this.cardsPerGroup) {
+        this.fanDots.innerHTML = '';
+        return;
+      }
+      const totalDots = totalValidProducts - this.cardsPerGroup + 1;
+      
+      this.fanDots.innerHTML = '';
+      
+      for (let i = 0; i < totalDots; i++) {
+        const dot = document.createElement('div');
+        dot.className = `fan-dot ${this.currentIndex === i ? 'active' : ''}`;
+        dot.addEventListener('click', () => {
+          this.stopAutoPlay(); 
+          this.jumpTo(i); 
+        });
+        this.fanDots.appendChild(dot);
+      }
+    }
+
+    updateNavigation() {
+      if (!this.fanPrev || !this.fanNext) return;
+      this.fanPrev.disabled = this.currentIndex === 0;
+      this.fanNext.disabled = false;
+    }
+
+    escapeHTML(str) {
+      if (typeof str !== 'string') return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+    addToCart(product, quantity) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.id === product.id);
+        if (existingItem) {
+            existingItem.quantity = parseInt(existingItem.quantity) + parseInt(quantity);
+        } else {
+            cart.push({ id: product.id, name: product.name, price: product.price, image: product.images?.[0], quantity: parseInt(quantity) });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        this.showCartPopup(product.name, quantity);
+    }
+    showCartPopup(productName, quantity) {
+        const popup = document.createElement('div');
+        popup.className = 'added-cart-popup active';
+        popup.innerHTML = `<div class="added-cart-wrapper"><button class="added-cart-close">&times;</button><h3 class="added-cart-title">🎉 Added to Cart!</h3><p class="added-cart-product">${quantity}x ${this.escapeHTML(productName)}</p><p style="margin-top: 10px; color: #9b7c7c; font-size: 14px;">Continue shopping or view cart</p></div>`;
+        document.body.appendChild(popup);
+        setTimeout(() => popup.remove(), 3000);
+        const closeBtn = popup.querySelector('.added-cart-close');
+        closeBtn?.addEventListener('click', () => popup.remove());
+    }
+  }
 
   // ===================================================================
-  // 6. LOAD PRODUCTS
+  // 4. LOAD PRODUCTS
   // ===================================================================
   async function loadMainProducts() {
+    let products = [];
     try {
-      const res = await fetch('./products.json');
+      const res = await fetch('./products.json'); 
       if (!res.ok) throw new Error('Not found');
       const data = await res.json();
       if (!Array.isArray(data?.products)) throw new Error('Invalid data');
       products = data.products;
     } catch (e) {
-      log('Using fallback products', 'warn');
-      products = [{ id: 999, name: 'Sample', brand: 'Demo', category: 'Face', price: 29.99, rating: 4.5, description: 'Demo', images: ['https://via.placeholder.com/300'] }];
+      console.error('Error loading products, using fallback:', e);
+      products = [
+        { id: 1, name: 'Sản phẩm 1', brand: 'Dior', category: 'Lips', price: 45.99, rating: 4.8, description: 'Mô tả 1', images: ['https://via.placeholder.com/300/FF6B6B/FFFFFF?text=Product+1'] },
+        { id: 2, name: 'Sản phẩm 2', brand: 'Chanel', category: 'Face', price: 65.99, rating: 4.6, description: 'Mô tả 2', images: ['https://via.placeholder.com/300/FFD93D/000000?text=Product+2'] },
+        { id: 3, name: 'Sản phẩm 3', brand: 'YSL', category: 'Eyes', price: 72.99, rating: 4.9, description: 'Mô tả 3', images: ['https://via.placeholder.com/300/FFFFFF/000000?text=Product+3'] },
+        { id: 4, name: 'Sản phẩm 4', brand: 'Lancôme', category: 'Eyes', price: 32.99, rating: 4.4, description: 'Mô tả 4', images: ['https://via.placeholder.com/300/4ECDC4/FFFFFF?text=Product+4'] },
+        { id: 5, name: 'Sản phẩm 5', brand: 'NARS', category: 'Face', price: 38.99, rating: 4.7, description: 'Mô tả 5', images: ['https://via.placeholder.com/300/A8E6CF/000000?text=Product+5'] },
+        { id: 6, name: 'Sản phẩm 6', brand: 'Rare Beauty', category: 'Lips', price: 28.99, rating: 4.5, description: 'Mô tả 6', images: ['https://via.placeholder.com/300/6C5CE7/FFFFFF?text=Product+6'] },
+        { id: 7, name: 'Sản phẩm 7', brand: 'Fenty Beauty', category: 'Face', price: 34.99, rating: 4.3, description: 'Mô tả 7', images: ['https://via.placeholder.com/300/FF6B6B/FFFFFF?text=Product+7'] },
+        { id: 8, name: 'Sản phẩm 8', brand: 'Charlotte Tilbury', category: 'Eyes', price: 29.99, rating: 4.6, description: 'Mô tả 8', images: ['https://via.placeholder.com/300/FFD93D/000000?text=Product+8'] },
+        { id: 9, name: 'Sản phẩm 9', brand: 'Becca', category: 'Face', price: 42.99, rating: 4.8, description: 'Mô tả 9', images: ['https://via.placeholder.com/300/FFFFFF/000000?text=Product+9'] },
+        { id: 10, name: 'Sản phẩm 10', brand: 'Urban Decay', category: 'Face', price: 31.99, rating: 4.5, description: 'Mô tả 10', images: ['https://via.placeholder.com/300/4ECDC4/FFFFFF?text=Product+10'] }
+      ];
     }
-    filtered = [...products];
-    page = 1;
-    displayed = [];
-    renderGrid();
-    updateResultCount();
-  }
-
-  // ===================================================================
-  // 7. RENDER GRID
-  // ===================================================================
-  function renderGrid() {
-    const start = (page - 1) * perPage;
-    const end = start + perPage;
-    const show = filtered.slice(start, end);
-    displayed = [...displayed, ...show];
-
-    els.grid.innerHTML = displayed.map(p => {
-const badge = (p.originalPrice && p.originalPrice > p.price)
-  ? `<span class="product-badge sale">-${Math.round((1 - p.price / p.originalPrice) * 100)}%</span>`
-  : '';
-      return `
-        <div class="product-card">
-          <div class="product-image-container">
-            <img src="${p.images?.[0] || 'https://via.placeholder.com/300'}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/300';">
-            <img src="${p.hoverImage || p.images?.[1] || p.images?.[0] || 'https://via.placeholder.com/300'}" alt="${p.name}" class="product-img hover-image" onerror="this.src='https://via.placeholder.com/300';">
-            ${badge}
-          </div>
-          <div class="info">
-            <h3>${escapeHTML(p.name)}</h3>
-            <p class="meta">${escapeHTML(p.brand)} • ${escapeHTML(p.category)}</p>
-            <p>${escapeHTML(p.description)}</p>
-         <div class="actions">
-  <div class="price">
-    ${p.originalPrice && p.originalPrice > p.price
-      ? `<span class="old-price">$${p.originalPrice.toFixed(2)}</span>
-         <span class="new-price">$${p.price.toFixed(2)}</span>`
-      : `<span class="new-price">$${p.price.toFixed(2)}</span>`}
-  </div>
-  <span class="rating">
-    ${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5 - Math.floor(p.rating))} (${p.rating})
-  </span>
-</div>
-
-            <div class="buttons">
-              <input type="number" class="quantity-input" value="1" min="1" max="99">
-              <button class="btn-outline" data-id="${p.id}"></button>
-<button class="btn-primary" 
-  onclick="window.location.href='view_product/view_sale.html?id=${p.id}'">
-  View Details
-</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    document.querySelectorAll('.btn-outline').forEach(btn => {
-      btn.onclick = () => {
-        const id = btn.dataset.id;
-        const product = products.find(p => p.id == id);
-        const qty = btn.closest('.buttons').querySelector('.quantity-input').value;
-        if (product) {
-          addToCart(product, qty);
-          showCartPopup(product.name, qty);
-        }
-      };
-    });
-
-    els.loadMore.style.display = end < filtered.length ? 'block' : 'none';
-  }
-
-  // ===================================================================
-  // 8. KẾT QUẢ & KHỞI ĐỘNG
-  // ===================================================================
-  function updateResultCount() {
-    let el = document.querySelector('.search-result-count');
-    if (!el) {
-      el = document.createElement('div');
-      el.className = 'search-result-count';
-      els.grid.before(el);
+    
+    // Đây là code chạy FAN (xòe quạt)
+    const fanContainer = document.getElementById('fan-container'); 
+    if (fanContainer && products.length > 0) {
+      if (products.length >= 5) {
+          console.log('Initializing FanLayout with', products.length, 'products');
+          new FanLayout(products, fanContainer);
+      } else {
+          console.warn('Not enough products for FanLayout. Need at least 5.');
+      }
+    } else {
+      console.log('Fan container not found, skipping FanLayout.');
     }
-    if (filteredFlag && filtered.length) {
-      el.textContent = `${filtered.length} product${filtered.length > 1 ? 's' : ''} found`;
-      el.classList.add('active');
-    } else el.classList.remove('active');
+
+    // Đây là code chạy GRID (lưới sản phẩm)
+    const gridContainer = document.getElementById('products');
+    if (gridContainer && products.length > 0) {
+        console.log('Initializing Product Grid');
+        // (Nếu bạn có logic cho grid thì đặt ở đây, nếu không thì 2
+        // hàm load.../render... bên dưới sẽ chạy)
+    }
   }
 
-  if (els.loadMore) els.loadMore.onclick = () => { page++; renderGrid(); };
+  // ===================================================================
+  // 5. CÁC PHẦN CÒN LẠI (Filter, AI, Sale Event)
+  // ===================================================================
+  const filterToggle = document.getElementById('filter-toggle');
+  const filterMenu = document.getElementById('filter-menu');
   
-
-  // ===================================================================
-  // 9. KHỞI ĐỘNG
-  // ===================================================================
-  loadNewArrivals();
-  loadMainProducts();
-});
-// ================= LOAD SALE EVENTS (BLOG STYLE) =================
-async function loadSaleEvents() {
-  const container = document.getElementById('sale-blog');
-  if (!container) return;
-
-  try {
-    const res = await fetch('./sale_events.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-
-    container.innerHTML = data.events.map(ev => `
-      <div class="sale-row">
-        <div class="sale-img">
-          <img src="${ev.image}" alt="${ev.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
-        </div>
-        <div class="sale-info">
-          <h3>${ev.title}</h3>
-          <p>${ev.description}</p>
-          <a href="${ev.link}" target="_blank" class="sale-link">Learn More →</a>
-          <span class="deadline">${ev.deadline}</span>
-        </div>
-      </div>
-    `).join('');
-  } catch (err) {
-    console.error('Failed to load sale_events.json:', err);
-    container.innerHTML = '<p style="text-align:center;color:#9b7c7c;">Failed to load sale events.</p>';
+  if (filterToggle && filterMenu) {
+    filterToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      filterMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+      if (!filterToggle.contains(e.target) && !filterMenu.contains(e.target)) {
+        filterMenu.classList.remove('show');
+      }
+    });
   }
-}
-
-document.addEventListener('DOMContentLoaded', loadSaleEvents);
-fetch('sale_events.json')
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById('sale-3d');
-    if (!container) return;
-// sau khi container.innerHTML tạo <div class="title">...</div>
-const events = data.events;                   // 4 sự kiện
-const spacing = 100 / (events.length + 1);    // chia đều theo % ngang
-
-events.forEach((event, i) => {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'card-wrapper';
-  wrapper.style.left = `calc(${spacing * (i + 1)}% - 125px)`; // 125 = 250/2 để chuẩn giữa
-
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.style.background = `linear-gradient(145deg, ${event.color1}, ${event.color2})`;
-  card.innerHTML = `
-    <img src="${event.image}" alt="${event.title}">
-    <h3>${event.title}</h3>
-    <p>${event.description}</p>
-  `;
-  wrapper.appendChild(card);
-  container.appendChild(wrapper);
-
-  wrapper.addEventListener('click', () => event.link && window.open(event.link, '_blank'));
-});
-
+  document.querySelectorAll('.category-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('is-selected'));
+      this.classList.add('is-selected');
+    });
   });
+
+  const aiBtn = document.querySelector('.ai-btn');
+  if (aiBtn) {
+    aiBtn.addEventListener('click', () => {
+      alert('AI Combo Suggestion: Try our Luxury Lipstick + Eyeshadow Palette combo for a complete look!');
+    });
+  }
+
+  loadMainProducts(); 
+
+  fetch('sale_events.json')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('sale-3d');
+      const saleSection = document.querySelector('.sale-event');
+      if (!container || !saleSection) return;
+      const events = data.events || [];
+      if (events.length === 0) return;
+        
+      const spacing = 100 / (events.length + 1);
+      let hoverTimeout;
+      events.forEach((event, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'card-wrapper';
+        wrapper.style.left = `calc(${spacing * (i + 1)}% - 140px)`;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.background = `linear-gradient(145deg, ${event.color1}, ${event.color2})`;
+        card.innerHTML = `<img src="${event.image}" alt="${event.title}"><h3>${event.title}</h3><p>${event.description}</p>`;
+        wrapper.appendChild(card);
+        container.appendChild(wrapper);
+        
+        wrapper.addEventListener('mouseenter', () => {
+          clearTimeout(hoverTimeout);
+          saleSection.classList.add('lift-title');
+        });
+        wrapper.addEventListener('mouseleave', () => {
+          hoverTimeout = setTimeout(() => {
+            if (!container.querySelector('.card-wrapper:hover')) {
+              saleSection.classList.remove('lift-title');
+            }
+          }, 100);
+        });
+
+        if (event.link) {
+          wrapper.addEventListener('click', () => window.open(event.link, '_blank'));
+        }
+      });
+
+      saleSection.addEventListener('mouseleave', () => {
+        saleSection.classList.remove('lift-title');
+      });
+    })
+    .catch(err => {
+      console.error('Failed to load sale_events.json:', err);
+      const container = document.getElementById('sale-3d');
+      if (container) {
+        container.innerHTML = '<p style="text-align:center;color:#9b7c7c; font-size:18px; padding:40px;">Sale events coming soon...</p>';
+      }
+    });
+    
+});
