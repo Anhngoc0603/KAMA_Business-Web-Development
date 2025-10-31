@@ -9,10 +9,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="header-placeholder"></div> <!-- Placeholder for header fetch -->
-
+  <div id="header-placeholder"></div>
   <div class="fireworks-container"></div>
-
+  
   <section class="video-hero">
     <div class="video-container">
       <video autoplay muted loop playsinline class="hero-video">
@@ -22,8 +21,8 @@
       <div class="video-overlay">
         <div class="video-content">
           <h1 class="video-title">Product On Sale</h1>
-          <p class="video-subtitle">Save your mony</p>
-          <a href="#products" class="btn-explore">Explore Now</a>
+          <p class="video-subtitle">Save your money</p>
+          <a href="#fan-section" class="btn-explore">Explore Now</a>
         </div>
       </div>
     </div>
@@ -67,21 +66,36 @@
       </div>
     </div>
   </section>
-  <main class="products-grid" id="products"></main>
 
-  <div class="load-more">
-    <button id="load-more-button" class="btn-primary">Load More</button>
+  <section class="fan-section" id="fan-section">
+    <h2 class="fan-title">✨ Featured Products ✨</h2>
+    <div class="fan-container" id="fan-container">
+      </div>
+  </section>
+
+  <section class="sale-event">
+    <h2 class="sale-event-title">🎀 Current Sale Events 🎀</h2>
+    <div class="sale-3d" id="sale-3d"></div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <div class="combo-popup" id="combo-popup">
+    <div class="combo-wrapper">
+      <button class="combo-close">×</button>
+      <h3 class="combo-title">AI Recommended Combo</h3>
+      <div class="combo-items"></div>
+    </div>
   </div>
-  <!-- ================= SALE EVENTS ================= -->
-<section class="sale-event">
-  <h2 class="sale-event-title">✨ Current Sale Events ✨</h2>
-  <div class="sale-3d" id="sale-3d"></div>
-</section>
 
-
-
-  <div id="footer-placeholder"></div> <!-- Placeholder for footer fetch -->
+  <div class="added-cart-popup" id="added-cart-popup">
+    <div class="added-cart-wrapper">
+      <button class="added-cart-close">×</button>
+      <h3 class="added-cart-title">Added to Cart!</h3>
+      <p class="added-cart-product"></p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
-</html> 
+</html>
