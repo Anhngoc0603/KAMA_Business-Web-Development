@@ -28,13 +28,7 @@ body {
       padding-top: 140px;
       overflow-x: hidden;
     }
-.slider-container,.sliderBestsellers,.slider-new {width: 100%;}
-.new-visual img { width: 100%; }
-@media (max-width: 900px) {
-  .slider-new {
-    margin-left: 0;
-  }
-}
+
 .info .action {
   display: flex;
   justify-content: flex-start; /* hoặc space-between nếu muốn cách xa 2 đầu */
@@ -903,7 +897,6 @@ body {
   font-size: 32px;
   background: linear-gradient(to right, #7c9885, #f5a9bc); /* Giữ nguyên gradient */
   background-clip: text; color: var(--branch-brown);
-  margin-bottom: 15px;
 }
 .header-new{padding:20px}
 /* --- Slider --- */
@@ -912,8 +905,9 @@ body {
   overflow: hidden;
   background: none;
   border-radius: 10px;
-  padding: 20px 0;
+  padding: 20px 0px 20px 20px;
   margin-bottom: 25px;
+  margin-left: 20px;
 }
 .new-wrapper {
       display: grid; overflow-x:auto;
@@ -1044,7 +1038,7 @@ font-size: 12px;}
   border-radius: 10px;
   margin-bottom: 12px;
 }
-
+.new-visual img { width: 100%; }
 @media (max-width: 900px) {
   .new-products {
     flex-direction: column;
@@ -1066,7 +1060,7 @@ font-size: 12px;}
     gap: 20px;
   }
   .new-visual {
-    display: none;
+    display: none !important;
   }
   .viewallnew {
     display: none;
@@ -1103,7 +1097,7 @@ font-size: 12px;}
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-align: center;
+    text-align: left;
   }
   .slider-new::after:hover {
     background-color: var(--pale-pink);
@@ -1111,7 +1105,12 @@ font-size: 12px;}
   .navigation.left { left:10px; }
 .navigation.right{ right:10px; }
 }
-
+@media (max-width: 900px) {
+  .slider-new {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
 /*==========BEST SELLERS============*/
 .Bestsellers .title {
   font-size: 32px;
