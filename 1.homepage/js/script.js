@@ -61,27 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
   newwrapper.addEventListener('scroll', updateNewArrows);
   window.addEventListener('resize', updateNewArrows);
   updateNewArrows();
-  // ================== NEW COLLECTION  ==================
-  const newwrapper2 = document.getElementById('newwrapper2');
-  const prevnew2 = document.getElementById('prevnew2');
-  const nextnew2 = document.getElementById('nextnew2');
-
-  const scrollNew2 = () => Math.round(newwrapper2.clientWidth / 2);
-
-  prevnew2.addEventListener('click', () => {
-    newwrapper2.scrollBy({ left: -scrollNew2(), behavior: 'smooth' });
-  });
-  nextnew2.addEventListener('click', () => {
-    newwrapper2.scrollBy({ left: scrollNew2(), behavior: 'smooth' });
-  });
-
-  function updateNewArrows2() {
-    prevnew2.style.display = 'flex';
-    nextnew2.style.display = 'flex';
-  }
-  newwrapper2.addEventListener('scroll', updateNewArrows2);
-  window.addEventListener('resize', updateNewArrows2);
-  updateNewArrows2();
   // ================== BEST SELLERS ==================
   const bestsellerWrapper = document.getElementById('bestseller');
   const preBestsellers = document.getElementById('preBestsellers');
