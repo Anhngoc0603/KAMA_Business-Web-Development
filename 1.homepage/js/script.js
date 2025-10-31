@@ -104,12 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Khi người dùng click vào phần tử có id="viewallflashsale"
 document.getElementById("viewallflashsale").addEventListener("click", function() {
-  window.location.href = "flashsale.html"; // Trình duyệt sẽ chuyển sang trang flashsale.html
+  window.location.href = "../../Sale/sale.html"; // Trình duyệt sẽ chuyển sang trang flashsale.html
 });
 
 // Khi người dùng click vào phần tử có id="viewallnew"
 document.getElementById("viewallnew").addEventListener("click", function() {
-  window.location.href = "viewallnew.html"; // Trình duyệt sẽ chuyển sang trang viewallnew.html
+  window.location.href = "../../new/new_arrival.html"; // Trình duyệt sẽ chuyển sang trang viewallnew.html
 });
 // Khi người dùng click vào phần tử có id="viewallBestsellers"
 document.getElementById("viewallBestsellers").addEventListener("click", function() {
