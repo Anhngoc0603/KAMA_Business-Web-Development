@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   'use strict';
 
   // ===================================================================
-  // 1. LOAD HEADER & FOOTER
+  // 1. LOAD HEADER & FOOTER (Giữ nguyên)
   // ===================================================================
   const loadPartial = async (url, placeholderId) => {
     const el = document.getElementById(placeholderId);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ]);
 
   // ===================================================================
-  // 2. FIREWORKS
+  // 2. FIREWORKS (Giữ nguyên)
   // ===================================================================
   const fireworks = document.querySelector('.fireworks-container');
   if (fireworks) {
@@ -51,17 +51,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ===================================================================
-  // 3. FAN LAYOUT CLASS - XÒE QUẠT (LOGIC TRƯỢT 1 CARD - "ROLLING")
+  // 3. FAN LAYOUT CLASS (ĐÃ SỬA LẠI CARD HTML)
   // ===================================================================
   class FanLayout {
     constructor(products, container) {
       this.products = products;
       this.container = container;
-      // currentIndex là index của sản phẩm ở VỊ TRÍ 0 (ngoài cùng bên trái)
       this.currentIndex = 0; 
-      this.cardsPerGroup = 5; // Luôn hiển thị 5 card
+      this.cardsPerGroup = 5;
       this.isAnimating = false;
-      this.animationTime = 800; // Phải khớp với 'transition' trong CSS
+      this.animationTime = 300; // Tốc độ chạy 1.2s
+      this.autoplayInterval = null;
+      this.autoplayTime = 2000; // Nghỉ 3s
       this.init();
     }
 
@@ -72,32 +73,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       
       this.createFanLayout();
-      this.renderInitialCards(); // Render 5 card ban đầu
-      this.setupEventListeners();
-      this.setupScrollListener();
+      this.renderInitialCards();
+      this.setupEventListeners(); 
+      this.startAutoPlay();
     }
 
     createFanLayout() {
-      // *** ĐÃ CẬP NHẬT HTML CHO NÚT <img> ***
+      // Dùng nút có chữ cho an toàn 100%
       this.fanHTML = `
         <div class="fan-viewport">
           <div class="fan-cards" id="fan-cards"></div>
         </div>
         <div class="fan-navigation">
           <button class="fan-nav-btn" id="fan-prev">
-            <img src="./images/prev.png" alt="Previous">
+            ←
           </button>
           <div class="fan-dots" id="fan-dots"></div>
           <button class="fan-nav-btn" id="fan-next">
-            <img src="./images/next.png" alt="Next">
+            →
           </button>
         </div>
-        <div class="scroll-indicator" id="scroll-indicator">
-          <p>Scroll to rotate the fan</p>
-          <div style="font-size: 24px;">⌄</div>
-        </div>
       `;
-      // *** KẾT THÚC CẬP NHẬT ***
 
       this.container.innerHTML = this.fanHTML;
       
@@ -105,33 +101,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       this.fanPrev = document.getElementById('fan-prev');
       this.fanNext = document.getElementById('fan-next');
       this.fanDots = document.getElementById('fan-dots');
-      this.scrollIndicator = document.getElementById('scroll-indicator');
     }
 
-    // Chỉ chạy 1 lần lúc khởi tạo
     renderInitialCards() {
       if (!this.fanCards) return;
       this.fanCards.innerHTML = '';
-      
       for (let i = 0; i < this.cardsPerGroup; i++) {
-        const productIndex = this.currentIndex + i;
-        const product = this.products[productIndex];
-        
-        if (product) {
-          const card = this.createFanCard(product);
-          card.dataset.position = 'hidden-left'; // Bắt đầu ẩn
-          this.fanCards.appendChild(card);
-          
-          // Animate bay vào lần lượt
-          setTimeout(() => {
-            card.dataset.position = i.toString();
-          }, i * 150); // Stagger
-        }
+        const product = this.products[this.currentIndex + i] || null;
+        const card = this.createFanCard(product);
+        card.dataset.position = 'hidden-left';
+        this.fanCards.appendChild(card);
+        setTimeout(() => {
+          card.dataset.position = i.toString();
+        }, i * 150);
       }
       this.updateDots();
       this.updateNavigation();
     }
 
+    // *** BẮT ĐẦU SỬA LỖI (DÁN CODE HTML CŨ VÀO ĐÂY) ***
     createFanCard(product) {
       const card = document.createElement('div');
       card.className = 'fan-card';
@@ -143,6 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           ? `<span class="product-badge sale" style="position:absolute; top:15px; right:15px; background:#E86C6C; color:white; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold; z-index:56;">-${Math.round((1 - product.price / product.originalPrice) * 100)}%</span>`
           : '';
 
+        // ĐÂY LÀ CODE HTML ĐẦY ĐỦ TỪ FILE CŨ CỦA BẠN
         card.innerHTML = `
           <div class="product-image-container" style="position:relative;">
             <img src="${product.images?.[0] || 'https://via.placeholder.com/300'}" 
@@ -155,6 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <h3>${this.escapeHTML(product.name)}</h3>
             <p class="meta">${this.escapeHTML(product.brand)} • ${this.escapeHTML(product.category)}</p>
             <p class="description">${this.escapeHTML(product.description)}</p>
+            
             <div class="actions">
               <div class="price">
                 ${product.originalPrice && product.originalPrice > product.price
@@ -166,8 +156,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} (${product.rating})
               </span>
             </div>
+            
             <div class="buttons">
-              <input type="number" class="quantity-input" value="1" min="1" max="99">
               <button class="btn-outline" data-id="${product.id}"></button>
               <button class="btn-primary view-detail-btn" data-id="${product.id}">
                 View Details
@@ -175,7 +165,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
           </div>
         `;
-        this.attachCardEventListeners(card, product);
+        // Phải gọi hàm này để các nút mới có thể bấm được
+        this.attachCardEventListeners(card, product); 
       } else {
         // Card trống
         card.innerHTML = `
@@ -190,10 +181,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       return card;
     }
 
+    // Hàm này RẤT QUAN TRỌNG để nút "cart" và "view" hoạt động
     attachCardEventListeners(card, product) {
         const cartBtn = card.querySelector('.btn-outline');
         cartBtn?.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Ngăn card bị click
             const id = cartBtn.dataset.id;
             const product = this.products.find(p => p.id == id);
             const qtyInput = card.querySelector('.quantity-input');
@@ -205,168 +197,141 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const detailBtn = card.querySelector('.view-detail-btn');
         detailBtn?.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Ngăn card bị click
             const id = detailBtn.dataset.id;
             window.location.href = `view_product/view_sale.html?id=${id}`;
         });
     }
+    // *** KẾT THÚC SỬA LỖI ***
 
-    // === LOGIC TRƯỢT 1 CARD ===
+    // (Các hàm next, prev, jumpTo, autoPlay... giữ nguyên)
     next() {
-      if (this.isAnimating || (this.currentIndex + this.cardsPerGroup) >= this.products.length) {
-          return;
+      if ((this.currentIndex + this.cardsPerGroup) >= this.products.length) {
+        this.jumpTo(0, 'next'); 
+        return;
       }
+      if (this.isAnimating) return;
       this.isAnimating = true;
 
-      // 1. Animate card ngoài cùng bên TRÁI (vị trí 0) bay ra
       const cardToRemove = this.fanCards.querySelector('[data-position="0"]');
       if (cardToRemove) {
         cardToRemove.dataset.position = 'hidden-left';
         cardToRemove.addEventListener('transitionend', () => cardToRemove.remove(), { once: true });
       }
-
-      // 2. Dịch chuyển các card còn lại (1, 2, 3, 4) sang TRÁI
       for (let i = 1; i < this.cardsPerGroup; i++) {
         const cardToShift = this.fanCards.querySelector(`[data-position="${i}"]`);
-        if (cardToShift) {
-          cardToShift.dataset.position = (i - 1).toString(); // (1->0, 2->1, 3->2, 4->3)
-        }
+        if (cardToShift) cardToShift.dataset.position = (i - 1).toString(); 
       }
-
-      // 3. Tạo card mới và cho bay vào từ PHẢI
       const newProductIndex = this.currentIndex + this.cardsPerGroup;
-      const newProduct = this.products[newProductIndex];
-
-      if (newProduct) {
-        const newCard = this.createFanCard(newProduct);
-        newCard.dataset.position = 'hidden-right'; // Bắt đầu ẩn bên phải
-        this.fanCards.appendChild(newCard);
-        
-        setTimeout(() => {
-          newCard.dataset.position = (this.cardsPerGroup - 1).toString(); // Animate vào vị trí 4
-        }, 50); 
-      }
-
-      // 4. Cập nhật trạng thái
+      const newProduct = this.products[newProductIndex] || null;
+      const newCard = this.createFanCard(newProduct);
+      newCard.dataset.position = 'hidden-right';
+      this.fanCards.appendChild(newCard);
+      setTimeout(() => { newCard.dataset.position = (this.cardsPerGroup - 1).toString(); }, 50); 
       this.currentIndex++;
       this.updateDots();
       this.updateNavigation();
-      
-      setTimeout(() => {
-          this.isAnimating = false;
-      }, this.animationTime);
+      setTimeout(() => { this.isAnimating = false; }, this.animationTime);
     }
 
     prev() {
-      if (this.isAnimating || this.currentIndex <= 0) {
-          return;
-      }
+      if (this.isAnimating || this.currentIndex <= 0) return;
       this.isAnimating = true;
 
-      // 1. Animate card ngoài cùng bên PHẢI (vị trí 4) bay ra
       const cardToRemove = this.fanCards.querySelector(`[data-position="${this.cardsPerGroup - 1}"]`);
       if (cardToRemove) {
         cardToRemove.dataset.position = 'hidden-right';
         cardToRemove.addEventListener('transitionend', () => cardToRemove.remove(), { once: true });
       }
-
-      // 2. Dịch chuyển các card còn lại (0, 1, 2, 3) sang PHẢI
       for (let i = this.cardsPerGroup - 2; i >= 0; i--) {
         const cardToShift = this.fanCards.querySelector(`[data-position="${i}"]`);
-        if (cardToShift) {
-          cardToShift.dataset.position = (i + 1).toString(); // (3->4, 2->3, 1->2, 0->1)
-        }
+        if (cardToShift) cardToShift.dataset.position = (i + 1).toString();
       }
-
-      // 3. Tạo card mới và cho bay vào từ TRÁI
       const newProductIndex = this.currentIndex - 1;
-      const newProduct = this.products[newProductIndex];
-
-      if (newProduct) {
-        const newCard = this.createFanCard(newProduct);
-        newCard.dataset.position = 'hidden-left'; // Bắt đầu ẩn bên trái
-        this.fanCards.prepend(newCard); // Thêm vào đầu
-        
-        setTimeout(() => {
-          newCard.dataset.position = "0"; // Animate vào vị trí 0
-        }, 50);
-      }
-      
-      // 4. Cập nhật trạng thái
+      const newProduct = this.products[newProductIndex] || null;
+      const newCard = this.createFanCard(newProduct);
+      newCard.dataset.position = 'hidden-left';
+      this.fanCards.prepend(newCard); 
+      setTimeout(() => { newCard.dataset.position = "0"; }, 50);
       this.currentIndex--;
       this.updateDots();
       this.updateNavigation();
-      
-      setTimeout(() => {
-          this.isAnimating = false;
-      }, this.animationTime);
+      setTimeout(() => { this.isAnimating = false; }, this.animationTime);
     }
-    // === KẾT THÚC LOGIC ===
 
-    setupScrollListener() {
-      let scrollTimeout;
-      let firstScroll = true;
-      
-      window.addEventListener('wheel', (e) => {
-        if (this.isAnimating) return;
-        
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          if (e.deltaY > 0) {
-            this.next(); 
-          } else if (e.deltaY < 0) {
-            this.prev(); 
-          }
-          if (firstScroll && this.scrollIndicator) {
-            this.scrollIndicator.style.display = 'none';
-            firstScroll = false;
-          }
-        }, 100);
-      }, { passive: true });
+    jumpTo(newIndex, direction = 'jump') {
+      if (this.isAnimating || newIndex === this.currentIndex) return;
+      this.isAnimating = true;
+      const outDirection = (direction === 'next' || newIndex > this.currentIndex) ? 'hidden-left' : 'hidden-right';
+      const inDirection = (direction === 'next' || newIndex > this.currentIndex) ? 'hidden-right' : 'hidden-left';
+      this.currentIndex = newIndex;
 
-      let touchStartY = 0;
-      this.container.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-      }, { passive: true });
-      
-      this.container.addEventListener('touchend', (e) => {
-        if (this.isAnimating) return;
-        const touchEndY = e.changedTouches[0].clientY;
-        const diffY = touchStartY - touchEndY;
-        const swipeThreshold = 50;
-        
-        if (Math.abs(diffY) > swipeThreshold) {
-          if (diffY > 0) {
-            this.next();
-          } else {
-            this.prev();
-          }
-        }
+      const oldCards = this.fanCards.querySelectorAll('.fan-card');
+      oldCards.forEach((card, i) => {
+        card.dataset.position = outDirection;
+        card.addEventListener('transitionend', () => card.remove(), { once: true });
       });
+
+      for (let i = 0; i < this.cardsPerGroup; i++) {
+        const product = this.products[this.currentIndex + i] || null; 
+        const card = this.createFanCard(product);
+        card.dataset.position = inDirection;
+        this.fanCards.appendChild(card);
+        setTimeout(() => {
+          card.dataset.position = i.toString();
+        }, i * 100);
+      }
+      this.updateDots();
+      this.updateNavigation();
+      setTimeout(() => { this.isAnimating = false; }, this.animationTime + 150);
     }
 
+    startAutoPlay() {
+      if (this.autoplayInterval) return;
+      this.autoplayInterval = setInterval(() => {
+        this.next();
+      }, this.autoplayTime);
+    }
+
+    stopAutoPlay() {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
+        
     setupEventListeners() {
       if (!this.fanPrev || !this.fanNext) return;
-      this.fanPrev.addEventListener('click', () => this.prev());
-      this.fanNext.addEventListener('click', () => this.next());
+      
+      this.fanPrev.addEventListener('click', () => {
+        this.stopAutoPlay();
+        this.prev();
+      });
+      this.fanNext.addEventListener('click', () => {
+        this.stopAutoPlay();
+        this.next();
+      });
+
+      this.container.addEventListener('mouseenter', () => this.stopAutoPlay());
+      this.container.addEventListener('mouseleave', () => this.startAutoPlay());
     }
 
     updateDots() {
       if (!this.fanDots) return;
-      const totalDots = this.products.length - this.cardsPerGroup + 1;
+      // Sửa lỗi logic: Phải có đủ sản phẩm để tạo dot
+      const totalValidProducts = this.products.filter(p => p).length;
+      if (totalValidProducts < this.cardsPerGroup) {
+        this.fanDots.innerHTML = '';
+        return;
+      }
+      const totalDots = totalValidProducts - this.cardsPerGroup + 1;
+      
       this.fanDots.innerHTML = '';
       
       for (let i = 0; i < totalDots; i++) {
         const dot = document.createElement('div');
         dot.className = `fan-dot ${this.currentIndex === i ? 'active' : ''}`;
         dot.addEventListener('click', () => {
-          if (this.isAnimating || i === this.currentIndex) return;
-          // Tạm thời chỉ cho phép click 1-1
-          if (i > this.currentIndex) {
-            this.next();
-          } else {
-            this.prev();
-          }
+          this.stopAutoPlay(); 
+          this.jumpTo(i); 
         });
         this.fanDots.appendChild(dot);
       }
@@ -375,7 +340,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateNavigation() {
       if (!this.fanPrev || !this.fanNext) return;
       this.fanPrev.disabled = this.currentIndex === 0;
-      this.fanNext.disabled = (this.currentIndex + this.cardsPerGroup) >= this.products.length;
+      this.fanNext.disabled = false;
     }
 
     escapeHTML(str) {
@@ -384,30 +349,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       div.textContent = str;
       return div.innerHTML;
     }
-
     addToCart(product, quantity) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
-          existingItem.quantity += quantity;
+            existingItem.quantity = parseInt(existingItem.quantity) + parseInt(quantity);
         } else {
-          cart.push({ id: product.id, name: product.name, price: product.price, image: product.images?.[0], quantity: quantity });
+            cart.push({ id: product.id, name: product.name, price: product.price, image: product.images?.[0], quantity: parseInt(quantity) });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
         this.showCartPopup(product.name, quantity);
     }
-
     showCartPopup(productName, quantity) {
         const popup = document.createElement('div');
         popup.className = 'added-cart-popup active';
-        popup.innerHTML = `
-        <div class="added-cart-wrapper">
-            <button class="added-cart-close">&times;</button>
-            <h3 class="added-cart-title">🎉 Added to Cart!</h3>
-            <p class="added-cart-product">${quantity}x ${this.escapeHTML(productName)}</p>
-            <p style="margin-top: 10px; color: #9b7c7c; font-size: 14px;">Continue shopping or view cart</p>
-        </div>
-        `;
+        popup.innerHTML = `<div class="added-cart-wrapper"><button class="added-cart-close">&times;</button><h3 class="added-cart-title">🎉 Added to Cart!</h3><p class="added-cart-product">${quantity}x ${this.escapeHTML(productName)}</p><p style="margin-top: 10px; color: #9b7c7c; font-size: 14px;">Continue shopping or view cart</p></div>`;
         document.body.appendChild(popup);
         setTimeout(() => popup.remove(), 3000);
         const closeBtn = popup.querySelector('.added-cart-close');
@@ -421,12 +377,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function loadMainProducts() {
     let products = [];
     try {
-      const res = await fetch('./products.json');
+      const res = await fetch('./products.json'); 
       if (!res.ok) throw new Error('Not found');
       const data = await res.json();
       if (!Array.isArray(data?.products)) throw new Error('Invalid data');
       products = data.products;
-      console.log('Loaded products:', products.length);
     } catch (e) {
       console.error('Error loading products, using fallback:', e);
       products = [
@@ -443,7 +398,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       ];
     }
     
-    const fanContainer = document.getElementById('fan-container');
+    // Đây là code chạy FAN (xòe quạt)
+    const fanContainer = document.getElementById('fan-container'); 
     if (fanContainer && products.length > 0) {
       if (products.length >= 5) {
           console.log('Initializing FanLayout with', products.length, 'products');
@@ -452,16 +408,21 @@ document.addEventListener('DOMContentLoaded', async () => {
           console.warn('Not enough products for FanLayout. Need at least 5.');
       }
     } else {
-      console.error('Fan container not found or no products available');
+      console.log('Fan container not found, skipping FanLayout.');
+    }
+
+    // Đây là code chạy GRID (lưới sản phẩm)
+    const gridContainer = document.getElementById('products');
+    if (gridContainer && products.length > 0) {
+        console.log('Initializing Product Grid');
+        // (Nếu bạn có logic cho grid thì đặt ở đây, nếu không thì 2
+        // hàm load.../render... bên dưới sẽ chạy)
     }
   }
 
   // ===================================================================
-  // 5. FILTER, AI BUTTON, INIT, SALE EVENTS
-  // (Tất cả code còn lại giữ nguyên)
+  // 5. CÁC PHẦN CÒN LẠI (Filter, AI, Sale Event)
   // ===================================================================
-
-  // 5. FILTER EVENT LISTENERS
   const filterToggle = document.getElementById('filter-toggle');
   const filterMenu = document.getElementById('filter-menu');
   
@@ -483,7 +444,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // 6. AI COMBO BUTTON
   const aiBtn = document.querySelector('.ai-btn');
   if (aiBtn) {
     aiBtn.addEventListener('click', () => {
@@ -491,21 +451,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 7. INITIALIZATION
-  loadMainProducts();
+  loadMainProducts(); 
 
-  // 8. LOAD SALE EVENTS
   fetch('sale_events.json')
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById('sale-3d');
       const saleSection = document.querySelector('.sale-event');
       if (!container || !saleSection) return;
-      const events = data.events || [
-        { title: 'Summer Sale', description: 'Up to 50% off', image: 'https://via.placeholder.com/200', color1: '#FFB6C1', color2: '#FF69B4' },
-        { title: 'New Arrivals', description: 'Discover latest products', image: 'https://via.placeholder.com/200', color1: '#87CEFA', color2: '#1E90FF' },
-        { title: 'Luxury Sets', description: 'Premium bundles', image: 'https://via.placeholder.com/200', color1: '#98FB98', color2: '#32CD32' }
-      ];
+      const events = data.events || [];
+      if (events.length === 0) return;
+        
       const spacing = 100 / (events.length + 1);
       let hoverTimeout;
       events.forEach((event, i) => {
@@ -518,6 +474,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         card.innerHTML = `<img src="${event.image}" alt="${event.title}"><h3>${event.title}</h3><p>${event.description}</p>`;
         wrapper.appendChild(card);
         container.appendChild(wrapper);
+        
         wrapper.addEventListener('mouseenter', () => {
           clearTimeout(hoverTimeout);
           saleSection.classList.add('lift-title');
@@ -529,10 +486,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           }, 100);
         });
+
         if (event.link) {
           wrapper.addEventListener('click', () => window.open(event.link, '_blank'));
         }
       });
+
       saleSection.addEventListener('mouseleave', () => {
         saleSection.classList.remove('lift-title');
       });
