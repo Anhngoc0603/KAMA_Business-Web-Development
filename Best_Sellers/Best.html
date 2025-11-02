@@ -1,420 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sakura High-End Beauty</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sakura Beauty - Category Carousel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body { 
+      font-family: 'Playfair Display', serif;
+      background: #FFF9F9;
+      color: #6B4C3B;
+      margin: 0;
+      overflow-x: hidden; /* Ngăn cuộn ngang không cần thiết */
+    }
+    
+    main { 
+      padding-top: 120px; 
+      min-height: 80vh; 
+      box-sizing: border-box;
+    }
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    /* Placeholder cho Header/Footer */
+    #header-placeholder, #footer-placeholder {
+      width: 100%;
+    }
+    
+    /*--------------------
+      CSS Carousel
+    --------------------*/
+    .carousel {
+      position: relative;
+      z-index: 1;
+      height: 80vh; 
+      overflow: hidden;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .carousel-loading {
+      font-size: 1.2rem;
+      color: #E6A6B0;
+    }
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    .carousel-item {
+      --items: 10; 
+      --width: clamp(200px, 30vw, 300px);
+      --height: clamp(300px, 45vw, 450px);
+      --x: calc(var(--active) * 800%);
+      --y: calc(var(--active) * 200%);
+      --rot: calc(var(--active) * 120deg);
+      --opacity: calc(var(--zIndex) / var(--items) * 3 - 2);
+      overflow: hidden;
+      position: absolute;
+      z-index: var(--zIndex);
+      width: var(--width);
+      height: var(--height);
+      margin: calc(var(--height) * -0.5) 0 0 calc(var(--width) * -0.5);
+      border-radius: 16px; 
+      top: 50%;
+      left: 50%;
+      user-select: none;
+      transform-origin: 0% 100%;
+      box-shadow: 0 10px 50px 10px rgba(230, 166, 176, .2);
+      background: #fff; 
+      pointer-events: all;
+      transform: translate(var(--x), var(--y)) rotate(var(--rot));
+      transition: transform .8s cubic-bezier(0, 0.02, 0, 1);
+    }
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="Style.css">
+    .carousel-item .carousel-box {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity .8s cubic-bezier(0, 0.02, 0, 1);
+      opacity: var(--opacity);
+      font-family: 'Playfair Display', serif; 
+    }
+
+    .carousel-box:before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .0), rgba(0, 0, 0, 0) 30%, rgba(107, 76, 59, .2) 50%, rgba(107, 76, 59, .4));
+    }
+
+    .title {
+      position: absolute;
+      z-index: 1;
+      color: #fff; 
+      bottom: 20px;
+      left: 20px;
+      transition: opacity .8s cubic-bezier(0, 0.02, 0, 1);
+      font-size: clamp(24px, 3vw, 34px); 
+      text-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+      font-weight: 600;
+      font-family: 'Playfair Display', serif; 
+    }
+
+    .num {
+      position: absolute;
+      z-index: 1;
+      color: #E6A6B0;
+      opacity: 0.8;
+      top: 15px;
+      left: 20px;
+      transition: opacity .8s cubic-bezier(0, 0.02, 0, 1);
+      font-size: clamp(20px, 10vw, 70px); 
+      font-family: 'Playfair Display', serif; 
+      font-weight: 700;
+    }
+
+    .carousel-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      border-radius: 16px;
+    }
+    
+    /*--------------------
+      Con trỏ chuột
+    --------------------*/
+    .cursor {
+      position: fixed;
+      z-index: 10000; 
+      top: 0;
+      left: 0;
+      --size: 40px;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      border: 1px solid #E6A6B0; 
+      margin: calc(var(--size) * -0.5) 0 0 calc(var(--size) * -0.5);
+      transition: transform .85s cubic-bezier(0, 0.02, 0, 1);
+      display: none;
+      pointer-events: none;
+    }
+
+    .cursor2 {
+      --size: 3px; 
+      background: #E6A6B0; 
+      border: none; 
+      transition-duration: .7s;
+    }
+    
+    @media (pointer: fine) {
+      .cursor {
+        display: block;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <!-- Announcement -->
-    <div class="announcement-container">
-      <div class="announcement-wrapper" id="announcementWrapper">
-        <div class="announcement-slide">Free Shipping On Orders Over $100</div>
-        <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
-      </div>
-      <div class="announcement-buttons">
-        <button id="prev"><img src="images/prev.png" alt="Prev"></button>
-        <button id="next"><img src="images/next.png" alt="Next"></button>
-      </div>
-    </div>
 
-    <!-- Header bar -->
-    <div class="header">
-      <button class="menu-toggler" id="menu-toggler" aria-label="Open menu">
-        <img src="images/nav.png" alt="Menu Toggler" class="icon">
-      </button>
+  <div id="header-placeholder">
+    <div style="text-align:center; padding: 20px; color:#aaa;">Loading Header...</div>
+  </div>
 
-      <img src="images/LOGO.png" alt="LOGO" class="logo">
+  <main>
+    <div class="carousel">
+      <div class="carousel-loading">Loading Categories...</div>
+          </div>
+  </main>
+  
+  <div id="footer-placeholder">
+    <div style="text-align:center; padding: 20px; color:#aaa;">Loading Footer...</div>
+  </div>
 
-      <nav class="main-nav-icons" aria-label="Primary">
-        <div class="search">
-          <img src="images/find.png" class="icon" alt="Search">
-          <input type="text" placeholder="Search for..." aria-label="Search">
-        </div>
-        <a href="#" aria-label="Account"><img src="images/account.png" alt="" class="icon"></a>
-        <a href="#" aria-label="Contact"><img src="images/contact.png" alt="" class="icon"></a>
-        <a href="#" class="cart-icon" aria-label="Cart"><img src="images/shopping.png" alt="" class="icon"></a>
-      </nav>
-    </div>
+    <div class="cursor"></div>
+  <div class="cursor cursor2"></div>
 
-    <!-- Secondary navbar -->
-    <nav class="navbar" id="navbar" aria-label="Categories">
-      <a href="#">NEW</a>
-      <a href="#">COLLECTIONS</a>
-      <a href="#">BEST SELLERS</a>
-      <a href="#">SALE</a>
-      <a href="#" class="shop-all">CATEGORIES</a>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
 
-      <!-- Mega menu -->
-      <div class="menu-categories" id="menu-categories">
-        <button class="back-btn" type="button" aria-label="Back">
-          <img src="images/prev.png" alt="Back" class="icon"> Back to Menu
-        </button>
+      // --- 1. TẢI HEADER & FOOTER ---
+      const loadHTML = async (url, id) => {
+        const el = document.getElementById(id);
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status} ${res.statusText}`);
+          el.innerHTML = await res.text();
+        } catch (err) {
+          el.innerHTML = `<p style="color:red;text-align:center;">Error loading content from ${url}.</p>`;
+          console.error(err);
+        }
+      };
 
-        <div class="categories-wrapper">
-          <div class="category" data-category="Face">
-            <div class="category-header">
-              <h3><a href="#">FACE</a></h3>
-              <button class="next-btn" type="button" aria-label="Next Face">
-                <img src="images/next.png" alt="Next" class="icon">
-              </button>
-            </div>
-            <ul class="product-list">
-              <li>Foundation</li><li>Concealer</li><li>Blush</li><li>Powder</li>
-            </ul>
-          </div>
+      await Promise.all([
+        loadHTML('./header.html', 'header-placeholder'),
+        loadHTML('./footer.html', 'footer-placeholder')
+      ]);
 
-          <div class="category" data-category="Eyes">
-            <div class="category-header">
-              <h3><a href="#">EYES</a></h3>
-              <button class="next-btn" type="button" aria-label="Next Eyes">
-                <img src="images/next.png" alt="Next" class="icon">
-              </button>
-            </div>
-            <ul class="product-list">
-              <li>Eyeshadow</li><li>Mascara</li><li>Eyeliner</li><li>Brow Pencil</li>
-            </ul>
-          </div>
+      // --- 2. CẬP NHẬT GIỎ HÀNG (CHO HEADER) ---
+      const updateCartCount = () => {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const count = cart.reduce((sum, item) => sum + item.qty, 0);
+        const cartIcon = document.querySelector('.cart-count');
+        if (cartIcon) cartIcon.textContent = count;
+      };
+      updateCartCount();
 
-          <div class="category" data-category="Lips">
-            <div class="category-header">
-              <h3><a href="#">LIPS</a></h3>
-              <button class="next-btn" type="button" aria-label="Next Lips">
-                <img src="images/next.png" alt="Next" class="icon">
-              </button>
-            </div>
-            <ul class="product-list">
-              <li>Lipstick</li><li>Lip Gloss</li><li>Lip Balm</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+      // --- 3. TẢI VÀ TẠO CAROUSEL ---
+      async function loadCategoryCarousel() {
+        const carouselContainer = document.querySelector('.carousel');
+        try {
+          const res = await fetch('./full.json');
+          if (!res.ok) throw new Error(`Failed to fetch full.json: ${res.status} ${res.statusText}`);
 
-  <!-- Video Hero Section -->
-  <section class="video-hero">
-    <div class="video-container">
-      <video autoplay muted loop playsinline class="hero-video">
-        <source src="images/Gucci Beauty Limited-Edition Flora Makeup 2.mp4" type="video/mp4">
-      </video>
-      <div class="video-overlay">
-        <div class="video-content">
-          <h1 class="video-title">Take a chance to get a special price</h1>
-          <p class="video-subtitle">This event is subject to change or end without prior notice</p>
-        </div>
-      </div>
-    </div>
-  </section>
+          const data = await res.json();
+          const products = data.products;
+          
+          if (!Array.isArray(products)) throw new Error('full.json is missing the "products" array.');
 
-  <!-- Filter bar -->
-  <section class="filter-bar">
-    <div class="search-wrapper placeholder" aria-hidden="true"></div>
+          // Lấy các danh mục duy nhất
+          const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+          
+          carouselContainer.innerHTML = ''; // Xóa chữ "Loading..."
+          
+          if (categories.length === 0) {
+            carouselContainer.innerHTML = '<div class="carousel-loading">No categories found in data.</div>';
+            return;
+          }
 
-    <div class="filters-inline">
-      <select id="price-filter" aria-label="Filter by price">
-        <option value="default">Price</option>
-        <option value="low-high">Low → High</option>
-        <option value="high-low">High → Low</option>
-      </select>
 
-      <select id="rating-filter" aria-label="Filter by rating">
-        <option value="default">Rating</option>
-        <option value="5">5★</option>
-        <option value="4.5">≥ 4.5★</option>
-        <option value="4">≥ 4★</option>
-      </select>
+          categories.forEach((cat, index) => {
+            const catProduct = products.find(p => p.category === cat);
+            const img = catProduct?.images?.[0] || 'https://via.placeholder.com/300x450/FADADD/FFFFFF?text=No+Image';
+            const num = (index + 1).toString().padStart(2, '0');
 
-      <select id="brand-filter" aria-label="Filter by brand">
-        <option value="default">Brand</option>
-        <option value="Dior">Dior</option>
-        <option value="Chanel">Chanel</option>
-        <option value="YSL">YSL</option>
-        <option value="Lancôme">Lancôme</option>
-        <option value="Rare Beauty">Rare Beauty</option>
-        <option value="NARS">NARS</option>
-        <option value="Charlotte Tilbury">Charlotte Tilbury</option>
-        <option value="Fenty Beauty">Fenty Beauty</option>
-      </select>
-    </div>
+            const item = document.createElement('div');
+            item.className = 'carousel-item';
+            item.innerHTML = `
+              <div class="carousel-box">
+                <div class="title">${cat}</div>
+                <div class="num">${num}</div>
+                <img src="${img}" alt="${cat}" />
+              </div>
+            `; 
+            carouselContainer.appendChild(item);
+          });
+          
+          // Sau khi tạo HTML xong, khởi tạo logic carousel
+          initCarousel();
 
-    <!-- ĐÚNG: dùng .filter-dropdown để khớp CSS -->
-    <div class="filter-dropdown" id="filterDropdown">
-      <button id="filter-toggle" class="filter-btn" type="button"
-              aria-haspopup="true" aria-expanded="false" aria-controls="filter-menu">
-        ☰ Filter
-      </button>
+        } catch (err) {
+          carouselContainer.innerHTML = `<div class="carousel-loading" style="color:red;">Error loading categories: ${err.message}</div>`;
+          console.error(err);
+        }
+      }
+      
+      // --- 4. LOGIC CAROUSEL GỐC (ĐÃ SỬA LỖI LOGIC CLICK) ---
+      function initCarousel() {
+        let progress = 50;
+        let startX = 0;
+        let active = 0;
+        let isDown = false;
 
-      <!-- Menu rơi ngay dưới nút -->
-      <div id="filter-menu" class="filter-menu" role="menu" aria-label="Category filter">
-        <button class="category-btn is-selected" data-category="All" type="button" role="menuitem">All</button>
-        <button class="category-btn" data-category="Face" type="button" role="menuitem">Face</button>
-        <button class="category-btn" data-category="Eyes" type="button" role="menuitem">Eyes</button>
-        <button class="category-btn" data-category="Lips" type="button" role="menuitem">Lips</button>
-      </div>
-    </div>
-  </section>
+        const speedWheel = 0.02;
+        const speedDrag = -0.1;
+        
+        // Phải lấy $items SAU KHI đã tạo
+        const $items = document.querySelectorAll('.carousel-item');
+        const $cursors = document.querySelectorAll('.cursor');
+        
+        // Cập nhật biến --items cho CSS
+        $items.forEach(item => {
+          item.style.setProperty('--items', $items.length);
+        }); 
 
-  <!-- Products -->
-  <main class="products-grid" id="products" aria-live="polite">
-    <!-- 4 sản phẩm đầu HIỆN -->
-    <article class="product-card" data-category="Eyes" data-brand="Chartlotter Tilbury" data-price="25.50" data-rating="4.9">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/Chartlotte Tilbury.webp" class="product-img" alt="">
-        <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Luxury Palette Pillow Talk</h3><p>Brand: Chartlotter Tilbury</p><p class="meta">Category: Eyes</p>
-        <div class="actions"><span class="price">$125.50</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.9</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        const getZindex = (array, index) => (array.map((_, i) => (index === i) ? array.length : array.length - Math.abs(index - i)))
 
-    <article class="product-card" data-category="Lips" data-brand="Dior" data-price="25.50" data-rating="4.9">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/dior.jpg" class="product-img" alt="">
-        <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Addict Lip Glow Button</h3><p>Brand: Dior</p><p class="meta">Category: Lips</p>
-        <div class="actions"><span class="price">$50.21</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.5</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        const displayItems = (item, index, active) => {
+          const zIndex = getZindex([...$items], active)[index]
+          item.style.setProperty('--zIndex', zIndex)
+          item.style.setProperty('--active', (index - active) / $items.length)
+        }
 
-    <article class="product-card" data-category="Face" data-brand="Dior" data-price="25.50" data-rating="4.5">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/Gucci.jpg" class="product-img" alt="">
-        <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Gucci Blush De Beauté</h3><p>Brand: Gucci</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$325.50</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.3</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        const animate = () => {
+          progress = Math.max(0, Math.min(progress, 100))
+          // Đảm bảo active không vượt quá giới hạn mảng
+          active = Math.floor(progress / 100 * ($items.length - 1))
+          $items.forEach((item, index) => displayItems(item, index, active))
+        }
+        animate()
 
-    <article class="product-card" data-category="Face" data-brand="Fenty" data-price="100" data-rating="4.5">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/Màu hồng.jpg" class="product-img" alt="">
-        <img src="images/products/p1-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Bloom Couture Eyes</h3><p>Brand: Fenty</p><p class="meta">Category: Eyes</p>
-        <div class="actions"><span class="price">$100.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.0</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        $items.forEach((item, i) => {
+          item.addEventListener('click', () => {
+            // ĐÃ SỬA: Tính toán progress chính xác hơn khi click
+            const totalItems = $items.length > 1 ? $items.length - 1 : 1;
+            progress = (i / totalItems) * 100;
+            animate()
+          })
+        })
 
-    <!-- Các sản phẩm ẨN ban đầu -->
-    <article class="product-card is-hidden" data-category="Eyes" data-brand="Chanel" data-price="302.00" data-rating="4.6">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/NARS.jpg" class="product-img" alt="">
-        <img src="images/products/p5-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Pillow Talk Multi-Glow</h3><p>Brand: Chartlotter Tilbury</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$302.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.6</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        const handleWheel = e => {
+          const wheelProgress = e.deltaY * speedWheel
+          progress = progress + wheelProgress
+          animate()
+        }
 
-    <article class="product-card is-hidden" data-category="Eyes" data-brand="YSL" data-price="29.00" data-rating="4.4">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/son.jpg" class="product-img" alt="">
-        <img src="images/products/p6-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Rouge De Beauté Brillant</h3><p>Brand: Gucci</p><p class="meta">Category: Lips</p>
-        <div class="actions"><span class="price">$448.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.4</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        const handleMouseMove = (e) => {
+          if (e.type === 'mousemove') {
+            $cursors.forEach(($cursor) => {
+              $cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`
+            }) 
+          }
+          if (!isDown) return
+          const x = e.clientX || (e.touches && e.touches[0].clientX) || 0
+          const mouseProgress = (x - startX) * speedDrag
+          progress = progress + mouseProgress
+          startX = x
+          animate()
+        }
 
-    <article class="product-card is-hidden" data-category="Lips" data-brand="NARS" data-price="27.00" data-rating="4.7">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/Dior phấn.jpg" class="product-img" alt="">
-        <img src="images/products/p7-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Heart Soulmate Face Palette</h3><p>Brand: Chartlotter Tilbury</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$337.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.7</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        const handleMouseDown = e => {
+          isDown = true
+          startX = e.clientX || (e.touches && e.touches[0].clientX) || 0
+        }
 
-    <article class="product-card is-hidden" data-category="Face" data-brand="Fenty Beauty" data-price="31.00" data-rating="4.6">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/Nars má.jpg" class="product-img" alt="">
-        <img src="images/products/p8-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Afterglow Liquid Blush</h3><p>Brand: NARS</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$61.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.6</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        const handleMouseUp = () => {
+          isDown = false
+        }
 
-    <article class="product-card is-hidden" data-category="Face" data-brand="Fenty Beauty" data-price="31.00" data-rating="4.6">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/Dior cushion.png" class="product-img" alt="">
-        <img src="images/products/p8-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Forever Glow Luminizer</h3><p>Brand: Dior</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$91.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.8</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
+        document.addEventListener('mousewheel', handleWheel)
+        document.addEventListener('mousedown', handleMouseDown)
+        document.addEventListener('mousemove', handleMouseMove)
+        document.addEventListener('mouseup', handleMouseUp)
+        document.addEventListener('touchstart', handleMouseDown)
+        document.addEventListener('touchmove', handleMouseMove)
+        document.addEventListener('touchend', handleMouseUp)
+      }
+      
+      // --- 5. CHẠY ---
+      await loadCategoryCarousel();
+      
+    });
+  </script>
 
-    <article class="product-card is-hidden" data-category="Face" data-brand="Fenty Beauty" data-price="31.00" data-rating="4.6">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/givenchy.jpg" class="product-img" alt="">
-        <img src="images/products/p8-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Blossom Beautifying Serum</h3><p>Brand: Givenchy</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$1123.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.6</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
-
-    <article class="product-card is-hidden" data-category="Face" data-brand="Fenty Beauty" data-price="31.00" data-rating="5.0">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/givenchy 1.jpg" class="product-img" alt="">
-        <img src="images/products/p8-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>L'Intemporell Fix Spray </h3><p>Brand: Givenchy</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$89.00</span><span class="rating"><img src="images/Star.png" class="star" alt="">5.0</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
-
-    <article class="product-card is-hidden" data-category="Face" data-brand="Fenty Beauty" data-price="31.00" data-rating="4.6">
-      <div class="image-wrap" style="position:relative; height:300px;">
-        <img src="images/dior 1.jpg" class="product-img" alt="">
-        <img src="images/products/p8-hover.jpg" class="product-img hover-image" alt="">
-      </div>
-      <div class="info">
-        <h3>Backstage Rosy Glow Blush</h3><p>>Brand: Dior</p><p class="meta">Category: Face</p>
-        <div class="actions"><span class="price">$261.50</span><span class="rating"><img src="images/Star.png" class="star" alt="">4.4</span></div>
-        <div class="buttons"><a href="#" class="btn-outline">View Detail</a><button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button></div>
-      </div>
-    </article>
-  </main>
-
-  <div class="load-more">
-    <button id="load-more-button" class="btn-primary" type="button">Click Here To See All ✿</button>
-  </div>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-newsletter">
-      <p>Sign up for updates:</p>
-      <p>Be the first to know about new collections and exclusive offers!</p>
-      <form class="newsletter-form">
-        <input type="email" placeholder="Enter email here">
-        <button type="submit"><i class="fas fa-arrow-right"></i></button>
-      </form>
-    </div>
-
-    <div class="footer-main">
-      <div class="footer-section">
-        <h3>ABOUT KAMA</h3>
-        <ul>
-          <li><a href="#">Loyalty Program</a></li>
-          <li><a href="#">Brand Story</a></li>
-          <li><a href="#">Affiliate Program</a></li>
-          <li><a href="#">Student Discount</a></li>
-          <li><a href="#">Community</a></li>
-          <li><a href="#">Become a Retailer</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h3>CUSTOMER CARE</h3>
-        <ul>
-          <li><a href="#">Shipping Policy</a></li>
-          <li><a href="#">Refund & Return Policy</a></li>
-          <li><a href="#">Promotion Terms & Conditions</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms and Conditions</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h3>CUSTOMER SERVICE</h3>
-        <ul>
-          <li><a href="#">Track Your Order</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Submit a Fake</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section footer-social">
-        <h3>FOLLOW US</h3>
-        <div class="social-icons">
-          <button type="button" aria-label="Facebook"><i class="fab fa-facebook-f"></i></button>
-          <button type="button" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
-          <button type="button" aria-label="TikTok"><i class="fab fa-tiktok"></i></button>
-          <button type="button" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>&copy; 2025 Kama. All rights reserved.</p>
-      <p>United States (USD $) <i class="fas fa-chevron-down"></i></p>
-    </div>
-  </footer>
-
-  <!-- Script: toggle filter menu (gọn) -->
-  <script>
-    // Toggle filter menu
-    const toggleBtn = document.getElementById('filter-toggle');
-    const menu = document.getElementById('filter-menu');
-    const dropdown = document.getElementById('filterDropdown');
-
-    toggleBtn?.addEventListener('click', () => {
-      const isOpen = menu.classList.toggle('show');
-      toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
-
-    // Click outside to close
-    document.addEventListener('click', (e) => {
-      if (dropdown && !dropdown.contains(e.target)) {
-        menu.classList.remove('show');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // (Tuỳ chọn) chọn category và đóng menu
-    menu.addEventListener('click', (e) => {
-      const btn = e.target.closest('.category-btn');
-      if (!btn) return;
-      menu.querySelectorAll('.category-btn').forEach(b => b.classList.remove('is-selected'));
-      btn.classList.add('is-selected');
-      menu.classList.remove('show');
-      toggleBtn.setAttribute('aria-expanded', 'false');
-      // TODO: Gọi hàm lọc sản phẩm theo btn.dataset.category nếu cần
-    });
-  </script>
-
-  <!-- Scripts khác -->
-  <script src="script.js" defer></script>
 </body>
 </html>

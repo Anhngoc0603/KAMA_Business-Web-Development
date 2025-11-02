@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Sakura Best Seller – Dior Galaxy Pink</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    /* ============================================= */
+    /* ===== CSS GỐC (NỀN GALAXY TỐI) ===== */
+    /* ============================================= */
+    :root{
+      --pink-1:#FADADD;
+      --pink-2:#F9C6CF;
+      --pink-3:#E6A6B0; /* Màu hồng đậm hơn */
+      --brown:#6B4C3B;
+    }
+
+    @keyframes sparkle {
+      0% {
+        background-position: 0% 0%, 30% 70%, 70% 20%;
+      }
+      50% {
+        background-position: -100% -100%, 35% 65%, 75% 25%;
+      }
+      100% {
+        background-position: -200% -200%, 40% 60%, 80% 30%;
+      }
+    }
+
+    html,body{height:100%;margin:0}
+    body{
+      font-family:'Playfair Display',serif;
+      color:#fff; overflow-x:hidden;
+      background-color: #3b1f3b; /* NỀN GALAXY TỐI */
+      background-image:
+        radial-gradient(white 0.5px, transparent 0.5px),
+        radial-gradient(ellipse at 30% 70%, rgba(250, 218, 221, 0.45) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 20%, rgba(249, 198, 207, 0.55) 0%, transparent 50%);
+      background-size: 50px 50px, 800px 800px, 900px 900px;
+      background-repeat: repeat, no-repeat, no-repeat;
+      animation: sparkle 60s linear infinite;
+      backdrop-filter:saturate(1.05);
+    }
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    #header-placeholder,#footer-placeholder{width:100%}
+    
+    main{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:24px;
+      padding: 120px 0 64px; 
+    }
+
+    .watermark{
+      position:relative;width:100%;max-width:1280px;height:0;
+      transition: opacity 0.6s ease;
+    }
+    .watermark span{
+      position:absolute;
+      right: 22px; 
+      top: 20px; /* Sửa: Hạ xuống */
+      transform: rotate(20deg);
+      font-weight:700;letter-spacing:4px;
+      font-size:clamp(22px,4.2vw,38px);
+      color: transparent; 
+      background: linear-gradient(135deg, var(--pink-1), #ffffff, var(--pink-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      opacity: .9;
+      text-shadow: none; 
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,.35)); 
+      user-select:none; pointer-events:none;
+    }
+
+    .carousel-wrap{
+      position:relative;width:100%;display:flex;justify-content:center;
+      transition: opacity 0.6s ease;
+    }
+    .carousel{
+      position:relative;min-height:540px;height:80vh;max-width:1280px;
+      display:flex;align-items:center;justify-content:center;
+      perspective:1400px;overflow:visible;padding:0 72px;
+    }
+
+    .carousel-item{
+      --items: 10;
+      --width:clamp(240px,28vw,320px);--height:clamp(340px,42vw,480px);
+      --x:calc(var(--active)*520%);--y:calc(var(--active)*140%);--rot:calc(var(--active)*78deg);
+      --opacity:calc(var(--zIndex)/var(--items)*3 - 2);
+
+      position:absolute;top:50%;left:50%;
+      width:var(--width);height:var(--height);
+      margin:calc(var(--height)*-0.5) 0 0 calc(var(--width)*-0.5);
+      border-radius:22px; overflow:hidden; cursor:pointer;
+
+      background:#fff;
+      box-shadow:0 18px 50px rgba(230,166,176,.28);
+      transform-origin:0% 100%;
+      transform:translate(var(--x),var(--y)) rotate(var(--rot));
+      transition:transform 1.2s ease-in-out;
+      z-index:var(--zIndex);
+    }
+    .carousel-box{position:absolute;inset:0;opacity:var(--opacity);border-radius:22px;overflow:hidden}
+    .carousel-box img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease}
+    .carousel-item:hover .carousel-box img{transform:scale(1.06);filter:brightness(.92) saturate(1.12)}
+
+    .num{
+      position:absolute;left:18px;top:12px;z-index:2;
+      font-weight:700;font-size:2rem;
+      color: var(--pink-3);
+      text-shadow:0 3px 9px rgba(0,0,0,.45);
+      user-select:none;pointer-events:none;
+    }
+
+    /* ĐÃ SỬA CĂN GIỮA TEXT */
+    .glass-bottom{
+      position:absolute;left:0;bottom:0;width:100%;height:40%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align: center; /* Sửa: Thêm để căn giữa H3 */
+      padding:14px 16px;
+      background:linear-gradient(to top, rgba(230,166,176,.42), rgba(249,198,207,.26));
+      backdrop-filter:blur(12px) saturate(1.05);
+      border-top:1px solid rgba(255,255,255,.35);
+      color:#fff;
+      border-bottom-left-radius:22px;border-bottom-right-radius:22px;
+      opacity:0; transform:translateY(16px);
+      transition:opacity .38s ease, transform .38s ease;
+      pointer-events:none;
+    }
+    .carousel-item:hover .glass-bottom{opacity:1;transform:translateY(0);pointer-events:auto}
+    .glass-bottom h3{margin:0 0 4px;font:700 1.08rem 'Playfair Display',serif;text-shadow:0 2px 8px rgba(0,0,0,.28);}
+    .glass-bottom .brand{margin:0 0 2px;opacity:.95;font-weight:600}
+    .glass-bottom .price{
+      margin:0;
+      font-weight:700;
+      letter-spacing:.2px;
+      color: var(--pink-3);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .overlay-btns{display:flex;gap:10px;margin-top:10px}
+    .btn-view{
+      height:40px;padding:0 18px;border:none;border-radius:22px;cursor:pointer;
+      background:linear-gradient(135deg,var(--pink-3),var(--pink-2));color:#fff;font-weight:700;
+      box-shadow:0 6px 16px rgba(230,166,176,.35);transition:.25s;
+      font-family: 'Playfair Display', serif;
+    }
+    .btn-view:hover{transform:translateY(-1px);filter:brightness(1.05)}
+    .btn-cart{
+      width:44px;height:44px;border:none;border-radius:50%;cursor:pointer;
+      background-image: url('../1.homepage/images/shopping.png'), linear-gradient(135deg,var(--pink-3),var(--pink-1));
+      background-repeat:no-repeat,no-repeat;background-position:center,center;background-size:22px,100% 100%;
+      box-shadow:0 6px 16px rgba(230,166,176,.35);transition:.25s;
+    }
+    .btn-cart:hover{transform:scale(1.08);filter:brightness(1.06)}
+
+    .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:58px;height:58px;border:none;border-radius:50%;cursor:pointer;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);box-shadow:0 10px 26px rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center;transition:.25s;z-index:30}
+    .nav-btn:hover{background:rgba(255,255,255,.26)}
+    .nav-prev{left:20px}
+    .nav-next{right:20px}
+    .nav-btn img{width:28px;height:28px;filter:drop-shadow(0 3px 8px rgba(0,0,0,.35))}
+
+    .load-more{margin-top:8px;padding:11px 26px;border-radius:26px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,var(--pink-3),var(--pink-2));color:#fff;font-weight:700;
+      box-shadow:0 6px 16px rgba(230,166,176,.4);transition:.25s;
+      font-family: 'Playfair Display', serif;
+      transition: all 0.6s ease;
+    }
+    .load-more:hover{transform:translateY(-1px);filter:brightness(1.05)}
+
+    .grid-wrap{display:none;width:100%;max-width:1280px;padding:0 16px;animation:fadeIn .8s ease forwards}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0 14px;
+    }
+    .grid-title{
+      color:var(--pink-1);
+      margin: 0; 
+      font:700 1.6rem 'Playfair Display',serif; 
+    }
+    
+    .btn-back {
+      padding: 8px 18px;
+      border-radius: 26px;
+      border: 1.5px solid var(--pink-2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      color: var(--pink-1);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .25s;
+    }
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: var(--pink-1);
+      transform: translateY(-1px);
+    }
+
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; width: 100%; }
+    .product-card { 
+      background: #fff; border: 1px solid rgba(230,166,176,0.3); border-radius: 16px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden; transition: all 0.3s ease; 
+      display: flex; flex-direction: column; position: relative;
+    }
+    .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(230,166,176,0.15); border-color: var(--pink-3); }
+
+    .product-image-container { position: relative; overflow: hidden; }
+    .product-img { width: 100%; height: 260px; object-fit: cover; transition: opacity 0.4s ease; }
+    .hover-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; z-index: 1; }
+    .product-card:hover .product-img { opacity: 0; }
+    .product-card:hover .hover-image { opacity: 1; }
+
+    .badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: white;
+    }
+    .badge-new { background: var(--pink-3); }
+    .badge-sale { background: #FF6B6B; }
+
+    .info { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; color: var(--brown); }
+    .info h3 { font-size: 1.1rem; margin: 0 0 6px; color: var(--brown); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .info p { font-size: 0.9rem; color: #866e6e; margin: 4px 0; flex-grow: 1; }
+    .meta { font-size: 0.8rem; color: #9b7c7c; margin: 4px 0; }
+    .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f5f5f5; }
+    .price { color: var(--pink-3); font-weight: bold; font-size: 1.2rem; }
+    .original-price { text-decoration: line-through; color: #aaa; font-size: 0.9rem; margin-left: 6px; }
+    .rating { display: flex; align-items: center; font-size: 0.9rem; color: #9b7c7c; }
+    .star { width: 16px; height: 16px; color: gold; margin-right: 3px; }
+
+    .buttons { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+    .quantity-input { width: 50px; padding: 6px; border: 1px solid #eee; border-radius: 6px; font-size: 14px; text-align: center; font-family: 'Playfair Display', serif; }
+    .quantity-input:focus { border-color: var(--pink-3); outline: none; }
+
+    .btn-outline {
+      width: 40px; height: 40px;
+      background: url('../1.homepage/images/shopping.png') no-repeat center center;
+      background-size: 22px;
+      border: 1.5px solid var(--pink-3);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+    }
+    .btn-outline:hover {
+      background-color: #fdf5f5;
+      border-color: var(--pink-2);
+      transform: scale(1.1);
+    }
+
+    .sakura-btn {
+      all: unset;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5em 1.4em;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      isolation: isolate;
+      transition: transform .25s ease;
+      z-index: 0;
+      flex: 1;
+      height: 44px;
+      box-sizing: border-box;
+    }
+    .sakura-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, var(--pink-3), var(--pink-2));
+      transform: scale(0.93);
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+      z-index: 0;
+      box-shadow: 0 4px 12px rgba(230,166,176,0.3);
+    }
+    .sakura-btn:hover::before {
+      transform: scale(1.04);
+      background: linear-gradient(135deg, var(--pink-2), var(--pink-3));
+      box-shadow: 0 6px 16px rgba(230,166,176,0.4);
+    }
+    .sakura-btn:active::before { transform: scale(0.96); }
+    .sakura-btn::after {
+      content: "";
+      position: absolute;
+      top: -0.9em;
+      right: -0.55em;
+      width: 1.7em;
+      height: 1.7em;
+      background: radial-gradient(circle at 40% 35%, #FFD6E8 15%, #F9A7C3 45%, #E36C9D 75%, transparent 100%);
+      clip-path: path("M24 4C24 4 18 0 12 6C6 0 0 4 0 10C0 18 12 24 12 24C12 24 24 18 24 10C24 4 18 0 12 6Z");
+      filter: drop-shadow(0 2px 5px rgba(230,166,176,0.5));
+      transform: scale(0);
+      opacity: 0;
+      transition: transform .35s ease, opacity .35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .sakura-btn:hover::after {
+      transform: scale(1.2);
+      opacity: 1;
+      animation: heartFloatSoft 1.6s ease-in-out infinite;
+    }
+    @keyframes heartFloatSoft {
+      0%,100% { transform: scale(1.2) translateY(0); }
+      50% { transform: scale(1.25) translateY(-6px); }
+    }
+    .sakura-btn span {
+      position: relative;
+      z-index: 3;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(230,166,176,0.45);
+    }
+    
+    
+    /* ============================================= */
+    /* ===== CSS CHO TEAM/BRAND CAROUSEL (3D) ===== */
+    /* ============================================= */
+    
+    .team-section-container {
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 60px;
+      padding: 40px 20px;
+    }
+
+    .team-main-container {
+      display: flex;
+      width: 100%;
+      gap: 60px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .team-carousel-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .team-controls-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      padding-left: 40px;
+    }
+
+    .team-carousel-viewport {
+      width: 100%;
+      max-width: 500px;
+      height: 400px;
+      position: relative;
+      perspective: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team-carousel-viewport .team-nav-arrow {
+      display: none; 
+    }
+
+    .team-carousel-track {
+      width: 450px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .team-card { 
+      position: absolute;
+      width: 400px;
+      height: 225px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+    }
+
+    .team-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .team-card.center {
+      z-index: 10;
+      transform: scale(1.1) translateZ(0);
+    }
+
+    .team-card.center img {
+      filter: none;
+    }
+
+    .team-card.up-2 {
+      z-index: 1;
+      transform: translateY(-300px) scale(0.8) translateZ(-300px);
+      opacity: 0.7;
+    }
+
+    .team-card.up-2 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.up-1 {
+      z-index: 5;
+      transform: translateY(-150px) scale(0.9) translateZ(-100px);
+      opacity: 0.9;
+    }
+
+    .team-card.up-1 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.down-1 {
+      z-index: 5;
+      transform: translateY(150px) scale(0.9) translateZ(-100px);
+      opacity: 0.9;
+    }
+
+    .team-card.down-1 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.down-2 {
+      z-index: 1;
+      transform: translateY(300px) scale(0.8) translateZ(-300px);
+      opacity: 0.7;
+    }
+
+    .team-card.down-2 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .team-member-info {
+      text-align: center;
+      margin-top: 20px;
+      transition: all 0.5s ease-out;
+    }
+
+    .team-member-name {
+      color: var(--pink-1);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .team-member-name::before,
+    .team-member-name::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      width: 80px;
+      height: 2px;
+      background: var(--pink-3);
+    }
+
+    .team-member-name::before {
+      left: -100px;
+    }
+
+    .team-member-name::after {
+      right: -100px;
+    }
+
+    .team-member-role {
+      color: var(--pink-2);
+      font-size: 1.2rem;
+      font-weight: 500;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 5px 0;
+      margin-top: -10px;
+      position: relative;
+    }
+    .team-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .team-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(250, 218, 221, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .team-dot.active {
+      background: var(--pink-1);
+      transform: scale(1.2);
+    }
+
+    .team-nav-arrow {
+      position: relative;
+      background: transparent;
+      color: white;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: all 0.3s ease;
+      font-size: 1.5rem;
+      border: none;
+      outline: none;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      box-shadow: none;
+    }
+
+    .team-nav-arrow:hover {
+      background: transparent;
+      transform: scale(1.2);
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    .team-nav-arrow img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      transition: all 0.3s ease;
+    }
+
+    .team-nav-arrow:hover img {
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      transform: scale(1.1);
+    }
+
+    .team-nav-arrow.up {
+      transform: none;
+    }
+
+    .team-nav-arrow.down {
+      transform: none;
+    }
+
+    .team-nav-controls {
+      display: flex;
+      flex-direction: row;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    @media (max-width: 768px) {
+      .team-main-container {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+        max-width: 100%;
+      }
+
+      .team-carousel-section {
+        flex: none;
+        width: 100%;
+      }
+
+      .team-controls-section {
+        flex: none;
+        width: 100%;
+        padding-left: 0;
+        gap: 20px;
+      }
+
+      .team-carousel-viewport {
+        height: 60vh;
+        max-width: 350px;
+      }
+
+      .team-carousel-viewport .team-nav-arrow {
+        display: flex;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70px;
+        height: 70px;
+        margin: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      .team-carousel-viewport .team-nav-arrow:hover {
+        transform: translateX(-50%) scale(1.2);
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .team-carousel-viewport .team-nav-arrow.up:hover {
+        transform: translateX(-50%) scale(1.2);
+      }
+
+      .team-carousel-viewport .team-nav-arrow.down:hover {
+        transform: translateX(-50%) scale(1.2);
+      }
+
+      .team-carousel-viewport .team-nav-arrow.up {
+        top: 20px;
+        transform: translateX(-50%);
+      }
+
+      .team-carousel-viewport .team-nav-arrow.down {
+        bottom: 20px;
+        transform: translateX(-50%);
+      }
+
+      .team-carousel-viewport .team-nav-arrow.up img {
+        transform: rotate(0deg); 
+        content: url('../1.homepage/images/prev.png');
+        width: 50px;
+        height: 50px;
+      }
+
+      .team-carousel-viewport .team-nav-arrow.down img {
+        transform: rotate(0deg); 
+        content: url('../1.homepage/images/next.png');
+        width: 50px;
+        height: 50px;
+      }
+
+      .team-nav-controls {
+        display: none;
+      }
+
+      .team-card {
+        width: 320px;
+        height: 180px;
+      }
+
+      .team-carousel-track {
+        width: 350px;
+      }
+
+      .team-card.up-2 {
+        transform: translateY(-160px) scale(0.8) translateZ(-300px);
+      }
+
+      .team-card.up-1 {
+        transform: translateY(-80px) scale(0.9) translateZ(-100px);
+      }
+
+      .team-card.down-1 {
+        transform: translateY(80px) scale(0.9) translateZ(-100px);
+      }
+
+      .team-card.down-2 {
+        transform: translateY(160px) scale(0.8) translateZ(-300px);
+      }
+
+      .team-member-name {
+        font-size: 1.8rem;
+      }
+
+      .team-member-role {
+        font-size: 1rem;
+      }
+
+      .team-member-name::before,
+      .team-member-name::after {
+        width: 40px;
+      }
+
+      .team-member-name::before {
+        left: -60px;
+      }
+
+      .team-member-name::after {
+        right: -60px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="header-placeholder"><div style="text-align:center;padding:16px;color:#ddd">Loading Header…</div></div>
+
+  <main>
+    <div class="watermark" id="watermark"><span>BEST&nbsp;SELLER</span></div>
+
+    <div class="carousel-wrap" id="carouselSection">
+      <button class="nav-btn nav-prev" id="btnPrev"><img src="../1.homepage/images/prev.png"></button>
+      <div class="carousel" id="carousel"><div style="color:#fff">Loading…</div></div>
+      <button class="nav-btn nav-next" id="btnNext"><img src="../1.homepage/images/next.png"></button>
+    </div>
+
+    <button class="load-more" id="btnLoadMore">Load More</button>
+
+    <section class="grid-wrap" id="gridSection">
+      <div class="grid-header">
+        <h3 class="grid-title">All Products</h3>
+        <button class="btn-back" id="btnBackToCarousel">&larr; Back to Best Sellers</button>
+      </div>
+      <div class="products-grid" id="grid"></div>
+    </section>
+    
+    <section class="team-section-container" id="teamSection">
+      <div class="team-main-container">
+          <div class="team-carousel-section">
+              <div class="team-carousel-viewport">
+                  <button class="team-nav-arrow up">
+                      <img src="../1.homepage/images/prev.png" alt="Up">
+                  </button>
+                  
+                  <div class="team-carousel-track" id="teamCarouselTrack">
+                      <div class="team-card" data-index="0" style="background: #eee;"></div>
+                  </div>
+                  
+                  <button class="team-nav-arrow down">
+                      <img src="../1.homepage/images/next.png" alt="Down">
+                  </button>
+              </div>
+          </div>
+
+          <div class="team-controls-section">
+              <div class="team-nav-controls">
+                  <button class="team-nav-arrow up">
+                      <img src="../1.homepage/images/prev.png" alt="Up">
+                  </button>
+                  <button class="team-nav-arrow down">
+                      <img src="../1.homepage/images/next.png" alt="Down">
+                  </button>
+              </div>
+
+              <div class="team-member-info">
+                  <h2 class="team-member-name">Loading...</h2>
+                  <p class="team-member-role">Brands</p>
+              </div>
+
+              <div class="team-dots" id="teamDotsContainer">
+                  <div class="team-dot active" data-index="0"></div>
+              </div>
+          </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"><div style="text-align:center;padding:20px;color:#ddd">Loading Footer…</div></div>
+
+  <script>
+  // =============================================
+  // ===== SCRIPT TRANG BEST-SELLER (CŨ) =====
+  // =============================================
+  async function loadHTML(url,id){
+    const el=document.getElementById(id);
+    try{const res=await fetch(url);el.innerHTML=await res.text();}
+    catch(e){el.innerHTML='<p style="color:red;text-align:center;">Error</p>';}
+  }
+
+  let PRODUCTS=[],active=0,progress=50,$items=[];
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const speedWheel=0.02,speedDrag=-0.1;
+  let isDown=false,startX=0;
+
+  const carouselEl=document.getElementById('carousel');
+  const gridEl=document.getElementById('grid');
+  const gridWrap=document.getElementById('gridSection');
+  const carouselWrap=document.getElementById('carouselSection');
+  const watermarkEl = document.getElementById('watermark');
+
+  function cardHTML(p,i){
+    const img=p.images?.[0]||'https://via.placeholder.com/300x450/FADADD/FFF?text=No+Image';
+    return `<div class="carousel-item">      <div class="carousel-box">
+        <img src="${img}">
+        <div class="num">${String(i+1).padStart(2,'0')}</div>
+        <div class="glass-bottom">
+          <h3>${p.name}</h3><p class="brand">${p.brand||''}</p><p class="price">$${p.price}</p>
+          <div class="overlay-btns">
+            <button class="btn-cart"></button><button class="btn-view">View Detail</button>
+          </div>
+        </div>
+      </div>
+    </div>`;  }
+
+  function renderCarousel(){
+    carouselEl.innerHTML=PRODUCTS.slice(0,10).map(cardHTML).join('');
+    $items=carouselEl.querySelectorAll('.carousel-item');
+    $items.forEach(it=>it.style.setProperty('--items',$items.length));
+    initCarouselInteractions();updateCarousel();
+  }
+
+  function getZIndex(arr,i){return arr.map((_,j)=>i===j?arr.length:arr.length-Math.abs(i-j));}
+  
+  function updateCarousel(){
+    if($items.length===0)return;
+    progress=Math.max(0,Math.min(progress,100));
+    active=Math.round(progress/100*(Math.max($items.length-1,1)));
+    
+    const zmap=getZIndex([...$items],active);
+    $items.forEach((it,i)=>{
+      it.style.setProperty('--zIndex',zmap[i]);
+      it.style.setProperty('--active',(i-active)/Math.max($items.length,1)); 
+    });
+  }
+
+  function initCarouselInteractions(){
+    document.addEventListener('mousedown',e=>{isDown=true;startX=e.clientX;});
+    document.addEventListener('mouseup',()=>{isDown=false;});
+    document.addEventListener('mousemove',e=>{
+      if(!isDown)return;
+      const move=(e.clientX-startX)*speedDrag;progress+=move;startX=e.clientX;updateCarousel();
+    });
+    document.addEventListener('wheel',e=>{progress+=e.deltaY*speedWheel;updateCarousel();},{passive:true});
+    
+    $items.forEach((card,i)=>{
+      card.addEventListener('click',()=>{
+        active = i;
+        progress=($items.length>1?active/($items.length-1):0)*100;updateCarousel();
+      });
+    });
+    document.getElementById('btnPrev').onclick=()=>{active=(active-1+$items.length)%$items.length;progress=(active/($items.length-1))*100;updateCarousel();}
+    document.getElementById('btnNext').onclick=()=>{active=(active+1)%$items.length;progress=(active/($items.length-1))*100;updateCarousel();}
+  }
+
+  function renderGrid(){
+    gridEl.innerHTML=PRODUCTS.map(p=>{
+      const img1 = p.images?.[0] || 'https://via.placeholder.com/260x260/FADADD/FFFFFF?text=No+Image';
+      const img2 = p.images?.[1] || img1;
+      const hasSale = p.originalPrice && p.originalPrice > p.price;
+      const isNew = p.isNew === true;
+      const rating = p.rating || 0;
+
+      return `
+        <div class="product-card">
+          <div class="product-image-container">
+            ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
+            ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
+            <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/260x260/FADADD/FFFFFF?text=Error'">
+            <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
+          </div>
+          <div class="info">
+            <h3 title="${p.name}">${p.name}</h3>
+            <div class="meta">SKU: ${p.id} • ${p.brand}</div>
+            <div class="actions">
+              <div>
+                <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
+                ${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}
+              </div>
+              ${rating > 0 ? `<div class="rating"><i class="fas fa-star star"></i> ${rating.toFixed(1)}</div>` : ''}
+            </div>
+            <div class="buttons">
+              <input type="number" value="1" min="1" class="quantity-input">
+              <button class="btn-outline" onclick="addToCart(${p.id}, this)"></button>
+              <button class="sakura-btn" onclick="viewDetail(${p.id})"><span>View Details</span></button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function updateCartCount() {
+    const count = cart.reduce((sum, item) => sum + item.qty, 0);
+    const cartIcon = document.querySelector('.cart-count'); 
+    if (cartIcon) cartIcon.textContent = count;
+  }
+
+  function addToCart(id, btn) {
+    const qtyInput = btn.previousElementSibling;
+    const qty = parseInt(qtyInput.value) || 1;
+    const product = PRODUCTS.find(p => p.id === id);
+    if (!product) return;
+    
+    const existing = cart.find(item => item.id === id);
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      cart.push({ ...product, qty });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert(`${product.name} (x${qty}) đã được thêm vào giỏ hàng!`);
+  }
+
+  function viewDetail(id) {
+    window.location.href = `categories_detail.html?id=${id}`;
+  }
+
+  
+  (async function init(){
+    await Promise.all([
+      loadHTML('./header.html','header-placeholder'),
+      loadHTML('./footer.html','footer-placeholder')
+    ]);
+    
+    updateCartCount();
+
+    const res=await fetch('./full.json');
+    const data=await res.json();
+    PRODUCTS=data.products||[]; 
+    renderCarousel();
+    
+    const btnLoadMore = document.getElementById('btnLoadMore');
+    btnLoadMore.addEventListener('click', function() {
+      carouselWrap.style.opacity = '0';
+      watermarkEl.style.opacity = '0';
+      this.style.opacity = '0'; 
+      
+      setTimeout(() => {
+        carouselWrap.style.display = 'none';
+        watermarkEl.style.display = 'none';
+        this.style.display = 'none'; 
+        if(gridEl.innerHTML === "") {
+          renderGrid();
+        }
+        gridWrap.style.display = 'block'; 
+      }, 600);
+    });
+
+    document.getElementById('btnBackToCarousel').addEventListener('click', function() {
+      gridWrap.style.display = 'none'; 
+      carouselWrap.style.display = 'flex'; 
+      watermarkEl.style.display = 'block';
+      btnLoadMore.style.display = 'inline-block';
+      
+      setTimeout(() => {
+        carouselWrap.style.opacity = '1';
+        watermarkEl.style.opacity = '1';
+        btnLoadMore.style.opacity = '1';
+      }, 50); 
+    });
+
+    async function initTeamCarousel() {
+        let fetchedBrands = [];
+        let teamCards = [];
+        let teamDots = [];
+        const teamMemberName = document.querySelector(".team-member-name");
+        const teamMemberRole = document.querySelector(".team-member-role");
+        const teamUpArrows = document.querySelectorAll(".team-nav-arrow.up");
+        const teamDownArrows = document.querySelectorAll(".team-nav-arrow.down");
+        const teamTrack = document.getElementById('teamCarouselTrack');
+        const teamDotsContainer = document.getElementById('teamDotsContainer');
+
+        let teamCurrentIndex = 0;
+        let teamIsAnimating = false;
+
+        try {
+            const response = await fetch('./brand.json');
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+            fetchedBrands = data.brands;
+        } catch (e) {
+            console.error("Failed to load brand.json", e);
+            teamTrack.innerHTML = '<div style="color: red; text-align: center; width: 100%;">Error loading brands</div>';
+            return;
+        }
+        
+        if (!fetchedBrands || fetchedBrands.length === 0) {
+           teamTrack.innerHTML = '<div style="color: white;">No brands found.</div>';
+           return;
+        }
+
+        teamTrack.innerHTML = fetchedBrands.map((brand, index) => 
+            `<div class="team-card" data-index="${index}">
+                <img src="${brand.image}" alt="${brand.name}">
+            </div>`
+        ).join('');
+        
+        teamDotsContainer.innerHTML = fetchedBrands.map((_, index) => 
+            `<div class="team-dot" data-index="${index}"></div>`
+        ).join('');
+
+        teamCards = document.querySelectorAll(".team-card");
+        teamDots = document.querySelectorAll(".team-dot");
+        
+        function updateTeamCarousel(newIndex) {
+            if (teamIsAnimating) return;
+            teamIsAnimating = true;
+
+            teamCurrentIndex = (newIndex + teamCards.length) % teamCards.length;
+            const currentBrand = fetchedBrands[teamCurrentIndex];
+
+            teamCards.forEach((card, i) => {
+                const offset = (i - teamCurrentIndex + teamCards.length) % teamCards.length;
+                card.classList.remove("center", "up-1", "up-2", "down-1", "down-2", "hidden");
+
+                if (offset === 0) {
+                    card.classList.add("center");
+                } else if (offset === 1) {
+                    card.classList.add("down-1");
+                } else if (offset === 2) {
+                    card.classList.add("down-2");
+                } else if (offset === teamCards.length - 1) {
+                    card.classList.add("up-1");
+                } else if (offset === teamCards.length - 2) {
+                    card.classList.add("up-2");
+                } else {
+                    card.classList.add("hidden");
+                }
+            });
+
+            teamDots.forEach((dot, i) => {
+                dot.classList.toggle("active", i === teamCurrentIndex);
+            });
+
+            if(teamMemberName && teamMemberRole) {
+                teamMemberName.style.opacity = "0";
+                teamMemberRole.style.opacity = "0";
+                setTimeout(() => {
+                    teamMemberName.textContent = currentBrand.name;
+                    teamMemberRole.textContent = currentBrand.slogan;
+                    teamMemberName.style.opacity = "1";
+                    teamMemberRole.style.opacity = "1";
+                }, 300);
+            }
+
+            setTimeout(() => {
+                teamIsAnimating = false;
+            }, 800);
+        }
+
+        teamUpArrows.forEach(arrow => {
+            arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex - 1));
+        });
+
+        teamDownArrows.forEach(arrow => {
+            arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex + 1));
+        });
+
+        teamDots.forEach((dot, i) => {
+            dot.addEventListener("click", () => updateTeamCarousel(i));
+        });
+
+        teamCards.forEach((card, i) => {
+            card.addEventListener("click", () => updateTeamCarousel(i));
+        });
+
+        let teamTouchStartX = 0;
+        let teamTouchEndX = 0;
+        const teamSectionEl = document.getElementById('teamSection');
+
+        if (teamSectionEl) {
+            teamSectionEl.addEventListener("touchstart", (e) => {
+                teamTouchStartX = e.changedTouches[0].screenY;
+            }, { passive: true });
+            teamSectionEl.addEventListener("touchend", (e) => {
+                teamTouchEndX = e.changedTouches[0].screenY;
+                handleTeamSwipe();
+            });
+        }
+
+        function handleTeamSwipe() {
+            const swipeThreshold = 50;
+            const diff = teamTouchStartX - teamTouchEndX;
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    updateTeamCarousel(teamCurrentIndex + 1);
+                } else {
+                    updateTeamCarousel(teamCurrentIndex - 1);
+                }
+            }
+        }
+
+        updateTeamCarousel(0);
+    }
+
+    initTeamCarousel(); 
+    
+  })();
+  </script>
+</body>
+</html>
