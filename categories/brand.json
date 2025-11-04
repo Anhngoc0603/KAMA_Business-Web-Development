@@ -1,0 +1,31 @@
+{
+  "brands": [
+    { "name": "Dior", "products": [1, 12, 32] },
+    { "name": "Chanel", "products": [2] },
+    { "name": "Gucci", "products": [3] },
+    { "name": "Lancôme", "products": [4, 21, 23, 25] },
+    { "name": "Fenty Beauty", "products": [5] },
+    { "name": "Tom Ford", "products": [6] },
+    { "name": "YSL", "products": [7] },
+    { "name": "Pat McGrath Labs", "products": [8] },
+    { "name": "Hourglass", "products": [9] },
+    { "name": "Armani Beauty", "products": [10] },
+    { "name": "NARS", "products": [11] },
+    { "name": "Guerlain", "products": [13] },
+    { "name": "Givenchy", "products": [14] },
+    { "name": "Clé de Peau Beauté", "products": [15] },
+    { "name": "By Terry", "products": [16] },
+    { "name": "Westman Atelier", "products": [17] },
+    { "name": "Hermès", "products": [18] },
+    { "name": "Natasha Denona", "products": [19] },
+    { "name": "Bobbi Brown", "products": [20] },
+    { "name": "Victoria Beckham Beauty", "products": [24] },
+    { "name": "Estée Lauder", "products": [26] },
+    { "name": "Shiseido", "products": [27] },
+    { "name": "Huda Beauty", "products": [28] },
+    { "name": "Rare Beauty", "products": [29] },
+    { "name": "Benefit Cosmetics", "products": [30] },
+    { "name": "Charlotte Tilbury", "products": [31] },
+    { "name": "Chantecaille", "products": [22] }
+  ]
+}

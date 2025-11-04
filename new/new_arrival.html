@@ -7,73 +7,103 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
+    /* === RESET === */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       height: 100%;
-      overflow-y: auto;
+      overflow-x: hidden;
       scroll-behavior: smooth;
       background: #FFF9F9;
       color: #6B4C3B;
       font-family: 'Playfair Display', serif;
     }
 
-    /* 🌸 SVG WAVE SECTION */
-   .svg-container {
-  position: relative;
-  width: 100%;
-  height: 520px;
-  overflow: hidden;
-  margin-top: 150px;
-  z-index: 1;
-  will-change: transform, filter;
-}
+    /* === VIDEO NỀN === */
+    .video-hero {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .hero-video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+        display: block;
 
-.svg-container svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  animation: gentleWave 6s ease-in-out infinite alternate;
-}
+      filter: brightness(1.05);
+    }
+    .overlay-dim {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.2);
+    }
 
-@keyframes gentleWave {
-  0%, 100% { transform: translateY(0px) scaleY(1); }
-  50% { transform: translateY(8px) scaleY(1.03); }
-}
+    /* === SVG WAVE - FULL BLEED + KHÔNG LỖI CHUỘT === */
+    .svg-container {
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      height: 520px;
+      overflow: visible;
+      z-index: 2;
+      /* FIX LỖI CHUỘT */
+      pointer-events: none;
+    }
 
-path {
-  fill: url(#grad);
-  transition: d 0.15s ease-out;
-  filter: drop-shadow(0 10px 20px rgba(230,166,176,0.4));
-}
+    .svg-wrapper {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: visible;
+      /* CHO PHÉP CHUỘT ĐI QUA */
+      pointer-events: none;
+    }
 
-.wave-content {
-  position: absolute;
-  top: 52%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 3;
-}
+    #wave-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
+    #curve {
+      fill: url(#grad);
+    }
 
-.wave-content h1 {
-  font-size: 56px;
-  font-weight: 800;
-  background: linear-gradient(90deg, #6B4C3B, #A77A6F);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 10px;
-  text-shadow: 0 3px 8px rgba(255,255,255,0.4);
-}
+    /* CHỮ + NÚT ĐƯỢC CLICK */
+    .wave-content {
+      position: absolute;
+      top: 52%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 3;
+      width: 100%;
+      padding: 0 20px;
+      /* CHO PHÉP CLICK */
+      pointer-events: auto;
+    }
 
-.wave-content p {
-  font-size: 18px;
-  color: #7b5c4d;
-  opacity: 0.9;
-  margin-bottom: 20px;
-}
+    .wave-content h1 {
+      font-size: clamp(36px, 7vw, 56px);
+      font-weight: 800;
+      background: linear-gradient(90deg, #6B4C3B, #A77A6F);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      text-shadow: 0 3px 8px rgba(255,255,255,0.4);
+    }
 
+    .wave-content p {
+      font-size: clamp(14px, 2.5vw, 18px);
+      color: #7b5c4d;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
 
     .btn-explore {
       display: inline-block;
@@ -82,7 +112,7 @@ path {
       color: white;
       border-radius: 30px;
       text-decoration: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .btn-explore:hover {
@@ -90,194 +120,248 @@ path {
       box-shadow: 0 6px 20px rgba(230,166,176,0.4);
     }
 
-    /* 🎥 VIDEO HERO DƯỚI CÙNG */
-    .video-hero {
+    /* === MAIN CONTENT - ĐÈ LÊN VIDEO BLUR NHƯ CODE CŨ === */
+    .main-content {
       position: relative;
-      width: 100%;
-      height: 70vh;
-      overflow: hidden;
-      margin-top: 100px;
-      z-index: 0;
+      z-index: 3;
+      background: #FFF9F9;
+      /* ĐÈ ĐÚNG NHƯ CODE CŨ */
+      margin-top: 90vh;
+      padding-top: 0px;
     }
 
-    .hero-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(1.05);
+    /* === PRODUCT GRID - BACKGROUND APPLE GLASS === */
+    .products-grid {
+      position: relative;
+      padding: 40px 20px;
+      background: 
+        linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.8)),
+        url('https://images.unsplash.com/photo-1606933238736-7346e0974637?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      /* FIX: XÓA CHIỀU CAO CỐ ĐỊNH ĐỂ TRÁNH SCROLL BAR THỪA */
+      height: auto;
+      overflow: visible;
     }
 
-    .video-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.25);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .video-content {
+    /* FIX: XÓA KHỐI TEST CÓ CHIỀU CAO LỚN */
+    .test-content {
+      color: #6B4C3B;
+      font-size: 24px;
       text-align: center;
-      color: #fff;
-      text-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      padding: 100px 20px;
     }
 
-    .video-content .video-title {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 16px;
+    .load-more {
+      text-align: center;
+      margin: 40px 0;
+      z-index: 10;
     }
 
-    .video-content .video-subtitle {
-      font-size: 18px;
-      opacity: 0.9;
+    #load-more-button {
+      font-family: "Playfair Display", serif;
+      padding: 12px 32px;
+      background: linear-gradient(90deg, #E6A6B0, #F9C6CF);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 9999;
+      position: relative;
     }
 
-    .ai-combo { margin-top: 80px; }
-    /* --- FIX SVG CONFLICT & FORCE STYLES --- */
-#hero-wave { position: relative; width: 100%; height: 520px; overflow: hidden; margin-top: 150px; z-index: 1; will-change: transform, filter; }
-#hero-wave svg { width: 100%; height: 100%; display: block; animation: gentleWave 6s ease-in-out infinite alternate; }
-#hero-wave #hero-curve-path {
-  fill: url(#grad) !important;
-  stroke: none !important;
-  transition: d 0.15s ease-out;
-  filter: drop-shadow(0 10px 20px rgba(230,166,176,0.4));
+    #footer-placeholder {
+      position: relative;
+      z-index: 5;
+      background: #FADADD;
+      height: 300px;
+      margin-top: 100px;
+    }
+
+    @media (max-width: 768px) {
+      .svg-container { height: 400px; }
+      .main-content { margin-top: 75vh; }
+      .products-grid { background-attachment: scroll; }
+    }
+    /* MOBILE DROPDOWN - KHÔNG CẦN SỬA HEADER.HTML */
+@media (max-width: 900px) {
+  .menu-categories {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #FFF9F9;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    z-index: 9999;
+    padding: 16px 0;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .menu-categories.active {
+    display: block !important;
+  }
+
+  /* Dùng cho <li> gốc trong header.html */
+  .menu-categories .product-list li {
+    display: block;
+    padding: 12px 24px;
+    color: #6B4C3B;
+    font-weight: 500;
+    border-bottom: 1px solid #F9C6CF;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .menu-categories .product-list li:hover,
+  .menu-categories .product-list li:active {
+    background: #FADADD;
+  }
+
+  .menu-categories .product-list li:last-child {
+    border-bottom: none;
+  }
+
+  .shop-all {
+    position: relative;
+    z-index: 10000;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
 }
-
-/* Nếu file style.css có quy tắc chung “svg path { fill:none }”, đoạn dưới sẽ chặn lại */
-svg path#hero-curve-path { fill: url(#grad) !important; }
-
   </style>
 </head>
 
 <body>
   <div id="header-placeholder"></div>
-  <div class="fireworks-container"></div>
 
-  <!-- 🌸 SVG WAVE ÔM CHỮ NEW ARRIVALS -->
-<section class="svg-container">
-  <svg viewBox="0 0 800 400" preserveAspectRatio="none">
-    <defs>
-      <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#E6A6B0" />
-        <stop offset="60%" stop-color="#F9C6CF" />
-        <stop offset="100%" stop-color="#FFF9F9" />
-      </linearGradient>
-    </defs>
-    <path id="curve" d="M 800 300 Q 400 350 0 300 L 0 0 L 800 0 L 800 300 Z"></path>
-  </svg>
-
-  <div class="wave-content">
-    <h1>New Arrivals</h1>
-    <p>Discover the essence of elegance with our latest Sakura-inspired collection.</p>
-    <a href="#products" class="btn-explore">Explore Now</a>
-  </div>
-</section>
-
-
-
-
-  <!-- 🌸 AI Combo -->
-  <section class="ai-combo">
-    <button class="ai-btn">💡 Get AI Combo Suggestion</button>
-  </section>
-
-  <!-- 🌸 Filter bar -->
-  <section class="filter-bar">
-    <div class="filters-inline">
-      <select id="price-filter">
-        <option value="default">Price</option>
-        <option value="low-high">Low → High</option>
-        <option value="high-low">High → Low</option>
-      </select>
-      <select id="rating-filter">
-        <option value="default">Rating</option>
-        <option value="5">5★</option>
-        <option value="4.5">≥ 4.5★</option>
-        <option value="4">≥ 4★</option>
-      </select>
-      <select id="brand-filter">
-        <option value="default">Brand</option>
-        <option value="Dior">Dior</option>
-        <option value="Chanel">Chanel</option>
-        <option value="YSL">YSL</option>
-        <option value="Lancôme">Lancôme</option>
-        <option value="Rare Beauty">Rare Beauty</option>
-        <option value="NARS">NARS</option>
-        <option value="Charlotte Tilbury">Charlotte Tilbury</option>
-        <option value="Fenty Beauty">Fenty Beauty</option>
-      </select>
-    </div>
-  </section>
-
-  <!-- 🌸 Product list -->
-  <main class="products-grid" id="products"></main>
-
-  <div class="load-more">
-    <button id="load-more-button" class="btn-primary">Load More</button>
-  </div>
-
-  <!-- 🎥 VIDEO HERO Ở DƯỚI -->
-  <section class="video-hero">
-    <video autoplay muted loop playsinline class="hero-video">
+  <!-- VIDEO NỀN -->
+  <section class="video-hero" id="videoSection">
+    <video autoplay muted loop playsinline class="hero-video" id="bg-video">
       <source src="../new/images/Gucci Beauty Limited-Edition Flora Makeup.mp4" type="video/mp4">
-      Your browser does not support the video tag.
     </video>
-    <div class="video-overlay">
-      <div class="video-content">
-        <h1 class="video-title">Luxury Glow</h1>
-        <p class="video-subtitle">Where every shade meets timeless beauty.</p>
-      </div>
+    <div class="overlay-dim"></div>
+  </section>
+
+  <!-- SVG WAVE -->
+  <section class="svg-container">
+    <div class="svg-wrapper">
+      <svg id="wave-svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#E6A6B0" />
+            <stop offset="60%" stop-color="#F9C6CF" />
+            <stop offset="100%" stop-color="#FFF9F9" />
+          </linearGradient>
+        </defs>
+        <path id="curve" d="M 800 300 Q 400 380 0 300 L 0 0 L 800 0 L 800 300 Z"></path>
+      </svg>
+    </div>
+
+    <div class="wave-content">
+      <h1>New Arrivals</h1>
+      <p>Discover the essence of elegance with our latest Sakura-inspired collection.</p>
+      <a href="#products" class="btn-explore">Explore Now</a>
     </div>
   </section>
+
+  <!-- MAIN CONTENT - ĐÈ VIDEO -->
+  <div class="main-content">
+    <section class="filter-bar">
+      <div class="filters-inline">
+        <select id="price-filter"><option>Price</option><option>Low to High</option><option>High to Low</option></select>
+        <select id="rating-filter"><option>Rating</option><option>5 stars</option><option>4.5+ stars</option></select>
+        <select id="brand-filter"><option>Brand</option><option>Dior</option><option>Chanel</option></select>
+      </div>
+    </section>
+
+    <!-- PRODUCT GRID - BACKGROUND APPLE GLASS -->
+    <main class="products-grid" id="products">
+      <!-- FIX: THAY THẾ KHỐI CÓ CHIỀU CAO LỚN BẰNG NỘI DUNG BÌNH THƯỜNG -->
+      <div class="test-content">
+        [Sản phẩm sẽ hiện ở đây]<br>
+        Background: Apple Glass Effect
+      </div>
+    </main>
+
+    <div class="load-more">
+      <button id="load-more-button">Load More</button>
+    </div>
+  </div>
 
   <div id="footer-placeholder"></div>
 
-<script src="script_new.js"></script>
-<script>
-window.addEventListener("load", () => {
-  const curve = document.getElementById("curve");
-  const svgContainer = document.querySelector(".svg-container");
-  const scrollContainer = window; // vì giờ đã fix scroll được rồi 💪
+  <script src="script_new.js"></script>
+  <script>
+    // === SVG WAVE ===
+    document.addEventListener("DOMContentLoaded", () => {
+      const curve = document.getElementById("curve");
+      const svgContainer = document.querySelector(".svg-container");
+      if (!curve || !svgContainer) return;
 
-  if (!curve || !svgContainer) {
-    console.error("Không tìm thấy #curve hoặc .svg-container");
-    return;
-  }
+      const startY = 380, endY = 280, maxScroll = 300;
+      let currentY = startY, ticking = false;
 
-  // 🌸 Bắt đầu cong xuống (võng) rồi dần thẳng lại khi scroll
-  const topY = 380;   // võng xuống ban đầu
-  const bottomY = 300; // thẳng lại khi scroll xuống
-  const maxScroll = 600;
-  let ticking = false;
+      function updateWave() {
+        const scrollY = window.scrollY;
+        const progress = Math.min(scrollY / maxScroll, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const y = startY - eased * (startY - endY);
 
-  function updateWave(scrollY) {
-    const progress = Math.min(scrollY / maxScroll, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const y = topY - eased * (topY - bottomY); // 👈 đổi dấu để đi từ cong xuống → thẳng lên
+        if (Math.abs(y - currentY) > 0.5) {
+          currentY = y;
+          curve.setAttribute("d", `M 800 300 Q 400 ${y.toFixed(2)} 0 300 L 0 0 L 800 0 L 800 300 Z`);
+        }
 
-    curve.setAttribute("d", `M 800 300 Q 400 ${y} 0 300 L 0 0 L 800 0 L 800 300 Z`);
-    curve.style.opacity = 1 - progress * 0.4;
-    svgContainer.style.transform = `translateY(${progress * 100}px) scaleY(${1 - progress * 0.05})`;
-    svgContainer.style.filter = `brightness(${1 - progress * 0.2})`;
-  }
+        const opacity = Math.max(1 - progress * 1.2, 0);
+        const scale = 1 - progress * 0.1;
+        const translateY = progress * 180;
 
-  updateWave(scrollContainer.scrollY || 0);
+        svgContainer.style.opacity = opacity;
+        svgContainer.style.transform = `scaleY(${scale}) translateY(${translateY}px)`;
+      }
 
-  scrollContainer.addEventListener("scroll", () => {
-    const scrollPos = scrollContainer.scrollY;
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        updateWave(scrollPos);
-        ticking = false;
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          requestAnimationFrame(() => { updateWave(); ticking = false; });
+          ticking = true;
+        }
       });
-      ticking = true;
-    }
+      updateWave();
+    });
+
+    // === VIDEO BLUR ===
+    $(window).on('scroll', function () {
+      const scrollTop = $(this).scrollTop();
+      const blur = Math.min(scrollTop / 80, 20);
+      const brightness = Math.max(1 - scrollTop / 600, 0.3);
+      $('#bg-video').css('filter', `blur(${blur}px) brightness(${brightness + 0.5})`);
+
+      const $footer = $('#footer-placeholder');
+      const $video = $('#videoSection');
+      const stopPoint = $footer.offset().top - $(window).height();
+
+      if (scrollTop >= stopPoint) {
+  $video.css({
+    position: 'absolute',
+    top: `${stopPoint}px`,
+    overflow: 'hidden'
   });
-});
-</script>
-
-
-
+} else {
+  $video.css({
+    position: 'fixed',
+    top: '0',
+    overflow: 'hidden'
+  });
+}
+    });
+  </script>
 </body>
 </html>

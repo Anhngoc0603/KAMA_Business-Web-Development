@@ -424,19 +424,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 5. CÁC PHẦN CÒN LẠI (Filter, AI, Sale Event)
   // ===================================================================
   const filterToggle = document.getElementById('filter-toggle');
-  const filterMenu = document.getElementById('filter-menu');
-  
-  if (filterToggle && filterMenu) {
-    filterToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      filterMenu.classList.toggle('show');
-    });
-    document.addEventListener('click', (e) => {
-      if (!filterToggle.contains(e.target) && !filterMenu.contains(e.target)) {
-        filterMenu.classList.remove('show');
-      }
-    });
-  }
+const filterMenu = document.getElementById('filter-menu');
+
+if (filterToggle && filterMenu) {
+  filterToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    filterMenu.classList.toggle('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!filterToggle.contains(e.target) && !filterMenu.contains(e.target)) {
+      filterMenu.classList.remove('show');
+    }
+  });
+}
+
   document.querySelectorAll('.category-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('is-selected'));
