@@ -296,10 +296,14 @@ body {
       position: relative;
       font-size: 20px;
       transition: color 0.3s ease, border-bottom-color 0.3s ease;
+      font-family: 'Playfair Display', serif !important;
+      font-weight: bold;
     }
     .navbar a:hover {
       opacity: 0.8;
       border-bottom: 2px solid #E6A6B0;
+          font-family: "Playfair Display", serif;;
+
     }
 
     .shop-all {
@@ -634,10 +638,13 @@ body {
     max-height: none; /* ✅ bỏ giới hạn */
     height: auto; /* ✅ tự động ôm nội dung */
     overflow: visible; /* ✅ không cắt */
+    font-family: "Playfair Display", serif!important;
+
   }
 
   .navbar.active {
     display: flex !important;
+    font-family: "Playfair Display", serif;;
   }
 }
 
@@ -1372,7 +1379,7 @@ opacity:0.4;
 background: linear-gradient(to top, var(--pale-pink), var(--petal-white));
 color: var(--branch-brown);
 padding: 2rem 1rem;
-font-family: "Times New Roman", Times, serif;
+font-family: "Playfair Display", serif;
 border-top: 1px solid rgba(230, 166, 176, 0.2);
 box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 
@@ -1391,7 +1398,7 @@ width: 90%;
 .newsletter-form { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
 .newsletter-form input {
 padding: 0.6rem 1rem; border: 1px solid var(--soft-rose); border-radius: 20px;
-font-family: "Times New Roman", Times, serif; font-size: 0.9rem; width: 100%; max-width: 250px;
+font-family: "Playfair Display", serif; font-size: 0.9rem; width: 100%; max-width: 250px;
 background: rgba(255, 255, 255, 0.8); transition: border-color 0.3s ease;
 }
 .newsletter-form input:focus { border-color: var(--warm-blush); outline: none; }
@@ -1560,6 +1567,7 @@ header .add-to-cart {
 @media (max-width: 900px) {
   .header {
     padding: 8px 15px; /* Thu nhỏ chiều cao */
+    font-family: "Playfair Display", serif;
   }
 
   /* Logo nhỏ lại */
@@ -1594,5 +1602,8 @@ header .add-to-cart {
   .navbar a {
     font-size: 16px;
     letter-spacing: 1px;
+        font-family: "Playfair Display", serif;;
+
   }
 }
+

@@ -4,6 +4,7 @@
       "id": 1,
       "name": "Dior Forever Foundation",
       "brand": "Dior",
+      "brandImage": "./images/brands/dior.png",
       "price": 68.00,
       "originalPrice": 75.00,
       "rating": 4.9,
@@ -43,15 +44,16 @@
       "id": 2,
       "name": "Chanel Les Beiges Blush",
       "brand": "Chanel",
+      "brandImage": "./images/brands/chanel.png",
       "price": 52.00,
       "originalPrice": 58.00,
       "rating": 4.8,
       "category": "Face",
       "subtype": "Blush",
       "images": [
-        "./images/2-1.avif",
-        "./images/2-2.avif",
-        "./images/2-3.avif"
+        "./images/2.1.avif",
+        "./images/2.2.avif",
+        "./images/2.3.avif"
       ],
       "description": "Soft rosy blush that gives a healthy radiance with every sweep.",
       "detailedDescription": "Chanel Les Beiges Blush delivers a soft, natural-looking flush that enhances your complexion with a healthy radiance.",
@@ -72,20 +74,18 @@
         "Long-Wearing: Stays put throughout the day"
       ]
     },
-    {
+        {
       "id": 3,
       "name": "Gucci Rouge à Lèvres Mat",
       "brand": "Gucci",
+      "brandImage": "./images/brands/gucci.png",
       "price": 46.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Lips",
       "subtype": "Lipstick",
       "images": [
-        "coral.webp",
-        "./images/208-they-met-in-argentina.webp",
-        "./images/505-janet-rust.webp",
-        "./images/25-goldie-red.webp"
+        "./images/3.1.webp"
       ],
       "description": "Rich, creamy matte lipstick with intense color payoff.",
       "detailedDescription": "A new matte lipstick from Gucci Beauty. Delivers vibrant color with a soft, velvety feel. Long-lasting wear without drying the lips.",
@@ -110,14 +110,15 @@
       "id": 4,
       "name": "Lancôme Lash Idôle Mascara",
       "brand": "Lancôme",
+      "brandImage": "./images/brands/lancome.png",
       "price": 30.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Eyes",
       "subtype": "Mascara",
       "images": [
-        "./images/01-glossy-black.webp",
-        "./images/02-glossy-black.webp"
+        "./images/4.1.webp",
+        "./images/4.2.webp"
       ],
       "description": "Lash-lifting mascara for fanned-out volume.",
       "detailedDescription": "Achieve lifted, defined lashes with Lancôme Lash Idôle Mascara. Its curved brush grabs every lash for instant lift, length, and clump-free volume.",
@@ -137,19 +138,20 @@
         "Long-Lasting: Up to 24-hour wear."
       ]
     },
-        {
+    {
       "id": 5,
       "name": "Fenty Beauty Pro Filt'r Primer",
       "brand": "Fenty Beauty",
+      "brandImage": "./images/brands/fenty.png",
       "price": 36.00,
       "originalPrice": 40.00,
       "rating": 4.6,
       "category": "Face",
       "subtype": "Primer",
       "images": [
-        "./images/01-glossy-black.webp",
-        "./images/02-glossy-black.webp",
-        "./images/03-glossy-black.webp"
+        "./images/5.1.webp",
+        "./images/5.2.webp",
+        "./images/5.3.webp"
       ],
       "description": "Instant retouch primer that smooths pores and extends makeup wear.",
       "detailedDescription": "Start your makeup routine with the Fenty Beauty Pro Filt'r Instant Retouch Primer. This oil-free primer smooths away the look of pores, evens skin tone and texture, and helps makeup last longer.",
@@ -173,15 +175,14 @@
       "id": 6,
       "name": "Tom Ford Traceless Soft Matte Foundation",
       "brand": "Tom Ford",
+      "brandImage": "./images/brands/tomford.png",
       "price": 90.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "./images/1-3-nude.webp",
-        "./images/4-0-fawn.webp",
-        "./images/6-0-natural.webp"
+        "./images/6.1.jpg"
       ],
       "description": "A hydrating matte foundation that blurs imperfections and lasts all day.",
       "detailedDescription": "Experience luxury with Tom Ford's Traceless Soft Matte Foundation. This innovative formula offers medium-to-full coverage with a natural matte finish, while hydrating skin for comfortable, long wear.",
@@ -207,15 +208,16 @@
       "id": 7,
       "name": "YSL Touche Éclat Radiant Concealer Pen",
       "brand": "YSL",
+      "brandImage": "./images/brands/ysl.png",
       "price": 40.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Face",
       "subtype": "Concealer",
       "images": [
-        "https://i.postimg.cc/6qT2xkRH/temp-Image4M5ylr.avif",
-        "https://i.postimg.cc/fyktQGX5/temp-Imaged9tn65.avif",
-        "https://i.postimg.cc/3Rt468y4/temp-Imagewzjay-R.avif"
+        "./images/7.1.webp",
+        "./images/7.2.jpg",
+        "./images/7.3.jpg"
       ],
       "description": "The iconic highlighting pen that brightens, smooths, and perfects.",
       "detailedDescription": "YSL's Touche Éclat is a cult classic for a reason. This light-infused pen instantly brightens dark circles, smooths fine lines, and highlights features without shimmer or glitter.",
@@ -239,45 +241,18 @@
     },
     {
       "id": 8,
-      "name": "La Mer The Moisturizing Soft Cream",
-      "brand": "La Mer",
-      "price": 200.00,
-      "originalPrice": null,
-      "rating": 4.8,
-      "category": "Skincare",
-      "subtype": "Moisturizer",
-      "images": [
-        "https://i.postimg.cc/c4RgyBt2/temp-Image-Do-Frpv.avif",
-        "https://i.postimg.cc/kXQ63vRf/temp-Image-Eo4c-MA.avif"
-      ],
-      "description": "A luxurious cream that delivers healing moisture for a vibrant appearance.",
-      "detailedDescription": "Indulge in La Mer's Moisturizing Soft Cream. Infused with the legendary Miracle Broth™, this ultra-soft cream deeply hydrates, heals dryness, and restores radiance for a youthful look.",
-      "ingredients": "Algae (Seaweed) Extract, Cyclopentasiloxane, Petrolatum, Glyceryl Distearate...",
-      "weight": "30ml",
-      "shades": [],
-      "launchDate": "2012-09-01",
-      "usageInstructions": "Pat a small amount between fingertips and press gently into cleansed skin, morning and night.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "Deep Hydration: Provides lasting moisture and heals dryness.",
-        "Renews Radiance: Restores skin's natural vibrancy.",
-        "Smooths Fine Lines: Diminishes the look of lines and wrinkles.",
-        "Legendary Miracle Broth™: Soothes and revitalizes skin."
-      ]
-    },
-    {
-      "id": 9,
       "name": "Pat McGrath Labs Mothership Eyeshadow Palette",
       "brand": "Pat McGrath Labs",
+      "brandImage": "./images/brands/patmcgrath.png",
       "price": 128.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Eyes",
       "subtype": "Eyeshadow Palette",
       "images": [
-        "https://i.postimg.cc/GtzWGfSf/temp-Imagenr-N2d-G.avif",
-        "https://i.postimg.cc/7PV8FCY1/temp-Imageum-ZHLf.avif"
+        "./images/9.1.webp",
+        "./images/9.2.webp",
+        "./images/9.3.webp"
       ],
       "description": "Iconic eyeshadow palettes with extraordinary textures and cosmic colors.",
       "detailedDescription": "Unleash your inner artist with Pat McGrath Labs Mothership Palettes. Featuring a curated selection of stunning mattes, shimmering metallics, and otherworldly special shades with unparalleled pigment and blendability.",
@@ -300,47 +275,19 @@
       ]
     },
     {
-      "id": 10,
-      "name": "Charlotte Tilbury Magic Cream",
-      "brand": "Charlotte Tilbury",
-      "price": 100.00,
-      "originalPrice": null,
-      "rating": 4.7,
-      "category": "Skincare",
-      "subtype": "Moisturizer",
-      "images": [
-        "https://i.postimg.cc/PxnJRLrh/temp-Image9Rbzzd.avif",
-        "https://i.postimg.cc/QMTVmgDY/temp-Imageck-Xdgy.avif"
-      ],
-      "description": "An instant turnaround moisturizer for hydrated, glowing, plumper-looking skin.",
-      "detailedDescription": "Charlotte's famous Magic Cream is a secret weapon for celebrities and models. This rich, hydrating cream features Hyaluronic Acid, Vitamin C, and BioNymph Peptide Complex to flood skin with moisture and create a dewy canvas.",
-      "ingredients": "Water, Homosalate, Glyceryl Stearate SE, Ethylhexyl Salicylate...",
-      "weight": "50ml",
-      "shades": [],
-      "launchDate": "2013-09-01",
-      "usageInstructions": "Apply to face and neck using Charlotte's 'Tilbury Tap' massage technique.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "Instant Hydration Boost: Plumps skin with moisture.",
-        "Creates Glowing Canvas: Perfect base for makeup.",
-        "Reduces Wrinkles: Firms and smooths the look of skin.",
-        "Contains SPF15: Provides daily sun protection."
-      ]
-    },
-     {
-      "id": 11,
+      "id": 9,
       "name": "Hourglass Ambient Lighting Powder",
       "brand": "Hourglass",
+      "brandImage": "./images/brands/hourglass.png",
       "price": 52.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Face",
       "subtype": "Finish Powder",
       "images": [
-        "https://i.postimg.cc/158SDmsk/temp-Image-Ml952C.avif",
-        "https://i.postimg.cc/kXLmc05r/temp-Imageis-N873.avif",
-        "https://i.postimg.cc/L6GpTc8c/temp-Imageq8j-T6t.avif"
+        "./images/11.1.webp",
+        "./images/11.2.webp",
+        "./images/11.3.webp"
       ],
       "description": "Finishing powders that recreate the most flattering types of light.",
       "detailedDescription": "Hourglass Ambient Lighting Powders use Photoluminescent Technology to filter out harsh light and refine the appearance of the complexion. Each powder captures, diffuses, and softens surrounding light.",
@@ -363,18 +310,19 @@
       ]
     },
     {
-      "id": 12,
+      "id": 10,
       "name": "Armani Beauty Luminous Silk Foundation",
       "brand": "Armani Beauty",
+      "brandImage": "./images/brands/armani.png",
       "price": 69.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "https://i.postimg.cc/FR6WvQ8H/temp-Image-Bhs80b.avif",
-        "https://i.postimg.cc/LXWCSMw5/temp-Image-UMZ0SF.avif",
-        "https://i.postimg.cc/B6bYRvhY/temp-Image35pk15.avif"
+        "./images/12.1.webp",
+        "./images/12.2.jpg",
+        "./images/12.3.webp"
       ],
       "description": "Award-winning, oil-free foundation that delivers a luminous, buildable finish.",
       "detailedDescription": "Inspired by charmeuse silk, Armani's Luminous Silk Foundation offers a flawless, radiant finish. The Micro–fil™ technology allows for buildable coverage from sheer to medium, gliding seamlessly onto the skin.",
@@ -397,18 +345,19 @@
       ]
     },
     {
-      "id": 13,
+      "id": 11,
       "name": "NARS Orgasm Blush",
       "brand": "NARS",
+      "brandImage": "./images/brands/nars.png",
       "price": 32.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Face",
       "subtype": "Blush",
       "images": [
-        "https://i.postimg.cc/DwCY6s66/temp-Image-Fe-Ft-DJ.avif",
-        "https://i.postimg.cc/13WYB6B8/temp-Image-Tmr-Pz-U.avif",
-        "https://i.postimg.cc/HLVvhxv5/temp-Imageb-SZv-JJ.avif"
+        "./images/13.1.jpg",
+        "./images/13.2.jpg",
+        "./images/13.3.jpg"
       ],
       "description": "Iconic peachy-pink blush with golden shimmer.",
       "detailedDescription": "The universally flattering NARS Orgasm Blush provides a natural-looking flush with a hint of shimmer. Its micronized powder ensures soft, blendable application.",
@@ -429,18 +378,19 @@
       ]
     },
     {
-      "id": 14,
+      "id": 12,
       "name": "Dior Addict Lip Glow Oil",
       "brand": "Dior",
+      "brandImage": "./images/brands/dior.png",
       "price": 40.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Lips",
       "subtype": "Lip Oil",
       "images": [
-        "https://i.postimg.cc/MKYWWP6P/temp-Image-XPf-Eb9.avif",
-        "https://i.postimg.cc/kgX7DQDD/temp-Imageb-UPk-CD.avif",
-        "https://i.postimg.cc/6p5BTrTC/temp-Imagen-FGGme.avif"
+        "./images/14.1.webp",
+        "./images/14.2.webp",
+        "./images/14.3.webp"
       ],
       "description": "A nurturing lip oil that enhances lip color and provides intense hydration.",
       "detailedDescription": "Pamper your lips with Dior Addict Lip Glow Oil. Infused with cherry oil, this non-sticky, non-greasy formula protects, nourishes, and revitalizes lips while bringing out their natural color.",
@@ -463,17 +413,18 @@
       ]
     },
     {
-      "id": 15,
+      "id": 13,
       "name": "Guerlain Météorites Pearls Powder",
       "brand": "Guerlain",
+      "brandImage": "./images/brands/guerlain.png",
       "price": 69.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Face",
       "subtype": "Finish Powder",
       "images": [
-        "https://i.postimg.cc/x1K4mCp5/temp-Image-GOYbqx.avif",
-        "https://i.postimg.cc/Ls203prH/temp-Imageol-PQK2.avif"
+        "./images/15.1.png",
+        "./images/15.2.jpg"
       ],
       "description": "Color-correcting and illuminating pearls for a radiant complexion.",
       "detailedDescription": "Guerlain Météorites are multi-colored pearls that blend together to color-correct, mattify, and illuminate the skin. Features Stardust Technology for a soft-focus halo.",
@@ -496,17 +447,18 @@
       ]
     },
     {
-      "id": 16,
+      "id": 14,
       "name": "Givenchy Prisme Libre Loose Powder",
       "brand": "Givenchy",
+      "brandImage": "./images/brands/givenchy.png",
       "price": 60.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Face",
       "subtype": "Finish Powder",
       "images": [
-        "https://i.postimg.cc/Ghjh2rwJ/temp-Image-W3Tnn-J.avif",
-        "https://i.postimg.cc/4N1NdZkL/temp-Imagez-VK1ES.avif"
+        "./images/16.1.png",
+        "./images/16.2.jpg"
       ],
       "description": "A 4-color loose powder for a flawless, matte, and radiant finish.",
       "detailedDescription": "Givenchy's Prisme Libre features four harmonious shades that blend to mattify, blur imperfections, and enhance radiance. The ultra-fine texture feels weightless on the skin.",
@@ -518,7 +470,7 @@
         { "value": "03-voile-rose", "label": "03 Voile Rosé" }
       ],
       "launchDate": "2006-01-01",
-      "usageInstructions": "Shake powder, then apply using the included puff or a powder brush.",
+      "usageInstructions": "Shake powder, then apply using the included puffer or a powder brush.",
       "isNew": false,
       "isSale": false,
       "benefits": [
@@ -529,18 +481,19 @@
       ]
     },
     {
-      "id": 17,
+      "id": 15,
       "name": "Cle de Peau Beauté Concealer SPF 27",
       "brand": "Clé de Peau Beauté",
+      "brandImage": "./images/brands/cledepeau.png",
       "price": 75.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Face",
       "subtype": "Concealer",
       "images": [
-        "https://i.postimg.cc/xdn7tksT/temp-Image-Vd-Oy-FY.avif",
-        "https://i.postimg.cc/7LwcmCBb/temp-Image6z-Sd-YW.avif",
-        "https://i.postimg.cc/nL2W5H5x/temp-Imagen01cx-L.avif"
+        "./images/17.1.webp",
+        "./images/17.2.webp",
+        "./images/17.3.webp"
       ],
       "description": "A cult-favorite stick concealer that provides seamless coverage and sun protection.",
       "detailedDescription": "This luxurious concealer from Clé de Peau Beauté blends effortlessly to cover dark circles, blemishes, and imperfections with a smooth, long-lasting finish. Includes SPF 27.",
@@ -563,47 +516,18 @@
       ]
     },
     {
-      "id": 18,
-      "name": "Sisley Paris Black Rose Cream Mask",
-      "brand": "Sisley Paris",
-      "price": 180.00,
-      "originalPrice": null,
-      "rating": 4.8,
-      "category": "Skincare",
-      "subtype": "Mask",
-      "images": [
-        "https://i.postimg.cc/kMb0MdRk/temp-Image-RIHI3N.avif",
-        "https://i.postimg.cc/fymp8xhV/temp-Imagehwt-U3r.avif",
-        "https://i.postimg.cc/Pfwgfkv9/temp-Imagek36VW4.avif"
-      ],
-      "description": "An instant youth and radiance-boosting mask.",
-      "detailedDescription": "Give your skin an instant boost with Sisley's Black Rose Cream Mask. Rich in trace elements, vitamins, and plant extracts, it revitalizes, plumps, and brightens tired skin in minutes.",
-      "ingredients": "Water, Butyrospermum Parkii (Shea) Butter, Glycerin, Hydroxyethyl Acrylate...",
-      "weight": "60ml",
-      "shades": [],
-      "launchDate": "2011-01-01",
-      "usageInstructions": "Apply a thick layer to face and neck, avoiding eye area. Leave on for 10-15 minutes, then wipe off excess.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "Instant Radiance: Leaves skin looking luminous.",
-        "Plumps Skin: Smooths and fills fine lines.",
-        "Revitalizes Tired Skin: Fights signs of fatigue.",
-        "Hydrating & Soothing: Comforts and moisturizes."
-      ]
-    },
-    {
-      "id": 19,
+      "id": 16,
       "name": "By Terry Hyaluronic Hydra-Powder",
       "brand": "By Terry",
+      "brandImage": "./images/brands/byterry.png",
       "price": 60.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Face",
       "subtype": "Finish Powder",
       "images": [
-        "https://i.postimg.cc/k5h5CdRN/temp-Image-CASy-Ol.avif",
-        "https://i.postimg.cc/rpYpTLRd/temp-Imageei-YHx-D.avif"
+        "./images/19.1.jpg",
+        "./images/19.2.jpg"
       ],
       "description": "Weightless translucent setting powder infused with hyaluronic acid.",
       "detailedDescription": "Set your makeup while hydrating your skin with By Terry's Hyaluronic Hydra-Powder. This colorless, micro-fine powder blurs imperfections, controls shine, and locks in moisture.",
@@ -624,18 +548,19 @@
       ]
     },
     {
-      "id": 20,
+      "id": 17,
       "name": "Westman Atelier Vital Skin Foundation Stick",
       "brand": "Westman Atelier",
+      "brandImage": "./images/brands/westman.png",
       "price": 68.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "https://i.postimg.cc/x18D2NvF/temp-Image6F3Z9E.avif",
-        "https://i.postimg.cc/7ZRvYPXv/temp-Imagewl-K3wu.avif",
-        "https://i.postimg.cc/4x0CN4wk/temp-Imagex-Oc79m.avif"
+        "./images/20.1.jpg",
+        "./images/20.2.jpg",
+        "./images/20.3.jpg"
       ],
       "description": "A clean, creamy foundation stick with buildable coverage and a natural finish.",
       "detailedDescription": "Created by makeup artist Gucci Westman, this foundation stick melts into skin for a second-skin finish. Formulated with nourishing ingredients, it provides buildable coverage while combating redness.",
@@ -657,19 +582,20 @@
         "Nourishing Ingredients: Soothes and calms skin."
       ]
     },
-        {
-      "id": 21,
+    {
+      "id": 18,
       "name": "Hermès Rouge Hermès Matte Lipstick",
       "brand": "Hermès",
+      "brandImage": "./images/brands/hermes.png",
       "price": 74.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Lips",
       "subtype": "Lipstick",
       "images": [
-        "https://i.postimg.cc/c4jTvKq9/temp-Image-TO3CM4.avif",
-        "https://i.postimg.cc/tCfDs102/temp-Image0o-W9FQ.avif",
-        "https://i.postimg.cc/MK4tnckQ/temp-Image3q1lr9.avif"
+        "./images/21.1.webp",
+        "./images/21.2.webp",
+        "./images/21.3.webp"
       ],
       "description": "An ultra-pigmented matte lipstick in a refillable, artistic case.",
       "detailedDescription": "Experience the luxury of Hermès beauty with this comfortable matte lipstick. It offers intense, long-lasting color with a powdery finish, housed in a stunning refillable case designed by Pierre Hardy.",
@@ -692,18 +618,19 @@
       ]
     },
     {
-      "id": 22,
+      "id": 19,
       "name": "Natasha Denona Glam Eyeshadow Palette",
       "brand": "Natasha Denona",
+      "brandImage": "./images/brands/natashadenona.png",
       "price": 69.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Eyes",
       "subtype": "Eyeshadow Palette",
       "images": [
-        "https://i.postimg.cc/8PrMnt35/22.avif",
-        "https://i.postimg.cc/dtTrS4X3/22-1.avif",
-        "https://i.postimg.cc/X7ydDQhr/22-3.avif"
+        "./images/22..avif",
+        "./images/22.1.avif",
+        "./images/22.3.avif"
       ],
       "description": "A sophisticated palette of neutral, cool-toned shades for everyday glam.",
       "detailedDescription": "The Natasha Denona Glam Palette features 15 ultra-pigmented cool and neutral shades in matte, metallic, and sparkling finishes. Perfect for creating versatile looks from day to night.",
@@ -724,46 +651,19 @@
       ]
     },
     {
-      "id": 23,
-      "name": "SK-II Facial Treatment Essence",
-      "brand": "SK-II",
-      "price": 195.00,
-      "originalPrice": null,
-      "rating": 4.9,
-      "category": "Skincare",
-      "subtype": "Essence",
-      "images": [
-        "https://i.postimg.cc/tC5Zcwkx/temp-Imagepe5t-KT.avif"
-      ],
-      "description": "Iconic essence with Pitera™ to transform skin to crystal clear.",
-      "detailedDescription": "SK-II's signature product, the Facial Treatment Essence, is rich in Pitera™, a bio-ingredient containing vitamins, amino acids, and minerals. It helps improve skin texture, radiance, firmness, and reduces spots.",
-      "ingredients": "Galactomyces Ferment Filtrate (Pitera), Butylene Glycol, Pentylene Glycol, Water...",
-      "weight": "160ml",
-      "shades": [],
-      "launchDate": "1980-01-01",
-      "usageInstructions": "Pour a few drops into palms, press gently onto face and neck after cleansing and toning.",
-      "isNew": false,
-      "isSale": true,
-      "benefits": [
-        "Improves Texture: Smooths and refines skin surface.",
-        "Boosts Radiance: Enhances natural glow.",
-        "Increases Firmness: Improves skin elasticity.",
-        "Reduces Spots: Lessens the appearance of dark spots."
-      ]
-    },
-    {
-      "id": 24,
+      "id": 20,
       "name": "Bobbi Brown Vitamin Enriched Face Base",
       "brand": "Bobbi Brown",
+      "brandImage": "./images/brands/bobbibrown.png",
       "price": 68.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Face",
       "subtype": "Primer",
       "images": [
-        "https://i.postimg.cc/8zY5QS6T/24-1.avif",
-        "https://i.postimg.cc/mgnDfsH2/24-2.avif",
-        "https://i.postimg.cc/g27JFWZ6/24-3.avif"
+        "./images/24.1.avif",
+        "./images/24.2.avif",
+        "./images/24.3.avif"
       ],
       "description": "A primer plus moisturizer for smooth makeup application.",
       "detailedDescription": "Bobbi Brown's bestselling Face Base combines the performance of a primer with the cushion of a moisturizer. Enriched with Vitamins B, C, and E, plus Shea Butter, it hydrates, softens, and primes skin.",
@@ -782,16 +682,18 @@
       ]
     },
     {
-      "id": 25,
+      "id": 21,
       "name": "HYPNÔSE EYESHADOW PALETTE",
       "brand": "Lancôme",
+      "brandImage": "./images/brands/lancome.png",
       "price": 65.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Eyes",
       "subtype": "Eyeshadow Palette",
       "images": [
-        "https://i.postimg.cc/sgcsJRVh/temp-Image-Zj-Wk6a.avif"
+        "./images/25.1.webp",
+        "./images/25.jpg"
       ],
       "description": "Versatile 5-color eyeshadow palette for creating various eye looks.",
       "detailedDescription": "Lancôme Hypnôse Eyeshadow Palette offers 5 complementary shades to easily create natural to dramatic eye looks. Features rich pigments and a smooth, blendable texture.",
@@ -812,16 +714,17 @@
       ]
     },
     {
-      "id": 26,
+      "id": 22,
       "name": "Chantecaille Future Skin Foundation",
       "brand": "Chantecaille",
+      "brandImage": "./images/brands/chantecaille.png",
       "price": 84.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "https://i.postimg.cc/1tjMD4gC/temp-Image-Nj0N04.avif"
+        "./images/26.1.webp"
       ],
       "description": "An oil-free gel foundation with a refreshing, lightweight texture.",
       "detailedDescription": "Chantecaille Future Skin is an innovative oil-free gel foundation containing 60% water. It provides adjustable coverage and feels incredibly light, leaving skin looking naturally perfected.",
@@ -844,16 +747,17 @@
       ]
     },
     {
-      "id": 27,
+      "id": 23,
       "name": "Lancôme Cushion Foundation",
       "brand": "Lancôme",
+      "brandImage": "./images/brands/lancome.png",
       "price": 55.00,
       "originalPrice": null,
       "rating": 4.6,
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "https://i.postimg.cc/1t86DB1K/temp-Image-XCUL6o.avif"
+        "./images/27.1.jpg"
       ],
       "description": "A lightweight cushion foundation for a fresh, dewy glow.",
       "detailedDescription": "Lancôme Teint Idole Ultra Cushion Foundation provides buildable coverage with a refreshing feel. Perfect for touch-ups on the go, leaving skin looking hydrated and radiant.",
@@ -875,46 +779,18 @@
       ]
     },
     {
-      "id": 28,
-      "name": "Augustinus Bader The Rich Cream",
-      "brand": "Augustinus Bader",
-      "price": 290.00,
-      "originalPrice": null,
-      "rating": 4.9,
-      "category": "Skincare",
-      "subtype": "Moisturizer",
-      "images": [
-        "https://i.postimg.cc/8P7pDYBY/temp-Image-JW5fuu.avif",
-        "https://i.postimg.cc/h4yDknxp/temp-Imagegpx-M3w.avif"
-      ],
-      "description": "An intensely luxurious, hydrating cream powered by TFC8® technology.",
-      "detailedDescription": "Augustinus Bader's The Rich Cream is formulated for drier skin types or nighttime use. Powered by Trigger Factor Complex (TFC8®), it supports cellular renewal, reduces signs of aging, and deeply moisturizes.",
-      "ingredients": "Aqua (Water), Coco-Caprylate/Caprate, Helianthus Annuus (Sunflower) Seed Oil...",
-      "weight": "50ml",
-      "shades": [],
-      "launchDate": "2018-01-01",
-      "usageInstructions": "Apply to cleansed, dry skin morning and evening.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "TFC8® Technology: Supports skin's natural renewal processes.",
-        "Intense Hydration: Ideal for dry or mature skin.",
-        "Reduces Aging Signs: Minimizes wrinkles and improves firmness.",
-        "Improves Radiance: Leaves skin looking healthy and youthful."
-      ]
-    },
-    {
-      "id": 29,
+      "id": 24,
       "name": "Victoria Beckham Beauty Satin Kajal Liner",
       "brand": "Victoria Beckham Beauty",
+      "brandImage": "./images/brands/victoriabeckham.png",
       "price": 30.00,
       "originalPrice": null,
       "rating": 4.7,
       "category": "Eyes",
       "subtype": "Eyeliner",
       "images": [
-        "https://i.postimg.cc/rwfhqhVD/temp-Image-Wn-Zt94.avif",
-        "https://i.postimg.cc/4xW8X8fG/temp-Imagef-Z83uh.avif"
+        "./images/29.1.png",
+        "./images/29.2.png"
       ],
       "description": "A highly pigmented, creamy eyeliner pencil that glides on smoothly.",
       "detailedDescription": "Define your eyes with Victoria Beckham Beauty's Satin Kajal Liner. This versatile pencil offers rich color payoff, blends easily for a smoky look, and sets to a waterproof finish.",
@@ -937,16 +813,20 @@
       ]
     },
     {
-      "id": 30,
+      "id": 25,
       "name": "HYPNÔSE DOLL EYES MASCARA",
       "brand": "Lancôme",
+      "brandImage": "./images/brands/lancome.png",
       "price": 33.00,
       "originalPrice": null,
       "rating": 4.6,
       "category": "Eyes",
       "subtype": "Mascara",
       "images": [
-        "https://i.postimg.cc/2yHPgCKC/temp-Image56ac-OK.avif"
+        "./images/30.1.jpg",
+        "./images/30a.webp",
+        "./images/30b.jpg",
+        "./images/30c.jpg"
       ],
       "description": "Mascara for a wide-eye, doll lash effect.",
       "detailedDescription": "Dreaming of a Doll Lash effect? Hypnôse Doll Eyes mascara coats every single lash without weighing them down, for a wide-eye look. The cone-shaped brush defines even corner lashes.",
@@ -965,18 +845,21 @@
         "Cone Brush: Reaches every lash.",
         "Lightweight Formula: Doesn't weigh lashes down."
       ]
-    },    {
-      "id": 31,
+    },
+    {
+      "id": 26,
       "name": "Estée Lauder Double Wear Foundation",
       "brand": "Estée Lauder",
+      "brandImage": "./images/brands/estee-lauder.png",
       "price": 48.00,
       "originalPrice": 55.00,
       "rating": 4.9,
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "https://i.postimg.cc/3Rpkf0Wk/31-1.avif",
-        "https://i.postimg.cc/nch1tx6z/31-2.avif"
+        "./images/31a.webp",
+        "./images/31b.webp",
+        "./images/31c.webp"
       ],
       "description": "Long-wear matte foundation that stays flawless all day.",
       "detailedDescription": "The legendary Estée Lauder Double Wear Stay-in-Place Foundation offers 24-hour wear with a natural matte finish. Resistant to heat, humidity, and sweat, it ensures flawless coverage without caking or fading.",
@@ -995,24 +878,26 @@
         "Long-Lasting Wear: 24-hour flawless coverage.",
         "Oil-Free Formula: Controls shine and resists humidity.",
         "Buildable Coverage: Medium to full customizable finish.",
-        "Transfer-Resistant: Won’t smudge or fade throughout the day."
+        "Transfer-Resistant: Won't smudge or fade throughout the day."
       ]
     },
     {
-      "id": 32,
+      "id": 27,
       "name": "Shiseido Synchro Skin Self-Refreshing Foundation",
       "brand": "Shiseido",
+      "brandImage": "./images/brands/shiseido.png",
       "price": 47.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "https://i.postimg.cc/GtBFN3SM/32-1.avif",
-        "https://i.postimg.cc/9M5z0Lwm/32-2.avif"
+        "./images/32a.avif",
+        "./images/32b.avif",
+        "./images/32c.avif"
       ],
       "description": "Smart foundation that synchronizes with your skin for a natural finish.",
-      "detailedDescription": "This innovative foundation by Shiseido adapts to your skin’s needs, resisting heat, humidity, and motion. Delivers 24-hour wear and a fresh, breathable feel that keeps up with your day.",
+      "detailedDescription": "This innovative foundation by Shiseido adapts to your skin's needs, resisting heat, humidity, and motion. Delivers 24-hour wear and a fresh, breathable feel that keeps up with your day.",
       "ingredients": "Aqua/Water, Dimethicone, Alcohol Denat., Glycerin...",
       "weight": "30ml",
       "shades": [
@@ -1032,17 +917,19 @@
       ]
     },
     {
-      "id": 33,
+      "id": 28,
       "name": "Huda Beauty Easy Bake Loose Setting Powder",
       "brand": "Huda Beauty",
+      "brandImage": "./images/brands/huda-beauty.png",
       "price": 38.00,
       "originalPrice": 42.00,
       "rating": 4.7,
       "category": "Face",
       "subtype": "Finish Powder",
       "images": [
-        "https://i.postimg.cc/VkPVFRbB/33-1.avif",
-        "https://i.postimg.cc/VLBWRx2Y/33-2.avif"
+        "./images/33a.webp",
+        "./images/33b.webp",
+        "./images/33c.webp"
       ],
       "description": "Ultra-refined loose powder that sets makeup and controls shine.",
       "detailedDescription": "Huda Beauty Easy Bake Loose Setting Powder gives a smooth, airbrushed finish while brightening your complexion. Available in multiple shades to suit every skin tone.",
@@ -1065,20 +952,22 @@
       ]
     },
     {
-      "id": 34,
+      "id": 29,
       "name": "Rare Beauty Soft Pinch Liquid Blush",
       "brand": "Rare Beauty",
+      "brandImage": "./images/brands/rare-beauty.png",
       "price": 23.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Face",
       "subtype": "Blush",
       "images": [
-        "https://i.postimg.cc/15V6PRpY/34-1.avif",
-        "https://i.postimg.cc/J7V72tBf/34-2.avif"
+        "./images/34a.jpg",
+        "./images/34b.jpg",
+        "./images/34c.jpg"
       ],
       "description": "Lightweight liquid blush with a natural radiant finish.",
-      "detailedDescription": "Selena Gomez’s viral Soft Pinch Liquid Blush delivers vibrant pigment with a long-lasting, natural glow. A single drop blends seamlessly for a soft, healthy flush.",
+      "detailedDescription": "Selena Gomez's viral Soft Pinch Liquid Blush delivers vibrant pigment with a long-lasting, natural glow. A single drop blends seamlessly for a soft, healthy flush.",
       "ingredients": "Water, Cyclopentasiloxane, Dimethicone, Glycerin...",
       "weight": "7.5ml",
       "shades": [
@@ -1098,46 +987,19 @@
       ]
     },
     {
-      "id": 35,
-      "name": "Tatcha The Dewy Skin Cream",
-      "brand": "Tatcha",
-      "price": 72.00,
-      "originalPrice": null,
-      "rating": 4.8,
-      "category": "Skincare",
-      "subtype": "Moisturizer",
-      "images": [
-        "https://i.postimg.cc/nzqzxZrR/35-1.avif",
-        "https://i.postimg.cc/76LpTBQm/35-2.avif"
-      ],
-      "description": "Rich cream that plumps and hydrates for glowing skin.",
-      "detailedDescription": "Tatcha's The Dewy Skin Cream deeply hydrates with a blend of Japanese purple rice, algae, and botanical extracts, leaving skin dewy and radiant.",
-      "ingredients": "Water, Glycerin, Squalane, Rice Extract...",
-      "weight": "50ml",
-      "shades": [],
-      "launchDate": "2019-01-01",
-      "usageInstructions": "Massage onto face and neck after cleansing and toning.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "Deep Hydration: Plumps dry skin instantly.",
-        "Radiant Glow: Leaves a healthy, dewy finish.",
-        "Antioxidant-Rich: Protects from pollution and stress.",
-        "Silky Texture: Absorbs easily for daily use."
-      ]
-    },
-    {
-      "id": 36,
+      "id": 30,
       "name": "Benefit Hoola Matte Bronzer",
       "brand": "Benefit Cosmetics",
+      "brandImage": "./images/brands/benefit.png",
       "price": 35.00,
       "originalPrice": 40.00,
       "rating": 4.7,
       "category": "Face",
       "subtype": "Bronzer",
       "images": [
-        "https://i.postimg.cc/LskB5fsN/36-1.avif",
-        "https://i.postimg.cc/8cTh3LgB/36-2.avif"
+        "./images/36a.png",
+        "./images/36b.png",
+        "./images/36c.png"
       ],
       "description": "Iconic bronzing powder for a natural sun-kissed glow.",
       "detailedDescription": "The award-winning Benefit Hoola Matte Bronzer delivers a soft matte finish that suits all skin tones. Perfect for contouring or warming up the complexion.",
@@ -1159,46 +1021,19 @@
       ]
     },
     {
-      "id": 37,
-      "name": "Kiehl’s Ultra Facial Cream",
-      "brand": "Kiehl’s",
-      "price": 38.00,
-      "originalPrice": null,
-      "rating": 4.9,
-      "category": "Skincare",
-      "subtype": "Moisturizer",
-      "images": [
-        "https://i.postimg.cc/pdStBQwQ/37-1.avif",
-        "https://i.postimg.cc/dtRsfDBZ/37-2.avif"
-      ],
-      "description": "Lightweight moisturizer providing 24-hour hydration.",
-      "detailedDescription": "Kiehl’s Ultra Facial Cream helps strengthen the skin barrier with glacial glycoprotein and squalane, maintaining softness and smoothness even in extreme conditions.",
-      "ingredients": "Water, Glycerin, Squalane, Glacial Glycoprotein...",
-      "weight": "50ml",
-      "shades": [],
-      "launchDate": "2006-01-01",
-      "usageInstructions": "Apply morning and night to clean skin.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "24-Hour Hydration: Locks in moisture all day.",
-        "Barrier Protection: Strengthens and smooths skin.",
-        "Lightweight Texture: Absorbs quickly.",
-        "Proven in Extreme Conditions: Keeps skin soft and healthy."
-      ]
-    },
-    {
-      "id": 38,
+      "id": 31,
       "name": "Charlotte Tilbury Airbrush Flawless Setting Spray",
       "brand": "Charlotte Tilbury",
+      "brandImage": "./images/brands/charlotte-tilbury.png",
       "price": 38.00,
       "originalPrice": null,
       "rating": 4.8,
       "category": "Face",
       "subtype": "Setting Spray",
       "images": [
-        "https://i.postimg.cc/qMFFkFTK/38-1.avif",
-        "https://i.postimg.cc/zf4rJtGf/38-2.avif"
+        "./images/38a.webp",
+        "./images/38b.webp",
+        "./images/38c.webp"
       ],
       "description": "Lightweight setting spray that locks in makeup for up to 16 hours.",
       "detailedDescription": "The Airbrush Flawless Setting Spray from Charlotte Tilbury ensures makeup stays fresh, smooth, and shine-free. With Aloe Vera, Green Tea, and Japanese Extracts, it hydrates and protects.",
@@ -1217,46 +1052,19 @@
       ]
     },
     {
-      "id": 39,
-      "name": "Clinique Take The Day Off Cleansing Balm",
-      "brand": "Clinique",
-      "price": 36.00,
-      "originalPrice": null,
-      "rating": 4.8,
-      "category": "Skincare",
-      "subtype": "Cleanser",
-      "images": [
-        "https://i.postimg.cc/Kj8SkQVN/39-1.avif",
-        "https://i.postimg.cc/8c0N1k8b/39-2.avif"
-      ],
-      "description": "Gentle makeup remover balm that transforms into oil on skin.",
-      "detailedDescription": "Clinique’s best-selling cleansing balm quickly dissolves stubborn makeup and sunscreen while nourishing skin. It rinses off completely without residue or dryness.",
-      "ingredients": "Ethylhexyl Palmitate, Carthamus Tinctorius (Safflower) Seed Oil, Sorbeth-30...",
-      "weight": "125ml",
-      "shades": [],
-      "launchDate": "1998-01-01",
-      "usageInstructions": "Massage balm over dry skin, then rinse with warm water.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "Effortless Removal: Dissolves all makeup types.",
-        "Nourishing Texture: Leaves skin soft and clean.",
-        "Non-Greasy Finish: Rinses without residue.",
-        "Suitable for All Skin Types: Gentle yet effective."
-      ]
-    },
-    {
-      "id": 40,
+      "id": 32,
       "name": "Dior Backstage Glow Face Palette",
       "brand": "Dior",
+      "brandImage": "./images/brands/dior.png",
       "price": 48.00,
       "originalPrice": null,
       "rating": 4.9,
       "category": "Face",
       "subtype": "Highlighter Palette",
       "images": [
-        "https://i.postimg.cc/W4pBcvNw/40-1.avif",
-        "https://i.postimg.cc/8Cncb0Xr/40-2.avif"
+        "./images/40a.avif",
+        "./images/40b.webp",
+        "./images/40c.webp"
       ],
       "description": "Professional glow palette with 4 shades for multi-dimensional radiance.",
       "detailedDescription": "Dior Backstage Glow Face Palette provides a customizable glow with ultra-fine textures. Use dry for a soft glow or damp for an intense metallic shine.",
@@ -1267,7 +1075,7 @@
         { "value": "002-glitz", "label": "002 Glitz" }
       ],
       "launchDate": "2018-05-01",
-      "usageInstructions": "Apply on cheekbones, nose bridge, and cupid’s bow for a radiant highlight.",
+      "usageInstructions": "Apply on cheekbones, nose bridge, and cupid's bow for a radiant highlight.",
       "isNew": false,
       "isSale": true,
       "benefits": [
@@ -1279,7 +1087,3 @@
     }
   ]
 }
-
-
-
-

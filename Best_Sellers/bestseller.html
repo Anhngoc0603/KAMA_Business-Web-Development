@@ -59,11 +59,67 @@
       align-items:center;
       gap:24px;
       padding: 120px 0 64px; 
+      position: relative;
+      z-index: 10;
+    }
+
+    /* 🌸 SVG BACKGROUND (BLOB + SPARKLE) - ĐÃ SỬA */
+    .sakura-bg-wrapper{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .sakura-bg-svg{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      filter: blur(35px) saturate(1.3);
+      opacity: 0.35; /* Giảm opacity để không che nội dung */
+      mix-blend-mode: lighten;
+    }
+
+    @keyframes blobRotate1{
+      0%{transform: rotate(0deg) scale(1); opacity: .7;}
+      50%{transform: rotate(180deg) scale(1.08); opacity: .8;}
+      100%{transform: rotate(360deg) scale(1); opacity: .7;}
+    }
+    @keyframes blobRotate2{
+      0%{transform: rotate(0deg) scale(1.05);}
+      100%{transform: rotate(-360deg) scale(1.05);}
+    }
+    @keyframes blobRotate3{
+      0%{transform: rotate(0deg) scale(0.9); opacity: .4;}
+      50%{transform: rotate(90deg) scale(1); opacity: .5;}
+      100%{transform: rotate(180deg) scale(0.9); opacity: .4;}
+    }
+
+    /* ✨ Sparkle layer */
+    .sparkle{
+      position:absolute;
+      width:2px;
+      height:2px;
+      background: radial-gradient(circle,#fff,#ffd9e6);
+      border-radius:50%;
+      opacity:0;
+      animation:sparkleMove 6s ease-in-out infinite;
+    }
+
+    @keyframes sparkleMove{
+      0%{transform:translateY(0) scale(0);opacity:0;}
+      40%{opacity:.9;transform:translateY(-80px) scale(1);}
+      100%{opacity:0;transform:translateY(-160px) scale(0);}
     }
 
     .watermark{
       position:relative;width:100%;max-width:1280px;height:0;
       transition: opacity 0.6s ease;
+      z-index: 20;
     }
     .watermark span{
       position:absolute;
@@ -85,6 +141,7 @@
     .carousel-wrap{
       position:relative;width:100%;display:flex;justify-content:center;
       transition: opacity 0.6s ease;
+      z-index: 20;
     }
     .carousel{
       position:relative;min-height:540px;height:80vh;max-width:1280px;
@@ -103,7 +160,7 @@
       margin:calc(var(--height)*-0.5) 0 0 calc(var(--width)*-0.5);
       border-radius:22px; overflow:hidden; cursor:pointer;
 
-      background:#fff;
+      /* ĐÃ XÓA BACKGROUND CHO CAROUSEL ITEM */
       box-shadow:0 18px 50px rgba(230,166,176,.28);
       transform-origin:0% 100%;
       transform:translate(var(--x),var(--y)) rotate(var(--rot));
@@ -174,10 +231,11 @@
       box-shadow:0 6px 16px rgba(230,166,176,.4);transition:.25s;
       font-family: 'Playfair Display', serif;
       transition: all 0.6s ease;
+      z-index: 20;
     }
     .load-more:hover{transform:translateY(-1px);filter:brightness(1.05)}
 
-    .grid-wrap{display:none;width:100%;max-width:1280px;padding:0 16px;animation:fadeIn .8s ease forwards}
+    .grid-wrap{display:none;width:100%;max-width:1280px;padding:0 16px;animation:fadeIn .8s ease forwards; z-index: 20;}
     @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
     
     .grid-header {
@@ -345,6 +403,8 @@
       max-width: 1200px;
       margin-top: 60px;
       padding: 40px 20px;
+      z-index: 20;
+      position: relative;
     }
 
     .team-main-container {
@@ -403,7 +463,7 @@
       position: absolute;
       width: 400px;
       height: 225px;
-      background: white;
+      /* ĐÃ XÓA BACKGROUND CHO TEAM CARD */
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
@@ -723,12 +783,43 @@
         right: -60px;
       }
     }
-
   </style>
 </head>
 <body>
 
   <div id="header-placeholder"><div style="text-align:center;padding:16px;color:#ddd">Loading Header…</div></div>
+  
+  <!-- 🌸 NỀN SVG BLOB HỒNG - ĐÃ SỬA -->
+  <div class="sakura-bg-wrapper">
+    <svg class="sakura-bg-svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 100 100">
+      <defs>
+        <style>
+          .blob1{fill:#F9C6CF;animation:blobRotate1 35s linear infinite;transform-origin:40% 40%;}
+          .blob2{fill:#E6A6B0;animation:blobRotate2 50s linear infinite;transform-origin:60% 70%;opacity:.6;}
+          .blob3{fill:#D67286;animation:blobRotate3 60s linear infinite;transform-origin:80% 20%;opacity:.45;}
+        </style>
+      </defs>
+      <path class="blob1" d="M30,-5C18-15,2-20,-10,-10C-25,2,-28,28,-16,44C0,64,38,64,54,42C65,25,56,5,30,-5Z"/>
+      <path class="blob2" d="M100,50C86,40,66,45,55,55C34,72,25,108,46,122C70,138,112,126,120,100C125,82,115,62,100,50Z"/>
+      <path class="blob3" d="M20,25C10,15,-10,10,-15,25C-22,40,-8,70,15,74C40,76,56,52,45,35C38,25,30,22,20,25Z"/>
+    </svg>
+  </div>
+
+  <!-- ✨ Sparkle trắng hồng -->
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      const bg=document.querySelector(".sakura-bg-wrapper");
+      for(let i=0;i<35;i++){
+        const s=document.createElement("div");
+        s.className="sparkle";
+        s.style.left=Math.random()*100+"%";
+        s.style.top=Math.random()*100+"%";
+        s.style.animationDelay=(Math.random()*6)+"s";
+        s.style.animationDuration=(4+Math.random()*4)+"s";
+        bg.appendChild(s);
+      }
+    });
+  </script>
 
   <main>
     <div class="watermark" id="watermark"><span>BEST&nbsp;SELLER</span></div>
