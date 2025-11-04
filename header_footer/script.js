@@ -1,19 +1,21 @@
-// ================== ANNOUNCEMENT ==================
-const wrapper1 = document.getElementById('announcementWrapper');
-const announcement = document.querySelectorAll('.announcement-slide');
-let indexAnnouncement = 0;
-
-function showAnnouncement(i) {
-  wrapper1.style.transform = `translateX(-${i * 100}%)`;
-}
-
-// Tự động chuyển sau 5s
-setInterval(() => {
-  indexAnnouncement = (indexAnnouncement + 1) % announcement.length;
-  showAnnouncement(indexAnnouncement);
-}, 5000);
-
 document.addEventListener('DOMContentLoaded', () => {
+
+  // ================== ANNOUNCEMENT ==================
+  const wrapper1 = document.getElementById('announcementWrapper');
+  const announcement = document.querySelectorAll('.announcement-slide');
+  let indexAnnouncement = 0;
+
+  function showAnnouncement(i) {
+    wrapper1.style.transform = `translateX(-${i * 100}%)`;
+  }
+
+  if (wrapper1 && announcement.length > 0) {
+    setInterval(() => {
+      indexAnnouncement = (indexAnnouncement + 1) % announcement.length;
+      showAnnouncement(indexAnnouncement);
+    }, 5000);
+  }
+
   // ================== MENU TOGGLE ==================
   const menuToggler = document.getElementById('menu-toggler');
   const navbar = document.getElementById('navbar');
@@ -23,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextButtons = document.querySelectorAll('.next-btn');
   const searchIcon = document.querySelector('.search .icon');
   const searchInput = document.getElementById('search-input-main');
-
   // Toggle menu
   if (menuToggler && navbar) {
     menuToggler.addEventListener('click', (e) => {
