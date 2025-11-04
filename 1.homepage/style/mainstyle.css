@@ -1123,7 +1123,7 @@ font-size: 12px;}
   margin: auto;
   padding: 30px; 
   text-align: center;
-  background-color: var(--soft-rose); /* Thay #ffc2c0 bằng --soft-rose để nhất quán với palette hồng */
+  background-color: var(--petal-white); /* Thay #ffc2c0 bằng --soft-rose để nhất quán với palette hồng */
 }
 .sliderBestsellers {
   position: relative;overflow: hidden;
@@ -1226,24 +1226,20 @@ font-size: 12px;}
   letter-spacing: 2px;
   margin-top: 20px;
 }
-.product-slider span {
-  font-size: 32px;
-  background: linear-gradient(to right, #7c9885, #f5a9bc); /* Giữ nguyên gradient */
-  background-clip: text; color: var(--branch-brown);;
-}
+
 .product-slider {
   position: relative;
   margin: auto;
   padding: 30px; 
   text-align: center;
-  background-color: var(--soft-rose);
+  background-color: var(--petal-white);
 }
 .slider-container {
   position: relative;overflow: hidden;
   width: 100%;margin: 0 auto;
   left: 50%;right: 50%;
   transform: translateX(-50%);
-  background-color: var(--soft-rose); /* Thay #fff6f8 bằng --pale-pink để hài hòa */
+  background-color: var(--petal-white); /* Thay #fff6f8 bằng --pale-pink để hài hòa */
 }
 .slider-wrapper {
       display: grid; overflow-x:auto;
