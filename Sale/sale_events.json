@@ -3,7 +3,7 @@
     {
       "title": "Luxury Winter Sale",
       "description": "Up to 40% off Dior, Chanel & more",
-      "image": "https://i.postimg.cc/8zx9P3Ps/dior.png",
+      "image": "./images/christian-dior-parfums-facade-1.webp",
       "color1": "#FADADD",
       "color2": "#F9C6CF",
       "link": "https://www.dior.com/"
@@ -11,7 +11,8 @@
     {
       "title": "Chanel Glam Week",
       "description": "Exclusive offers on Chanel lipsticks and foundations. Shine like a star this season.",
-      "image": "https://i.postimg.cc/XJxkRGvL/chanel.png",
+      "image": "./images/FSH-1711725944866-omotesandomobile.webp"
+,
       "color1": "#E6A6B0",
       "color2": "#FADADD",
       "link": "https://www.chanel.com/"
@@ -19,7 +20,7 @@
     {
       "title": "YSL Hot Deal",
       "description": "Discover bold, confident beauty with YSL. Up to 40% off for a limited time only!",
-      "image": "https://i.postimg.cc/3wLzJpsY/ysl.png",
+      "image": "./images/002Ramvek_22Mar24-4439-HDR-LowRes.webp",
       "color1": "#F8BBD0",
       "color2": "#E6A6B0",
       "link": "https://www.yslbeautyus.com/"
@@ -27,7 +28,7 @@
     {
       "title": "Gucci Beauty Bloom",
       "description": "Celebrate elegance with Gucci Beauty. Enjoy exclusive offers on iconic lipsticks and fragrances.",
-      "image": "https://i.postimg.cc/mk6pK4n6/gucci.png",
+      "image": "./images/HeroBigSmall_Gucci-Valigeria-PARIS-Store-02_001_Default.avif",
       "color1": "#F6C1C9",
       "color2": "#E2A5B2",
       "link": "https://www.gucci.com/us/en/ca/beauty"

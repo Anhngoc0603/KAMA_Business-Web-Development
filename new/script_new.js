@@ -22,6 +22,13 @@
     }
   });
 })();
+// ===== Escape HTML để tránh lỗi XSS =====
+function escapeHTML(str) {
+  if (typeof str !== 'string') return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -62,31 +69,89 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  await loadPartial('../header_footer/header.html', 'header-placeholder');
+await loadPartial('../header_footer/header.html', 'header-placeholder');
   await loadPartial('../header_footer/footer.html', 'footer-placeholder');
 
-  // === Gọi lại header events sau khi load ===
-  initHeaderEvents();
+  // SAU KHI HEADER LOAD → GỌI INIT
+  setTimeout(initHeaderEvents, 100); // Đảm bảo DOM đã sẵn sàng
+});
 
-  function initHeaderEvents() {
-    const menuToggler = document.querySelector('.menu-toggler');
-    const navbar = document.querySelector('.navbar');
-    const shopAll = document.querySelector('.shop-all');
-    const menuCategories = document.querySelector('.menu-categories');
+// === INIT HEADER EVENTS – KHÔNG CẦN SỬA HEADER.HTML ===
+function initHeaderEvents() {
+  const shopAll = document.querySelector('.shop-all');
+  const menuCategories = document.querySelector('.menu-categories');
+  const menuToggler = document.querySelector('.menu-toggler');
+  const navbar = document.querySelector('.navbar');
 
-    if (menuToggler && navbar) {
-      menuToggler.addEventListener('click', () => {
-        navbar.classList.toggle('active');
+  if (!shopAll || !menuCategories) {
+    console.warn('Shop All or Menu Categories not found');
+    return;
+  }
+
+  // Mobile menu toggle (hamburger)
+  if (menuToggler && navbar) {
+    menuToggler.addEventListener('click', () => {
+      navbar.classList.toggle('active');
+    });
+  }
+
+  // === DESKTOP: HOVER ===
+  if (window.innerWidth > 900) {
+    const show = () => menuCategories.classList.add('active');
+    const hide = () => menuCategories.classList.remove('active');
+
+    shopAll.addEventListener('mouseenter', show);
+    menuCategories.addEventListener('mouseenter', show);
+    shopAll.addEventListener('mouseleave', hide);
+    menuCategories.addEventListener('mouseleave', hide);
+  }
+
+  // === MOBILE: CLICK TOGGLE ===
+  else {
+    // Chuyển <li> thành clickable
+    menuCategories.querySelectorAll('.product-list li').forEach(li => {
+      li.style.cursor = 'pointer';
+      li.addEventListener('click', () => {
+        // Tùy chọn: chuyển trang hoặc đóng menu
+        const text = li.textContent.trim();
+        if (text.includes('Shop All')) {
+          window.location.href = '../categories/categories.html'; // Thay bằng link thật sau
+        } else {
+          alert(`Bạn chọn: ${text}`); // Thay bằng link thật sau
+        }
+        closeMobileMenu();
       });
-    }
+    });
 
-    if (shopAll && menuCategories) {
-      shopAll.addEventListener('click', () => {
-        menuCategories.classList.toggle('active');
-        shopAll.classList.toggle('active');
-      });
+    // Click Shop All → mở/đóng dropdown
+shopAll.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (window.innerWidth <= 900) {
+    // MOBILE: Điều hướng ngay lập tức
+    window.location.href = '../categories/categories.html';
+  } else {
+    // DESKTOP: Mở dropdown như cũ
+    const isActive = menuCategories.classList.contains('active');
+    menuCategories.classList.toggle('active', !isActive);
+    document.body.classList.toggle('menu-open', !isActive);
+  }
+});
+
+    // Click ngoài → đóng
+    document.addEventListener('click', (e) => {
+      if (!shopAll.contains(e.target) && !menuCategories.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    function closeMobileMenu() {
+      menuCategories.classList.remove('active');
+      document.body.classList.remove('menu-open');
     }
   }
+}
 
   // ===================================================================
   // 3. LOAD NEW ARRIVALS
@@ -103,8 +168,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       container.innerHTML = newProducts.map(p => `
         <div class="product-card">
           <div class="product-image-container">
-            <img src="${safeGet(p, 'images.0', 'https://via.placeholder.com/300')}" 
-                 alt="${escapeHTML(p.name)}" class="product-img">
+<img src="${(p.images && p.images[0]) ? p.images[0] : 'https://via.placeholder.com/300'}" 
+     alt="${escapeHTML(p.name)}" class="product-img">
+
             <span class="product-badge new">NEW</span>
           </div>
           <div class="product-info">
@@ -250,4 +316,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.addEventListener("scroll", updateWave, { passive: true });
   updateWave();
 });
+// ✅ FIX MOBILE DROPDOWN CLICK
+document.addEventListener('DOMContentLoaded', () => {
+  // Chờ header load xong
+  setTimeout(() => {
+    const shopAll = document.querySelector('.shop-all');
+    const menuCategories = document.querySelector('.menu-categories');
+    const body = document.body;
+    
+    if (!shopAll || !menuCategories) return;
+    
+    // Mobile: Toggle dropdown thay vì chuyển trang
+    if (window.innerWidth <= 900) {
+      shopAll.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const isActive = menuCategories.classList.contains('active');
+        
+        // Đóng tất cả menu khác
+        document.querySelectorAll('.menu-categories').forEach(m => m.classList.remove('active'));
+        body.classList.remove('menu-open');
+        
+        if (!isActive) {
+          // Mở dropdown
+          menuCategories.classList.add('active');
+          body.classList.add('menu-open');
+        }
+      });
+      
+      // Đóng khi click ngoài
+      document.addEventListener('click', (e) => {
+        if (!shopAll.contains(e.target) && !menuCategories.contains(e.target)) {
+          menuCategories.classList.remove('active');
+          body.classList.remove('menu-open');
+        }
+      });
+    }
+  }, 500); // Delay để header load từ fetch
 });

@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Sakura Best Seller – Dior Galaxy Pink</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    /* ============================================= */
+    /* ===== CSS GỐC (NỀN GALAXY TỐI) ===== */
+    /* ============================================= */
+    :root{
+      --pink-1:#FADADD;
+      --pink-2:#F9C6CF;
+      --pink-3:#E6A6B0;
+      --brown:#6B4C3B;
+    }
+
+    html,body{height:100%;margin:0}
+    body {
+      background-color: #FFF9F9;
+      overflow-x: hidden;
+      font-family: 'Playfair Display', serif;
+    }
+
+    svg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
+      opacity: 0.9;
+    }
+
+    main, .carousel-wrap, .team-section-container {
+      position: relative;
+      z-index: 10;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    #header-placeholder,#footer-placeholder{width:100%}
+    
+    main{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:24px;
+      padding: 120px 0 64px; 
+      position: relative;
+      z-index: 10;
+    }
+
+    /* 🌸 SVG BACKGROUND */
+    .sakura-bg-wrapper{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .sakura-bg-svg{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      filter: blur(35px) saturate(1.3);
+      opacity: 0.35;
+      mix-blend-mode: lighten;
+    }
+
+    /* ✨ Sparkle layer */
+    .sparkle{
+      position:absolute;
+      width:2px;
+      height:2px;
+      background: radial-gradient(circle,#fff,#ffd9e6);
+      border-radius:50%;
+      opacity:0;
+      animation:sparkleMove 6s ease-in-out infinite;
+    }
+
+    @keyframes sparkleMove{
+      0%{transform:translateY(0) scale(0);opacity:0;}
+      40%{opacity:.9;transform:translateY(-80px) scale(1);}
+      100%{opacity:0;transform:translateY(-160px) scale(0);}
+    }
+
+    .watermark{
+      position:relative;width:100%;max-width:1280px;height:0;
+      transition: opacity 0.6s ease;
+      z-index: 20;
+    }
+    .watermark span {
+      position: absolute;
+      right: 22px;
+      top: 80px;
+      transform: rotate(10deg);
+      font-weight: 800;
+      letter-spacing: 6px;
+      font-size: clamp(28px, 5vw, 48px);
+      color: transparent;
+      background: linear-gradient(135deg, #E6A6B0 0%, #FADADD 45%, #FFF9F9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      opacity: 1;
+      text-shadow: 0 0 6px rgba(230, 166, 176, 0.3), 0 0 16px rgba(230, 166, 176, 0.5), 0 0 32px rgba(230, 166, 176, 0.25);
+      filter: brightness(1.05);
+      user-select: none;
+      pointer-events: none;
+      animation: shimmer 5s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .carousel-wrap{
+      position:relative;width:100%;display:flex;justify-content:center;
+      transition: opacity 0.6s ease;
+      z-index: 20;
+    }
+    .carousel{
+      position:relative;min-height:540px;height:80vh;max-width:1280px;
+      display:flex;align-items:center;justify-content:center;
+      perspective:1400px;overflow:visible;padding:0 72px;
+    }
+
+    .carousel-item{
+      --items: 10;
+      --width:clamp(240px,28vw,320px);--height:clamp(340px,42vw,480px);
+      --x:calc(var(--active)*900%);--y:calc(var(--active)*140%);--rot:calc(var(--active)*78deg);
+      --opacity:calc(var(--zIndex)/var(--items)*3 - 2);
+
+      position:absolute;top:50%;left:50%;
+      width:var(--width);height:var(--height);
+      margin:calc(var(--height)*-0.5) 0 0 calc(var(--width)*-0.5);
+      border-radius:22px; overflow:hidden; cursor:pointer;
+
+      background:#fff;
+      box-shadow:0 18px 50px rgba(230,166,176,.28);
+      transform-origin:0% 100%;
+      transform:translate(var(--x),var(--y)) rotate(var(--rot));
+      transition:transform 1.2s ease-in-out;
+      z-index:var(--zIndex);
+    }
+    .carousel-box{position:absolute;inset:0;opacity:var(--opacity);border-radius:22px;overflow:hidden}
+    .carousel-box img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease}
+    .carousel-item:hover .carousel-box img{transform:scale(1.06);filter:brightness(.92) saturate(1.12)}
+
+    .num{
+      position:absolute;left:18px;top:12px;z-index:2;
+      font-weight:700;font-size:2rem;
+      color: var(--pink-3);
+      text-shadow:0 3px 9px rgba(0,0,0,.45);
+      user-select:none;pointer-events:none;
+    }
+
+    .glass-bottom{
+      position:absolute;left:0;bottom:0;width:100%;height:40%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align: center;
+      padding:14px 16px;
+      background:linear-gradient(to top, rgba(230,166,176,.42), rgba(249,198,207,.26));
+      backdrop-filter:blur(12px) saturate(1.05);
+      border-top:1px solid rgba(255,255,255,.35);
+      color:#fff;
+      border-bottom-left-radius:22px;border-bottom-right-radius:22px;
+      opacity:0; transform:translateY(16px);
+      transition:opacity .38s ease, transform .38s ease;
+      pointer-events:none;
+    }
+    .carousel-item:hover .glass-bottom{opacity:1;transform:translateY(0);pointer-events:auto}
+    .glass-bottom h3{margin:0 0 4px;font:700 1.08rem 'Playfair Display',serif;text-shadow:0 2px 8px rgba(0,0,0,.28);}
+    .glass-bottom .brand{margin:0 0 2px;opacity:.95;font-weight:600}
+    .glass-bottom .price{
+      margin:0;
+      font-weight:700;
+      letter-spacing:.2px;
+      color: var(--pink-3);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .overlay-btns{display:flex;gap:10px;margin-top:10px}
+    .btn-view{
+      height:40px;padding:0 18px;border:none;border-radius:22px;cursor:pointer;
+      background:linear-gradient(135deg,var(--pink-3),var(--pink-2));color:#fff;font-weight:700;
+      box-shadow:0 6px 16px rgba(230,166,176,.35);transition:.25s;
+      font-family: 'Playfair Display', serif;
+    }
+    .btn-view:hover{transform:translateY(-1px);filter:brightness(1.05)}
+    .btn-cart{
+      width:44px;height:44px;border:none;border-radius:50%;cursor:pointer;
+      background: linear-gradient(135deg,var(--pink-3),var(--pink-1));
+      box-shadow:0 6px 16px rgba(230,166,176,.35);transition:.25s;
+      position: relative;
+    }
+    .btn-cart::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 22px;
+      height: 22px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>') no-repeat center;
+      background-size: contain;
+    }
+    .btn-cart:hover{transform:scale(1.08);filter:brightness(1.06)}
+
+    .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:58px;height:58px;border:none;border-radius:50%;cursor:pointer;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);box-shadow:0 10px 26px rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center;transition:.25s;z-index:30}
+    .nav-btn:hover{background:rgba(255,255,255,.26)}
+    .nav-prev{left:20px}
+    .nav-next{right:20px}
+    .nav-btn img{width:28px;height:28px;filter:drop-shadow(0 3px 8px rgba(0,0,0,.35))}
+
+    .load-more{margin-top:8px;padding:11px 26px;border-radius:26px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,var(--pink-3),var(--pink-2));color:#fff;font-weight:700;
+      box-shadow:0 6px 16px rgba(230,166,176,.4);transition:.25s;
+      font-family: 'Playfair Display', serif;
+      transition: all 0.6s ease;
+      z-index: 20;
+    }
+    .load-more:hover{transform:translateY(-1px);filter:brightness(1.05)}
+
+    .grid-wrap{display:none;width:100%;max-width:1280px;padding:0 16px;animation:fadeIn .8s ease forwards; z-index: 20;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0 14px;
+    }
+    .grid-title{
+      color:var(--pink-1);
+      margin: 0; 
+      font:700 1.6rem 'Playfair Display',serif; 
+    }
+    
+    .btn-back {
+      padding: 8px 18px;
+      border-radius: 26px;
+      border: 1.5px solid var(--pink-2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      color: var(--pink-1);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .25s;
+    }
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: var(--pink-1);
+      transform: translateY(-1px);
+    }
+
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; width: 100%; }
+    .product-card { 
+      background: #fff; border: 1px solid rgba(230,166,176,0.3); border-radius: 16px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden; transition: all 0.3s ease; 
+      display: flex; flex-direction: column; position: relative;
+    }
+    .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(230,166,176,0.15); border-color: var(--pink-3); }
+
+    .product-image-container { position: relative; overflow: hidden; }
+    .product-img { width: 100%; height: 260px; object-fit: cover; transition: opacity 0.4s ease; }
+    .hover-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; z-index: 1; }
+    .product-card:hover .product-img { opacity: 0; }
+    .product-card:hover .hover-image { opacity: 1; }
+
+    .badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: white;
+    }
+    .badge-new { background: var(--pink-3); }
+    .badge-sale { background: #FF6B6B; }
+
+    .info { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; color: var(--brown); }
+    .info h3 { font-size: 1.1rem; margin: 0 0 6px; color: var(--brown); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .info p { font-size: 0.9rem; color: #866e6e; margin: 4px 0; flex-grow: 1; }
+    .meta { font-size: 0.8rem; color: #9b7c7c; margin: 4px 0; }
+    .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f5f5f5; }
+    .price { color: var(--pink-3); font-weight: bold; font-size: 1.2rem; }
+    .original-price { text-decoration: line-through; color: #aaa; font-size: 0.9rem; margin-left: 6px; }
+    .rating { display: flex; align-items: center; font-size: 0.9rem; color: #9b7c7c; }
+    .star { width: 16px; height: 16px; color: gold; margin-right: 3px; }
+
+    .buttons { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+    .quantity-input { width: 50px; padding: 6px; border: 1px solid #eee; border-radius: 6px; font-size: 14px; text-align: center; font-family: 'Playfair Display', serif; }
+    .quantity-input:focus { border-color: var(--pink-3); outline: none; }
+
+    .btn-outline {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--pink-3), var(--pink-2));
+      border: 1.5px solid var(--pink-3);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      position: relative;
+    }
+    .btn-outline::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: url('../1.homepage/images/shopping.png') no-repeat center;
+      background-size: contain;
+    }
+    .btn-outline:hover {
+      background-color: #fdf5f5;
+      border-color: var(--pink-2);
+      transform: scale(1.1);
+    }
+
+    .sakura-btn {
+      all: unset;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5em 1.4em;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      isolation: isolate;
+      transition: transform .25s ease;
+      z-index: 0;
+      flex: 1;
+      height: 44px;
+      box-sizing: border-box;
+    }
+    .sakura-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, var(--pink-3), var(--pink-2));
+      transform: scale(0.93);
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+      z-index: 0;
+      box-shadow: 0 4px 12px rgba(230,166,176,0.3);
+    }
+    .sakura-btn:hover::before {
+      transform: scale(1.04);
+      background: linear-gradient(135deg, var(--pink-2), var(--pink-3));
+      box-shadow: 0 6px 16px rgba(230,166,176,0.4);
+    }
+    .sakura-btn:active::before { transform: scale(0.96); }
+    .sakura-btn::after {
+      content: "";
+      position: absolute;
+      top: -0.9em;
+      right: -0.55em;
+      width: 1.7em;
+      height: 1.7em;
+      background: radial-gradient(circle at 40% 35%, #FFD6E8 15%, #F9A7C3 45%, #E36C9D 75%, transparent 100%);
+      clip-path: path("M24 4C24 4 18 0 12 6C6 0 0 4 0 10C0 18 12 24 12 24C12 24 24 18 24 10C24 4 18 0 12 6Z");
+      filter: drop-shadow(0 2px 5px rgba(230,166,176,0.5));
+      transform: scale(0);
+      opacity: 0;
+      transition: transform .35s ease, opacity .35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .sakura-btn:hover::after {
+      transform: scale(1.2);
+      opacity: 1;
+      animation: heartFloatSoft 1.6s ease-in-out infinite;
+    }
+    @keyframes heartFloatSoft {
+      0%,100% { transform: scale(1.2) translateY(0); }
+      50% { transform: scale(1.25) translateY(-6px); }
+    }
+    .sakura-btn span {
+      position: relative;
+      z-index: 3;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(230,166,176,0.45);
+    }
+    
+    /* ============================================= */
+    /* ===== CSS CHO TEAM/BRAND CAROUSEL (3D) ===== */
+    /* ============================================= */
+    
+    .team-section-container {
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 60px;
+      padding: 40px 20px;
+      z-index: 20;
+      position: relative;
+    }
+
+    .team-main-container {
+      display: flex;
+      width: 100%;
+      gap: 60px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .team-carousel-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .team-controls-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      padding-left: 40px;
+    }
+
+    .team-carousel-viewport {
+      width: 100%;
+      max-width: 500px;
+      height: 400px;
+      position: relative;
+      perspective: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team-carousel-viewport .team-nav-arrow {
+      display: none; 
+    }
+
+    .team-carousel-track {
+      width: 450px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .team-card { 
+      position: absolute;
+      width: 400px;
+      height: 225px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+    }
+
+    .team-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .team-card.center {
+      z-index: 10;
+      transform: scale(1.1) translateZ(0);
+    }
+
+    .team-card.center img {
+      filter: none;
+    }
+
+    .team-card.up-2 {
+      z-index: 1;
+      transform: translateY(-300px) scale(0.8) translateZ(-300px);
+      opacity: 0.7;
+    }
+
+    .team-card.up-2 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.up-1 {
+      z-index: 5;
+      transform: translateY(-150px) scale(0.9) translateZ(-100px);
+      opacity: 0.9;
+    }
+
+    .team-card.up-1 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.down-1 {
+      z-index: 5;
+      transform: translateY(150px) scale(0.9) translateZ(-100px);
+      opacity: 0.9;
+    }
+
+    .team-card.down-1 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.down-2 {
+      z-index: 1;
+      transform: translateY(300px) scale(0.8) translateZ(-300px);
+      opacity: 0.7;
+    }
+
+    .team-card.down-2 img {
+      filter: grayscale(100%);
+    }
+
+    .team-card.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .team-member-info {
+      text-align: center;
+      margin-top: 20px;
+      transition: all 0.5s ease-out;
+    }
+
+    .team-member-name {
+      color: transparent;
+      background: linear-gradient(135deg, #E6A6B0 0%, #FADADD 40%, #FFF9F9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 4px 12px rgba(230, 166, 176, 0.4);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: brandFadeIn 0.8s ease forwards;
+    }
+
+    @keyframes brandFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+        filter: blur(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    .team-member-role {
+      color: #F9C6CF;
+      font-size: 1.2rem;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      text-shadow: 0 2px 10px rgba(249, 198, 207, 0.5);
+      animation: brandFadeIn 1s ease 0.1s forwards;
+    }
+
+    .team-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .team-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(250, 218, 221, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .team-dot.active {
+      background: var(--pink-1);
+      transform: scale(1.2);
+    }
+
+    .team-nav-arrow {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #F9C6CF, #E6A6B0);
+      box-shadow: 0 8px 20px rgba(230, 166, 176, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      outline: none;
+      z-index: 30;
+    }
+
+    .team-nav-arrow:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(230, 166, 176, 0.45);
+    }
+
+    .team-nav-arrow img {
+      width: 32px;
+      height: 32px;
+      filter: brightness(0) invert(1);
+      transition: transform 0.3s ease;
+    }
+
+    .team-nav-arrow:hover img {
+      transform: scale(1.1);
+    }
+
+    .team-nav-controls {
+      display: flex;
+      flex-direction: row;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 🎯 THÊM: Loading animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #E6A6B0;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    /* 🎯 THÊM: Notification styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #E6A6B0;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .notification.error {
+      background: #FF6B6B;
+    }
+
+    /* 📱 Responsive fixes */
+    @media (max-width: 768px) {
+      main {
+        padding-bottom: 80px;
+      }
+
+      .carousel-wrap {
+        padding-bottom: 60px;
+      }
+
+      .carousel {
+        min-height: 420px;
+        padding: 0 20px;
+      }
+
+      .carousel-item {
+        --width: clamp(200px, 70vw, 260px);
+        --height: clamp(300px, 80vw, 380px);
+      }
+
+      .glass-bottom {
+        height: 45%;
+        padding: 12px 10px;
+      }
+
+      .btn-view {
+        font-size: 0.9rem;
+        padding: 0 16px;
+        height: 38px;
+      }
+
+      .watermark span {
+        font-size: clamp(20px, 8vw, 32px);
+        right: 10px;
+        top: 60px;
+      }
+
+      .team-main-container {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+        max-width: 100%;
+      }
+
+      .team-carousel-section {
+        flex: none;
+        width: 100%;
+      }
+
+      .team-controls-section {
+        flex: none;
+        width: 100%;
+        padding-left: 0;
+        gap: 20px;
+      }
+
+      .team-carousel-viewport {
+        height: 60vh;
+        max-width: 350px;
+      }
+
+      .team-carousel-viewport .team-nav-arrow {
+        display: flex;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70px;
+        height: 70px;
+        margin: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      .team-carousel-viewport .team-nav-arrow.up {
+        top: 20px;
+        transform: translateX(-50%);
+      }
+
+      .team-carousel-viewport .team-nav-arrow.down {
+        bottom: 20px;
+        transform: translateX(-50%);
+      }
+
+      .team-nav-controls {
+        display: none;
+      }
+
+      .team-card {
+        width: 320px;
+        height: 180px;
+      }
+
+      .team-carousel-track {
+        width: 350px;
+      }
+
+      .team-card.up-2 {
+        transform: translateY(-160px) scale(0.8) translateZ(-300px);
+      }
+
+      .team-card.up-1 {
+        transform: translateY(-80px) scale(0.9) translateZ(-100px);
+      }
+
+      .team-card.down-1 {
+        transform: translateY(80px) scale(0.9) translateZ(-100px);
+      }
+
+      .team-card.down-2 {
+        transform: translateY(160px) scale(0.8) translateZ(-300px);
+      }
+
+      .team-member-name {
+        font-size: 1.8rem;
+      }
+
+      .team-member-role {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carousel {
+        padding: 0 10px;
+        min-height: 350px;
+      }
+      
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+      }
+    }
+
+    /* 🎯 THÊM: Smooth transitions */
+    .carousel-item, .product-card, .btn-view, .sakura-btn, .nav-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 🎯 THÊM: Focus styles for accessibility */
+    .btn-view:focus, .sakura-btn:focus, .nav-btn:focus, .load-more:focus {
+      outline: 2px solid #E6A6B0;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header-placeholder"><div style="text-align:center;padding:16px;color:#ddd">Loading Header…</div></div>
+  
+  <!-- 🌈 Nền blob động -->
+  <svg preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
+    <defs>
+      <style>
+        @keyframes rotate {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .out-top { animation: rotate 20s linear infinite; transform-origin: 13px 25px; }
+        .in-top { animation: rotate 10s linear infinite; transform-origin: 13px 25px; }
+        .out-bottom { animation: rotate 25s linear infinite; transform-origin: 84px 93px; }
+        .in-bottom { animation: rotate 15s linear infinite; transform-origin: 84px 93px; }
+      </style>
+    </defs>
+
+    <path fill="#FADADD" class="out-top"
+          d="M37 -5C25.1 -14.7,5.7 -19.1,-9.2 -10C-28.5 1.8,-32.7 31.1,-19.8 49C-4.3 70.5,32.8 71,47.4 51.3C59.4 35,53.7 8.5,37 -5Z"/>
+    <path fill="#F9C6CF" class="in-top"
+          d="M20.6 4.1C11.6 1.5,-1.9 2.5,-8 11.2C-16.3 23.1,-8.2 45.6,7.4 50C23 54.4,42.1 38.9,41 24.5C40.2 14.1,29.4 6.6,20.6 4.1Z"/>
+    <path fill="#E6A6B0" class="out-bottom"
+          d="M105.9 48.6C93.5 40.4,76.6 43.8,66.5 49.4C43.1 62.2,28.8 101.3,47.4 123.5C69.3 150.3,114.4 143.5,126.5 122.6C134.1 109.3,128.3 91.5,124.2 78.8C117.6 63.3,114.7 54.3,105.9 48.6Z"/>
+    <path fill="#FDEDEA" class="in-bottom"
+          d="M102 67.1C92.4 61,80 64,72.5 69.1C57.1 79.8,52.9 106.6,64.9 116.9C76.9 127.2,100.4 123.3,109 106.9C115.5 92.6,113.9 74.6,102 67.1Z"/>
+  </svg>
+
+  <main>
+    <div class="watermark" id="watermark"><span>BEST&nbsp;SELLER</span></div>
+
+    <div class="carousel-wrap" id="carouselSection">
+      <button class="nav-btn nav-prev" id="btnPrev">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z'/></svg>" alt="Previous">
+      </button>
+      <div class="carousel" id="carousel">
+        <div class="loading-spinner"></div>
+      </div>
+      <button class="nav-btn nav-next" id="btnNext">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'/></svg>" alt="Next">
+      </button>
+    </div>
+
+    <button class="load-more" id="btnLoadMore">Load More</button>
+
+    <section class="grid-wrap" id="gridSection">
+      <div class="grid-header">
+        <button class="btn-back" id="btnBackToCarousel">&larr; Back to Best Sellers</button>
+      </div>
+      <div class="products-grid" id="grid"></div>
+    </section>
+    
+    <section class="team-section-container" id="teamSection">
+      <div class="team-main-container">
+          <div class="team-carousel-section">
+              <div class="team-carousel-viewport">
+                  <button class="team-nav-arrow up">
+                      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z'/></svg>" alt="Up">
+                  </button>
+                  
+                  <div class="team-carousel-track" id="teamCarouselTrack">
+                      <div class="team-card" data-index="0" style="background: #eee;"></div>
+                  </div>
+                  
+                  <button class="team-nav-arrow down">
+                      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/></svg>" alt="Down">
+                  </button>
+              </div>
+          </div>
+
+          <div class="team-controls-section">
+              <div class="team-nav-controls">
+                  <button class="team-nav-arrow up">
+                      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z'/></svg>" alt="Up">
+                  </button>
+                  <button class="team-nav-arrow down">
+                      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/></svg>" alt="Down">
+                  </button>
+              </div>
+
+              <div class="team-member-info">
+                  <h2 class="team-member-name">Loading...</h2>
+                  <p class="team-member-role">Brands</p>
+              </div>
+
+              <div class="team-dots" id="teamDotsContainer">
+                  <div class="team-dot active" data-index="0"></div>
+              </div>
+          </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"><div style="text-align:center;padding:20px;color:#ddd">Loading Footer…</div></div>
+
+  <script>
+  // =============================================
+  // ===== SCRIPT TRANG BEST-SELLER (ĐÃ SỬA) =====
+  // =============================================
+  const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=500&fit=crop';
+  const DEFAULT_BRAND_IMAGE = 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=500&fit=crop';
+
+  async function loadHTML(url, id) {
+    const el = document.getElementById(id);
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      el.innerHTML = await res.text();
+      return true;
+    } catch (e) {
+      console.error(`Error loading ${url}:`, e);
+      el.innerHTML = '<p style="color:red;text-align:center;">Error loading component</p>';
+      return false;
+    }
+  }
+
+  let PRODUCTS = [], active = 0, progress = 50, $items = [];
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const speedWheel = 0.02, speedDrag = -0.1;
+  let isDown = false, startX = 0;
+
+  const carouselEl = document.getElementById('carousel');
+  const gridEl = document.getElementById('grid');
+  const gridWrap = document.getElementById('gridSection');
+  const carouselWrap = document.getElementById('carouselSection');
+  const watermarkEl = document.getElementById('watermark');
+
+  // 🎯 Hàm hiển thị thông báo
+  function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type === 'error' ? 'error' : ''}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+    setTimeout(() => {
+      notification.style.transform = 'translateX(100%)';
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  }
+
+  // 🎯 Hàm cập nhật giỏ hàng
+  function updateCartCount() {
+    try {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const cartIcons = document.querySelectorAll('.cart-count');
+      cartIcons.forEach(icon => {
+        if (icon) icon.textContent = count;
+      });
+    } catch (error) {
+      console.warn('Cannot update cart count:', error);
+    }
+  }
+
+  // 🎯 Hàm thêm vào giỏ hàng
+  function addToCart(id, btn) {
+    try {
+      const qtyInput = btn.previousElementSibling;
+      const qty = parseInt(qtyInput?.value) || 1;
+      const product = PRODUCTS.find(p => p.id === id);
+      
+      if (!product) {
+        showNotification('Sản phẩm không tồn tại!', 'error');
+        return;
+      }
+
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ ...product, qty });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      showNotification(`${product.name} (x${qty}) đã được thêm vào giỏ hàng!`);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      showNotification('Có lỗi xảy ra khi thêm vào giỏ hàng!', 'error');
+    }
+  }
+
+  // 🎯 Hàm xem chi tiết
+  function viewDetail(id) {
+    window.location.href = `view_detail.html?id=${id}`;
+  }
+
+  // 🎯 Hàm render carousel item
+  function cardHTML(p, i) {
+    const img = p.images?.[0] || DEFAULT_IMAGE;
+    return `
+      <div class="carousel-item">
+        <div class="carousel-box">
+          <img src="${img}" alt="${p.name}" onerror="this.src='${DEFAULT_IMAGE}'">
+          <div class="num">${String(i + 1).padStart(2, '0')}</div>
+          <div class="glass-bottom">
+            <h3>${p.name}</h3>
+            <p class="brand">${p.brand || ''}</p>
+            <p class="price">$${p.price}</p>
+            <div class="overlay-btns">
+              <button class="btn-view" onclick="viewDetail(${p.id})">View Detail</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // 🎯 Hàm render grid
+  function renderGrid() {
+    gridEl.innerHTML = PRODUCTS.map(p => {
+      const img1 = p.images?.[0] || DEFAULT_IMAGE;
+      const img2 = p.images?.[1] || img1;
+      const hasSale = p.originalPrice && p.originalPrice > p.price;
+      const isNew = p.isNew === true;
+      const rating = p.rating || 0;
+
+      return `
+        <div class="product-card">
+          <div class="product-image-container">
+            ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
+            ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
+            <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='${DEFAULT_IMAGE}'">
+            <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
+          </div>
+          <div class="info">
+            <h3 title="${p.name}">${p.name}</h3>
+            <div class="meta">SKU: ${p.id} • ${p.brand}</div>
+            <div class="actions">
+              <div>
+                <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
+                ${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}
+              </div>
+              ${rating > 0 ? `<div class="rating"><i class="fas fa-star star"></i> ${rating.toFixed(1)}</div>` : ''}
+            </div>
+            <div class="buttons">
+              <input type="number" value="1" min="1" class="quantity-input">
+              <button class="btn-outline" onclick="addToCart(${p.id}, this)"></button>
+              <button class="sakura-btn" onclick="viewDetail(${p.id})"><span>View Details</span></button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // 🎯 Các hàm carousel
+  function renderCarousel() {
+    carouselEl.innerHTML = PRODUCTS.slice(0, 10).map(cardHTML).join('');
+    $items = carouselEl.querySelectorAll('.carousel-item');
+    $items.forEach(it => it.style.setProperty('--items', $items.length));
+    initCarouselInteractions();
+    updateCarousel();
+  }
+
+  function getZIndex(arr, i) {
+    return arr.map((_, j) => i === j ? arr.length : arr.length - Math.abs(i - j));
+  }
+
+  function updateCarousel() {
+    if ($items.length === 0) return;
+    progress = Math.max(0, Math.min(progress, 100));
+    active = Math.round(progress / 100 * (Math.max($items.length - 1, 1)));
+
+    const zmap = getZIndex([...$items], active);
+    $items.forEach((it, i) => {
+      it.style.setProperty('--zIndex', zmap[i]);
+      it.style.setProperty('--active', (i - active) / Math.max($items.length, 1));
+    });
+  }
+
+  function initCarouselInteractions() {
+    document.addEventListener('mousedown', e => { 
+      isDown = true; 
+      startX = e.clientX; 
+    });
+    
+    document.addEventListener('mouseup', () => { 
+      isDown = false; 
+    });
+    
+    document.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      const move = (e.clientX - startX) * speedDrag;
+      progress += move;
+      startX = e.clientX;
+      updateCarousel();
+    });
+    
+    document.addEventListener('wheel', e => {
+      progress += e.deltaY * speedWheel;
+      updateCarousel();
+    }, { passive: true });
+
+    $items.forEach((card, i) => {
+      card.addEventListener('click', () => {
+        active = i;
+        progress = ($items.length > 1 ? active / ($items.length - 1) : 0) * 100;
+        updateCarousel();
+      });
+    });
+
+    document.getElementById('btnPrev').onclick = () => {
+      active = (active - 1 + $items.length) % $items.length;
+      progress = (active / ($items.length - 1)) * 100;
+      updateCarousel();
+    }
+
+    document.getElementById('btnNext').onclick = () => {
+      active = (active + 1) % $items.length;
+      progress = (active / ($items.length - 1)) * 100;
+      updateCarousel();
+    }
+  }
+
+  // 🎯 Team Carousel
+  async function initTeamCarousel() {
+    let fetchedBrands = [];
+    
+    try {
+      const response = await fetch('./brand.json');
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      fetchedBrands = data.brands || [];
+    } catch (e) {
+      console.error("Failed to load brand.json", e);
+      // Fallback brands
+      fetchedBrands = [
+        { name: "Dior", slogan: "Luxury Beauty", image: DEFAULT_BRAND_IMAGE },
+        { name: "Chanel", slogan: "Elegance & Style", image: DEFAULT_BRAND_IMAGE },
+        { name: "Gucci", slogan: "Italian Luxury", image: DEFAULT_BRAND_IMAGE },
+        { name: "Lancôme", slogan: "French Elegance", image: DEFAULT_BRAND_IMAGE },
+        { name: "YSL", slogan: "Modern Luxury", image: DEFAULT_BRAND_IMAGE }
+      ];
+    }
+
+    const teamTrack = document.getElementById('teamCarouselTrack');
+    const teamDotsContainer = document.getElementById('teamDotsContainer');
+    
+    teamTrack.innerHTML = fetchedBrands.map((brand, index) => 
+      `<div class="team-card" data-index="${index}">
+        <img src="${brand.image}" alt="${brand.name}" onerror="this.src='${DEFAULT_BRAND_IMAGE}'">
+      </div>`
+    ).join('');
+    
+    teamDotsContainer.innerHTML = fetchedBrands.map((_, index) => 
+      `<div class="team-dot" data-index="${index}"></div>`
+    ).join('');
+
+    const teamCards = document.querySelectorAll(".team-card");
+    const teamDots = document.querySelectorAll(".team-dot");
+    const teamMemberName = document.querySelector(".team-member-name");
+    const teamMemberRole = document.querySelector(".team-member-role");
+    const teamUpArrows = document.querySelectorAll(".team-nav-arrow.up");
+    const teamDownArrows = document.querySelectorAll(".team-nav-arrow.down");
+
+    let teamCurrentIndex = 0;
+    let teamIsAnimating = false;
+
+    function updateTeamCarousel(newIndex) {
+      if (teamIsAnimating) return;
+      teamIsAnimating = true;
+
+      teamCurrentIndex = (newIndex + teamCards.length) % teamCards.length;
+      const currentBrand = fetchedBrands[teamCurrentIndex];
+
+      teamCards.forEach((card, i) => {
+        const offset = (i - teamCurrentIndex + teamCards.length) % teamCards.length;
+        card.classList.remove("center", "up-1", "up-2", "down-1", "down-2", "hidden");
+
+        if (offset === 0) {
+          card.classList.add("center");
+        } else if (offset === 1) {
+          card.classList.add("down-1");
+        } else if (offset === 2) {
+          card.classList.add("down-2");
+        } else if (offset === teamCards.length - 1) {
+          card.classList.add("up-1");
+        } else if (offset === teamCards.length - 2) {
+          card.classList.add("up-2");
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+
+      teamDots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === teamCurrentIndex);
+      });
+
+      if(teamMemberName && teamMemberRole) {
+        teamMemberName.style.opacity = "0";
+        teamMemberRole.style.opacity = "0";
+        
+        setTimeout(() => {
+          teamMemberName.textContent = currentBrand.name;
+          teamMemberRole.textContent = currentBrand.slogan;
+
+          teamMemberName.style.animation = "none";
+          teamMemberRole.style.animation = "none";
+          void teamMemberName.offsetWidth;
+          void teamMemberRole.offsetWidth;
+
+          teamMemberName.style.animation = "brandFadeIn 0.8s ease forwards";
+          teamMemberRole.style.animation = "brandFadeIn 1s ease 0.1s forwards";
+        }, 300);
+      }
+
+      setTimeout(() => {
+        teamIsAnimating = false;
+      }, 800);
+    }
+
+    teamUpArrows.forEach(arrow => {
+      arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex - 1));
+    });
+
+    teamDownArrows.forEach(arrow => {
+      arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex + 1));
+    });
+
+    teamDots.forEach((dot, i) => {
+      dot.addEventListener("click", () => updateTeamCarousel(i));
+    });
+
+    teamCards.forEach((card, i) => {
+      card.addEventListener("click", () => updateTeamCarousel(i));
+    });
+
+    // Touch support
+    let teamTouchStartY = 0;
+    let teamTouchEndY = 0;
+    const teamSectionEl = document.getElementById('teamSection');
+
+    if (teamSectionEl) {
+      teamSectionEl.addEventListener("touchstart", (e) => {
+        teamTouchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      
+      teamSectionEl.addEventListener("touchend", (e) => {
+        teamTouchEndY = e.changedTouches[0].screenY;
+        handleTeamSwipe();
+      });
+    }
+
+    function handleTeamSwipe() {
+      const swipeThreshold = 50;
+      const diff = teamTouchStartY - teamTouchEndY;
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          updateTeamCarousel(teamCurrentIndex + 1);
+        } else {
+          updateTeamCarousel(teamCurrentIndex - 1);
+        }
+      }
+    }
+
+    updateTeamCarousel(0);
+  }
+
+  // 🎯 Hàm khởi tạo chính
+  (async function init() {
+    try {
+      console.log('🚀 Starting Best Seller page...');
+
+      // Load header và footer
+      await Promise.all([
+        loadHTML('./header.html', 'header-placeholder'),
+        loadHTML('./footer.html', 'footer-placeholder')
+      ]);
+
+      updateCartCount();
+
+      // Load sản phẩm
+      const res = await fetch('./full.json');
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      
+      const data = await res.json();
+      PRODUCTS = data.products || [];
+      
+      console.log(`✅ Loaded ${PRODUCTS.length} products`);
+
+      if (PRODUCTS.length === 0) {
+        carouselEl.innerHTML = '<p style="color:#6B4C3B;text-align:center;padding:40px;">No products available</p>';
+        return;
+      }
+
+      renderCarousel();
+
+      // Load More button
+      const btnLoadMore = document.getElementById('btnLoadMore');
+      btnLoadMore.addEventListener('click', function() {
+        carouselWrap.style.opacity = '0';
+        watermarkEl.style.opacity = '0';
+        this.style.opacity = '0';
+
+        setTimeout(() => {
+          carouselWrap.style.display = 'none';
+          watermarkEl.style.display = 'none';
+          this.style.display = 'none';
+          if (gridEl.innerHTML === "") {
+            renderGrid();
+          }
+          gridWrap.style.display = 'block';
+        }, 600);
+      });
+
+      // Back to Carousel button
+      document.getElementById('btnBackToCarousel').addEventListener('click', function() {
+        gridWrap.style.display = 'none';
+        carouselWrap.style.display = 'flex';
+        watermarkEl.style.display = 'block';
+        btnLoadMore.style.display = 'inline-block';
+
+        setTimeout(() => {
+          carouselWrap.style.opacity = '1';
+          watermarkEl.style.opacity = '1';
+          btnLoadMore.style.opacity = '1';
+        }, 50);
+      });
+
+      // Khởi tạo team carousel
+      await initTeamCarousel();
+
+    } catch (error) {
+      console.error('❌ Initialization error:', error);
+      carouselEl.innerHTML = `
+        <div style="color:#6B4C3B;text-align:center;padding:40px;">
+          <p>⚠️ Có lỗi xảy ra khi tải trang</p>
+          <button onclick="location.reload()" style="
+            background: #E6A6B0; color: white; border: none; 
+            padding: 10px 20px; border-radius: 20px; cursor: pointer;
+            margin-top: 10px; font-family: 'Playfair Display', serif;">
+            Thử lại
+          </button>
+        </div>
+      `;
+    }
+  })();
+  </script>
+</body>
+</html>
