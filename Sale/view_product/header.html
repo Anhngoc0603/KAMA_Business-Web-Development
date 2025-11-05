@@ -1,97 +1,296 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>KAMA</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='../../header_footer/style.css'>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KAMA</title>
+  <link rel='stylesheet' type='text/css' media='screen' href='../../header_footer/style.css'>
+  
+  <style>
+    /* === LOGO CHÍNH GIỮA - RESPONSIVE === */
+    .header {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 90px 12px 50px; /* Trái: menu-toggler | Phải: icons | Giữa: logo */
+      background: var(--petal-white);
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+
+    .logo-wrapper {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .logo-wrapper a {
+      display: block;
+      text-decoration: none;
+    }
+
+    .logo-wrapper img {
+      width: 180px;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-wrapper a:hover img {
+      transform: scale(1.05);
+    }
+
+    /* === MENU TOGGLER (mobile only) === */
+    .menu-toggler {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      z-index: 11;
+    }
+
+    .menu-toggler img {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* === NAV ICONS (phải) === */
+    .header nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      z-index: 11;
+    }
+
+    .header nav a img {
+      width: 28px;
+      height: 28px;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+
+    .header nav a:hover img {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    /* === SEARCH BOX === */
+    .search {
+      position: relative;
+      max-width: 200px;
+    }
+
+    .search .icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 8px 12px 8px 38px;
+      border: 1px solid var(--soft-rose);
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+      font-family: "Playfair Display", serif;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search input:focus {
+      border-color: var(--warm-blush);
+      box-shadow: 0 0 0 3px rgba(230, 166, 176, 0.2);
+    }
+
+    /* === MOBILE RESPONSIVE === */
+    @media (max-width: 900px) {
+      .header {
+        padding: 10px 70px 10px 20px;
+      }
+
+      .logo-wrapper img {
+        width: 130px;
+      }
+
+      .menu-toggler {
+        display: block !important;
+      }
+
+      /* Ẩn input, chỉ hiện icon search */
+      .search {
+        max-width: 40px;
+      }
+
+      .search input {
+        display: none !important;
+      }
+
+      .search .icon {
+        position: static;
+        transform: none;
+        width: 24px;
+        height: 24px;
+        opacity: 0.8;
+        cursor: pointer;
+      }
+
+      /* Ẩn account & contact icon trên mobile */
+      .acc-icon, .contact-icon {
+        display: none;
+      }
+
+      .header nav {
+        gap: 16px;
+      }
+
+      .header nav a img {
+        width: 26px;
+        height: 26px;
+      }
+
+      /* Ẩn overlay search trên mobile */
+      .search-overlay {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<header>
-<!--Thanh thông báo chính của web-->
-    <div class="announcement-container">
-        <div class="announcement-wrapper" id="announcementWrapper">
-        <div class="announcement-slide">Free Shipping On Orders Over $100</div>
-        <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
-        </div>
-    </div>
-<!--Header của trang-->
-    <div class="header">
-        <button class="menu-toggler" id="menu-toggler"><img src="../../header_footer/images/nav.png"></button>        
-        <img src="../../header_footer/images/LOGO.png" alt="LOGO" class="logo">
-        <nav>
-            <div class="search">
-                <img src="../../header_footer/images/find.png" class="icon">
-                <input type="search" placeholder="Search for...">
-            </div>
-            
-            <a href="#" class="acc-icon"><img src="../../header_footer/images/account.png"></a>
-            <a href="../contact.html/contact.html" class="contact-icon"><img src="../../header_footer/images/contact.png"></a>
-            <a href="../cart/cart.html" class="cart-icon"><img src="../../header_footer/images/shopping.png" ></a>
-        </nav>
-    </div>
- <!--Menu điều hướng đến các trang sản phẩm-->
-    <nav class="navbar" id="navbar">
-            <a href="../new/new_arrival.html">NEW</a>
-            <a href="#">BEST SELLERS</a>
-            <a href="../Sale/sale.html">SALE</a>
-            <a href="../categories/categories.html" class="shop-all">CATEGORIES</a>
-            <div class="menu-categories">
-                <div class="categories-wrapper">
-                    <div class="category" data-category="Face">
-                        <div class="category-header">
-                            <h3><a href="#">FACE</a></h3>
-                            <button class="next-btn"><img src="../../header_footer/images/next-arrow.png" alt="Next"></button>
-                        </div>
-                        <ul class="product-list">
-                            <li>Blush</li>
-                            <li>Primer</li>
-                            <li>Concealer</li>
-                            <li>Finish Powder</li>
-                            <li>Contour & Highlighter</li>
-                            <li>Makeup Cleansing Balm</li>
-                            <li class="shop-all-link">Shop All Face</li>
-                        </ul>
-                    </div>
 
-                    <div class="category" data-category="Eyes">
-                        <div class="category-header">
-                            <h3><a href="#">EYES</a></h3>
-                            <button class="next-btn"><img src="../../header_footer/images/next-arrow.png" alt="Next"></button>
-                        </div>
-                    <ul class="product-list">
-                        <li>Makeup Palette</li>
-                        <li>Eyebrow Enhancer</li>
-                        <li>Mascara</li>
-                        <li>Eyeliner</li>
-                        <li class="shop-all-link">Shop All Eyes</li>
-                    </ul>
-                    </div>
-                    
-                    <div class="category" data-category="Lips">
-                        <div class="category-header">
-                            <h3><a href="#">LIPS</a></h3>
-                            <button class="next-btn"><img src="../../header_footer/images/next-arrow.png" alt="Next"></button>
-                        </div>
-                    <ul class="product-list">
-                        <li>Lip Cream</li>
-                        <li>Lipstick</li>
-                        <li>Lip Gloss</li>
-                        <li>Lip Lacquer</li>
-                        <li>Lip Glaze</li>
-                        <li>Lip Jelly</li>
-                        <li>Lip Mask</li>
-                        <li class="shop-all-link">Shop All Lips</li>
-                    </ul>
-                    </div>
-                </div>
-            </div>
-    </nav>
-</header>
-<div class="search-overlay" id="searchOverlay">
-    <div class="search-wrapper">
-        <img src="../../header_footer/images/find.png" class="icon">
-        <input type="search" placeholder="Search for..." autofocus>
-        <button class="close-search"><img src="../../header_footer/images/close.png"></button>
+<header>
+  <!-- Thanh thông báo -->
+  <div class="announcement-container">
+    <div class="announcement-wrapper" id="announcementWrapper">
+      <div class="announcement-slide">Free Shipping On Orders Over $100</div>
+      <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
     </div>
+  </div>
+
+  <!-- Header chính -->
+  <div class="header">
+    <!-- Nút menu (mobile) -->
+    <button class="menu-toggler" id="menu-toggler" aria-label="Toggle menu">
+      <img src="../../header_footer/images/nav.png" alt="Menu">
+    </button>
+
+    <!-- LOGO CHÍNH GIỮA -->
+    <div class="logo-wrapper">
+      <a href="../../1.homepage/html/landingpage.html">
+        <img src="../../header_footer/images/LOGO.png" alt="KAMA Logo">
+      </a>
+    </div>
+
+    <!-- Icons bên phải -->
+    <nav>
+      <div class="search">
+        <img src="../../header_footer/images/find.png" class="icon" alt="Search">
+        <input type="search" placeholder="Search for..." aria-label="Search">
+      </div>
+      <a href="#" class="acc-icon" aria-label="Account">
+        <img src="../../header_footer/images/account.png" alt="Account">
+      </a>
+      <a href="../contact.html/contact.html" class="contact-icon" aria-label="Contact">
+        <img src="../../header_footer/images/contact.png" alt="Contact">
+      </a>
+      <a href="../cart/cart.html" class="cart-icon" aria-label="Cart">
+        <img src="../../header_footer/images/shopping.png" alt="Cart">
+      </a>
+    </nav>
+  </div>
+
+  <!-- Navbar điều hướng -->
+  <nav class="navbar" id="navbar">
+    <a href="../new/new_arrival.html">NEW</a>
+    <a href="../Best_Sellers/bestseller.html">BEST SELLERS</a>
+    <a href="../Sale/sale.html">SALE</a>
+    <a href="../categories/categories.html" class="shop-all">CATEGORIES</a>
+
+    <!-- Dropdown Categories -->
+    <div class="menu-categories">
+      <div class="categories-wrapper">
+        <!-- FACE -->
+        <div class="category" data-category="Face">
+          <div class="category-header">
+            <h3><a href="#">FACE</a></h3>
+            <button class="next-btn" aria-label="Expand Face">
+              <img src="../../header_footer/images/next-arrow.png" alt="Next">
+            </button>
+          </div>
+          <ul class="product-list">
+            <li>Blush</li>
+            <li>Primer</li>
+            <li>Concealer</li>
+            <li>Finish Powder</li>
+            <li>Contour & Highlighter</li>
+            <li>Makeup Cleansing Balm</li>
+            <li class="shop-all-link">Shop All Face</li>
+          </ul>
+        </div>
+
+        <!-- EYES -->
+        <div class="category" data-category="Eyes">
+          <div class="category-header">
+            <h3><a href="#">EYES</a></h3>
+            <button class="next-btn" aria-label="Expand Eyes">
+              <img src="../../header_footer/images/next-arrow.png" alt="Next">
+            </button>
+          </div>
+          <ul class="product-list">
+            <li>Makeup Palette</li>
+            <li>Eyebrow Enhancer</li>
+            <li>Mascara</li>
+            <li>Eyeliner</li>
+            <li class="shop-all-link">Shop All Eyes</li>
+          </ul>
+        </div>
+
+        <!-- LIPS -->
+        <div class="category" data-category="Lips">
+          <div class="category-header">
+            <h3><a href="#">LIPS</a></h3>
+            <button class="next-btn" aria-label="Expand Lips">
+              <img src="../../header_footer/images/next-arrow.png" alt="Next">
+            </button>
+          </div>
+          <ul class="product-list">
+            <li>Lip Cream</li>
+            <li>Lipstick</li>
+            <li>Lip Gloss</li>
+            <li>Lip Lacquer</li>
+            <li>Lip Glaze</li>
+            <li>Lip Jelly</li>
+            <li>Lip Mask</li>
+            <li class="shop-all-link">Shop All Lips</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Search Overlay (chỉ dùng khi cần popup trên desktop) -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-wrapper">
+    <img src="../../header_footer/images/find.png" class="icon" alt="Search">
+    <input type="search" placeholder="Search for..." autofocus aria-label="Search">
+    <button class="close-search" aria-label="Close">
+      <img src="../../header_footer/images/close.png" alt="Close">
+    </button>
+  </div>
 </div>
+
+<!-- Script -->
 <script src="../../header_footer/script.js"></script>
+
 </body>
 </html>
