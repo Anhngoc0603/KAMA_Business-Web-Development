@@ -603,10 +603,6 @@ body {
       .navbar.active {
         display: flex !important;
       }
-      .navbar a:hover {
-        border-bottom: 2px solid #E6A6B0; /* Giữ màu giống desktop để nhất quán */
-        transition: border-bottom-color 0.3s ease; /* Thêm hiệu ứng mượt mà */
-      }
       .shop-all {
         width: 100%;
         display: flex;

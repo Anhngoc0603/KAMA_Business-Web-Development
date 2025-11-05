@@ -113,7 +113,11 @@ document.getElementById("viewallnew").addEventListener("click", function() {
 });
 // Khi người dùng click vào phần tử có id="viewallBestsellers"
 document.getElementById("viewallBestsellers").addEventListener("click", function() {
-  window.location.href = "viewallBestsellers.html"; // Trình duyệt sẽ chuyển sang trang viewallBestsellers.html
+  window.location.href = "../../Best_Sellers/bestseller.html"; // Trình duyệt sẽ chuyển sang trang viewallBestsellers.html
+});
+// Khi người dùng click vào phần tử có id="shopnow"
+document.getElementById("shopnow").addEventListener("click", function() {
+  window.location.href = "../../categories/categories.html"; // Trình duyệt sẽ chuyển sang trang viewallBestsellers.html
 });
   // ================== MENU TOGGLE ==================
   // Elements for header
