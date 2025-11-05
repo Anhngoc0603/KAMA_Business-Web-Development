@@ -97,7 +97,7 @@ body {
     .menu-toggler:hover {
       opacity: 0.7;
     }
-
+    
     .logo {
       width: 200px;
       height: auto;
@@ -603,7 +603,10 @@ body {
       .navbar.active {
         display: flex !important;
       }
-
+      .navbar a:hover {
+        border-bottom: 2px solid #E6A6B0; /* Giữ màu giống desktop để nhất quán */
+        transition: border-bottom-color 0.3s ease; /* Thêm hiệu ứng mượt mà */
+      }
       .shop-all {
         width: 100%;
         display: flex;
@@ -611,7 +614,10 @@ body {
         align-items: center;
         padding: 10px 0;
       }
-
+      .shop-all:hover {
+        border-bottom: 2px solid #E6A6B0; /* Giữ màu giống desktop để nhất quán */
+        transition: border-bottom-color 0.3s ease; /* Thêm hiệu ứng mượt mà nếu cần */
+      }
       .shop-all::after {
         content: "▼";
         font-size: 15px;
