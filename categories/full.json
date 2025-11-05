@@ -49,9 +49,9 @@
       "category": "Face",
       "subtype": "Blush",
       "images": [
-        "./images/2.1.a",
-        "./images/2.2.a",
-        "./images/2.3.a"
+        "./images/2.1.avif",
+        "./images/2.2.avif",
+        "./images/2.3.avif"
       ],
       "description": "Soft rosy blush that gives a healthy radiance with every sweep.",
       "detailedDescription": "Chanel Les Beiges Blush delivers a soft, natural-looking flush that enhances your complexion with a healthy radiance.",
@@ -82,9 +82,8 @@
       "category": "Lips",
       "subtype": "Lipstick",
       "images": [
-        "./images/3.1.a",
-        "./images/3.2.a",
-        "./images/3.3.a"
+        "./images/208.jpg",
+        "./images/505.png"
       ],
       "description": "Rich, creamy matte lipstick with intense color payoff.",
       "detailedDescription": "A new matte lipstick from Gucci Beauty. Delivers vibrant color with a soft, velvety feel. Long-lasting wear without drying the lips.",
@@ -115,8 +114,8 @@
       "category": "Eyes",
       "subtype": "Mascara",
       "images": [
-        "./images/4.1.a",
-        "./images/4.2.a"
+        "./images/4.1.webp",
+        "./images/4.2.webp"
       ],
       "description": "Lash-lifting mascara for fanned-out volume.",
       "detailedDescription": "Achieve lifted, defined lashes with Lancôme Lash Idôle Mascara. Its curved brush grabs every lash for instant lift, length, and clump-free volume.",
@@ -146,9 +145,9 @@
       "category": "Face",
       "subtype": "Primer",
       "images": [
-        "./images/5.1.a",
-        "./images/5.2.a",
-        "./images/5.3.a"
+        "./images/5.1.webp",
+        "./images/5.2.webp",
+        "./images/5.3.webp"
       ],
       "description": "Instant retouch primer that smooths pores and extends makeup wear.",
       "detailedDescription": "Start your makeup routine with the Fenty Beauty Pro Filt'r Instant Retouch Primer. This oil-free primer smooths away the look of pores, evens skin tone and texture, and helps makeup last longer.",
@@ -178,9 +177,7 @@
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "./images/6.1.a",
-        "./images/6.2.a",
-        "./images/6.3.a"
+        "./images/6.1.jpg"
       ],
       "description": "A hydrating matte foundation that blurs imperfections and lasts all day.",
       "detailedDescription": "Experience luxury with Tom Ford's Traceless Soft Matte Foundation. This innovative formula offers medium-to-full coverage with a natural matte finish, while hydrating skin for comfortable, long wear.",
@@ -212,9 +209,9 @@
       "category": "Face",
       "subtype": "Concealer",
       "images": [
-        "./images/7.1.a",
-        "./images/7.2.a",
-        "./images/7.3.a"
+        "./images/7.1.webp",
+        "./images/7.2.jpg",
+        "./images/7.3.jpg"
       ],
       "description": "The iconic highlighting pen that brightens, smooths, and perfects.",
       "detailedDescription": "YSL's Touche Éclat is a cult classic for a reason. This light-infused pen instantly brightens dark circles, smooths fine lines, and highlights features without shimmer or glitter.",
@@ -246,8 +243,8 @@
       "category": "Skincare",
       "subtype": "Moisturizer",
       "images": [
-      "./images/8.1.a",
-      "./images/8.2.a"
+      "./images/8.1.jpg",
+      "./images/8.2.jpg"
       ],
       "description": "A luxurious cream that delivers healing moisture for a vibrant appearance.",
       "detailedDescription": "Indulge in La Mer's Moisturizing Soft Cream. Infused with the legendary Miracle Broth™, this ultra-soft cream deeply hydrates, heals dryness, and restores radiance for a youthful look.",
@@ -275,8 +272,9 @@
       "category": "Eyes",
       "subtype": "Eyeshadow Palette",
       "images": [
-      "./images/9.1.a",
-      "./images/9.2.a"
+      "./images/9.1.webp",
+      "./images/9.2.webp",
+      "./images/9.3.webp"
       ],
       "description": "Iconic eyeshadow palettes with extraordinary textures and cosmic colors.",
       "detailedDescription": "Unleash your inner artist with Pat McGrath Labs Mothership Palettes. Featuring a curated selection of stunning mattes, shimmering metallics, and otherworldly special shades with unparalleled pigment and blendability.",
@@ -308,8 +306,8 @@
       "category": "Skincare",
       "subtype": "Moisturizer",
       "images": [
-      "./images/10.1.a",
-      "./images/10.2.a"
+      "./images/10.1.webp",
+      "./images/10.2.webp"
       ],
       "description": "An instant turnaround moisturizer for hydrated, glowing, plumper-looking skin.",
       "detailedDescription": "Charlotte's famous Magic Cream is a secret weapon for celebrities and models. This rich, hydrating cream features Hyaluronic Acid, Vitamin C, and BioNymph Peptide Complex to flood skin with moisture and create a dewy canvas.",
@@ -337,9 +335,9 @@
       "category": "Face",
       "subtype": "Finish Powder",
       "images": [
-        "./images/11.1.a",
-        "./images/11.2.a",
-        "./images/11.3.a"
+        "./images/11.1.webp",
+        "./images/11.2.webp",
+        "./images/11.3.webp"
       ],
       "description": "Finishing powders that recreate the most flattering types of light.",
       "detailedDescription": "Hourglass Ambient Lighting Powders use Photoluminescent Technology to filter out harsh light and refine the appearance of the complexion. Each powder captures, diffuses, and softens surrounding light.",
@@ -371,9 +369,9 @@
       "category": "Face",
       "subtype": "Foundation",
       "images": [
-        "./images/12.1.a",
-        "./images/12.2.a",
-        "./images/12.3.a"
+        "./images/12.1.webp",
+        "./images/12.2.jpg",
+        "./images/12.3.webp"
       ],
       "description": "Award-winning, oil-free foundation that delivers a luminous, buildable finish.",
       "detailedDescription": "Inspired by charmeuse silk, Armani's Luminous Silk Foundation offers a flawless, radiant finish. The Micro–fil™ technology allows for buildable coverage from sheer to medium, gliding seamlessly onto the skin.",
@@ -405,9 +403,9 @@
       "category": "Face",
       "subtype": "Blush",
       "images": [
-        "./images/13.1.a",
-        "./images/13.2.a",
-        "./images/13.3.a"
+        "./images/13.1.jpg",
+        "./images/13.2.jpg",
+        "./images/13.3.jpg"
       ],
       "description": "Iconic peachy-pink blush with golden shimmer.",
       "detailedDescription": "The universally flattering NARS Orgasm Blush provides a natural-looking flush with a hint of shimmer. Its micronized powder ensures soft, blendable application.",
@@ -437,8 +435,8 @@
       "category": "Lips",
       "subtype": "Lip Oil",
       "images": [
-        "./images/14.1.a",
-        "./images/14.2.a",
+        "./images/14.1.webp",
+        "./images/14.2.webp",
         "./images/14.3.a"
       ],
       "description": "A nurturing lip oil that enhances lip color and provides intense hydration.",
