@@ -297,7 +297,6 @@ body {
       font-size: 20px;
       transition: color 0.3s ease, border-bottom-color 0.3s ease;
       font-family: 'Playfair Display', serif !important;
-      font-weight: bold;
     }
     .navbar a:hover {
       opacity: 0.8;
@@ -461,7 +460,6 @@ body {
     }
 
     .shop-all-link {
-      font-weight: bold;
       color: #E6A6B0 !important;
     }
 
@@ -828,7 +826,7 @@ body {
 .hero-content p { font-size: 16px; }
 .btn {
       display: inline-flex; align-items: center; justify-content: center;
-      padding: 12px 28px; font-weight: 600;
+      padding: 12px 28px; 
       cursor: pointer; transition: all 0.3s ease;
       background: #fff; /* Thay #ff85a1 bằng --warm-blush */
       color: #000;
@@ -1157,7 +1155,7 @@ font-size: 12px;}
 .product-card .infos p{ font-size: .9rem; color: #8c7b7b; margin: .3rem 0; }
 .infos .meta{ font-size: .8rem; margin: .4rem 0; color: #9b7c7c; }
 .infos .action{gap: 170px; display: flex; justify-content: space-between; align-items: center; margin: 1rem 0 .5rem; }
-.infos .price{ color: var(--warm-blush); font-weight: bold; font-size: 1.2rem; }
+.infos .price{ color: var(--warm-blush); font-size: 1.2rem; }
 .infos .rating{ display: flex; align-items: center; font-size: .9rem; color: #9b7c7c; }
 .infos .star{ width: 16px; height: 16px; color: gold; margin-right: 3px; }
 .infos .oldprice{font-size:11px;
@@ -1305,7 +1303,6 @@ opacity:0.4;
       border: none;
       padding: 16px 36px;
       border-radius: 4px;
-      font-weight: bold;
       cursor: pointer;
       letter-spacing: 1.5px;
       transition: background 0.3s;
@@ -1559,7 +1556,6 @@ header .add-to-cart {
 }
 .product-card .info .price {
   color: var(--warm-blush);
-  font-weight: bold;
   margin-top: 8px;
 }
 }
