@@ -1607,3 +1607,40 @@ header .add-to-cart {
   }
 }
 
+/* Logo chính giữa - Desktop & Mobile */
+.header {
+    position: relative; /* Để logo absolute so với header */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 180px;
+    height: auto;
+    z-index: 10;
+    display: block;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Mobile: nhỏ logo hơn */
+@media (max-width: 900px) {
+    .header {
+        padding: 10px 20px;
+    }
+
+    .logo {
+        width: 130px; /* Nhỏ hơn trên mobile */
+    }
+}

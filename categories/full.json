@@ -85,7 +85,9 @@
       "category": "Lips",
       "subtype": "Lipstick",
       "images": [
-        "./images/3.1.webp"
+        "./images/3.1.a",
+        "./images/3.2.a",
+        "./images/3.3.a"
       ],
       "description": "Rich, creamy matte lipstick with intense color payoff.",
       "detailedDescription": "A new matte lipstick from Gucci Beauty. Delivers vibrant color with a soft, velvety feel. Long-lasting wear without drying the lips.",
@@ -241,6 +243,35 @@
     },
     {
       "id": 8,
+      "name": "La Mer The Moisturizing Soft Cream",
+      "brand": "La Mer",
+      "price": 200.00,
+      "originalPrice": null,
+      "rating": 4.8,
+      "category": "Skincare",
+      "subtype": "Moisturizer",
+      "images": [
+      "./images/8.1.a",
+      "./images/8.2.a"
+      ],
+      "description": "A luxurious cream that delivers healing moisture for a vibrant appearance.",
+      "detailedDescription": "Indulge in La Mer's Moisturizing Soft Cream. Infused with the legendary Miracle Broth™, this ultra-soft cream deeply hydrates, heals dryness, and restores radiance for a youthful look.",
+      "ingredients": "Algae (Seaweed) Extract, Cyclopentasiloxane, Petrolatum, Glyceryl Distearate...",
+      "weight": "30ml",
+      "shades": [],
+      "launchDate": "2012-09-01",
+      "usageInstructions": "Pat a small amount between fingertips and press gently into cleansed skin, morning and night.",
+      "isNew": false,
+      "isSale": false,
+      "benefits": [
+        "Deep Hydration: Provides lasting moisture and heals dryness.",
+        "Renews Radiance: Restores skin's natural vibrancy.",
+        "Smooths Fine Lines: Diminishes the look of lines and wrinkles.",
+        "Legendary Miracle Broth™: Soothes and revitalizes skin."
+      ]
+    },
+    {
+      "id": 9,
       "name": "Pat McGrath Labs Mothership Eyeshadow Palette",
       "brand": "Pat McGrath Labs",
       "brandImage": "./images/brands/patmcgrath.png",
@@ -250,9 +281,8 @@
       "category": "Eyes",
       "subtype": "Eyeshadow Palette",
       "images": [
-        "./images/9.1.webp",
-        "./images/9.2.webp",
-        "./images/9.3.webp"
+      "./images/9.1.a",
+      "./images/9.2.a"
       ],
       "description": "Iconic eyeshadow palettes with extraordinary textures and cosmic colors.",
       "detailedDescription": "Unleash your inner artist with Pat McGrath Labs Mothership Palettes. Featuring a curated selection of stunning mattes, shimmering metallics, and otherworldly special shades with unparalleled pigment and blendability.",
@@ -275,7 +305,36 @@
       ]
     },
     {
-      "id": 9,
+      "id": 10,
+      "name": "Charlotte Tilbury Magic Cream",
+      "brand": "Charlotte Tilbury",
+      "price": 100.00,
+      "originalPrice": null,
+      "rating": 4.7,
+      "category": "Skincare",
+      "subtype": "Moisturizer",
+      "images": [
+      "./images/10.1.a",
+      "./images/10.2.a"
+      ],
+      "description": "An instant turnaround moisturizer for hydrated, glowing, plumper-looking skin.",
+      "detailedDescription": "Charlotte's famous Magic Cream is a secret weapon for celebrities and models. This rich, hydrating cream features Hyaluronic Acid, Vitamin C, and BioNymph Peptide Complex to flood skin with moisture and create a dewy canvas.",
+      "ingredients": "Water, Homosalate, Glyceryl Stearate SE, Ethylhexyl Salicylate...",
+      "weight": "50ml",
+      "shades": [],
+      "launchDate": "2013-09-01",
+      "usageInstructions": "Apply to face and neck using Charlotte's 'Tilbury Tap' massage technique.",
+      "isNew": false,
+      "isSale": false,
+      "benefits": [
+        "Instant Hydration Boost: Plumps skin with moisture.",
+        "Creates Glowing Canvas: Perfect base for makeup.",
+        "Reduces Wrinkles: Firms and smooths the look of skin.",
+        "Contains SPF15: Provides daily sun protection."
+      ]
+    },
+     {
+      "id": 11,
       "name": "Hourglass Ambient Lighting Powder",
       "brand": "Hourglass",
       "brandImage": "./images/brands/hourglass.png",
@@ -388,9 +447,9 @@
       "category": "Lips",
       "subtype": "Lip Oil",
       "images": [
-        "./images/14.1.webp",
-        "./images/14.2.webp",
-        "./images/14.3.webp"
+        "./images/14.1.a",
+        "./images/14.2.a",
+        "./images/14.3.a"
       ],
       "description": "A nurturing lip oil that enhances lip color and provides intense hydration.",
       "detailedDescription": "Pamper your lips with Dior Addict Lip Glow Oil. Infused with cherry oil, this non-sticky, non-greasy formula protects, nourishes, and revitalizes lips while bringing out their natural color.",
