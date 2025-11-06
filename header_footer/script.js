@@ -631,5 +631,7 @@ function createScrollToTopButton() {
   });
 }
 
+
+
 // Initialize scroll to top button
 createScrollToTopButton();

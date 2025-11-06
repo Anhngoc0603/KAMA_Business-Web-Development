@@ -93,8 +93,8 @@
     .canvas { position: relative; width: 250px; height: 250px; padding: 16px; text-decoration: none; color: inherit; opacity: 0; transform: translateY(40px) rotateX(15deg) scale(0.9); animation: brandEnter 1s ease forwards; }
     .canvas:nth-child(1) { animation-delay: 0.1s; }
     .canvas:nth-child(2) { animation-delay: 0.2s; }
-    .canvas:nth-child(3) { animation-delay: 0.1s; }
-    .canvas:nth-child(4) { animation-delay: 0.1s; }
+    .canvas:nth-child(3) { animation-delay: 0.3s; }
+    .canvas:nth-child(4) { animation-delay: 0.4s; }
     @keyframes brandEnter { 0% { opacity: 0; transform: translateY(40px) rotateX(15deg) scale(0.9); } 100% { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); } }
     .canvas_border { position: absolute; top: 25px; left: -25px; height: 100%; width: 100%; z-index: 0; transform: rotate(-10deg) skew(-10deg); transition: all 0.35s ease-in-out; }
     .canvas_border svg { height: 100%; width: 100%; }
@@ -248,11 +248,10 @@ function updateCartCount() {
   if (cartIcon) cartIcon.textContent = count;
 };
 function getValidImageUrl(path) {
-  if (!path) return path; // không trả về default nữa
-  if (path.startsWith('./images/')) return path; // giữ nguyên đúng thư mục
+  if (!path) return DEFAULT_BRAND_IMAGE_PATH; // Ảnh mặc định
+  if (path.startsWith('./images/')) return path.replace('./images/', '../images/');
   return path;
 }
-
 function triggerFireworks() {
   const container = document.querySelector('.fireworks-container');
   for (let i = 0; i < 8; i++) {
@@ -550,22 +549,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateCartCount();
   // 4. Tải sản phẩm (hàm này sẽ tự động gọi render, updateCount, và setupFilterEvents)
   await loadProducts();
-  // 🩷 5. Kiểm tra brand trên URL để tự động lọc khi từ Best Seller click qua
-const params = new URLSearchParams(window.location.search);
-const brandFromURL = params.get('brand');
-if (brandFromURL) {
-  currentFilters.brand = brandFromURL;
-  // Tự đánh dấu checkbox của brand đó nếu có
-  const checkbox = document.querySelector(`#brandFilters input[value="${brandFromURL}"]`);
-  if (checkbox) checkbox.checked = true;
-  // Lọc sản phẩm
-  applyFilters();
-  updateCount();
-  // Đổi tiêu đề hiển thị
-  const titleEl = document.querySelector('h2');
-  if (titleEl) titleEl.textContent = `Brand: ${brandFromURL}`;
-}
-
 });
 </script>
 </body>

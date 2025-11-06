@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Sakura Best Seller – Dior Galaxy Pink</title>
+  <title>Best Seller</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -923,7 +923,7 @@
   </main>
 
   <div id="footer-placeholder"><div style="text-align:center;padding:20px;color:#ddd">Loading Footer…</div></div>
-
+<script src="../header_footer/script.js"></script>
   <script>
   // =============================================
   // ===== SCRIPT TRANG BEST-SELLER (ĐÃ SỬA) =====
@@ -931,22 +931,46 @@
   const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=500&fit=crop';
   const DEFAULT_BRAND_IMAGE = 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=500&fit=crop';
 
-  async function loadHTML(url, id) {
-    const el = document.getElementById(id);
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      el.innerHTML = await res.text();
-      return true;
-    } catch (e) {
-      console.error(`Error loading ${url}:`, e);
-      el.innerHTML = '<p style="color:red;text-align:center;">Error loading component</p>';
-      return false;
-    }
-  }
+async function loadHTML(url, id) {
+  const el = document.getElementById(id);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const html = await res.text();
+    el.innerHTML = html;
 
+    // === CHỈ KHI LOAD HEADER → CHÈN SCRIPT ANNOUNCEMENT TRỰC TIẾP ===
+    if (id === 'header-placeholder') {
+      // Tạo script inline để chạy announcement slider
+      const script = document.createElement('script');
+      script.textContent = `
+        // Announcement Slider - Chạy ngay sau khi header được chèn
+        const wrapper = document.getElementById('announcementWrapper');
+        const slides = document.querySelectorAll('.announcement-slide');
+        if (wrapper && slides.length > 0) {
+          let index = 0;
+          function showSlide(i) {
+            wrapper.style.transform = 'translateX(-' + (i * 100) + '%)';
+          }
+          setInterval(() => {
+            index = (index + 1) % slides.length;
+            showSlide(index);
+          }, 5000);
+          showSlide(0); // Hiển thị slide đầu tiên
+        }
+      `;
+      document.head.appendChild(script);
+      console.log('Announcement slider script injected and running');
+    }
+
+    return true;
+  } catch (e) {
+    console.error(`Error loading ${url}:`, e);
+    el.innerHTML = '<p style="color:red;text-align:center;">Error loading component</p>';
+    return false;
+  }
+}
   let PRODUCTS = [], active = 0, progress = 50, $items = [];
-  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const speedWheel = 0.02, speedDrag = -0.1;
   let isDown = false, startX = 0;
 
@@ -971,45 +995,9 @@
   }
 
   // 🎯 Hàm cập nhật giỏ hàng
-  function updateCartCount() {
-    try {
-      const count = cart.reduce((sum, item) => sum + item.qty, 0);
-      const cartIcons = document.querySelectorAll('.cart-count');
-      cartIcons.forEach(icon => {
-        if (icon) icon.textContent = count;
-      });
-    } catch (error) {
-      console.warn('Cannot update cart count:', error);
-    }
-  }
+
 
   // 🎯 Hàm thêm vào giỏ hàng
-  function addToCart(id, btn) {
-    try {
-      const qtyInput = btn.previousElementSibling;
-      const qty = parseInt(qtyInput?.value) || 1;
-      const product = PRODUCTS.find(p => p.id === id);
-      
-      if (!product) {
-        showNotification('Sản phẩm không tồn tại!', 'error');
-        return;
-      }
-
-      const existing = cart.find(item => item.id === id);
-      if (existing) {
-        existing.qty += qty;
-      } else {
-        cart.push({ ...product, qty });
-      }
-      
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      showNotification(`${product.name} (x${qty}) đã được thêm vào giỏ hàng!`);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      showNotification('Có lỗi xảy ra khi thêm vào giỏ hàng!', 'error');
-    }
-  }
 
   // 🎯 Hàm xem chi tiết
   function viewDetail(id) {
