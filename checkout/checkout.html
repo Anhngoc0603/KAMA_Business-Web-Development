@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checkout - High-End Cosmetics</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/header_footer/style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="header">
-          <img src="../1 (1).Final/images/LOGO.png" width="500" height="auto">
-        <h1 class="subtitle"><i>Confirm your shipping and payment details</i></h1>
-    </div>
+    <!-- Header (Injected) -->
+    <div id="header-placeholder"></div>
+    <h1 class="subtitle" style="text-align:center;"><i>Confirm your shipping and payment details</i></h1>
 
     <div class="checkout-container">
         
@@ -28,7 +27,7 @@
             </div>
             
             <div id="noShippingInfo" class="no-info-message hidden">
-                <p>No shipping information provided. <a href="../cart/cart.html">Return to cart</a> to enter details.</p>
+                <p>No shipping information provided. <a href="/cart/cart.html">Return to cart</a> to enter details.</p>
             </div>
 
             <div id="engravingInfo" class="engraving-display hidden">
@@ -94,7 +93,7 @@
 
             <button id="confirmOrderBtn" class="checkout-btn">✅ CONFIRM ORDER</button>
             
-            <a href="../cart/cart.html" class="back-to-cart-btn">⬅️ Go Back to Cart</a>
+            <a href="/cart/cart.html" class="back-to-cart-btn">⬅️ Go Back to Cart</a>
 
         </section>
     </div>
@@ -108,5 +107,9 @@
         </div>
     </div>
 
+    <!-- Footer (Injected) -->
+    <div id="footer-placeholder"></div>
+<script src="/header_footer/partials.js"></script>
     <script src="script.js"></script>
 </body>
+</html>

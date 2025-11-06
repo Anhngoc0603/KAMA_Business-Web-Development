@@ -4,11 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Shopping Cart - Luxury Makeup Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="/header_footer/style.css" />
+    
 
 </head>
 <body>
+    <!-- Header (Injected) -->
+    <div id="header-placeholder"></div>
     
 <!-- Truck animation overlay -->
 <div id="truckAnimation" class="truck-overlay hidden">
@@ -156,10 +162,7 @@
 </style>
 
     <div class="container">
-        <div class="header">
-            <img src='../1.homepage/images/LOGO.png' width="500" height="auto">
-            <h1 class="main-title"><i>Complete your luxury makeup order</i></h1>
-        </div>
+        <h1 class="main-title" style="text-align:center;"><i>Complete your luxury makeup order</i></h1>
 
         <div class="main-grid">
             <div class="left-column">
@@ -209,6 +212,7 @@
                         <button id="applyCouponBtn" class="btn-primary">Apply</button>
                     </div>
                     <div id="couponMessage" class="coupon-message"></div>
+                    <div id="eligibleCoupons" class="eligible-coupons" style="margin-top:12px"></div>
                 </div>
 
                 <div class="glass-section">
@@ -236,6 +240,9 @@
         </div>
     </div>
 
+    <!-- Footer (Injected) -->
+    <div id="footer-placeholder"></div>
+    <script src="/header_footer/partials.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

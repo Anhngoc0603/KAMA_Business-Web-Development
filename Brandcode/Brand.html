@@ -45,100 +45,14 @@
             transition: opacity 0.3s ease-in-out;
         }
     </style>
+    <link rel="stylesheet" href="/header_footer/style.css">
 </head>
 <body>
     <!-- Main container -->
     <div class="relative min-h-screen w-full">
 
-        <!-- Header Section -->
-        <header class="w-full bg-[#FEFBFB] border-b border-pink-100 sticky top-0 z-30">
-            <!-- Top bar -->
-            <div class="container mx-auto px-4 md:px-8">
-                <div class="flex justify-between items-center h-20">
-                    <!-- Search Icon (Left) -->
-                    <div class="w-1/3">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search h-6 w-6 text-gray-600 cursor-pointer"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                    </div>
-
-                    <!-- Logo (Center) -->
-                    <div class="w-1/3 text-center">
-                        <h1 onclick="showHomePage()" class="font-playfair text-4xl md:text-5xl text-pink-800/80 italic cursor-pointer">Kama</h1>
-                    </div>
-
-                    <!-- User Icons (Right) -->
-                    <div class="w-1/3 flex justify-end items-center space-x-4 md:space-x-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user h-6 w-6 text-gray-600 cursor-pointer"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart h-6 w-6 text-gray-600 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag h-6 w-6 text-gray-600 cursor-pointer"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Navigation Bar -->
-            <nav class="hidden md:flex justify-center items-center h-14 text-sm tracking-widest font-medium text-gray-700">
-                <!-- Dropdown cho Brand -->
-                <div class="relative group">
-                    <a href="#" class="hover:text-pink-400 transition-colors py-4">BRAND</a>
-                    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 w-48 z-20 border border-pink-100 py-1">
-                        <!-- Lip -->
-                        <div class="relative group/item">
-                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Lip</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
-                                <a href="javascript:void(0)" onclick="showProductPage('dior_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son DIOR</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('chanel_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son CHANEL</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('ysl_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son YSL</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('gvc_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son Givenchy</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('fk_lip')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Son FLOWER KNOW</a>
-                            </div>
-                        </div>
-                        <!-- Foundation -->
-                        <div class="relative group/item">
-                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Foundation</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
-                                <a href="javascript:void(0)" onclick="showProductPage('dior_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền DIOR</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('chanel_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền CHANEL</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('lancome_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền Lancome</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('ysl_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền YSL</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('gvc_foundation')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Kem Nền Givenchy</a>
-                            </div>
-                        </div>
-                        <!-- Eyeshadow -->
-                        <div class="relative group/item">
-                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Eyeshadow</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
-                                <a href="javascript:void(0)" onclick="showProductPage('dior_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng mắt DIOR</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('chanel_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Phấn Mắt Chanel</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('fk_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng Mắt Flower Know</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('ysl_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng Mắt YSL</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('gvc_eyeshadow')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Bảng Mắt Givenchy</a>
-                            </div>
-                        </div>
-                        <!-- Mascara -->
-                        <div class="relative group/item">
-                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Mascara</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
-                                <a href="javascript:void(0)" onclick="showProductPage('dior_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Dior</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('el_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Estee Lauder</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('chanel_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Chanel</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('ysl_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara YSL</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('gvc_mascara')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Mascara Givenchy</a>
-                            </div>
-                        </div>
-                        <!-- Blush -->
-                        <div class="relative group/item">
-                            <a href="#" class="flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors"><span>Blush</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-                            <div class="absolute hidden group-hover/item:block left-full top-[-1px] w-48 bg-white shadow-lg rounded-md z-20 border border-pink-100 py-1">
-                                <a href="javascript:void(0)" onclick="showProductPage('dior_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má hồng Dior</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('chanel_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng Chanel</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('fk_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng Flower Know</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('ysl_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng YSL</a>
-                                <a href="javascript:void(0)" onclick="showProductPage('gvc_blush')" class="block px-4 py-2 text-gray-700 hover:bg-pink-50 transition-colors">Má Hồng Givenchy</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </header>
+        <!-- Header (Injected) -->
+        <div id="header-placeholder"></div>
 
         <!-- Main Content Area -->
         <div id="main-content-area">
@@ -197,6 +111,10 @@
         </div>
     </div>
 
+    <!-- Footer (Injected) -->
+    <div id="footer-placeholder"></div>
+
+<script src="/header_footer/partials.js"></script>
     <script>
         // Product Database
         const products = {
@@ -546,4 +464,3 @@
     </script>
 </body>
 </html>
-

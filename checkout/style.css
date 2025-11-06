@@ -12,6 +12,7 @@ body {
     color: #6B4C3B; /* Màu chữ chính, tone đất/hồng nhạt */
     animation: fadeIn 0.8s ease;
     line-height: 1.6;
+    padding-top: 160px !important; /* Đẩy nội dung xuống dưới header fixed */
 }
 
 .hidden { display: none !important; }

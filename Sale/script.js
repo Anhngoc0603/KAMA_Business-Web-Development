@@ -2,36 +2,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   'use strict';
 
   // ===================================================================
-  // 1. LOAD HEADER & FOOTER (Giữ nguyên)
+  // 1. LOAD HEADER & FOOTER (Chuyển sang partials.js)
   // ===================================================================
-  const loadPartial = async (url, placeholderId) => {
-    const el = document.getElementById(placeholderId);
-    if (!el) {
-      console.warn(`${placeholderId} not found`);
-      return;
-    }
-    try {
-      const res = await fetch(url);
-      if (res.ok) {
-        el.innerHTML = await res.text();
-      } else {
-        throw new Error(`HTTP ${res.status}`);
+  // partials.js sẽ tự inject header/footer vào các placeholder.
+  // Sau khi header được inject, đồng bộ số lượng giỏ hàng
+  const headerPlaceholder = document.getElementById('header-placeholder');
+  if (headerPlaceholder) {
+    const obs = new MutationObserver(() => {
+      if (typeof updateCartCount === 'function') {
+        updateCartCount();
       }
-    } catch (e) {
-      console.error(`Failed to load ${url}:`, e);
-      // Fallback content...
-      if (placeholderId === 'header-placeholder') {
-        el.innerHTML = `<header style="background: #E6A6B0; padding: 1rem; color: white; text-align: center;"><h1>🎀 Sakura Beauty 🎀</h1><nav><a href="#" style="color: white; margin: 0 1rem;">Home</a></nav></header>`;
-      } else if (placeholderId === 'footer-placeholder') {
-        el.innerHTML = `<footer style="background: #333; padding: 2rem; color: white; text-align: center;"><p>© 2024 Sakura Beauty</p></footer>`;
-      }
-    }
-  };
-
-  await Promise.all([
-    loadPartial('../header_footer/header.html', 'header-placeholder'),
-    loadPartial('../header_footer/footer.html', 'footer-placeholder')
-  ]);
+    });
+    obs.observe(headerPlaceholder, { childList: true, subtree: true });
+  }
 
   // ===================================================================
   // 2. FIREWORKS (Giữ nguyên)
@@ -134,10 +117,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ĐÂY LÀ CODE HTML ĐẦY ĐỦ TỪ FILE CŨ CỦA BẠN
         card.innerHTML = `
           <div class="product-image-container" style="position:relative;">
-            <img src="${product.images?.[0] || 'https://via.placeholder.com/300'}" 
+            <img src="${product.images?.[0] || '/header_footer/images/LOGO.png'}" 
                  alt="${product.name}" 
                  class="product-img"
-                 onerror="this.src='https://via.placeholder.com/300'">
+                 onerror="this.src='/header_footer/images/LOGO.png'">
             ${badge}
           </div>
           <div class="info">
@@ -377,7 +360,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function loadMainProducts() {
     let products = [];
     try {
-      const res = await fetch('./products.json'); 
+      const res = await fetch('/Sale/products.json'); 
       if (!res.ok) throw new Error('Not found');
       const data = await res.json();
       if (!Array.isArray(data?.products)) throw new Error('Invalid data');
@@ -385,16 +368,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (e) {
       console.error('Error loading products, using fallback:', e);
       products = [
-        { id: 1, name: 'Sản phẩm 1', brand: 'Dior', category: 'Lips', price: 45.99, rating: 4.8, description: 'Mô tả 1', images: ['https://via.placeholder.com/300/FF6B6B/FFFFFF?text=Product+1'] },
-        { id: 2, name: 'Sản phẩm 2', brand: 'Chanel', category: 'Face', price: 65.99, rating: 4.6, description: 'Mô tả 2', images: ['https://via.placeholder.com/300/FFD93D/000000?text=Product+2'] },
-        { id: 3, name: 'Sản phẩm 3', brand: 'YSL', category: 'Eyes', price: 72.99, rating: 4.9, description: 'Mô tả 3', images: ['https://via.placeholder.com/300/FFFFFF/000000?text=Product+3'] },
-        { id: 4, name: 'Sản phẩm 4', brand: 'Lancôme', category: 'Eyes', price: 32.99, rating: 4.4, description: 'Mô tả 4', images: ['https://via.placeholder.com/300/4ECDC4/FFFFFF?text=Product+4'] },
-        { id: 5, name: 'Sản phẩm 5', brand: 'NARS', category: 'Face', price: 38.99, rating: 4.7, description: 'Mô tả 5', images: ['https://via.placeholder.com/300/A8E6CF/000000?text=Product+5'] },
-        { id: 6, name: 'Sản phẩm 6', brand: 'Rare Beauty', category: 'Lips', price: 28.99, rating: 4.5, description: 'Mô tả 6', images: ['https://via.placeholder.com/300/6C5CE7/FFFFFF?text=Product+6'] },
-        { id: 7, name: 'Sản phẩm 7', brand: 'Fenty Beauty', category: 'Face', price: 34.99, rating: 4.3, description: 'Mô tả 7', images: ['https://via.placeholder.com/300/FF6B6B/FFFFFF?text=Product+7'] },
-        { id: 8, name: 'Sản phẩm 8', brand: 'Charlotte Tilbury', category: 'Eyes', price: 29.99, rating: 4.6, description: 'Mô tả 8', images: ['https://via.placeholder.com/300/FFD93D/000000?text=Product+8'] },
-        { id: 9, name: 'Sản phẩm 9', brand: 'Becca', category: 'Face', price: 42.99, rating: 4.8, description: 'Mô tả 9', images: ['https://via.placeholder.com/300/FFFFFF/000000?text=Product+9'] },
-        { id: 10, name: 'Sản phẩm 10', brand: 'Urban Decay', category: 'Face', price: 31.99, rating: 4.5, description: 'Mô tả 10', images: ['https://via.placeholder.com/300/4ECDC4/FFFFFF?text=Product+10'] }
+        { id: 1, name: 'Sản phẩm 1', brand: 'Dior', category: 'Lips', price: 45.99, rating: 4.8, description: 'Mô tả 1', images: ['/header_footer/images/LOGO.png'] },
+        { id: 2, name: 'Sản phẩm 2', brand: 'Chanel', category: 'Face', price: 65.99, rating: 4.6, description: 'Mô tả 2', images: ['/header_footer/images/LOGO.png'] },
+        { id: 3, name: 'Sản phẩm 3', brand: 'YSL', category: 'Eyes', price: 72.99, rating: 4.9, description: 'Mô tả 3', images: ['/header_footer/images/LOGO.png'] },
+        { id: 4, name: 'Sản phẩm 4', brand: 'Lancôme', category: 'Eyes', price: 32.99, rating: 4.4, description: 'Mô tả 4', images: ['/header_footer/images/LOGO.png'] },
+        { id: 5, name: 'Sản phẩm 5', brand: 'NARS', category: 'Face', price: 38.99, rating: 4.7, description: 'Mô tả 5', images: ['/header_footer/images/LOGO.png'] },
+        { id: 6, name: 'Sản phẩm 6', brand: 'Rare Beauty', category: 'Lips', price: 28.99, rating: 4.5, description: 'Mô tả 6', images: ['/header_footer/images/LOGO.png'] },
+        { id: 7, name: 'Sản phẩm 7', brand: 'Fenty Beauty', category: 'Face', price: 34.99, rating: 4.3, description: 'Mô tả 7', images: ['/header_footer/images/LOGO.png'] },
+        { id: 8, name: 'Sản phẩm 8', brand: 'Charlotte Tilbury', category: 'Eyes', price: 29.99, rating: 4.6, description: 'Mô tả 8', images: ['/header_footer/images/LOGO.png'] },
+        { id: 9, name: 'Sản phẩm 9', brand: 'Becca', category: 'Face', price: 42.99, rating: 4.8, description: 'Mô tả 9', images: ['/header_footer/images/LOGO.png'] },
+        { id: 10, name: 'Sản phẩm 10', brand: 'Urban Decay', category: 'Face', price: 31.99, rating: 4.5, description: 'Mô tả 10', images: ['/header_footer/images/LOGO.png'] }
       ];
     }
     

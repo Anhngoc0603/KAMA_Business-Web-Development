@@ -412,7 +412,7 @@ function addToCart(product) {
 function updateCartCount() {
   const cartCount = document.querySelector('.cart-count');
   if (cartCount) {
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity ?? item.qty) || 0), 0);
     cartCount.textContent = totalItems;
     cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
   }

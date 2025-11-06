@@ -1,8 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
   // ===== STATE =====
-  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  // Đọc dữ liệu giỏ hàng thống nhất từ key 'cart', fallback từ 'cartItems' nếu có dữ liệu cũ
+  let cartItems = [];
+  const storedCart = localStorage.getItem('cart');
+  const legacyCart = localStorage.getItem('cartItems');
+  if (storedCart) {
+    try {
+      cartItems = JSON.parse(storedCart) || [];
+    } catch (_) { cartItems = []; }
+  } else if (legacyCart) {
+    try {
+      cartItems = JSON.parse(legacyCart) || [];
+      // migrate sang key mới
+      localStorage.setItem('cart', legacyCart);
+      localStorage.removeItem('cartItems');
+    } catch (_) { cartItems = []; }
+  }
   let engravingName = JSON.parse(localStorage.getItem('engravingName')) || null;
   let discountPercent = JSON.parse(localStorage.getItem('discountPercent')) || 0;
+  // Hỗ trợ giảm giá cố định (ví dụ LOYAL5 = $5)
+  let discountFixed = JSON.parse(localStorage.getItem('discountFixed')) || 0;
 
   const ENGRAVING_FEE = 5; // $5
   const SHIPPING_FEE = 3;  // $3
@@ -29,11 +46,61 @@ document.addEventListener('DOMContentLoaded', function() {
   const couponInput = document.getElementById("couponInput");
   const applyCouponBtn = document.getElementById("applyCouponBtn");
   const couponMessage = document.getElementById("couponMessage");
+  const eligibleCouponsEl = document.getElementById("eligibleCoupons");
   const clearCartBtn = document.getElementById("clearCartBtn");
   const progressBar = document.getElementById("progressBar");
 
   // ===== HELPER FUNCTIONS =====
   const formatCurrency = price => '$' + price.toFixed(2);
+
+  // ==== USER SEGMENT HELPERS ====
+  function getUserProfile() {
+    const firstLoginDone = JSON.parse(localStorage.getItem('user.firstLoginDone') || 'false');
+    const orderCount = Number(localStorage.getItem('user.orderCount') || '0');
+    const birthMonth = Number(localStorage.getItem('user.birthMonth') || '0'); // 1..12
+    const lifetimeSpend = Number(localStorage.getItem('user.lifetimeSpend') || '0');
+    return { firstLoginDone, orderCount, birthMonth, lifetimeSpend };
+  }
+
+  function setFirstLoginDone() {
+    localStorage.setItem('user.firstLoginDone', 'true');
+  }
+
+  function evaluateCoupon(code) {
+    const nowMonth = new Date().getMonth() + 1; // 1..12
+    const profile = getUserProfile();
+    const upper = (code || '').trim().toUpperCase();
+    // Trả về { valid: boolean, type: 'percent'|'amount', value: number, message }
+    if (upper === 'WELCOME10') {
+      if (!profile.firstLoginDone) {
+        return { valid: true, type: 'percent', value: 10, message: '✅ 10% for first login' };
+      }
+      return { valid: false, message: '❌ Chỉ áp dụng lần đăng nhập đầu tiên.' };
+    }
+    if (upper === 'FIRSTBUY15') {
+      if (profile.orderCount === 0) {
+        return { valid: true, type: 'percent', value: 15, message: '✅ 15% for first purchase' };
+      }
+      return { valid: false, message: '❌ Chỉ áp dụng cho đơn hàng đầu tiên.' };
+    }
+    if (upper === 'BDAY20') {
+      if (profile.birthMonth && profile.birthMonth === nowMonth) {
+        return { valid: true, type: 'percent', value: 20, message: '✅ 20% trong tháng sinh nhật' };
+      }
+      return { valid: false, message: '❌ Mã chỉ áp dụng trong tháng sinh nhật.' };
+    }
+    if (upper === 'LOYAL5') {
+      if (profile.lifetimeSpend >= 100) {
+        return { valid: true, type: 'amount', value: 5, message: '✅ $5 cho khách thân thiết (>=$100)' };
+      }
+      return { valid: false, message: '❌ Cần tổng chi tiêu ≥ $100 để áp dụng.' };
+    }
+    // Giữ lại mã cũ nếu có (NEW15 demo)
+    if (upper === 'NEW15') {
+      return { valid: true, type: 'percent', value: 15, message: "✅ 15% discount applied" };
+    }
+    return { valid: false, message: '❌ Mã không hợp lệ hoặc đã hết hạn.' };
+  }
 
   const showMessage = (message, type = 'info') => {
     const colors = {
@@ -160,19 +227,42 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  function isSaleItem(item) {
+    const price = Number(item.price || 0);
+    const original = Number(item.originalPrice || 0);
+    return (
+      (original && original > price) ||
+      item.isOnSale === true ||
+      item.sale === true ||
+      item.onSale === true
+    );
+  }
+
   function calculateTotals() {
     const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const saleSubtotal = cartItems
+      .filter(isSaleItem)
+      .reduce((total, item) => total + (item.price * item.quantity), 0);
     const engravingFee = engravingName ? ENGRAVING_FEE : 0;
     const subPlusEngraving = subtotal + engravingFee;
     const shipping = subPlusEngraving > 0 && subPlusEngraving < FREE_SHIPPING_THRESHOLD ? SHIPPING_FEE : 0;
-    const discountAmount = Math.round((subPlusEngraving * discountPercent / 100) * 100) / 100;
+    // Only apply discounts on sale items subtotal
+    const percentDeduction = Math.round((saleSubtotal * discountPercent / 100) * 100) / 100;
+    const fixedDeductionCap = Math.max(saleSubtotal - percentDeduction, 0);
+    const fixedDeduction = Math.min(Math.max(Number(discountFixed) || 0, 0), fixedDeductionCap);
+    const discountAmount = Math.round((percentDeduction + fixedDeduction) * 100) / 100;
     const total = Math.round((subPlusEngraving - discountAmount + shipping) * 100) / 100;
 
-    return { subtotal, engravingFee, subPlusEngraving, shipping, discountAmount, total };
+    return { subtotal, saleSubtotal, engravingFee, subPlusEngraving, shipping, discountAmount, total };
   }
   
   function renderCart() {
     cartItemsEl.innerHTML = "";
+    // Chuẩn hoá cấu trúc qty/quantity trước khi render
+    cartItems = cartItems.map(item => ({
+      ...item,
+      quantity: typeof item.quantity === 'number' ? item.quantity : (typeof item.qty === 'number' ? item.qty : 1)
+    }));
 
     if (cartItems.length === 0) {
       emptyCartEl.style.display = "block";
@@ -241,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     shippingFeeEl.textContent = shipping === 0 && subPlusEngraving > 0 ? "Free" : formatCurrency(shipping);
 
-    if (discountPercent > 0) {
+    if (discountAmount > 0) {
       discountRow.style.display = "flex";
       discountEl.textContent = `-${formatCurrency(discountAmount)}`;
     } else {
@@ -252,18 +342,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const progressPercent = Math.min((subPlusEngraving / FREE_SHIPPING_THRESHOLD) * 100, 100);
     progressBar.style.width = `${progressPercent}%`;
+
+    // Update eligible coupon suggestions
+    updateEligibleCoupons();
+  }
+
+  function updateEligibleCoupons() {
+    if (!eligibleCouponsEl) return;
+    const hasSaleItems = cartItems.some(isSaleItem);
+    const codes = ["WELCOME10", "FIRSTBUY15", "BDAY20", "LOYAL5"];
+    const suggestions = [];
+    codes.forEach(code => {
+      const res = evaluateCoupon(code);
+      if (res.valid) {
+        suggestions.push({ code, message: res.message });
+      }
+    });
+    if (!hasSaleItems) {
+      eligibleCouponsEl.innerHTML = `<div style="padding:8px 12px; border-radius:8px; background:#fff0f0; color:#b91c1c; font-size:13px;">Không có sản phẩm đang sale trong giỏ. Mã chỉ áp dụng cho hàng sale.</div>`;
+      return;
+    }
+    if (suggestions.length === 0) {
+      eligibleCouponsEl.innerHTML = "";
+      return;
+    }
+    eligibleCouponsEl.innerHTML = `
+      <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+        <span style="font-size:13px; color:#6B4C3B; opacity:0.8;">Mã phù hợp:</span>
+        ${suggestions.map(s => `
+          <button data-code="${s.code}" style="padding:6px 10px; border:none; border-radius:16px; background:#E6A6B0; color:#fff; cursor:pointer; font-size:13px;">${s.code}</button>
+        `).join("")}
+      </div>
+    `;
+    eligibleCouponsEl.querySelectorAll('button[data-code]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.getAttribute('data-code');
+        couponInput.value = code;
+        applyCouponBtn.click();
+      });
+    });
   }
 
   // ===== INITIALIZE =====
   function initialize() {
     // Load from localStorage and debug initial state
-    console.log('Initial cartItems from localStorage:', JSON.parse(localStorage.getItem('cartItems')) || []);
-    const savedCart = localStorage.getItem('cartItems');
+    console.log('Initial cart from localStorage:', JSON.parse(localStorage.getItem('cart')) || []);
+    const savedCart = localStorage.getItem('cart');
     const savedEngraving = localStorage.getItem('engravingName');
     const savedDiscount = localStorage.getItem('discountPercent');
     const savedShipping = localStorage.getItem('shippingInfo');
 
-    if (savedCart) cartItems = JSON.parse(savedCart);
+    if (savedCart) {
+      try { cartItems = JSON.parse(savedCart) || []; } catch (_) {}
+    }
     if (savedEngraving) engravingName = JSON.parse(savedEngraving);
     if (savedDiscount) discountPercent = JSON.parse(savedDiscount);
     if (savedShipping) {
@@ -288,9 +419,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Save to localStorage function
     function saveToLocalStorage() {
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      localStorage.setItem('cart', JSON.stringify(cartItems));
       localStorage.setItem('engravingName', JSON.stringify(engravingName));
       localStorage.setItem('discountPercent', JSON.stringify(discountPercent));
+      localStorage.setItem('discountFixed', JSON.stringify(discountFixed));
       const shippingInfo = {
         fullname: document.getElementById('fullname')?.value.trim() || '',
         phone: document.getElementById('phone')?.value.trim() || '',
@@ -359,16 +491,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     applyCouponBtn.addEventListener('click', function() {
       const code = couponInput.value.trim().toUpperCase();
-      if (code === 'NEW15') {
-        discountPercent = 15;
-        couponMessage.textContent = '✅ 15% discount applied';
+      const result = evaluateCoupon(code);
+      const hasSaleItems = cartItems.some(isSaleItem);
+      if (!hasSaleItems) {
+        discountPercent = 0;
+        discountFixed = 0;
+        couponMessage.textContent = '❌ Mã chỉ áp dụng cho sản phẩm đang sale. Hiện giỏ không có sản phẩm sale.';
+        couponMessage.style.color = '#ef4444';
+        couponMessage.classList.remove('hidden');
+        showMessage('No sale items in cart; coupon applies to sale items only.', 'error');
+        updateTotals();
+        saveToLocalStorage();
+        return;
+      }
+      if (result.valid) {
+        if (result.type === 'percent') {
+          discountPercent = result.value;
+          discountFixed = 0;
+        } else {
+          discountPercent = 0;
+          discountFixed = result.value;
+        }
+        couponMessage.textContent = result.message;
         couponMessage.style.color = '#16a34a';
-        showMessage("Coupon 'NEW15' applied successfully!", 'success');
+        showMessage(`Coupon '${code}' applied successfully!`, 'success');
+        // Đánh dấu lần đăng nhập đầu tiên sau khi dùng WELCOME10
+        if (code === 'WELCOME10') setFirstLoginDone();
       } else {
         discountPercent = 0;
-        couponMessage.textContent = '❌ Invalid coupon code';
+        discountFixed = 0;
+        couponMessage.textContent = result.message;
         couponMessage.style.color = '#ef4444';
-        showMessage('Invalid coupon or code expired.', 'error');
+        showMessage(result.message, 'error');
       }
       couponMessage.classList.remove('hidden');
       updateTotals();
@@ -383,7 +537,10 @@ document.addEventListener('DOMContentLoaded', function() {
         discountPercent = 0;
         couponMessage.classList.add('hidden');
         couponInput.value = '';
-        localStorage.clear();
+        localStorage.removeItem('cart');
+        localStorage.removeItem('engravingName');
+        localStorage.removeItem('discountPercent');
+        localStorage.removeItem('shippingInfo');
         renderCart();
         showMessage('Cart cleared successfully!', 'success');
       }
@@ -411,8 +568,8 @@ checkoutBtn.addEventListener('click', function() {
   document.body.style.overflow = "hidden";
 
   setTimeout(() => {
-    window.location.href = '../checkout/checkout.html';
-  }, 1800); // chờ 3.5s cho animation chạy
+    window.location.href = '/checkout/checkout.html';
+  }, 1800); // chờ animation chạy
 });
 
 

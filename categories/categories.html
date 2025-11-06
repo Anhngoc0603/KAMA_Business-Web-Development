@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura High-End Beauty</title>
+  <link rel="stylesheet" href="/header_footer/header_footer.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
  
@@ -220,37 +221,28 @@
     </div>
   </main>
   <div id="footer-placeholder"><div style="text-align:center; padding: 20px; color:#aaa;">Loading Footer...</div></div>
+<script src="/header_footer/partials.js"></script>
 <script>
 // === KHAI BÁO BIẾN TOÀN CỤC (GLOBAL SCOPE) ===
 // Sửa lỗi nghiêm trọng: Di chuyển các biến này ra ngoài để mọi hàm đều truy cập được
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let pageCart = JSON.parse(localStorage.getItem('cart') || '[]');
 let allProducts = [];
 let currentFilters = { category: 'ALL-IN', brand: null, price: 300 };
-const DEFAULT_IMAGE_PATH = 'https://via.placeholder.com/260x260/FADADD/FFFFFF?text=No+Image';
-const DEFAULT_BRAND_IMAGE_PATH = '../images/brands/default.png';
+const DEFAULT_IMAGE_PATH = '/header_footer/images/LOGO.png';
+const DEFAULT_BRAND_IMAGE_PATH = '/header_footer/images/LOGO.png';
+
 // === HÀM HỖ TRỢ (HELPERS) ===
-async function loadHTML(url, id) {
-  const el = document.getElementById(id);
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to load ${url}`);
-    el.innerHTML = await res.text();
-    return true;
-  } catch (error) {
-    console.error('Load HTML error:', error);
-    el.innerHTML = `<p style="color:#aaa;text-align:center;">Loading failed for ${id}</p>`;
-    return false;
-  }
-}
 function updateCartCount() {
-  const count = cart.reduce((sum, item) => sum + item.qty, 0);
-  const cartIcon = document.querySelector('.cart-count'); // Lưu ý: class .cart-count phải có trong header.html
-  if (cartIcon) cartIcon.textContent = count;
-};
+    const cartData = JSON.parse(localStorage.getItem('cart') || '[]');
+    const count = cartData.reduce((sum, item) => sum + item.qty, 0);
+    const cartIcon = document.querySelector('.cart-count');
+    if (cartIcon) cartIcon.textContent = count;
+}
+
 function getValidImageUrl(path) {
-  if (!path) return DEFAULT_BRAND_IMAGE_PATH; // Ảnh mặc định
-  if (path.startsWith('./images/')) return path.replace('./images/', '../images/');
-  return path;
+    if (!path) return DEFAULT_BRAND_IMAGE_PATH; // Ảnh mặc định
+    if (path.startsWith('./images/')) return path.replace('./images/', '/categories/images/');
+    return path;
 }
 function triggerFireworks() {
   const container = document.querySelector('.fireworks-container');
@@ -391,9 +383,21 @@ function setupFilterEvents() {
 // === HÀM XỬ LÝ DỮ LIỆU (DATA HANDLERS) ===
 async function loadProducts() {
   try {
-    const res = await fetch('full.json');
+    const res = await fetch('/categories/full.json');
     const data = await res.json();
-    allProducts = data.products || []; // Gán vào biến global
+    // Chuẩn hoá đường dẫn ảnh từ JSON để phù hợp vị trí trang mới
+    const normalizeImagePath = (p) => {
+      if (!p) return p;
+      if (typeof p === 'string' && p.startsWith('./images/')) {
+        return p.replace('./images/', '/categories/images/');
+      }
+      return p;
+    };
+    allProducts = (data.products || []).map(prod => ({
+      ...prod,
+      brandImage: normalizeImagePath(prod.brandImage),
+      images: Array.isArray(prod.images) ? prod.images.map(normalizeImagePath) : prod.images
+    }));
     // SỬA LỖI: Bỏ comment khối này
     const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
     const brandContainer = document.getElementById('brandFilters');
@@ -508,16 +512,16 @@ function applyFilters() {
 window.addToCart = (id, btn) => {
   const product = allProducts.find(p => p.id === id); // Dùng biến global
   if (!product) return;
-  const existing = cart.find(item => item.id === id); // Dùng biến global
+  const existing = pageCart.find(item => item.id === id); // Dùng biến global
   if (existing) existing.qty += 1;
-  else cart.push({ ...product, qty: 1 });
-  localStorage.setItem('cart', JSON.stringify(cart));
+  else pageCart.push({ ...product, qty: 1 });
+  localStorage.setItem('cart', JSON.stringify(pageCart));
   updateCartCount();
   triggerFireworks();
   alert(`${product.name} đã thêm vào giỏ!`);
 };
 window.viewDetail = (id) => {
-  window.location.href = `categories_detail.html?id=${id}`;
+  window.location.href = `/src/pages/categories/categories_detail.html?id=${id}`;
 };
 window.filterByBrand = (brandName) => {
   currentFilters.brand = brandName; // Gán vào biến global
@@ -532,22 +536,25 @@ window.filterByBrand = (brandName) => {
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 Starting application...');
  
-  // 1. Tải Header & Footer
-  try {
-    await Promise.all([
-      loadHTML('header.html', 'header-placeholder'),
-      loadHTML('footer.html', 'footer-placeholder')
-    ]);
-    console.log('✅ Header & Footer loaded');
-   
-    // 2. Khởi tạo sự kiện cho Header (sau khi đã tải xong)
-    setTimeout(initHeaderEvents, 100); // Chờ 100ms để DOM kịp cập nhật
-  } catch (error) {
-    console.error('❌ Failed to load header/footer:', error);
-  }
-  // 3. Cập nhật giỏ hàng từ localStorage
+  const headerPlaceholder = document.getElementById('header-placeholder');
+  const observer = new MutationObserver((mutationsList, observer) => {
+      for(let mutation of mutationsList) {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+              if (headerPlaceholder.querySelector('.header')) {
+                  console.log('Header loaded, initializing events and cart count.');
+                  initHeaderEvents();
+                  updateCartCount();
+                  observer.disconnect(); 
+                  break;
+              }
+          }
+      }
+  });
+  observer.observe(headerPlaceholder, { childList: true, subtree: true });
+
+  // Cập nhật giỏ hàng ngay lập tức và sau đó khi header được tải
   updateCartCount();
-  // 4. Tải sản phẩm (hàm này sẽ tự động gọi render, updateCount, và setupFilterEvents)
+  // Tải sản phẩm (hàm này sẽ tự động gọi render, updateCount, và setupFilterEvents)
   await loadProducts();
 });
 </script>

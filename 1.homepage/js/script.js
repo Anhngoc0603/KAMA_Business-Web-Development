@@ -1,17 +1,19 @@
-// ================== ANNOUNCEMENT ==================
-const wrapper1 = document.getElementById('announcementWrapper');
-const announcement = document.querySelectorAll('.announcement-slide');
-let indexAnnouncement = 0;
-
-function showAnnouncement(i) {
-  wrapper1.style.transform = `translateX(-${i * 100}%)`;
-}
-
-// Tự động chuyển sau 5s
-setInterval(() => {
-  indexAnnouncement = (indexAnnouncement + 1) % announcement.length;
-  showAnnouncement(indexAnnouncement);
-}, 5000);
+// ================== ANNOUNCEMENT (guarded) ==================
+(function initAnnouncement() {
+  const wrapper1 = document.getElementById('announcementWrapper');
+  const announcement = document.querySelectorAll('.announcement-slide');
+  let indexAnnouncement = 0;
+  function showAnnouncement(i) {
+    if (!wrapper1) return;
+    wrapper1.style.transform = `translateX(-${i * 100}%)`;
+  }
+  if (wrapper1 && announcement.length > 0) {
+    setInterval(() => {
+      indexAnnouncement = (indexAnnouncement + 1) % announcement.length;
+      showAnnouncement(indexAnnouncement);
+    }, 5000);
+  }
+})();
 
 
 // ================== HERO SLIDE ==================
@@ -40,6 +42,50 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(() => {
     showHero((indexHero + 1) % slides.length);
   }, 5000);
+
+  // ===== Motion: Scroll Reveal =====
+  const revealSelectors = [
+    '.category-card',
+    '.new-products',
+    '.slider-new .newproduct',
+    '.Bestsellers .product-card',
+    '.reward-section',
+    '.product-slider .product-card',
+    '.slider-container',
+    '.sliderBestsellers'
+  ];
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('show');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealSelectors.forEach((sel) => {
+    document.querySelectorAll(sel).forEach((el) => {
+      el.classList.add('reveal');
+      obs.observe(el);
+    });
+  });
+
+  // ===== Motion: Subtle Hero Parallax on Scroll =====
+  function applyHeroParallax() {
+    const activeImg = document.querySelector('.hero .slide.active img');
+    const activeContent = document.querySelector('.hero .slide.active .hero-content');
+    const y = window.scrollY || 0;
+    const offset = Math.min(y / 8, 80);
+    if (activeContent) {
+      activeContent.style.transform = `translateY(${(-30 + offset/10)}%)`;
+    }
+    if (activeImg) {
+      activeImg.style.transform = `scale(${1.06 + Math.min(y/2000, 0.06)}) translateY(${offset/20}px)`;
+    }
+  }
+  applyHeroParallax();
+  window.addEventListener('scroll', applyHeroParallax);
  // ================== NEW COLLECTION 1 ==================
   const newwrapper = document.getElementById('newwrapper');
   const prevnew = document.getElementById('prevnew');
@@ -432,8 +478,8 @@ document.getElementById("shopnow").addEventListener("click", function() {
 
 const searchIcon = document.querySelector('.search img.icon');
 const searchOverlay = document.getElementById('searchOverlay');
-const searchWrapper = searchOverlay.querySelector('.search-wrapper');
-const closeBtn = searchOverlay.querySelector('.close-search');
+const searchWrapper = searchOverlay ? searchOverlay.querySelector('.search-wrapper') : null;
+const closeBtn = searchOverlay ? searchOverlay.querySelector('.close-search') : null;
 
 function openSearch() {
   searchOverlay.classList.add('active');
@@ -444,32 +490,37 @@ function closeSearchOverlay() {
 }
 
 // ✅ mở overlay
-searchIcon.addEventListener('click', (e) => {
-  e.stopPropagation();
-  openSearch();
-});
+if (searchIcon && searchOverlay && searchWrapper && closeBtn) {
+  searchIcon.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openSearch();
+  });
 
-// ✅ click nút X để đóng
-closeBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  closeSearchOverlay();
-});
-
-// ✅ Không đóng khi click bên trong hộp search
-searchWrapper.addEventListener('click', (e) => e.stopPropagation());
-
-// ✅ đóng khi click bất cứ đâu ngoài search-wrapper
-document.addEventListener('click', () => {
-  if (searchOverlay.classList.contains('active')) {
+  // ✅ click nút X để đóng
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     closeSearchOverlay();
-  }
-});
+  });
+
+  // ✅ Không đóng khi click bên trong hộp search
+  searchWrapper.addEventListener('click', (e) => e.stopPropagation());
+
+  // ✅ đóng khi click bất cứ đâu ngoài search-wrapper
+  document.addEventListener('click', () => {
+    if (searchOverlay.classList.contains('active')) {
+      closeSearchOverlay();
+    }
+  });
+}
  const introVideo = document.getElementById('introVideo');
-    introVideo.addEventListener('ended', () => {
-      document.body.classList.add('loaded');
-      setTimeout(() => {
-        document.getElementById('introContainer').remove();
-        document.body.style.overflow = 'auto';
-      }, 1000);
-    });
+ if (introVideo) {
+   introVideo.addEventListener('ended', () => {
+     document.body.classList.add('loaded');
+     setTimeout(() => {
+       const intro = document.getElementById('introContainer');
+       if (intro) intro.remove();
+       document.body.style.overflow = 'auto';
+     }, 1000);
+   });
+ }
 

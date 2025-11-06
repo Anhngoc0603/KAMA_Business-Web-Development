@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Orders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    .orders-page { max-width: 980px; margin: 0 auto; padding: 24px; }
+    .page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .back-btn { background:#f5f5f5; border:1px solid #ddd; padding:8px 12px; border-radius:8px; cursor:pointer; }
+    .summary { display:flex; gap:16px; margin-bottom:16px; }
+    .summary .card { flex:1; background:#fff; border:1px solid #eee; border-radius:12px; padding:12px; }
+    .orders-table { width:100%; border-collapse: collapse; background:#fff; border:1px solid #eee; border-radius:12px; overflow:hidden; }
+    .orders-table th, .orders-table td { padding:10px 12px; border-bottom:1px solid #f0f0f0; text-align:left; }
+    .orders-table th { background:#fafafa; }
+    .item-list { font-size: 0.9rem; color:#555; }
+  </style>
+  <script>
+    async function safeJson(url, def){ try{ const r = await fetch(url); if(!r.ok) throw new Error('http '+r.status); return r.json(); }catch{ return def; } }
+    function getParam(name){ const u = new URL(window.location.href); return u.searchParams.get(name); }
+    function formatCurrency(n){ return `$${Number(n||0).toFixed(2)}`; }
+
+    async function render(){
+      const customerId = getParam('id');
+      const customerName = getParam('name');
+      // Ưu tiên dữ liệu trong admin/orders.json; fallback sang cart/orderData.json
+      const ordersRaw = await safeJson('/admin/orders.json', null) || await safeJson('/cart/orderData.json', []);
+      const orders = Array.isArray(ordersRaw) ? ordersRaw : Object.values(ordersRaw || {});
+      const filtered = orders.filter(o => (customerId && String(o.customerId)===String(customerId)) || (customerName && String(o.customer)===String(customerName)));
+      const name = filtered[0]?.customer || customerName || customerId || 'Unknown Customer';
+      document.getElementById('title').textContent = `Lịch sử đơn hàng — ${name}`;
+
+      // Summary
+      const totalOrders = filtered.length;
+      const totalRevenue = filtered.reduce((s,o)=> s + (Number(o.total)||0), 0);
+      const statusCounts = filtered.reduce((m,o)=>{ m[o.status] = (m[o.status]||0)+1; return m; }, {});
+      document.getElementById('sumOrders').textContent = totalOrders;
+      document.getElementById('sumRevenue').textContent = formatCurrency(totalRevenue);
+      document.getElementById('sumStatuses').textContent = Object.entries(statusCounts).map(([k,v])=>`${k}: ${v}`).join(' • ') || '-';
+
+      const tbody = document.getElementById('ordersBody');
+      tbody.innerHTML = filtered.map(o => `
+        <tr>
+          <td>${o.id}</td>
+          <td>${o.status}</td>
+          <td>${o.eta || '-'}</td>
+          <td>${formatCurrency(o.total)}</td>
+          <td class="item-list">${Array.isArray(o.items)? o.items.map(i=>`${i.name} x${i.qty||i.quantity||1}`).join(', ') : ''}</td>
+        </tr>
+      `).join('');
+    }
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.getElementById('backBtn').addEventListener('click', ()=>{ window.location.href = '/admin/index.html#customers'; });
+      render();
+    });
+  </script>
+  </head>
+<body>
+  <div class="orders-page">
+    <div class="page-header">
+      <h2 id="title">Lịch sử đơn hàng</h2>
+      <button id="backBtn" class="back-btn">← Quay lại Customers</button>
+    </div>
+    <div class="summary">
+      <div class="card"><div>Đơn hàng</div><strong id="sumOrders">0</strong></div>
+      <div class="card"><div>Doanh thu</div><strong id="sumRevenue">$0.00</strong></div>
+      <div class="card"><div>Trạng thái</div><strong id="sumStatuses">-</strong></div>
+    </div>
+    <table class="orders-table">
+      <thead>
+        <tr><th>ID</th><th>Status</th><th>ETA</th><th>Total</th><th>Items</th></tr>
+      </thead>
+      <tbody id="ordersBody"></tbody>
+    </table>
+  </div>
+</body>
+</html>

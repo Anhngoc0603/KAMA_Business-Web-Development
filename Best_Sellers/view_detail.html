@@ -6,6 +6,7 @@
   <title>Product Details</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/header_footer/style.css">
   <style>
     :root {
       --primary-color: #E6A6B0;
@@ -953,6 +954,7 @@
   </div>
 
   <!-- JavaScript code remains the same -->
+  <script src="/header_footer/partials.js"></script>
   <script>
     // ==================== DEBUG MODE ====================
     const DEBUG = true;
@@ -960,11 +962,10 @@
     const CONFIG = {
       // Thử các đường dẫn khác nhau
       jsonPaths: [
-        'full.json'
+        '/Best_Sellers/full.json'
       ],
-      headerPath: './header.html',
-      footerPath: './footer.html',
-      productsPage: '../Best_Sellers/best_sellers.html'
+      // Header/Footer được inject bởi /src/assets/scripts/partials.js
+      productsPage: '/Best_Sellers/bestseller.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1110,9 +1111,9 @@
         productPage.innerHTML = `
           <div class="product-gallery">
             <div class="gallery-main">
-              <img src="${product.images?.[0] || 'https://via.placeholder.com/600x600/FFF9F9/E6A6B0?text=Ảnh+sản+phẩm'}" 
+              <img src="${product.images?.[0] || '/header_footer/images/LOGO.png'}" 
                    alt="${product.name}" 
-                   id="main-image">
+                   id="main-image" onerror="this.src='/header_footer/images/LOGO.png'">
             </div>
             <div class="gallery-thumbnails" id="galleryThumbnails">
               ${(product.images || []).map((image, index) => `
@@ -1511,50 +1512,9 @@
       }
     }
 
-    // ==================== HEADER/FOOTER LOADING ====================
-    async function loadHeaderFooter() {
-      debugLog('Bắt đầu tải header và footer...');
-      
-      try {
-        // Tải header
-        const headerResponse = await fetch(CONFIG.headerPath);
-        if (headerResponse.ok) {
-          const headerHTML = await headerResponse.text();
-          document.getElementById('header-placeholder').innerHTML = headerHTML;
-          debugLog('✅ Header loaded');
-          // Re-init header logic sau khi chèn
-          initHeader();
-        } else {
-          throw new Error(`HTTP ${headerResponse.status}`);
-        }
-      } catch (error) {
-        debugLog('❌ Lỗi tải header:', error.message);
-        document.getElementById('header-placeholder').innerHTML = `
-          <div style="padding: 20px; text-align: center; color: var(--text-light); font-size: 18px;">
-            <p>Header không khả dụng</p>
-          </div>
-        `;
-      }
-
-      try {
-        // Tải footer
-        const footerResponse = await fetch(CONFIG.footerPath);
-        if (footerResponse.ok) {
-          const footerHTML = await footerResponse.text();
-          document.getElementById('footer-placeholder').innerHTML = footerHTML;
-          debugLog('✅ Footer loaded');
-        } else {
-          throw new Error(`HTTP ${footerResponse.status}`);
-        }
-      } catch (error) {
-        debugLog('❌ Lỗi tải footer:', error.message);
-        document.getElementById('footer-placeholder').innerHTML = `
-          <div style="padding: 20px; text-align: center; color: var(--text-light); font-size: 18px;">
-            <p>Footer không khả dụng</p>
-          </div>
-        `;
-      }
-    }
+    // ==================== HEADER/FOOTER VIA PARTIALS ====================
+    // Header/Footer sẽ được inject bởi /src/assets/scripts/partials.js vào các placeholder.
+    // Observer sẽ khởi tạo lại header logic và điều chỉnh padding khi nội dung được chèn.
 
     // ===== HEADER INIT FUNCTION (to fix mobile nav dropdown) =====
     function initHeader() {
@@ -1871,16 +1831,19 @@
       debugLog('🚀 Bắt đầu khởi tạo trang...');
       
       try {
-        // Tải header và footer
-        await loadHeaderFooter();
-        
-        // Adjust padding dynamically
+        // Adjust padding dynamically sau khi header được inject
         const main = document.querySelector("main");
+        let headerInitialized = false;
         function adjustPadding() {
           const header = document.querySelector("#header-placeholder header");
           if (header && main) {
             const headerHeight = header.offsetHeight;
             main.style.paddingTop = (headerHeight + 40) + "px";
+            if (!headerInitialized) {
+              // Khởi tạo các xử lý liên quan đến header một lần sau khi inject
+              initHeader();
+              headerInitialized = true;
+            }
           }
         }
         // Lặp kiểm tra cho đến khi header được load xong

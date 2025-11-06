@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
   <link rel="stylesheet" href="./components/live-chat-styles.css" />
+  <link rel="stylesheet" href="/header_footer/style.css" />
 </head>
 <body>
   <!-- Announcement Bar -->
@@ -18,29 +19,8 @@
     </div>
   </div>
 
-  <!-- Header -->
-  <header>
-    <div class="header">
-      <button class="menu-toggler" id="menu-toggler"><img src="../images/nav.png"></button>        
-      <img src="../images/LOGO.png" alt="LOGO" class="logo">
-      <nav>
-        <div class="search">
-          <img src="../images/find.png" class="icon">
-          <input type="search" placeholder="Search for...">
-        </div>
-        <a href="#"><img src="../images/account.png"></a>
-        <a href="#"><img src="../images/contact.png"></a>
-        <a href="#"><img src="../images/shopping.png"></a>
-      </nav>
-    </div>
-    <nav class="navbar" id="navbar">
-      <a href="#">NEW</a>
-      <a href="#">COLLECTIONS</a>
-      <a href="#">BEST SELLERS</a>
-      <a href="#">SALE</a>
-      <a href="#">SHOP ALL</a>
-    </nav>
-  </header>
+  <!-- Header (Injected) -->
+  <div id="header-placeholder"></div>
 
   <!-- Sidebar -->
   <div class="sidebar">
@@ -177,65 +157,10 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-newsletter">
-      <p>Sign up for updates:</p>
-      <p>Be the first to know about new collections and exclusive offers!</p>
-      <form class="newsletter-form">
-        <input type="email" placeholder="Enter email here">
-        <button type="submit"><i class="fas fa-arrow-right"></i></button>
-      </form>
-    </div>
+  <!-- Footer (Injected) -->
+  <div id="footer-placeholder"></div>
 
-    <div class="footer-main">
-      <div class="footer-section">
-        <h3>ABOUT KAMA</h3>
-        <ul>
-          <li><a href="#">Loyalty Program</a></li>
-          <li><a href="#">Brand Story</a></li>
-          <li><a href="#">Affiliate Program</a></li>
-          <li><a href="#">Student Discount</a></li>
-          <li><a href="#">Community</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h3>CUSTOMER CARE</h3>
-        <ul>
-          <li><a href="#">Shipping Policy</a></li>
-          <li><a href="#">Refund & Return Policy</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms and Conditions</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h3>CUSTOMER SERVICE</h3>
-        <ul>
-          <li><a href="#">Track Your Order</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Submit Feedback</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section footer-social">
-        <h3>FOLLOW US</h3>
-        <div class="social-icons">
-          <button type="button" aria-label="Facebook"><i class="fab fa-facebook-f"></i></button>
-          <button type="button" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
-          <button type="button" aria-label="TikTok"><i class="fab fa-tiktok"></i></button>
-          <button type="button" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>&copy; 2025 KAMA. All rights reserved.</p>
-    </div>
-  </footer>
-
+<script src="/header_footer/partials.js"></script>
   <script src="./components/live-chat-script.js"></script>
   <script src="./script.js"></script>
 </body>

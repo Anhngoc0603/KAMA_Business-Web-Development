@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-await loadPartial('../header_footer/header.html', 'header-placeholder');
-  await loadPartial('../header_footer/footer.html', 'footer-placeholder');
+  await loadPartial('/header_footer/header.html', 'header-placeholder');
+  await loadPartial('/header_footer/footer.html', 'footer-placeholder');
 
   // SAU KHI HEADER LOAD → GỌI INIT
   setTimeout(initHeaderEvents, 100); // Đảm bảo DOM đã sẵn sàng
@@ -161,14 +161,14 @@ shopAll.addEventListener('click', (e) => {
     if (!container) return;
 
     try {
-      const res = await fetch('./products.json', { cache: 'no-store' });
+      const res = await fetch('/new/products.json', { cache: 'no-store' });
       const data = await res.json();
       const newProducts = data.products.filter(p => p.isNew);
 
       container.innerHTML = newProducts.map(p => `
         <div class="product-card">
           <div class="product-image-container">
-<img src="${(p.images && p.images[0]) ? p.images[0] : 'https://via.placeholder.com/300'}" 
+      <img src="${(p.images && p.images[0]) ? p.images[0] : '/header_footer/images/LOGO.png'}"
      alt="${escapeHTML(p.name)}" class="product-img">
 
             <span class="product-badge new">NEW</span>
@@ -227,7 +227,7 @@ shopAll.addEventListener('click', (e) => {
       products = data.products || [];
     } catch (e) {
       log('Fallback product', 'warn');
-      products = [{ id: 1, name: 'Sample', brand: 'Demo', price: 29.99, rating: 4.5, category: 'Face', images: ['https://via.placeholder.com/300'] }];
+    products = [{ id: 1, name: 'Sample', brand: 'Demo', price: 29.99, rating: 4.5, category: 'Face', images: ['/header_footer/images/LOGO.png'] }];
     }
     filtered = [...products];
     page = 1;
@@ -245,7 +245,7 @@ shopAll.addEventListener('click', (e) => {
     els.grid.innerHTML = displayed.map(p => `
       <div class="product-card">
         <div class="product-image-container">
-          <img src="${p.images?.[0] || 'https://via.placeholder.com/300'}" alt="${escapeHTML(p.name)}" class="product-img">
+      <img src="${p.images?.[0] || '/header_footer/images/LOGO.png'}" alt="${escapeHTML(p.name)}" class="product-img">
           <img src="${p.images?.[1] || p.images?.[0]}" alt="${escapeHTML(p.name)}" class="product-img hover-image">
           ${p.isNew ? `<span class="product-badge new">NEW</span>` : ''}
         </div>
