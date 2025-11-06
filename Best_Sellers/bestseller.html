@@ -1143,148 +1143,105 @@
   }
 
   // 🎯 Team Carousel
-  async function initTeamCarousel() {
-    let fetchedBrands = [];
-    
-    try {
-      const response = await fetch('./brand.json');
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      fetchedBrands = data.brands || [];
-    } catch (e) {
-      console.error("Failed to load brand.json", e);
-      // Fallback brands
-      fetchedBrands = [
-        { name: "Dior", slogan: "Luxury Beauty", image: DEFAULT_BRAND_IMAGE },
-        { name: "Chanel", slogan: "Elegance & Style", image: DEFAULT_BRAND_IMAGE },
-        { name: "Gucci", slogan: "Italian Luxury", image: DEFAULT_BRAND_IMAGE },
-        { name: "Lancôme", slogan: "French Elegance", image: DEFAULT_BRAND_IMAGE },
-        { name: "YSL", slogan: "Modern Luxury", image: DEFAULT_BRAND_IMAGE }
-      ];
-    }
+async function initTeamCarousel() {
+  const brandMap = new Map();
 
-    const teamTrack = document.getElementById('teamCarouselTrack');
-    const teamDotsContainer = document.getElementById('teamDotsContainer');
-    
-    teamTrack.innerHTML = fetchedBrands.map((brand, index) => 
-      `<div class="team-card" data-index="${index}">
-        <img src="${brand.image}" alt="${brand.name}" onerror="this.src='${DEFAULT_BRAND_IMAGE}'">
-      </div>`
-    ).join('');
-    
-    teamDotsContainer.innerHTML = fetchedBrands.map((_, index) => 
-      `<div class="team-dot" data-index="${index}"></div>`
-    ).join('');
+  PRODUCTS.forEach(p => {
+    if (!brandMap.has(p.brand)) {
+      // ✅ Xử lý đường dẫn ảnh thương hiệu để không bị sai cấp
+      let brandImg = p.brandImage || p.images?.[0] || DEFAULT_BRAND_IMAGE;
 
-    const teamCards = document.querySelectorAll(".team-card");
-    const teamDots = document.querySelectorAll(".team-dot");
-    const teamMemberName = document.querySelector(".team-member-name");
-    const teamMemberRole = document.querySelector(".team-member-role");
-    const teamUpArrows = document.querySelectorAll(".team-nav-arrow.up");
-    const teamDownArrows = document.querySelectorAll(".team-nav-arrow.down");
+      // Nếu ảnh nằm trong thư mục Best_Sellers/images thì thêm đường dẫn cha vào
+    if (brandImg.startsWith('./images/brands/') || brandImg.startsWith('images/brands/')) {
+  brandImg = `./${brandImg.replace('./', '')}`;
+}
 
-    let teamCurrentIndex = 0;
-    let teamIsAnimating = false;
 
-    function updateTeamCarousel(newIndex) {
-      if (teamIsAnimating) return;
-      teamIsAnimating = true;
-
-      teamCurrentIndex = (newIndex + teamCards.length) % teamCards.length;
-      const currentBrand = fetchedBrands[teamCurrentIndex];
-
-      teamCards.forEach((card, i) => {
-        const offset = (i - teamCurrentIndex + teamCards.length) % teamCards.length;
-        card.classList.remove("center", "up-1", "up-2", "down-1", "down-2", "hidden");
-
-        if (offset === 0) {
-          card.classList.add("center");
-        } else if (offset === 1) {
-          card.classList.add("down-1");
-        } else if (offset === 2) {
-          card.classList.add("down-2");
-        } else if (offset === teamCards.length - 1) {
-          card.classList.add("up-1");
-        } else if (offset === teamCards.length - 2) {
-          card.classList.add("up-2");
-        } else {
-          card.classList.add("hidden");
-        }
+      brandMap.set(p.brand, {
+        name: p.brand,
+        slogan: p.slogan || "Luxury & Elegance",
+        image: brandImg
       });
-
-      teamDots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === teamCurrentIndex);
-      });
-
-      if(teamMemberName && teamMemberRole) {
-        teamMemberName.style.opacity = "0";
-        teamMemberRole.style.opacity = "0";
-        
-        setTimeout(() => {
-          teamMemberName.textContent = currentBrand.name;
-          teamMemberRole.textContent = currentBrand.slogan;
-
-          teamMemberName.style.animation = "none";
-          teamMemberRole.style.animation = "none";
-          void teamMemberName.offsetWidth;
-          void teamMemberRole.offsetWidth;
-
-          teamMemberName.style.animation = "brandFadeIn 0.8s ease forwards";
-          teamMemberRole.style.animation = "brandFadeIn 1s ease 0.1s forwards";
-        }, 300);
-      }
-
-      setTimeout(() => {
-        teamIsAnimating = false;
-      }, 800);
     }
+  });
 
-    teamUpArrows.forEach(arrow => {
-      arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex - 1));
-    });
+  const fetchedBrands = Array.from(brandMap.values());
+  const teamTrack = document.getElementById('teamCarouselTrack');
+  const teamDotsContainer = document.getElementById('teamDotsContainer');
 
-    teamDownArrows.forEach(arrow => {
-      arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex + 1));
-    });
+  // render cards
+  teamTrack.innerHTML = fetchedBrands.map((brand, index) => `
+    <div class="team-card" data-index="${index}">
+      <img src="${brand.image}" alt="${brand.name}"
+           onerror="this.src='${DEFAULT_BRAND_IMAGE}'">
+    </div>
+  `).join('');
 
-    teamDots.forEach((dot, i) => {
-      dot.addEventListener("click", () => updateTeamCarousel(i));
-    });
+  teamDotsContainer.innerHTML = fetchedBrands.map((_, index) =>
+    `<div class="team-dot" data-index="${index}"></div>`
+  ).join('');
+
+  const teamCards = document.querySelectorAll(".team-card");
+  const teamDots = document.querySelectorAll(".team-dot");
+  const teamMemberName = document.querySelector(".team-member-name");
+  const teamMemberRole = document.querySelector(".team-member-role");
+  const teamUpArrows = document.querySelectorAll(".team-nav-arrow.up");
+  const teamDownArrows = document.querySelectorAll(".team-nav-arrow.down");
+
+  let teamCurrentIndex = 0, teamIsAnimating = false;
+
+  function updateTeamCarousel(newIndex) {
+    if (teamIsAnimating) return;
+    teamIsAnimating = true;
+    teamCurrentIndex = (newIndex + teamCards.length) % teamCards.length;
+    const currentBrand = fetchedBrands[teamCurrentIndex];
 
     teamCards.forEach((card, i) => {
-      card.addEventListener("click", () => updateTeamCarousel(i));
+      const offset = (i - teamCurrentIndex + teamCards.length) % teamCards.length;
+      card.className = "team-card";
+      if (offset === 0) card.classList.add("center");
+      else if (offset === 1) card.classList.add("down-1");
+      else if (offset === 2) card.classList.add("down-2");
+      else if (offset === teamCards.length - 1) card.classList.add("up-1");
+      else if (offset === teamCards.length - 2) card.classList.add("up-2");
+      else card.classList.add("hidden");
     });
 
-    // Touch support
-    let teamTouchStartY = 0;
-    let teamTouchEndY = 0;
-    const teamSectionEl = document.getElementById('teamSection');
+    teamDots.forEach((dot, i) => dot.classList.toggle("active", i === teamCurrentIndex));
 
-    if (teamSectionEl) {
-      teamSectionEl.addEventListener("touchstart", (e) => {
-        teamTouchStartY = e.changedTouches[0].screenY;
-      }, { passive: true });
-      
-      teamSectionEl.addEventListener("touchend", (e) => {
-        teamTouchEndY = e.changedTouches[0].screenY;
-        handleTeamSwipe();
-      });
+    if (teamMemberName && teamMemberRole) {
+      teamMemberName.style.opacity = "0";
+      teamMemberRole.style.opacity = "0";
+      setTimeout(() => {
+        teamMemberName.textContent = currentBrand.name;
+        teamMemberRole.textContent = currentBrand.slogan;
+        teamMemberName.style.animation = "brandFadeIn 0.8s ease forwards";
+        teamMemberRole.style.animation = "brandFadeIn 1s ease 0.1s forwards";
+      }, 300);
     }
 
-    function handleTeamSwipe() {
-      const swipeThreshold = 50;
-      const diff = teamTouchStartY - teamTouchEndY;
-      if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0) {
-          updateTeamCarousel(teamCurrentIndex + 1);
-        } else {
-          updateTeamCarousel(teamCurrentIndex - 1);
-        }
-      }
-    }
-
-    updateTeamCarousel(0);
+    setTimeout(() => teamIsAnimating = false, 800);
   }
+
+  teamUpArrows.forEach(arrow => arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex - 1)));
+  teamDownArrows.forEach(arrow => arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex + 1)));
+  teamDots.forEach((dot, i) => dot.addEventListener("click", () => updateTeamCarousel(i)));
+teamCards.forEach((card, i) => {
+  card.addEventListener("click", () => {
+    const currentBrand = fetchedBrands[i];
+    // Nếu người dùng click vào brand đang ở giữa -> chuyển trang luôn
+    if (card.classList.contains("center")) {
+      window.location.href = `../categories/categories.html?brand=${encodeURIComponent(currentBrand.name)}`;
+    } else {
+      // Nếu chưa ở giữa -> chỉ animate lên trung tâm
+      updateTeamCarousel(i);
+    }
+  });
+});
+
+  updateTeamCarousel(0);
+}
+
 
   // 🎯 Hàm khởi tạo chính
   (async function init() {
