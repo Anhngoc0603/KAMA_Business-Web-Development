@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 Checkout page is starting up...');
 
-  const FREE_SHIPPING_THRESHOLD_USD = 100;
+  // Đồng bộ với Cart
+  const FREE_SHIPPING_THRESHOLD_USD = 50; // giống Cart
+  const SHIPPING_FEE_USD = 3; // giống Cart
+  const ENGRAVING_FEE_USD = 5; // giống Cart
+  // Discount configuration flags (match Cart)
+  const APPLY_PERCENT_FIRST = true;
+  const ALLOW_FIXED_OVER_PERCENT = false;
+  const SHOW_SAVEUP_NEGATIVE = true;
 
   const formatCurrency = v => {
     if (isNaN(v) || v === null) return '$0.00';
@@ -13,22 +20,49 @@ document.addEventListener('DOMContentLoaded', function() {
     return `https://quickchart.io/qr?text=${encodeURIComponent(data)}&size=150`;
   };
 
-  // Load data from localStorage
+  // Load data từ localStorage (đồng bộ key với Cart)
   let orderData = {
     orderId: `ORD${Date.now()}`,
-    cart: JSON.parse(localStorage.getItem('cartItems')) || [],
+    cart: JSON.parse(localStorage.getItem('cart')) || [],
     engravingName: JSON.parse(localStorage.getItem('engravingName')) || null,
     discountPercent: JSON.parse(localStorage.getItem('discountPercent')) || 0,
+    discountFixed: JSON.parse(localStorage.getItem('discountFixed')) || 0,
     shippingInfo: JSON.parse(localStorage.getItem('shippingInfo')) || null,
   };
 
+  // Hàm kiểm tra sản phẩm đang sale (đồng bộ với Cart)
+  function isSaleItem(item) {
+    const price = Number(item.price || 0);
+    const original = Number(item.originalPrice || 0);
+    return (
+      (original && original > price) ||
+      item.isOnSale === true ||
+      item.sale === true ||
+      item.onSale === true
+    );
+  }
+
   // Calculate totals
   function calculateTotals() {
-    const subtotal = orderData.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-    const engravingFee = orderData.engravingName ? 5.00 : 0;
+    const subtotal = orderData.cart.reduce((total, item) => total + (Number(item.price) * Number(item.quantity)), 0);
+    const engravingFee = orderData.engravingName ? ENGRAVING_FEE_USD : 0;
     const subPlusEngraving = subtotal + engravingFee;
-    const shipping = subPlusEngraving > 0 && subPlusEngraving < FREE_SHIPPING_THRESHOLD_USD ? 3.00 : 0;
-    const discountAmount = Math.round((subPlusEngraving * orderData.discountPercent / 100) * 100) / 100;
+    const shipping = subPlusEngraving > 0 && subPlusEngraving < FREE_SHIPPING_THRESHOLD_USD ? SHIPPING_FEE_USD : 0;
+    // Discount: áp dụng trên toàn bộ subtotal với thứ tự/capping cấu hình
+    const percentValue = Math.max(Number(orderData.discountPercent) || 0, 0);
+    const fixedValue = Math.max(Number(orderData.discountFixed) || 0, 0);
+    let percentDeduction = 0;
+    let fixedDeduction = 0;
+    if (APPLY_PERCENT_FIRST) {
+      percentDeduction = Math.round((subtotal * percentValue / 100) * 100) / 100;
+      const remaining = Math.max(subtotal - percentDeduction, 0);
+      fixedDeduction = ALLOW_FIXED_OVER_PERCENT ? fixedValue : Math.min(fixedValue, remaining);
+    } else {
+      fixedDeduction = fixedValue;
+      const remainingForPercent = Math.max(subtotal - fixedDeduction, 0);
+      percentDeduction = Math.round((remainingForPercent * percentValue / 100) * 100) / 100;
+    }
+    const discountAmount = Math.round((percentDeduction + fixedDeduction) * 100) / 100;
     const total = Math.round((subPlusEngraving - discountAmount + shipping) * 100) / 100;
 
     orderData.subtotal = subtotal;
@@ -36,6 +70,53 @@ document.addEventListener('DOMContentLoaded', function() {
     orderData.shipping = shipping;
     orderData.discountAmount = discountAmount;
     orderData.total = total;
+  }
+
+  // ==== USER SEGMENT HELPERS (ported from Cart) ====
+  function getUserProfile() {
+    const firstLoginDone = JSON.parse(localStorage.getItem('user.firstLoginDone') || 'false');
+    const orderCount = Number(localStorage.getItem('user.orderCount') || '0');
+    const birthMonth = Number(localStorage.getItem('user.birthMonth') || '0');
+    const lifetimeSpend = Number(localStorage.getItem('user.lifetimeSpend') || '0');
+    return { firstLoginDone, orderCount, birthMonth, lifetimeSpend };
+  }
+
+  function setFirstLoginDone() {
+    localStorage.setItem('user.firstLoginDone', 'true');
+  }
+
+  function evaluateCoupon(code) {
+    const nowMonth = new Date().getMonth() + 1;
+    const profile = getUserProfile();
+    const upper = (code || '').trim().toUpperCase();
+    if (upper === 'WELCOME10') {
+      if (!profile.firstLoginDone) {
+        return { valid: true, type: 'percent', value: 10, message: '✅ 10% for first login' };
+      }
+      return { valid: false, message: '❌ Chỉ áp dụng lần đăng nhập đầu tiên.' };
+    }
+    if (upper === 'FIRSTBUY15') {
+      if (profile.orderCount === 0) {
+        return { valid: true, type: 'percent', value: 15, message: '✅ 15% for first purchase' };
+      }
+      return { valid: false, message: '❌ Chỉ áp dụng cho đơn hàng đầu tiên.' };
+    }
+    if (upper === 'BDAY20') {
+      if (profile.birthMonth && profile.birthMonth === nowMonth) {
+        return { valid: true, type: 'percent', value: 20, message: '✅ 20% trong tháng sinh nhật' };
+      }
+      return { valid: false, message: '❌ Mã chỉ áp dụng trong tháng sinh nhật.' };
+    }
+    if (upper === 'LOYAL5') {
+      if (profile.lifetimeSpend >= 100) {
+        return { valid: true, type: 'amount', value: 5, message: '✅ $5 cho khách thân thiết (>=$100)' };
+      }
+      return { valid: false, message: '❌ Cần tổng chi tiêu ≥ $100 để áp dụng.' };
+    }
+    if (upper === 'NEW15') {
+      return { valid: true, type: 'percent', value: 15, message: '✅ 15% discount applied' };
+    }
+    return { valid: false, message: '❌ Mã không hợp lệ hoặc đã hết hạn.' };
   }
 
   // Elements
@@ -62,6 +143,30 @@ document.addEventListener('DOMContentLoaded', function() {
     qrZalo: document.getElementById('qrZalo'),
     qrBank: document.getElementById('qrBank'),
     qrCod: document.getElementById('qrCod'),
+    couponInput: document.getElementById('couponInputCheckout'),
+    applyCouponBtn: document.getElementById('applyCouponBtnCheckout'),
+    couponMessage: document.getElementById('couponMessageCheckout'),
+    agreeAll: document.getElementById('agreeAll'),
+    // Shipping form
+    shippingForm: document.getElementById('shippingForm'),
+    firstName: document.getElementById('firstName'),
+    lastName: document.getElementById('lastName'),
+    addressLine: document.getElementById('addressLine'),
+    aptSuite: document.getElementById('aptSuite'),
+    city: document.getElementById('city'),
+    state: document.getElementById('state'),
+    zip: document.getElementById('zip'),
+    defaultAddress: document.getElementById('defaultAddress'),
+    saveShippingBtn: document.getElementById('saveShippingBtn'),
+    // Contact info
+    mobileNumber: document.getElementById('mobileNumber'),
+    emailAddress: document.getElementById('emailAddress'),
+    // Country & carrier
+    country: document.getElementById('country'),
+    carrierLabel: document.getElementById('carrierLabel'),
+    // Layout helpers
+    leftScroll: document.querySelector('.left-scroll'),
+    rightSidebar: document.querySelector('.right-column .summary-section'),
   };
 
   const showMessage = (message, type = 'info') => {
@@ -93,6 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotals();
     setupEventListeners();
     handlePaymentChange();
+    updateCarrierByCountry();
+    syncLeftScrollHeight();
     showMessage('Checkout data loaded successfully!', 'success');
   }
 
@@ -136,13 +243,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function displayShippingInfo() {
-    if (!orderData.shippingInfo) {
-      if (elements.shippingDisplay) elements.shippingDisplay.classList.add('hidden');
-      if (elements.noShippingInfo) elements.noShippingInfo.classList.remove('hidden');
-      return;
-    }
-    if (elements.shippingDisplay) {
-      elements.shippingDisplay.classList.remove('hidden');
+    // Luôn hiển thị form để khách tự điền trực tiếp
+    if (elements.shippingForm) elements.shippingForm.classList.remove('hidden');
+    if (elements.noShippingInfo) elements.noShippingInfo.classList.add('hidden');
+    // Nếu đã có thông tin, chỉ cập nhật phần tóm tắt nhưng vẫn giữ form hiển thị
+    if (orderData.shippingInfo && elements.shippingDisplay) {
       const info = orderData.shippingInfo;
       const setTextContent = (id, text) => {
         const element = document.getElementById(id);
@@ -153,8 +258,10 @@ document.addEventListener('DOMContentLoaded', function() {
       setTextContent('displayProvince', info.province);
       setTextContent('displayDistrict', info.district);
       setTextContent('displayAddress', info.address);
+      // Mặc định: giữ phần tóm tắt ẩn để giao diện giống ảnh
+      elements.shippingDisplay.classList.add('hidden');
     }
-    if (elements.noShippingInfo) elements.noShippingInfo.classList.add('hidden');
+    syncLeftScrollHeight();
   }
 
   function displayEngravingInfo() {
@@ -184,7 +291,17 @@ document.addEventListener('DOMContentLoaded', function() {
     updateElement(elements.subtotalEl, formatCurrency(subtotal));
     updateElement(elements.engravingFeeEl, formatCurrency(engravingFee));
     updateElement(elements.shippingFeeEl, shipping === 0 ? freeShippingText : formatCurrency(shipping));
-    updateElement(elements.discountEl, `-${formatCurrency(discountAmount)}`);
+    // Save up: hiển thị số âm nếu cấu hình, vẫn đổi màu theo số tiền
+    if (elements.discountEl) {
+      elements.discountEl.classList.remove('saveup-positive', 'saveup-zero');
+      const hasSaving = Number(discountAmount) > 0;
+      elements.discountEl.classList.add(hasSaving ? 'saveup-positive' : 'saveup-zero');
+      if (SHOW_SAVEUP_NEGATIVE && hasSaving) {
+        updateElement(elements.discountEl, '- ' + formatCurrency(discountAmount));
+      } else {
+        updateElement(elements.discountEl, formatCurrency(discountAmount));
+      }
+    }
     updateElement(elements.totalEl, formatCurrency(total));
 
     if (elements.progressBar) {
@@ -265,6 +382,138 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('input[name="payment"]').forEach(radio => {
       radio.addEventListener('change', handlePaymentChange);
     });
+    if (elements.applyCouponBtn && elements.couponInput && elements.couponMessage) {
+      elements.applyCouponBtn.addEventListener('click', function() {
+        const code = elements.couponInput.value.trim().toUpperCase();
+        const result = evaluateCoupon(code);
+        if (result.valid) {
+          if (result.type === 'percent') {
+            orderData.discountPercent = result.value;
+            orderData.discountFixed = 0;
+          } else {
+            orderData.discountPercent = 0;
+            orderData.discountFixed = result.value;
+          }
+          elements.couponMessage.textContent = result.message;
+          elements.couponMessage.style.color = '#16a34a';
+          showMessage(`Coupon '${code}' applied successfully!`, 'success');
+          if (code === 'WELCOME10') setFirstLoginDone();
+        } else {
+          orderData.discountPercent = 0;
+          orderData.discountFixed = 0;
+          elements.couponMessage.textContent = result.message;
+          elements.couponMessage.style.color = '#ef4444';
+          showMessage(result.message, 'error');
+        }
+        elements.couponMessage.classList.remove('hidden');
+        calculateTotals();
+        updateTotals();
+        localStorage.setItem('discountPercent', JSON.stringify(orderData.discountPercent));
+        localStorage.setItem('discountFixed', JSON.stringify(orderData.discountFixed));
+        syncLeftScrollHeight();
+      });
+    }
+
+    // Gate Place Order by Agree to All
+    if (elements.agreeAll && elements.confirmOrderBtn) {
+      const syncPlaceOrderState = () => {
+        elements.confirmOrderBtn.disabled = !elements.agreeAll.checked;
+      };
+      elements.agreeAll.addEventListener('change', syncPlaceOrderState);
+      // Initial sync to honor default unchecked state
+      syncPlaceOrderState();
+    }
+
+    // Contact info persistence
+    if (elements.mobileNumber) {
+      const storedMobile = localStorage.getItem('contactMobile') || '';
+      elements.mobileNumber.value = storedMobile;
+      elements.mobileNumber.addEventListener('input', e => {
+        localStorage.setItem('contactMobile', e.target.value);
+      });
+    }
+    if (elements.emailAddress) {
+      const storedEmail = localStorage.getItem('contactEmail') || '';
+      elements.emailAddress.value = storedEmail;
+      elements.emailAddress.addEventListener('input', e => {
+        localStorage.setItem('contactEmail', e.target.value);
+      });
+    }
+
+    // Country change -> update carrier
+    if (elements.country) {
+      elements.country.addEventListener('change', () => {
+        updateCarrierByCountry();
+      });
+    }
+
+    // Uppercase State/Province live
+    if (elements.state) {
+      elements.state.addEventListener('input', e => {
+        e.target.value = (e.target.value || '').toUpperCase();
+      });
+    }
+
+    // Sync left column scroll height on resize
+    window.addEventListener('resize', syncLeftScrollHeight);
+
+    // Shipping form: Save & Continue
+    if (elements.saveShippingBtn) {
+      elements.saveShippingBtn.addEventListener('click', function() {
+        const first = (elements.firstName?.value || '').trim();
+        const last = (elements.lastName?.value || '').trim();
+        const address1 = (elements.addressLine?.value || '').trim();
+        const apt = (elements.aptSuite?.value || '').trim();
+        const city = (elements.city?.value || '').trim();
+        const state = (elements.state?.value || '').trim();
+        const zip = (elements.zip?.value || '').trim();
+        const isDefault = !!elements.defaultAddress?.checked;
+        const countryVal = (elements.country?.value || 'VN');
+
+        if (!first || !last || !address1 || !city || !state || !zip) {
+          showMessage('Please fill all required fields (*) in Shipping Address!', 'error');
+          return;
+        }
+
+        // Country-specific Zip/Postal validation
+        const isUS = countryVal === 'US';
+        const isVN = countryVal === 'VN';
+        let zipValid = true;
+        if (isUS) {
+          zipValid = /^\d{5}(-\d{4})?$/.test(zip);
+          if (!zipValid) {
+            showMessage('US Zip must be 5 digits or 5-4 (e.g., 12345 or 12345-6789).', 'error');
+            return;
+          }
+        } else if (isVN) {
+          zipValid = /^\d{6}$/.test(zip);
+          if (!zipValid) {
+            showMessage('VN Postal Code phải gồm 6 chữ số.', 'error');
+            return;
+          }
+        }
+
+        const shippingInfo = {
+          fullname: `${first} ${last}`.trim(),
+          address: apt ? `${address1}, ${apt}` : address1,
+          district: city,
+          province: state.toUpperCase(),
+          zip,
+          country: countryVal === 'US' ? 'United States' : 'Vietnam',
+          default: isDefault,
+          phone: JSON.parse(localStorage.getItem('contactMobile') || 'null') || ''
+        };
+        orderData.shippingInfo = shippingInfo;
+        localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo));
+        showMessage('Shipping address saved. You can continue.', 'success');
+        // Sau khi lưu: vẫn giữ form hiển thị; cho phép xem tóm tắt nếu muốn
+        if (elements.shippingDisplay) {
+          elements.shippingDisplay.classList.remove('hidden');
+        }
+        displayShippingInfo();
+        syncLeftScrollHeight();
+      });
+    }
   }
 
   function confirmOrder() {
@@ -306,4 +555,24 @@ document.addEventListener('DOMContentLoaded', function() {
   document.head.appendChild(style);
 
   initializeCheckout();
+  // Helpers
+  function updateCarrierByCountry() {
+    const val = elements.country?.value || 'VN';
+    if (elements.carrierLabel) {
+      elements.carrierLabel.textContent = val === 'US' ? 'USPS / UPS' : 'LX Pantos';
+    }
+    const label = document.getElementById('countryLabelText');
+    if (label) {
+      label.textContent = val === 'US' ? 'UNITED STATES' : 'VIETNAM';
+    }
+  }
+  function syncLeftScrollHeight() {
+    const sidebar = elements.rightSidebar || document.querySelector('.right-column .summary-section');
+    const scroller = elements.leftScroll || document.querySelector('.left-scroll');
+    if (sidebar && scroller) {
+      const h = sidebar.offsetHeight;
+      scroller.style.maxHeight = `${h}px`;
+      scroller.style.overflowY = 'auto';
+    }
+  }
 });

@@ -1052,6 +1052,17 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
+        // Chuẩn hoá đường dẫn ảnh để đảm bảo hiển thị đúng ở trang detail và Cart
+        const normalizeImagePath = (p) => {
+          if (!p) return p;
+          if (p.startsWith('./images/')) return p.replace('./images/', '/Best_Sellers/images/');
+          if (p.startsWith('images/')) return `/Best_Sellers/${p}`;
+          return p;
+        };
+        data.products = data.products.map(prod => ({
+          ...prod,
+          images: Array.isArray(prod.images) ? prod.images.map(normalizeImagePath) : prod.images
+        }));
         debugLog('Danh sách sản phẩm:', data.products.map(p => ({ id: p.id, name: p.name })));
         return data.products;
       } catch (error) {
@@ -1502,6 +1513,37 @@
       const addToCartBtn = document.getElementById('addToCartBtn');
       if (addToCartBtn) {
         addToCartBtn.addEventListener('click', function() {
+          try {
+            const product = window.currentProduct;
+            const qtyEl = document.getElementById('quantity');
+            const shadeEl = document.getElementById('product-variant');
+            const quantity = parseInt(qtyEl?.value) || 1;
+            const selectedShade = shadeEl?.value || '';
+
+            if (product) {
+              let cart = [];
+              try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch (_) { cart = []; }
+              const existing = cart.find(i => String(i.id) === String(product.id));
+              if (existing) {
+                existing.quantity = (parseInt(existing.quantity) || 0) + quantity;
+                if (selectedShade) existing.selectedShade = selectedShade;
+              } else {
+                cart.push({
+                  id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  image: product.images?.[0] || '',
+                  selectedShade,
+                  quantity
+                });
+              }
+              localStorage.setItem('cart', JSON.stringify(cart));
+              if (typeof updateCartCount === 'function') {
+                try { updateCartCount(); } catch (_) {}
+              }
+            }
+          } catch (_) {}
+
           this.textContent = '✓ ADDED TO CART';
           this.style.background = 'var(--secondary-color)';
           setTimeout(() => {

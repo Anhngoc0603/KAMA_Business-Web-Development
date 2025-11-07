@@ -70,6 +70,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   await loadPartial('/header_footer/header.html', 'header-placeholder');
+  // Inject shared header script để kích hoạt search/giỏ hàng trên mọi trang NEW
+  try {
+    if (!document.querySelector('script[data-header-footer-script]')) {
+      const s = document.createElement('script');
+      s.src = '/header_footer/script.js';
+      s.defer = true;
+      s.setAttribute('data-header-footer-script', 'true');
+      document.head.appendChild(s);
+    }
+  } catch (_) {}
   await loadPartial('/header_footer/footer.html', 'footer-placeholder');
 
   // SAU KHI HEADER LOAD → GỌI INIT

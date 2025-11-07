@@ -23,6 +23,26 @@
       if (headerEl && headerHTML) headerEl.innerHTML = headerHTML;
       if (footerEl && footerHTML) footerEl.innerHTML = footerHTML;
 
+      // Đặt biến CSS theo chiều cao thực tế của header/footer để body tự đệm
+      // Giúp header/footer cố định không che nội dung khi cuộn/chuyển mục
+      try {
+        const injectedHeader = document.querySelector('header');
+        const injectedFooter = document.querySelector('.footer');
+        if (injectedHeader) {
+          const h = injectedHeader.offsetHeight || 0;
+          document.documentElement.style.setProperty('--site-header-height', h + 'px');
+          // Ép body luôn đẩy nội dung xuống bên dưới header trên mọi trang
+          document.body.style.setProperty('padding-top', h + 'px', 'important');
+          // Cải thiện behavior khi scroll tới anchor/fragment
+          document.documentElement.style.setProperty('scroll-padding-top', h + 'px');
+        }
+        // Footer không cố định: đảm bảo không có padding-bottom dư thừa
+        document.body.style.setProperty('padding-bottom', '0px', 'important');
+      } catch (e) {
+        // Không chặn luồng nếu lỗi đo kích thước
+        console.warn('Header/Footer sizing warning:', e);
+      }
+
       // Ensure header behavior script loads once
       if (!document.querySelector('script[data-header-footer-script]')) {
         const s = document.createElement('script');
@@ -40,4 +60,3 @@
   // expose for manual call if needed
   window.injectHeaderFooter = inject;
 })();
-

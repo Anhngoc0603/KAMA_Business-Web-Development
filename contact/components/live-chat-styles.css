@@ -3,8 +3,9 @@
 /* Floating Button */
 .floating-chat {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  /* Đẩy sang trái để không trùng với nút scroll-to-top (50px + 12px khoảng cách) */
+  bottom: 30px;
+  right: 92px;
   background: var(--warm-blush);
   border: none;
   border-radius: 50%;
@@ -225,7 +226,7 @@
 
   .floating-chat {
     bottom: 1rem;
-    right: 1rem;
+    right: 84px; /* 50px button + ~10px khoảng cách trên mobile */
     width: 54px;
     height: 54px;
   }

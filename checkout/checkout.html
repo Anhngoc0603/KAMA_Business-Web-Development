@@ -11,91 +11,164 @@
 <body>
     <!-- Header (Injected) -->
     <div id="header-placeholder"></div>
-    <h1 class="subtitle" style="text-align:center;"><i>Confirm your shipping and payment details</i></h1>
 
-    <div class="checkout-container">
-        
-        <section class="info-section">
-            <h2>📍 Shipping Information</h2>
-            
-            <div id="shippingDisplay" class="shipping-display">
-                <p><strong>Full Name:</strong> <span id="displayFullname"></span></p>
-                <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
-                <p><strong>Address:</strong> <span id="displayAddress"></span>, 
-                    <span id="displayDistrict"></span>, <span id="displayProvince"></span>
-                </p>
-            </div>
-            
-            <div id="noShippingInfo" class="no-info-message hidden">
-                <p>No shipping information provided. <a href="/cart/cart.html">Return to cart</a> to enter details.</p>
-            </div>
+    <div class="container">
+        <h1 class="main-title" style="text-align:center;">Place Order</h1>
 
-            <div id="engravingInfo" class="engraving-display hidden">
-                <p><strong>Custom Engraving:</strong> <span id="engravedNameCheckout"></span></p>
-            </div>
-        </section>
+        <div class="main-grid">
+            <!-- Left: Dynamic Content (≈2/3) -->
+            <div class="left-column">
+                <div class="left-scroll">
+                <!-- Shipping Address (read-only from Cart) -->
+                <div class="glass-section info-section" style="margin-bottom:1.5rem;">
+                    <h2 class="section-title">Shipping Address</h2>
+                    <!-- Country selector & dynamic carrier (styled gần giống ảnh) -->
+                    <div class="country-row" style="display:flex; align-items:center; gap:10px; margin-bottom:8px; color:#6B4C3B;">
+                        <span style="display:inline-flex; align-items:center; gap:8px; font-weight:700;">
+                          <span style="font-size:18px; color:#E53935;">●</span>
+                          <span id="countryLabelText">VIETNAM</span>
+                        </span>
+                        <select id="country" class="input" style="max-width:220px; padding:8px; border-radius:8px;">
+                            <option value="VN">Vietnam</option>
+                            <option value="US">United States</option>
+                        </select>
+                        <span id="carrierNote" style="opacity:0.8;">Shipping Company: <strong id="carrierLabel">LX Pantos</strong></span>
+                    </div>
 
-        <section class="cart-section">
-            <h2>🛒 Order Details</h2>
-            <div id="cartItems">
+                    <!-- Form -->
+                    <div id="shippingForm">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                            <input id="firstName" class="input" placeholder="First Name*" />
+                            <input id="lastName" class="input" placeholder="Last Name*" />
+                        </div>
+                        <p style="font-size:12px; color:#888; margin:8px 0 12px;">Delivery could be delayed or returned if recipient's full name is not provided.</p>
+                        <div class="input-group" style="margin-bottom:10px; position:relative;">
+                            <span class="input-icon" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#E6A6B0;">🔎</span>
+                            <input id="addressLine" class="input" placeholder="Address*" style="padding-left:34px;" />
+                        </div>
+                        <input id="aptSuite" class="input" placeholder="Apt/Suite/Other (optional)" style="margin-bottom:10px;" />
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px;">
+                            <input id="city" class="input" placeholder="City*" />
+                            <input id="state" class="input" placeholder="State/Province*" />
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:10px;">
+                            <input id="zip" class="input" placeholder="Zip/Postal Code*" />
+                        </div>
+                        <label style="display:flex; align-items:center; gap:8px; margin:8px 0 12px;">
+                            <input type="checkbox" id="defaultAddress" />
+                            <span>Make this my default address</span>
+                        </label>
+                        <button id="saveShippingBtn" class="checkout-btn" style="width:100%;">Save & Continue</button>
+                    </div>
+
+                    <!-- Display summary once saved -->
+                    <div id="shippingDisplay" class="shipping-display hidden" style="margin-top:12px;">
+                        <p><strong>Full Name:</strong> <span id="displayFullname"></span></p>
+                        <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
+                        <p><strong>Address:</strong> <span id="displayAddress"></span>,
+                            <span id="displayDistrict"></span>, <span id="displayProvince"></span>
+                        </p>
+                    </div>
+                    <div id="noShippingInfo" class="no-info-message hidden">
+                        <p>No shipping information provided. Please fill the form above.</p>
+                    </div>
+                    <div id="engravingInfo" class="engraving-display hidden">
+                        <p><strong>Custom Engraving:</strong> <span id="engravedNameCheckout"></span></p>
+                    </div>
                 </div>
-            
-            <div id="emptyCart" class="empty-cart-message hidden">
-                <h3>Cart is Empty</h3>
-                <p>There are no products in your cart.</p>
-            </div>
-        </section>
 
-        <section class="summary-section">
-            <h2>💰 Order Summary</h2>
-            
-            <div class="summary-details">
-                <div class="summary-row"><span>Subtotal (Items):</span><span id="subtotal">0₫</span></div>
-                <div class="summary-row"><span>Engraving Fee:</span><span id="engravingFee">0₫</span></div>
-                <div class="summary-row"><span>Discount (15%):</span><span id="discount">-0₫</span></div>
-                <div class="summary-row"><span>Shipping Fee:</span><span id="shippingFee">0₫</span></div>
-                
-                <div class="summary-row total"><span>TOTAL:</span><span id="total">0₫</span></div>
-            </div>
-
-            <div class="progress-wrapper">
-                <span>🚚 Free Shipping Progress:</span>
-                <div class="progress-bar">
-                    <div id="progressBar"></div>
+                <!-- Contact Information -->
+                <div class="glass-section" style="margin-bottom:1.5rem;">
+                    <h2 class="section-title">Contact Information</h2>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <input id="mobileNumber" placeholder="Mobile Number" style="padding:10px; border:1px solid #ddd; border-radius:8px;" />
+                        <input id="emailAddress" placeholder="Email" style="padding:10px; border:1px solid #ddd; border-radius:8px;" />
+                    </div>
                 </div>
-                <div id="progressText">Processing...</div>
+
+                <!-- Payment Method -->
+                <div class="glass-section" style="margin-bottom:1.5rem;">
+                    <h2 class="section-title">Payment Method</h2>
+                    <div class="payment-methods">
+                        <label>
+                            <input type="radio" name="payment" value="momo" checked />
+                            <span>MoMo</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="zalo" />
+                            <span>ZaloPay</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="bank" />
+                            <span>Bank Transfer</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="cod" />
+                            <span>Cash on Delivery (COD)</span>
+                        </label>
+                    </div>
+                    <div id="qrMomo" class="qr-container hidden"></div>
+                    <div id="qrZalo" class="qr-container hidden"></div>
+                    <div id="qrBank" class="qr-container hidden"></div>
+                    <div id="qrCod" class="qr-container hidden"></div>
+                </div>
+
+                <!-- Total Items (Order Details) -->
+                <div class="glass-section cart-section">
+                    <h2 class="section-title">Total Items</h2>
+                    <div id="cartItems"></div>
+                    <div id="emptyCart" class="empty-cart-message hidden">
+                        <h3>Cart is Empty</h3>
+                        <p>There are no products in your cart.</p>
+                    </div>
+                </div>
+                </div>
             </div>
 
-            <h2 style="margin-top: 1.5rem;">💳 Payment Method</h2>
-            <div class="payment-methods">
-                <label>
-                    <input type="radio" name="payment" value="momo" checked />
-                    <span>MoMo</span>
-                </label>
-                <label>
-                    <input type="radio" name="payment" value="zalo" />
-                    <span>ZaloPay</span>
-                </label>
-                <label>
-                    <input type="radio" name="payment" value="bank" />
-                    <span>Bank Transfer</span>
-                </label>
-                <label>
-                    <input type="radio" name="payment" value="cod" />
-                    <span>Cash on Delivery (COD)</span>
-                </label>
+            <!-- Right: Order Summary Sidebar (≈1/3) -->
+            <div class="right-column">
+                <div class="glass-section summary-section">
+                    <h3 class="section-title">Order Summary</h3>
+                    <div class="coupon-container" style="display:flex; gap:8px; margin:8px 0 12px; align-items:center;">
+                        <input id="couponInputCheckout" class="input" placeholder="Enter discount code..." style="flex:1; padding:8px 10px; border-radius:8px; border:1px solid #ddd;" />
+                        <button id="applyCouponBtnCheckout" class="btn-primary" style="padding:8px 12px; border:none; border-radius:8px; background:#E6A6B0; color:#fff; cursor:pointer;">Apply</button>
+                    </div>
+                    <div id="couponMessageCheckout" class="coupon-message hidden" style="font-size:13px; margin-bottom:8px; color:#6B4C3B;"></div>
+                    <div class="summary-details">
+                        <div class="summary-row"><span>Subtotal (Items)</span><span id="subtotal">$0.00</span></div>
+                        <div class="summary-row"><span>Engraving Fee</span><span id="engravingFee">$0.00</span></div>
+                        <div class="summary-row"><span>Total Discount</span><span id="discount">$0.00</span></div>
+                        <div class="summary-row"><span>Shipping</span><span id="shippingFee">$0.00</span></div>
+                        <div class="summary-row total"><span>Order Total</span><span id="total">$0.00</span></div>
+                    </div>
+
+                    <div class="shipping-progress progress-wrapper">
+                        <span>🚚 Free Shipping Progress</span>
+                        <div class="progress-bar">
+                            <div id="progressBar"></div>
+                        </div>
+                        <div id="progressText">Processing...</div>
+                    </div>
+
+                    <div style="margin-top:1rem;">
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" id="agreeAll" />
+                            <span>Agree to All</span>
+                        </label>
+                        <div id="termsBox" style="margin-top:10px; max-height:200px; overflow:auto; border:1px solid #eee; padding:10px; border-radius:8px; color:#666;">
+                            <p>Please note that import duties and taxes are not included in the item’s price. If incurred, these additional charges are the customer’s responsibility (Except the USA).</p>
+                            <p>The final payment amount is calculated based on US$ or ₫, the payment amount and the charge amount may differ depending on the currency exchange rate and the time of the transaction.</p>
+                            <p>If packages are returned due to an incorrect or incomplete address, or if the recipient is unavailable, they will not be refundable. Please double-check your zip code and detailed address before checkout to avoid this issue.</p>
+                            <p>Modifications to your order can only be made before payment. Once your payment has been processed, no changes can be made.</p>
+                            <p>If there are typographical errors (such as spelling mistakes or spacing issues) in the address provided by the customer, we may correct these errors to ensure smooth delivery and service. By proceeding, you agree to such corrections.</p>
+                        </div>
+                    </div>
+
+                    <button id="confirmOrderBtn" class="checkout-btn" disabled>Place Order</button>
+                    <a href="/cart/cart.html" class="back-to-cart-btn">⬅️ Go Back to Cart</a>
+                </div>
             </div>
-            
-            <div id="qrMomo" class="qr-container hidden"></div>
-            <div id="qrZalo" class="qr-container hidden"></div>
-            <div id="qrBank" class="qr-container hidden"></div>
-            <div id="qrCod" class="qr-container hidden"></div>
-
-            <button id="confirmOrderBtn" class="checkout-btn">✅ CONFIRM ORDER</button>
-            
-            <a href="/cart/cart.html" class="back-to-cart-btn">⬅️ Go Back to Cart</a>
-
-        </section>
+        </div>
     </div>
 
     <div id="overlay" class="hidden"></div>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura High-End Beauty</title>
-  <link rel="stylesheet" href="/header_footer/header_footer.css">
+  <link rel="stylesheet" href="/header_footer/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
  
@@ -179,6 +179,14 @@
   <div id="header-placeholder"><div style="text-align:center; padding: 20px; color:#aaa;">Loading Header...</div></div>
   <main>
     <div class="container">
+      <!-- Search Results Section (shown when URL has ?q=...) -->
+      <section id="search-results-section" style="display:none; margin-bottom: 40px;">
+        <h2 style="text-align:center;margin-bottom:20px;">Search Results</h2>
+        <div class="products-grid" id="search-results-grid"></div>
+        <div id="search-view-more" style="text-align:center; margin-top:12px; display:none;">
+          <a href="#" id="search-view-more-link" style="color:#E6A6B0; font-weight:600; text-decoration:none;">View more results</a>
+        </div>
+      </section>
             <div class="products-page-container">
         <aside class="products-filter-sidebar">
           <div class="filter-header">
@@ -212,6 +220,9 @@
           <div class="products-grid" id="products-grid">
             <p style="text-align:center;">Loading products...</p>
           </div>
+          <div id="category-view-more" style="text-align:center; margin-top:12px; display:none;">
+            <a href="#" id="category-view-more-link" style="color:#999; font-weight:600; text-decoration:none;">View more</a>
+          </div>
         </section>
       </div>
             <section class="shop-section">
@@ -230,6 +241,7 @@ let allProducts = [];
 let currentFilters = { category: 'ALL-IN', brand: null, price: 300 };
 const DEFAULT_IMAGE_PATH = '/header_footer/images/LOGO.png';
 const DEFAULT_BRAND_IMAGE_PATH = '/header_footer/images/LOGO.png';
+const TOP_SEARCH_RESULTS = 8;
 
 // === HÀM HỖ TRỢ (HELPERS) ===
 function updateCartCount() {
@@ -243,6 +255,60 @@ function getValidImageUrl(path) {
     if (!path) return DEFAULT_BRAND_IMAGE_PATH; // Ảnh mặc định
     if (path.startsWith('./images/')) return path.replace('./images/', '/categories/images/');
     return path;
+}
+// Chuẩn hoá text cho tìm kiếm (không phân biệt hoa/thường, loại dấu)
+function normalizeText(s) {
+  return String(s || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+// Tính điểm liên quan: ưu tiên danh mục > thương hiệu > tên, rồi subtype/description
+function relevanceScore(p, query) {
+  const qn = normalizeText(query);
+  if (!qn) return 0;
+  // Mở rộng token: xử lý số ít/số nhiều và từ đồng nghĩa cho nhóm "lip"
+  const baseTokens = qn.split(/\s+/).filter(Boolean);
+  const expandTokens = (tokens) => {
+    const out = new Set();
+    tokens.forEach(tok => {
+      out.add(tok);
+      // chuẩn hoá số ít/số nhiều đơn giản
+      if (tok.endsWith('s')) out.add(tok.slice(0, -1));
+      // từ đồng nghĩa cho "lip"
+      if (tok.includes('lip')) {
+        out.add('lip');
+        out.add('lips');
+        out.add('lipstick');
+        out.add('balm');
+      }
+      // từ đồng nghĩa tối thiểu cho "balm" liên quan tới môi
+      if (tok === 'balm') {
+        out.add('lip balm');
+        out.add('lip');
+      }
+    });
+    return Array.from(out);
+  };
+  const tokens = expandTokens(baseTokens);
+
+  const fields = {
+    category: normalizeText(p.category),
+    brand: normalizeText(p.brand),
+    name: normalizeText(p.name),
+    subtype: normalizeText(p.subtype),
+    description: normalizeText(p.description)
+  };
+  let score = 0;
+  tokens.forEach(tok => {
+    if (fields.category === tok) score += 60; else if (fields.category.startsWith(tok)) score += 40; else if (fields.category.includes(tok)) score += 25;
+    if (fields.brand === tok) score += 55; else if (fields.brand.startsWith(tok)) score += 35; else if (fields.brand.includes(tok)) score += 22;
+    if (fields.name === tok) score += 50; else if (fields.name.startsWith(tok)) score += 32; else if (fields.name.includes(tok)) score += 20;
+    if (fields.subtype && fields.subtype.includes(tok)) score += 12;
+    if (fields.description && fields.description.includes(tok)) score += 8;
+  });
+  return score;
 }
 function triggerFireworks() {
   const container = document.querySelector('.fireworks-container');
@@ -383,21 +449,60 @@ function setupFilterEvents() {
 // === HÀM XỬ LÝ DỮ LIỆU (DATA HANDLERS) ===
 async function loadProducts() {
   try {
-    const res = await fetch('/categories/full.json');
-    const data = await res.json();
-    // Chuẩn hoá đường dẫn ảnh từ JSON để phù hợp vị trí trang mới
-    const normalizeImagePath = (p) => {
+    // Hợp nhất dữ liệu từ nhiều nguồn để đảm bảo có đủ sản phẩm cho mỗi category
+    const sources = [
+      { url: '/categories/full.json', base: '/categories' },
+      { url: '/Best_Sellers/full.json', base: '/Best_Sellers' },
+      { url: '/Sale/products.json', base: '/Sale' },
+      { url: '/new/products.json', base: '/new' }
+    ];
+
+    const normalizeImagePath = (p, base) => {
       if (!p) return p;
       if (typeof p === 'string' && p.startsWith('./images/')) {
-        return p.replace('./images/', '/categories/images/');
+        return p.replace('./images/', `${base}/images/`);
       }
-      return p;
+      if (typeof p === 'string' && p.startsWith('images/') && base === '/Sale') {
+        return `${base}/${p}`;
+      }
+      return p; // Giữ nguyên URL tuyệt đối hoặc các trường hợp khác
     };
-    allProducts = (data.products || []).map(prod => ({
-      ...prod,
-      brandImage: normalizeImagePath(prod.brandImage),
-      images: Array.isArray(prod.images) ? prod.images.map(normalizeImagePath) : prod.images
-    }));
+
+    const normalizeBrandImage = (b, base) => {
+      if (!b) return b;
+      if (typeof b === 'string' && b.startsWith('./images/')) {
+        return b.replace('./images/', `${base}/images/`);
+      }
+      if (typeof b === 'string' && b.startsWith('images/') && base === '/Sale') {
+        return `${base}/${b}`;
+      }
+      return b;
+    };
+
+    const results = await Promise.allSettled(
+      sources.map(s => fetch(s.url).then(r => r.json()).then(d => ({ data: d, base: s.base })))
+    );
+
+    let merged = [];
+    for (const r of results) {
+      if (r.status === 'fulfilled') {
+        const { data, base } = r.value;
+        const list = (data.products || []).map(prod => ({
+          ...prod,
+          brandImage: normalizeBrandImage(prod.brandImage, base),
+          images: Array.isArray(prod.images) ? prod.images.map(img => normalizeImagePath(img, base)) : prod.images
+        }));
+        merged = merged.concat(list);
+      }
+    }
+    // Loại bỏ trùng theo brand + name (ưu tiên bản đầu tiên gặp)
+    const seenKeys = new Set();
+    allProducts = merged.filter(p => {
+      const key = `${normalizeText(p.brand)}|${normalizeText(p.name)}`;
+      if (seenKeys.has(key)) return false;
+      seenKeys.add(key);
+      return true;
+    });
     // SỬA LỖI: Bỏ comment khối này
     const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
     const brandContainer = document.getElementById('brandFilters');
@@ -456,6 +561,43 @@ async function loadProducts() {
       '<p style="color:red;text-align:center;">Lỗi tải sản phẩm</p>';
   }
 }
+// Render products into a specific grid element
+function renderProductsToGrid(list, gridEl) {
+  if (!gridEl) return;
+  if (!list || list.length === 0) {
+    gridEl.innerHTML = '<p style="text-align:center; color:#aaa;">No products found.</p>';
+    return;
+  }
+  const html = list.map(p => {
+    const img1 = p.images?.[0] || DEFAULT_IMAGE_PATH;
+    const img2 = p.images?.[1] || img1;
+    const hasSale = p.originalPrice && p.originalPrice > p.price;
+    const isNew = p.isNew === true;
+    return `
+      <div class="product-card">
+        <div class="product-image-container">
+          ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
+          ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
+          <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='${DEFAULT_IMAGE_PATH}'">
+          <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
+        </div>
+        <div class="info">
+          <h3 title="${p.name}">${p.name}</h3>
+          <p>${p.description || ''}</p>
+          <div class="meta">SKU: ${p.id} • ${p.brand}</div>
+          <div class="actions">
+            <div><span class="price">$${Number(p.price || 0).toFixed(2)}</span>${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}</div>
+            <div class="rating"><i class="fas fa-star star"></i> ${p.rating?.toFixed(1) || '0.0'}</div>
+          </div>
+          <div class="buttons">
+            <button class="btn-outline" onclick="addToCart(${p.id}, this)"></button>
+            <button class="btn-view-details" onclick="viewDetail(${p.id})"><span>View Details</span></button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  gridEl.innerHTML = html;
+}
 function renderProducts(list) {
   const grid = document.getElementById('products-grid');
   if (!list || list.length === 0) {
@@ -500,6 +642,10 @@ function applyFilters() {
   let result = [...allProducts]; // Dùng biến global
   if (currentFilters.category && currentFilters.category !== 'ALL-IN') { // Dùng biến global
     result = result.filter(p => p.category === currentFilters.category);
+  }
+  if (currentFilters.subtype) {
+    const sub = String(currentFilters.subtype).toLowerCase();
+    result = result.filter(p => String(p.subtype || '').toLowerCase() === sub);
   }
   if (currentFilters.brand) { // Dùng biến global
     result = result.filter(p => p.brand === currentFilters.brand);
@@ -556,6 +702,73 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateCartCount();
   // Tải sản phẩm (hàm này sẽ tự động gọi render, updateCount, và setupFilterEvents)
   await loadProducts();
+
+  // Nếu có truy vấn tìm kiếm (?q=) thì hiển thị mục Search Results
+  const params = new URLSearchParams(window.location.search);
+  // Nếu có tham số category (?cat= hoặc ?category=), lọc và hiển thị 6 sản phẩm đầu tiên + nút View more màu xám
+  const catParam = (params.get('cat') || params.get('category') || '').trim();
+  const subParam = (params.get('subtype') || '').trim();
+  if (catParam || subParam) {
+    if (catParam) currentFilters.category = catParam;
+    if (subParam) currentFilters.subtype = subParam;
+    const filtered = applyFilters();
+    const grid = document.getElementById('products-grid');
+    const initial = filtered.slice(0, 6);
+    renderProductsToGrid(initial, grid);
+    updateCount();
+    const moreWrap = document.getElementById('category-view-more');
+    const moreLink = document.getElementById('category-view-more-link');
+    if (filtered.length > initial.length) {
+      moreWrap.style.display = 'block';
+      moreLink.textContent = `View more (${filtered.length - initial.length})`;
+      moreLink.onclick = (e) => {
+        e.preventDefault();
+        renderProductsToGrid(filtered, grid);
+        moreWrap.style.display = 'none';
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+    } else {
+      moreWrap.style.display = 'none';
+    }
+  }
+
+  const q = (params.get('q') || params.get('search') || '').trim();
+  if (q) {
+    const section = document.getElementById('search-results-section');
+    const grid = document.getElementById('search-results-grid');
+    const lower = q.toLowerCase();
+    const scored = allProducts
+      .map(p => ({ item: p, score: relevanceScore(p, q) }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(x => x.item);
+    const top = scored.slice(0, TOP_SEARCH_RESULTS);
+    console.log(`[Search] query="${q}" total=${scored.length} showing=${top.length}`);
+    renderProductsToGrid(top, grid);
+    section.style.display = 'block';
+    // Cập nhật đếm sản phẩm theo kết quả tìm kiếm
+    const countEl = document.getElementById('productCount');
+    if (countEl) countEl.textContent = `${scored.length} product${scored.length !== 1 ? 's' : ''}`;
+    // Hiển thị View more nếu có nhiều kết quả
+    const moreWrap = document.getElementById('search-view-more');
+    const moreLink = document.getElementById('search-view-more-link');
+    if (scored.length > top.length) {
+      moreWrap.style.display = 'block';
+      moreLink.textContent = `View more (${scored.length - top.length})`;
+      moreLink.onclick = (e) => {
+        e.preventDefault();
+        renderProductsToGrid(scored, grid);
+        moreWrap.style.display = 'none';
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      console.log(`[Search] View more enabled: remaining=${scored.length - top.length}`);
+    } else {
+      moreWrap.style.display = 'none';
+      console.log('[Search] View more hidden: no remaining results');
+    }
+    // Cuộn tới Search Results để người dùng thấy ngay
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 });
 </script>
 </body>
