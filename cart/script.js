@@ -1,12 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
   // ===== STATE =====
-  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  // Đọc dữ liệu giỏ hàng thống nhất từ key 'cart', fallback từ 'cartItems' nếu có dữ liệu cũ
+  let cartItems = [];
+  const storedCart = localStorage.getItem('cart');
+  const legacyCart = localStorage.getItem('cartItems');
+  if (storedCart) {
+    try {
+      cartItems = JSON.parse(storedCart) || [];
+    } catch (_) { cartItems = []; }
+  } else if (legacyCart) {
+    try {
+      cartItems = JSON.parse(legacyCart) || [];
+      // migrate sang key mới
+      localStorage.setItem('cart', legacyCart);
+      localStorage.removeItem('cartItems');
+    } catch (_) { cartItems = []; }
+  }
   let engravingName = JSON.parse(localStorage.getItem('engravingName')) || null;
   let discountPercent = JSON.parse(localStorage.getItem('discountPercent')) || 0;
+  // Hỗ trợ giảm giá cố định (ví dụ LOYAL5 = $5)
+  let discountFixed = JSON.parse(localStorage.getItem('discountFixed')) || 0;
 
   const ENGRAVING_FEE = 5; // $5
-  const SHIPPING_FEE = 3;  // $3
-  const FREE_SHIPPING_THRESHOLD = 50; // $50
+  const SHIPPING_FEE = 25;  // $25
+  const FREE_SHIPPING_THRESHOLD = 80; // $80
+  // Discount configuration flags
+  // - APPLY_PERCENT_FIRST: when true, apply percentage discount before fixed amount; otherwise fixed first
+  // - ALLOW_FIXED_OVER_PERCENT: when true, fixed discount can exceed remaining after percentage; otherwise capped to avoid negative total
+  // - SHOW_SAVEUP_NEGATIVE: when true, render Save up as a negative number (e.g., - $12.50)
+  const APPLY_PERCENT_FIRST = true;
+  const ALLOW_FIXED_OVER_PERCENT = false;
+  const SHOW_SAVEUP_NEGATIVE = true;
 
   // ===== ELEMENTS =====
   const provinceSelect = document.getElementById("province");
@@ -29,11 +53,80 @@ document.addEventListener('DOMContentLoaded', function() {
   const couponInput = document.getElementById("couponInput");
   const applyCouponBtn = document.getElementById("applyCouponBtn");
   const couponMessage = document.getElementById("couponMessage");
+  const eligibleCouponsEl = document.getElementById("eligibleCoupons");
   const clearCartBtn = document.getElementById("clearCartBtn");
   const progressBar = document.getElementById("progressBar");
+  const freeShipLeftEl = document.getElementById('freeShipLeft');
+  const itemCountTextEl = document.getElementById('itemCountText');
+  const removeAllBtn = document.getElementById('removeAllBtn');
+  // Upsell modal elements
+  const upsellModal = document.getElementById('upsellModal');
+  const upsellList = document.getElementById('upsellList');
+  const upsellProceedBtn = document.getElementById('upsellProceedBtn');
+  const upsellCloseBtn = document.getElementById('upsellCloseBtn');
+  const upsellLeftAmountEl = document.getElementById('upsellLeftAmount');
 
   // ===== HELPER FUNCTIONS =====
-  const formatCurrency = price => '$' + price.toFixed(2);
+  const formatCurrency = price => '$' + Number(price || 0).toFixed(2);
+
+  function pickRandom(arr, count) {
+    const copy = [...arr];
+    const picked = [];
+    while (copy.length && picked.length < count) {
+      const idx = Math.floor(Math.random() * copy.length);
+      picked.push(copy.splice(idx, 1)[0]);
+    }
+    return picked;
+  }
+
+  // ==== USER SEGMENT HELPERS ====
+  function getUserProfile() {
+    const firstLoginDone = JSON.parse(localStorage.getItem('user.firstLoginDone') || 'false');
+    const orderCount = Number(localStorage.getItem('user.orderCount') || '0');
+    const birthMonth = Number(localStorage.getItem('user.birthMonth') || '0'); // 1..12
+    const lifetimeSpend = Number(localStorage.getItem('user.lifetimeSpend') || '0');
+    return { firstLoginDone, orderCount, birthMonth, lifetimeSpend };
+  }
+
+  function setFirstLoginDone() {
+    localStorage.setItem('user.firstLoginDone', 'true');
+  }
+
+  function evaluateCoupon(code) {
+    const nowMonth = new Date().getMonth() + 1; // 1..12
+    const profile = getUserProfile();
+    const upper = (code || '').trim().toUpperCase();
+    // Trả về { valid: boolean, type: 'percent'|'amount', value: number, message }
+    if (upper === 'WELCOME10') {
+      if (!profile.firstLoginDone) {
+        return { valid: true, type: 'percent', value: 10, message: '✅ 10% for first login' };
+      }
+      return { valid: false, message: '❌ Chỉ áp dụng lần đăng nhập đầu tiên.' };
+    }
+    if (upper === 'FIRSTBUY15') {
+      if (profile.orderCount === 0) {
+        return { valid: true, type: 'percent', value: 15, message: '✅ 15% for first purchase' };
+      }
+      return { valid: false, message: '❌ Chỉ áp dụng cho đơn hàng đầu tiên.' };
+    }
+    if (upper === 'BDAY20') {
+      if (profile.birthMonth && profile.birthMonth === nowMonth) {
+        return { valid: true, type: 'percent', value: 20, message: '✅ 20% trong tháng sinh nhật' };
+      }
+      return { valid: false, message: '❌ Mã chỉ áp dụng trong tháng sinh nhật.' };
+    }
+    if (upper === 'LOYAL5') {
+      if (profile.lifetimeSpend >= 100) {
+        return { valid: true, type: 'amount', value: 5, message: '✅ $5 cho khách thân thiết (>=$100)' };
+      }
+      return { valid: false, message: '❌ Cần tổng chi tiêu ≥ $100 để áp dụng.' };
+    }
+    // Giữ lại mã cũ nếu có (NEW15 demo)
+    if (upper === 'NEW15') {
+      return { valid: true, type: 'percent', value: 15, message: "✅ 15% discount applied" };
+    }
+    return { valid: false, message: '❌ Mã không hợp lệ hoặc đã hết hạn.' };
+  }
 
   const showMessage = (message, type = 'info') => {
     const colors = {
@@ -44,25 +137,37 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const toast = document.createElement('div');
-    toast.textContent = message;
     toast.style.cssText = `
       position: fixed;
       top: 20px;
       right: 20px;
       background: ${colors[type]};
       color: white;
-      padding: 12px 20px;
+      padding: 12px 16px;
       border-radius: 8px;
       z-index: 1000;
       animation: slideInRight 0.3s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     `;
+    const msgSpan = document.createElement('span');
+    msgSpan.textContent = message;
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '×';
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.style.cssText = `background: transparent; border: none; color: white; font-weight: 700; cursor: pointer; font-size: 16px; line-height: 1;`;
+    toast.appendChild(msgSpan);
+    toast.appendChild(closeBtn);
 
     document.body.appendChild(toast);
-    setTimeout(() => {
+    const hide = () => {
       toast.style.animation = 'slideOutRight 0.3s ease';
       setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    };
+    const timer = setTimeout(hide, 5000);
+    closeBtn.addEventListener('click', () => { clearTimeout(timer); hide(); });
   };
     
   // Thêm CSS cho animations
@@ -160,12 +265,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  function isSaleItem(item) {
+    const price = Number(item.price || 0);
+    const original = Number(item.originalPrice || 0);
+    return (
+      (original && original > price) ||
+      item.isOnSale === true ||
+      item.sale === true ||
+      item.onSale === true
+    );
+  }
+
   function calculateTotals() {
     const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     const engravingFee = engravingName ? ENGRAVING_FEE : 0;
     const subPlusEngraving = subtotal + engravingFee;
     const shipping = subPlusEngraving > 0 && subPlusEngraving < FREE_SHIPPING_THRESHOLD ? SHIPPING_FEE : 0;
-    const discountAmount = Math.round((subPlusEngraving * discountPercent / 100) * 100) / 100;
+    // Apply discounts on full subtotal with configurable order and capping
+    const percentValue = Math.max(Number(discountPercent) || 0, 0);
+    const fixedValue = Math.max(Number(discountFixed) || 0, 0);
+    let percentDeduction = 0;
+    let fixedDeduction = 0;
+    if (APPLY_PERCENT_FIRST) {
+      percentDeduction = Math.round((subtotal * percentValue / 100) * 100) / 100;
+      const remaining = Math.max(subtotal - percentDeduction, 0);
+      fixedDeduction = ALLOW_FIXED_OVER_PERCENT ? fixedValue : Math.min(fixedValue, remaining);
+    } else {
+      fixedDeduction = fixedValue;
+      const remainingForPercent = Math.max(subtotal - fixedDeduction, 0);
+      percentDeduction = Math.round((remainingForPercent * percentValue / 100) * 100) / 100;
+    }
+    const discountAmount = Math.round((percentDeduction + fixedDeduction) * 100) / 100;
     const total = Math.round((subPlusEngraving - discountAmount + shipping) * 100) / 100;
 
     return { subtotal, engravingFee, subPlusEngraving, shipping, discountAmount, total };
@@ -173,6 +303,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function renderCart() {
     cartItemsEl.innerHTML = "";
+    // Chuẩn hoá cấu trúc qty/quantity trước khi render
+    cartItems = cartItems.map(item => ({
+      ...item,
+      quantity: typeof item.quantity === 'number' ? item.quantity : (typeof item.qty === 'number' ? item.qty : 1)
+    }));
 
     if (cartItems.length === 0) {
       emptyCartEl.style.display = "block";
@@ -182,18 +317,45 @@ document.addEventListener('DOMContentLoaded', function() {
       engravingFeeRow.style.display = "none";
       discountRow.style.display = "none";
       progressBar.style.width = '0%';
+      if (itemCountTextEl) itemCountTextEl.textContent = '0 items';
       return;
     }
 
     emptyCartEl.style.display = "none";
+    if (itemCountTextEl) itemCountTextEl.textContent = `${cartItems.length} item${cartItems.length>1?'s':''}`;
+
+    // Chuẩn hoá đường dẫn ảnh để luôn hiển thị đúng trong trang Cart
+    const normalizeCartImagePath = (p) => {
+      if (!p) return '/header_footer/images/LOGO.png';
+      // Giữ nguyên nếu là URL tuyệt đối hoặc data URI
+      if (/^(https?:\/\/|data:|\/)/.test(p)) return p;
+      // Ảnh từ trang Sale/view_product (thường là '../images/...')
+      if (p.startsWith('../images/')) return '/Sale/images/' + p.replace(/^\.\.\/images\//, '');
+      // Ảnh từ Categories hoặc Best_Sellers dạng './images/...'
+      if (p.startsWith('./images/')) {
+        const file = p.replace(/^\.\/images\//, '');
+        // Ưu tiên categories vì các sản phẩm trong giỏ từ categories giữ nguyên cấu trúc này
+        return '/categories/images/' + file;
+      }
+      // Trường hợp ảnh là 'images/...'
+      if (p.startsWith('images/')) return '/Sale/' + p; // => '/Sale/images/...'
+      return p;
+    };
 
     cartItems.forEach(item => {
       const div = document.createElement("div");
       div.className = "cart-item";
+      const rawImg = item.image || (Array.isArray(item.images) ? item.images[0] : '') || '/header_footer/images/LOGO.png';
+      const imgSrc = normalizeCartImagePath(rawImg);
+      const shade = item.selectedShade || item.color || item.variant || '';
+      const shadeLabel = shade ? `<div class="cart-item-meta">Shade/Color: ${shade}</div>` : '';
+
       div.innerHTML = `
+        <img class="cart-item-img" src="${imgSrc}" alt="${item.name}" onerror="this.src='/header_footer/images/LOGO.png'" />
         <div class="cart-item-info">
           <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-price">${formatCurrency(item.price)} x ${item.quantity}</div>
+          ${shadeLabel}
+          <div class="cart-item-price-qty">${formatCurrency(item.price)} × ${item.quantity}</div>
         </div>
         <div class="cart-item-controls">
           <button class="qty-btn" data-id="${item.id}" data-change="-1">-</button>
@@ -241,29 +403,172 @@ document.addEventListener('DOMContentLoaded', function() {
 
     shippingFeeEl.textContent = shipping === 0 && subPlusEngraving > 0 ? "Free" : formatCurrency(shipping);
 
-    if (discountPercent > 0) {
-      discountRow.style.display = "flex";
-      discountEl.textContent = `-${formatCurrency(discountAmount)}`;
+    // Always show Save up row; render negative sign if configured
+    discountRow.style.display = "flex";
+    if (SHOW_SAVEUP_NEGATIVE && discountAmount > 0) {
+      discountEl.textContent = '- ' + formatCurrency(discountAmount);
     } else {
-      discountRow.style.display = "none";
+      discountEl.textContent = formatCurrency(discountAmount);
+    }
+    // Toggle color classes based on saving amount
+    if (discountAmount > 0) {
+      discountEl.classList.add('saveup-positive');
+      discountEl.classList.remove('saveup-zero');
+    } else {
+      discountEl.classList.add('saveup-zero');
+      discountEl.classList.remove('saveup-positive');
     }
 
     totalEl.textContent = formatCurrency(total);
 
     const progressPercent = Math.min((subPlusEngraving / FREE_SHIPPING_THRESHOLD) * 100, 100);
     progressBar.style.width = `${progressPercent}%`;
+    if (freeShipLeftEl) {
+      const leftAmount = Math.max(FREE_SHIPPING_THRESHOLD - subPlusEngraving, 0);
+      freeShipLeftEl.textContent = formatCurrency(leftAmount);
+    }
+
+    // Update eligible coupon suggestions
+    updateEligibleCoupons();
+  }
+
+  function updateEligibleCoupons() {
+    if (!eligibleCouponsEl) return;
+    const codes = ["WELCOME10", "FIRSTBUY15", "BDAY20", "LOYAL5"];
+    const suggestions = [];
+    codes.forEach(code => {
+      const res = evaluateCoupon(code);
+      if (res.valid) {
+        suggestions.push({ code, message: res.message });
+      }
+    });
+    if (suggestions.length === 0) {
+      eligibleCouponsEl.innerHTML = "";
+      return;
+    }
+    eligibleCouponsEl.innerHTML = `
+      <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+        <span style="font-size:13px; color:#6B4C3B; opacity:0.8;">Mã phù hợp:</span>
+        ${suggestions.map(s => `
+          <button data-code="${s.code}" style="padding:6px 10px; border:none; border-radius:16px; background:#E6A6B0; color:#fff; cursor:pointer; font-size:13px;">${s.code}</button>
+        `).join("")}
+      </div>
+    `;
+    eligibleCouponsEl.querySelectorAll('button[data-code]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.getAttribute('data-code');
+        couponInput.value = code;
+        applyCouponBtn.click();
+      });
+    });
+  }
+
+  // ===== UPSELL MODAL =====
+  async function renderUpsellSuggestions() {
+    if (!upsellList) return;
+    // Update left-to-free-shipping text
+    const { subPlusEngraving } = calculateTotals();
+    const left = Math.max(FREE_SHIPPING_THRESHOLD - subPlusEngraving, 0);
+    if (upsellLeftAmountEl) upsellLeftAmountEl.textContent = formatCurrency(left);
+
+    try {
+      const res = await fetch('../Best_Sellers/full.json');
+      const data = await res.json();
+      const products = data.products || [];
+      const samples = pickRandom(products, 3);
+      upsellList.innerHTML = samples.map(p => {
+        const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '/header_footer/images/LOGO.png';
+        const imgPath = imgRel.startsWith('./') ? ('../Best_Sellers' + imgRel.slice(1)) : ('../Best_Sellers/' + imgRel.replace(/^\/+/, ''));
+        return `
+          <div class="upsell-card">
+            <img src="${imgPath}" alt="${p.name}" onerror="this.src='/header_footer/images/LOGO.png'" />
+            <div class="upsell-info">
+              <div class="upsell-name">${p.name}</div>
+              <div class="upsell-price">${formatCurrency(p.price)}</div>
+            </div>
+            <button class="upsell-add" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-img="${imgPath}">Add</button>
+          </div>
+        `;
+      }).join('');
+
+      upsellList.querySelectorAll('.upsell-add').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = Number(btn.getAttribute('data-id'));
+          const name = btn.getAttribute('data-name');
+          const price = Number(btn.getAttribute('data-price'));
+          const image = btn.getAttribute('data-img');
+          const existing = cartItems.find(i => i.id === id);
+          if (existing) {
+            existing.quantity = (existing.quantity || 1) + 1;
+          } else {
+            cartItems.push({ id, name, price, quantity: 1, image });
+          }
+          renderCart();
+          try { localStorage.setItem('cart', JSON.stringify(cartItems)); } catch (_) {}
+          renderUpsellSuggestions();
+          // Hiển thị thông báo ngay trong modal
+          const content = upsellModal?.querySelector('.upsell-content');
+          if (content) {
+            const note = document.createElement('div');
+            note.textContent = '+1 new item added to cart';
+            note.style.cssText = `
+              position: absolute; top: 10px; right: 12px; background: #16a34a; color: #fff;
+              padding: 8px 12px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+              font-size: 13px; animation: fadeIn 0.2s ease;
+            `;
+            content.style.position = 'relative';
+            content.appendChild(note);
+            setTimeout(() => {
+              note.style.opacity = '0';
+              note.style.transition = 'opacity 0.2s ease';
+              setTimeout(() => note.remove(), 200);
+            }, 2000);
+          } else {
+            showMessage('+1 new item added to cart', 'success');
+          }
+        });
+      });
+    } catch (e) {
+      upsellList.innerHTML = '<p style="padding:12px;">Unable to load suggestions.</p>';
+    }
+  }
+
+  // Auto close timer for upsell modal
+  let upsellAutoTimer = null;
+
+  function openUpsellModal() {
+    if (!upsellModal) return performCheckout();
+    upsellModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    renderUpsellSuggestions();
+    // Tự đóng sau 5s nếu không tương tác
+    if (upsellAutoTimer) clearTimeout(upsellAutoTimer);
+    upsellAutoTimer = setTimeout(() => { closeUpsellModal(); }, 5000);
+    const cancelTimer = () => { if (upsellAutoTimer) { clearTimeout(upsellAutoTimer); upsellAutoTimer = null; } };
+    ['click','mousemove','keydown','touchstart'].forEach(evt => {
+      upsellModal.addEventListener(evt, cancelTimer, { once: true });
+    });
+  }
+
+  function closeUpsellModal() {
+    if (!upsellModal) return;
+    upsellModal.classList.add('hidden');
+    document.body.style.overflow = '';
+    if (upsellAutoTimer) { clearTimeout(upsellAutoTimer); upsellAutoTimer = null; }
   }
 
   // ===== INITIALIZE =====
   function initialize() {
     // Load from localStorage and debug initial state
-    console.log('Initial cartItems from localStorage:', JSON.parse(localStorage.getItem('cartItems')) || []);
-    const savedCart = localStorage.getItem('cartItems');
+    console.log('Initial cart from localStorage:', JSON.parse(localStorage.getItem('cart')) || []);
+    const savedCart = localStorage.getItem('cart');
     const savedEngraving = localStorage.getItem('engravingName');
     const savedDiscount = localStorage.getItem('discountPercent');
     const savedShipping = localStorage.getItem('shippingInfo');
 
-    if (savedCart) cartItems = JSON.parse(savedCart);
+    if (savedCart) {
+      try { cartItems = JSON.parse(savedCart) || []; } catch (_) {}
+    }
     if (savedEngraving) engravingName = JSON.parse(savedEngraving);
     if (savedDiscount) discountPercent = JSON.parse(savedDiscount);
     if (savedShipping) {
@@ -288,9 +593,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Save to localStorage function
     function saveToLocalStorage() {
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      localStorage.setItem('cart', JSON.stringify(cartItems));
       localStorage.setItem('engravingName', JSON.stringify(engravingName));
       localStorage.setItem('discountPercent', JSON.stringify(discountPercent));
+      localStorage.setItem('discountFixed', JSON.stringify(discountFixed));
       const shippingInfo = {
         fullname: document.getElementById('fullname')?.value.trim() || '',
         phone: document.getElementById('phone')?.value.trim() || '',
@@ -305,7 +611,8 @@ document.addEventListener('DOMContentLoaded', function() {
     engravingDisplay.style.display = engravingName ? 'flex' : 'none';
     engravedNameEl.textContent = engravingName || '';
     engravingFeeRow.style.display = engravingName ? 'flex' : 'none';
-    discountRow.style.display = discountPercent > 0 ? 'flex' : 'none';
+    // Always show Save up row at init; will update content via updateTotals
+    discountRow.style.display = 'flex';
     couponMessage.classList.add('hidden');
 
     // Event Listeners
@@ -359,16 +666,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     applyCouponBtn.addEventListener('click', function() {
       const code = couponInput.value.trim().toUpperCase();
-      if (code === 'NEW15') {
-        discountPercent = 15;
-        couponMessage.textContent = '✅ 15% discount applied';
+      const result = evaluateCoupon(code);
+      if (result.valid) {
+        if (result.type === 'percent') {
+          discountPercent = result.value;
+          discountFixed = 0;
+        } else {
+          discountPercent = 0;
+          discountFixed = result.value;
+        }
+        couponMessage.textContent = result.message;
         couponMessage.style.color = '#16a34a';
-        showMessage("Coupon 'NEW15' applied successfully!", 'success');
+        showMessage(`Coupon '${code}' applied successfully!`, 'success');
+        // Đánh dấu lần đăng nhập đầu tiên sau khi dùng WELCOME10
+        if (code === 'WELCOME10') setFirstLoginDone();
       } else {
         discountPercent = 0;
-        couponMessage.textContent = '❌ Invalid coupon code';
+        discountFixed = 0;
+        couponMessage.textContent = result.message;
         couponMessage.style.color = '#ef4444';
-        showMessage('Invalid coupon or code expired.', 'error');
+        showMessage(result.message, 'error');
       }
       couponMessage.classList.remove('hidden');
       updateTotals();
@@ -383,40 +700,72 @@ document.addEventListener('DOMContentLoaded', function() {
         discountPercent = 0;
         couponMessage.classList.add('hidden');
         couponInput.value = '';
-        localStorage.clear();
+        localStorage.removeItem('cart');
+        localStorage.removeItem('engravingName');
+        localStorage.removeItem('discountPercent');
+        localStorage.removeItem('shippingInfo');
         renderCart();
         showMessage('Cart cleared successfully!', 'success');
       }
     });
 
-checkoutBtn.addEventListener('click', function() {
-  const fullname = document.getElementById('fullname')?.value.trim();
-  const phone = document.getElementById('phone')?.value.trim();
-  const province = provinceSelect.value;
-  const district = districtSelect.value;
-  const address = document.getElementById('address')?.value.trim();
+    if (upsellCloseBtn) {
+      upsellCloseBtn.addEventListener('click', () => closeUpsellModal());
+    }
 
-  if (cartItems.length === 0) return showMessage('Your cart is empty!', 'error');
-  if (!fullname) return showMessage('Please enter full name!', 'error');
-  if (!phone) return showMessage('Please enter phone number!', 'error');
-  if (!province) return showMessage('Please select a province/city!', 'error');
-  if (!district) return showMessage('Please select a district!', 'error');
-  if (!address) return showMessage('Please enter detailed address!', 'error');
+    if (removeAllBtn) {
+      removeAllBtn.addEventListener('click', function() {
+        clearCartBtn.click();
+      });
+    }
 
-  saveToLocalStorage();
+    function performCheckout() {
+      if (cartItems.length === 0) return showMessage('Your cart is empty!', 'error');
+      // Chỉ lưu giỏ hàng và khuyến mãi; địa chỉ sẽ nhập trực tiếp ở trang Checkout
+      saveToLocalStorage();
 
-  // Hiện animation trước khi chuyển trang
-  const truckOverlay = document.getElementById('truckAnimation');
-  truckOverlay.classList.remove('hidden');
-  document.body.style.overflow = "hidden";
+      const truckOverlay = document.getElementById('truckAnimation');
+      if (truckOverlay) {
+        truckOverlay.classList.remove('hidden');
+        document.body.style.overflow = "hidden";
+      }
 
-  setTimeout(() => {
-    window.location.href = '../checkout/checkout.html';
-  }, 1800); // chờ 3.5s cho animation chạy
-});
+      setTimeout(() => {
+        window.location.href = '/checkout/checkout.html';
+      }, 1000);
+    }
+
+    checkoutBtn.addEventListener('click', function() {
+      const { subPlusEngraving } = calculateTotals();
+      if (subPlusEngraving < FREE_SHIPPING_THRESHOLD) {
+        openUpsellModal();
+        return;
+      }
+      performCheckout();
+    });
+
+    if (upsellProceedBtn) {
+      upsellProceedBtn.addEventListener('click', function() {
+        closeUpsellModal();
+        performCheckout();
+      });
+    }
 
 
     renderCart();
+
+    // Toggle Shipping panel via top bar "Change"
+    const toggleShippingPanelBtn = document.getElementById('toggleShippingPanel');
+    const shippingPanel = document.getElementById('shippingPanel');
+    if (toggleShippingPanelBtn && shippingPanel) {
+      toggleShippingPanelBtn.addEventListener('click', () => {
+        const isHidden = shippingPanel.style.display === 'none' || shippingPanel.style.display === '';
+        shippingPanel.style.display = isHidden ? 'block' : 'none';
+        // Scroll into view when opening
+        if (!isHidden) return;
+        setTimeout(() => shippingPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      });
+    }
   }
 
   // BẮT ĐẦU CHẠY

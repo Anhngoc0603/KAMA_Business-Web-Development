@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura High-End Beauty</title>
+  <link rel="stylesheet" href="/header_footer/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
  
@@ -178,6 +179,14 @@
   <div id="header-placeholder"><div style="text-align:center; padding: 20px; color:#aaa;">Loading Header...</div></div>
   <main>
     <div class="container">
+      <!-- Search Results Section (shown when URL has ?q=...) -->
+      <section id="search-results-section" style="display:none; margin-bottom: 40px;">
+        <h2 style="text-align:center;margin-bottom:20px;">Search Results</h2>
+        <div class="products-grid" id="search-results-grid"></div>
+        <div id="search-view-more" style="text-align:center; margin-top:12px; display:none;">
+          <a href="#" id="search-view-more-link" style="color:#E6A6B0; font-weight:600; text-decoration:none;">View more results</a>
+        </div>
+      </section>
             <div class="products-page-container">
         <aside class="products-filter-sidebar">
           <div class="filter-header">
@@ -211,6 +220,9 @@
           <div class="products-grid" id="products-grid">
             <p style="text-align:center;">Loading products...</p>
           </div>
+          <div id="category-view-more" style="text-align:center; margin-top:12px; display:none;">
+            <a href="#" id="category-view-more-link" style="color:#999; font-weight:600; text-decoration:none;">View more</a>
+          </div>
         </section>
       </div>
             <section class="shop-section">
@@ -220,39 +232,30 @@
     </div>
   </main>
   <div id="footer-placeholder"><div style="text-align:center; padding: 20px; color:#aaa;">Loading Footer...</div></div>
+<script src="/header_footer/partials.js"></script>
 <script>
 // === KHAI BÁO BIẾN TOÀN CỤC (GLOBAL SCOPE) ===
 // Sửa lỗi nghiêm trọng: Di chuyển các biến này ra ngoài để mọi hàm đều truy cập được
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let pageCart = JSON.parse(localStorage.getItem('cart') || '[]');
 let allProducts = [];
 let currentFilters = { category: 'ALL-IN', brand: null, price: 300 };
-const DEFAULT_IMAGE_PATH = 'https://via.placeholder.com/260x260/FADADD/FFFFFF?text=No+Image';
-const DEFAULT_BRAND_IMAGE_PATH = '../images/brands/default.png';
+const DEFAULT_IMAGE_PATH = '/header_footer/images/LOGO.png';
+const DEFAULT_BRAND_IMAGE_PATH = '/header_footer/images/LOGO.png';
+const TOP_SEARCH_RESULTS = 8;
+
 // === HÀM HỖ TRỢ (HELPERS) ===
-async function loadHTML(url, id) {
-  const el = document.getElementById(id);
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to load ${url}`);
-    el.innerHTML = await res.text();
-    return true;
-  } catch (error) {
-    console.error('Load HTML error:', error);
-    el.innerHTML = `<p style="color:#aaa;text-align:center;">Loading failed for ${id}</p>`;
-    return false;
-  }
-}
 function updateCartCount() {
-  const count = cart.reduce((sum, item) => sum + item.qty, 0);
-  const cartIcon = document.querySelector('.cart-count'); // Lưu ý: class .cart-count phải có trong header.html
-  if (cartIcon) cartIcon.textContent = count;
-};
-function getValidImageUrl(path) {
-  if (!path) return path; // không trả về default nữa
-  if (path.startsWith('./images/')) return path; // giữ nguyên đúng thư mục
-  return path;
+    const cartData = JSON.parse(localStorage.getItem('cart') || '[]');
+    const count = cartData.reduce((sum, item) => sum + item.qty, 0);
+    const cartIcon = document.querySelector('.cart-count');
+    if (cartIcon) cartIcon.textContent = count;
 }
 
+function getValidImageUrl(path) {
+  if (!path) return DEFAULT_BRAND_IMAGE_PATH; // Ảnh mặc định
+  if (path.startsWith('./images/')) return path.replace('./images/', '../images/');
+  return path;
+}
 function triggerFireworks() {
   const container = document.querySelector('.fireworks-container');
   for (let i = 0; i < 8; i++) {
@@ -392,9 +395,60 @@ function setupFilterEvents() {
 // === HÀM XỬ LÝ DỮ LIỆU (DATA HANDLERS) ===
 async function loadProducts() {
   try {
-    const res = await fetch('full.json');
-    const data = await res.json();
-    allProducts = data.products || []; // Gán vào biến global
+    // Hợp nhất dữ liệu từ nhiều nguồn để đảm bảo có đủ sản phẩm cho mỗi category
+    const sources = [
+      { url: '/categories/full.json', base: '/categories' },
+      { url: '/Best_Sellers/full.json', base: '/Best_Sellers' },
+      { url: '/Sale/products.json', base: '/Sale' },
+      { url: '/new/products.json', base: '/new' }
+    ];
+
+    const normalizeImagePath = (p, base) => {
+      if (!p) return p;
+      if (typeof p === 'string' && p.startsWith('./images/')) {
+        return p.replace('./images/', `${base}/images/`);
+      }
+      if (typeof p === 'string' && p.startsWith('images/') && base === '/Sale') {
+        return `${base}/${p}`;
+      }
+      return p; // Giữ nguyên URL tuyệt đối hoặc các trường hợp khác
+    };
+
+    const normalizeBrandImage = (b, base) => {
+      if (!b) return b;
+      if (typeof b === 'string' && b.startsWith('./images/')) {
+        return b.replace('./images/', `${base}/images/`);
+      }
+      if (typeof b === 'string' && b.startsWith('images/') && base === '/Sale') {
+        return `${base}/${b}`;
+      }
+      return b;
+    };
+
+    const results = await Promise.allSettled(
+      sources.map(s => fetch(s.url).then(r => r.json()).then(d => ({ data: d, base: s.base })))
+    );
+
+    let merged = [];
+    for (const r of results) {
+      if (r.status === 'fulfilled') {
+        const { data, base } = r.value;
+        const list = (data.products || []).map(prod => ({
+          ...prod,
+          brandImage: normalizeBrandImage(prod.brandImage, base),
+          images: Array.isArray(prod.images) ? prod.images.map(img => normalizeImagePath(img, base)) : prod.images
+        }));
+        merged = merged.concat(list);
+      }
+    }
+    // Loại bỏ trùng theo brand + name (ưu tiên bản đầu tiên gặp)
+    const seenKeys = new Set();
+    allProducts = merged.filter(p => {
+      const key = `${normalizeText(p.brand)}|${normalizeText(p.name)}`;
+      if (seenKeys.has(key)) return false;
+      seenKeys.add(key);
+      return true;
+    });
     // SỬA LỖI: Bỏ comment khối này
     const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
     const brandContainer = document.getElementById('brandFilters');
@@ -453,6 +507,43 @@ async function loadProducts() {
       '<p style="color:red;text-align:center;">Lỗi tải sản phẩm</p>';
   }
 }
+// Render products into a specific grid element
+function renderProductsToGrid(list, gridEl) {
+  if (!gridEl) return;
+  if (!list || list.length === 0) {
+    gridEl.innerHTML = '<p style="text-align:center; color:#aaa;">No products found.</p>';
+    return;
+  }
+  const html = list.map(p => {
+    const img1 = p.images?.[0] || DEFAULT_IMAGE_PATH;
+    const img2 = p.images?.[1] || img1;
+    const hasSale = p.originalPrice && p.originalPrice > p.price;
+    const isNew = p.isNew === true;
+    return `
+      <div class="product-card">
+        <div class="product-image-container">
+          ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
+          ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
+          <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='${DEFAULT_IMAGE_PATH}'">
+          <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
+        </div>
+        <div class="info">
+          <h3 title="${p.name}">${p.name}</h3>
+          <p>${p.description || ''}</p>
+          <div class="meta">SKU: ${p.id} • ${p.brand}</div>
+          <div class="actions">
+            <div><span class="price">$${Number(p.price || 0).toFixed(2)}</span>${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}</div>
+            <div class="rating"><i class="fas fa-star star"></i> ${p.rating?.toFixed(1) || '0.0'}</div>
+          </div>
+          <div class="buttons">
+            <button class="btn-outline" onclick="addToCart(${p.id}, this)"></button>
+            <button class="btn-view-details" onclick="viewDetail(${p.id})"><span>View Details</span></button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  gridEl.innerHTML = html;
+}
 function renderProducts(list) {
   const grid = document.getElementById('products-grid');
   if (!list || list.length === 0) {
@@ -498,6 +589,10 @@ function applyFilters() {
   if (currentFilters.category && currentFilters.category !== 'ALL-IN') { // Dùng biến global
     result = result.filter(p => p.category === currentFilters.category);
   }
+  if (currentFilters.subtype) {
+    const sub = String(currentFilters.subtype).toLowerCase();
+    result = result.filter(p => String(p.subtype || '').toLowerCase() === sub);
+  }
   if (currentFilters.brand) { // Dùng biến global
     result = result.filter(p => p.brand === currentFilters.brand);
   }
@@ -509,16 +604,16 @@ function applyFilters() {
 window.addToCart = (id, btn) => {
   const product = allProducts.find(p => p.id === id); // Dùng biến global
   if (!product) return;
-  const existing = cart.find(item => item.id === id); // Dùng biến global
+  const existing = pageCart.find(item => item.id === id); // Dùng biến global
   if (existing) existing.qty += 1;
-  else cart.push({ ...product, qty: 1 });
-  localStorage.setItem('cart', JSON.stringify(cart));
+  else pageCart.push({ ...product, qty: 1 });
+  localStorage.setItem('cart', JSON.stringify(pageCart));
   updateCartCount();
   triggerFireworks();
   alert(`${product.name} đã thêm vào giỏ!`);
 };
 window.viewDetail = (id) => {
-  window.location.href = `categories_detail.html?id=${id}`;
+  window.location.href = `/src/pages/categories/categories_detail.html?id=${id}`;
 };
 window.filterByBrand = (brandName) => {
   currentFilters.brand = brandName; // Gán vào biến global
@@ -533,39 +628,26 @@ window.filterByBrand = (brandName) => {
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 Starting application...');
  
-  // 1. Tải Header & Footer
-  try {
-    await Promise.all([
-      loadHTML('header.html', 'header-placeholder'),
-      loadHTML('footer.html', 'footer-placeholder')
-    ]);
-    console.log('✅ Header & Footer loaded');
-   
-    // 2. Khởi tạo sự kiện cho Header (sau khi đã tải xong)
-    setTimeout(initHeaderEvents, 100); // Chờ 100ms để DOM kịp cập nhật
-  } catch (error) {
-    console.error('❌ Failed to load header/footer:', error);
-  }
-  // 3. Cập nhật giỏ hàng từ localStorage
-  updateCartCount();
-  // 4. Tải sản phẩm (hàm này sẽ tự động gọi render, updateCount, và setupFilterEvents)
-  await loadProducts();
-  // 🩷 5. Kiểm tra brand trên URL để tự động lọc khi từ Best Seller click qua
-const params = new URLSearchParams(window.location.search);
-const brandFromURL = params.get('brand');
-if (brandFromURL) {
-  currentFilters.brand = brandFromURL;
-  // Tự đánh dấu checkbox của brand đó nếu có
-  const checkbox = document.querySelector(`#brandFilters input[value="${brandFromURL}"]`);
-  if (checkbox) checkbox.checked = true;
-  // Lọc sản phẩm
-  applyFilters();
-  updateCount();
-  // Đổi tiêu đề hiển thị
-  const titleEl = document.querySelector('h2');
-  if (titleEl) titleEl.textContent = `Brand: ${brandFromURL}`;
-}
+  const headerPlaceholder = document.getElementById('header-placeholder');
+  const observer = new MutationObserver((mutationsList, observer) => {
+      for(let mutation of mutationsList) {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+              if (headerPlaceholder.querySelector('.header')) {
+                  console.log('Header loaded, initializing events and cart count.');
+                  initHeaderEvents();
+                  updateCartCount();
+                  observer.disconnect(); 
+                  break;
+              }
+          }
+      }
+  });
+  observer.observe(headerPlaceholder, { childList: true, subtree: true });
 
+  // Cập nhật giỏ hàng ngay lập tức và sau đó khi header được tải
+  updateCartCount();
+  // Tải sản phẩm (hàm này sẽ tự động gọi render, updateCount, và setupFilterEvents)
+  await loadProducts();
 });
 </script>
 </body>

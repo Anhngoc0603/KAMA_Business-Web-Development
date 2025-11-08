@@ -54,6 +54,7 @@
       align-items:center;
       gap:24px;
       padding: 120px 0 64px; 
+      margin-bottom: 96px;
       position: relative;
       z-index: 10;
     }
@@ -136,6 +137,8 @@
       position:relative;min-height:540px;height:80vh;max-width:1280px;
       display:flex;align-items:center;justify-content:center;
       perspective:1400px;overflow:visible;padding:0 72px;
+      touch-action: pan-x; /* cho cảm giác kéo tự nhiên */
+      cursor: grab;
     }
 
     .carousel-item{
@@ -156,8 +159,8 @@
       transition:transform 1.2s ease-in-out;
       z-index:var(--zIndex);
     }
-    .carousel-box{position:absolute;inset:0;opacity:var(--opacity);border-radius:22px;overflow:hidden}
-    .carousel-box img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease}
+    .carousel-box{position:absolute;inset:0;opacity:var(--opacity);border-radius:22px;overflow:hidden;padding:6px}
+    .carousel-box img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease;will-change:transform,filter;border-radius:18px}
     .carousel-item:hover .carousel-box img{transform:scale(1.06);filter:brightness(.92) saturate(1.12)}
 
     .num{
@@ -466,6 +469,8 @@
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      touch-action: pan-y;
+      cursor: grab;
     }
 
     .team-card { 
@@ -549,17 +554,37 @@
 
     .team-member-name {
       color: transparent;
-      background: linear-gradient(135deg, #E6A6B0 0%, #FADADD 40%, #FFF9F9 100%);
+      background: linear-gradient(135deg, #D9587A 0%, #F6A9B8 39%, #FFE6EA 100%);
       -webkit-background-clip: text;
       background-clip: text;
-      font-size: 2.3rem;
-      font-weight: 800;
+      font-size: 2.8rem;
+      font-weight: 900;
       letter-spacing: 1px;
       text-transform: uppercase;
-      text-shadow: 0 4px 12px rgba(230, 166, 176, 0.4);
+      -webkit-text-stroke: 0.8px rgba(120, 40, 60, 0.35);
+      text-shadow: 0 1px 0 rgba(90, 30, 45, 0.35), 0 2px 6px rgba(120, 40, 60, 0.25), 0 5px 14px rgba(230, 110, 140, 0.7);
       opacity: 0;
       transform: translateY(10px);
       animation: brandFadeIn 0.8s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Underlay nhẹ sau tiêu đề để tách nền */
+    .team-member-name::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 122%;
+      height: 150%;
+      border-radius: 18px;
+      background: radial-gradient(closest-side, rgba(230,166,176,0.18) 0%, rgba(230,166,176,0.12) 45%, rgba(255,255,255,0) 100%);
+      filter: blur(12px);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 0;
     }
 
     @keyframes brandFadeIn {
@@ -582,6 +607,8 @@
       font-weight: 600;
       text-shadow: 0 2px 10px rgba(249, 198, 207, 0.5);
       animation: brandFadeIn 1s ease 0.1s forwards;
+      margin-top: 6px;
+      line-height: 1.35;
     }
 
     .team-dots {
@@ -606,32 +633,31 @@
     }
 
     .team-nav-arrow {
-      width: 64px;
-      height: 64px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
-      background: linear-gradient(145deg, #F9C6CF, #E6A6B0);
-      box-shadow: 0 8px 20px rgba(230, 166, 176, 0.35);
+      background: rgba(255,255,255,.18);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 26px rgba(0,0,0,.32);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       border: none;
       outline: none;
       z-index: 30;
     }
 
     .team-nav-arrow:hover {
-      filter: brightness(1.1);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(230, 166, 176, 0.45);
+      background: rgba(255,255,255,.26);
     }
 
     .team-nav-arrow img {
-      width: 32px;
-      height: 32px;
-      filter: brightness(0) invert(1);
-      transition: transform 0.3s ease;
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
+      transition: transform 0.2s ease;
     }
 
     .team-nav-arrow:hover img {
@@ -645,6 +671,39 @@
       align-items: center;
       justify-content: center;
     }
+
+    /* Fade khung chứa ảnh (overlay trên .team-card), giữ ảnh rõ */
+    .team-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      /* Trung tâm trong suốt, viền mờ dần về nền */
+      background: radial-gradient(
+        closest-side,
+        rgba(255, 255, 255, 0) 72%,
+        rgba(255, 249, 249, 0.25) 85%,
+        rgba(255, 249, 249, 0.6) 95%,
+        rgba(255, 249, 249, 0.85) 100%
+      );
+    }
+    /* Hiệu ứng nhẹ hơn trên mobile */
+    @media (max-width: 900px) {
+      .team-card::after {
+        background: radial-gradient(
+          closest-side,
+          rgba(255, 255, 255, 0) 78%,
+          rgba(255, 249, 249, 0.2) 88%,
+          rgba(255, 249, 249, 0.5) 96%,
+          rgba(255, 249, 249, 0.75) 100%
+        );
+      }
+    }
+
+    /* Đặt thứ tự hiển thị: info trên, controls dưới */
+    .team-member-info { order: 1; }
+    .team-nav-controls { order: 2; }
 
     /* 🎯 THÊM: Loading animation */
     @keyframes spin {
@@ -680,6 +739,16 @@
 
     .notification.error {
       background: #FF6B6B;
+    }
+
+    /* 🌀 Lazy image placeholder blur */
+    img.lazy-img {
+      filter: blur(12px);
+      will-change: filter, transform;
+    }
+    img.lazy-img.loaded {
+      filter: none;
+      transition: filter 0.25s ease;
     }
 
     /* 📱 Responsive fixes */
@@ -748,12 +817,13 @@
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        width: 70px;
-        height: 70px;
+        width: 58px;
+        height: 58px;
         margin: 0;
-        background: transparent;
+        background: rgba(255,255,255,.18);
+        backdrop-filter: blur(8px);
         border: none;
-        box-shadow: none;
+        box-shadow: 0 10px 26px rgba(0,0,0,.32);
       }
 
       .team-carousel-viewport .team-nav-arrow.up {
@@ -980,10 +1050,38 @@ async function loadHTML(url, id) {
   const carouselWrap = document.getElementById('carouselSection');
   const watermarkEl = document.getElementById('watermark');
 
+  // ⚙️ Cấu hình theo thiết bị cho carousel
+  let INITIAL_CAROUSEL_COUNT = 9;
+  let CAROUSEL_CHUNK = 4;
+  function applyDeviceConfig() {
+    const w = window.innerWidth;
+    if (w <= 768) {
+      INITIAL_CAROUSEL_COUNT = Math.min(7, PRODUCTS.length);
+      CAROUSEL_CHUNK = 3;
+    } else {
+      INITIAL_CAROUSEL_COUNT = Math.min(9, PRODUCTS.length);
+      CAROUSEL_CHUNK = 4;
+    }
+  }
+
+  // Chuẩn hóa đường dẫn ảnh về thư mục Best_Sellers/images
+  function resolveImage(path) {
+    if (!path) return DEFAULT_IMAGE;
+    try {
+      const p = String(path).replace(/^\.\//, '').replace(/^\//, '');
+      if (p.startsWith('Best_Sellers/images/')) return `/${p}`;
+      if (p.startsWith('images/')) return `/Best_Sellers/${p}`;
+      if (p.startsWith('Best_Sellers/')) return `/${p}`;
+      return `/Best_Sellers/images/${p}`;
+    } catch (_) {
+      return DEFAULT_IMAGE;
+    }
+  }
+
   // 🎯 Hàm hiển thị thông báo
   function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
-    notification.className = `notification ${type === 'error' ? 'error' : ''}`;
+    notification.className = 'notification' + (type === 'error' ? ' error' : '');
     notification.textContent = message;
     document.body.appendChild(notification);
 
@@ -995,22 +1093,56 @@ async function loadHTML(url, id) {
   }
 
   // 🎯 Hàm cập nhật giỏ hàng
-
+  function updateCartCount() {
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const countEl = document.getElementById('cart-count');
+      if (countEl) countEl.textContent = String(cart.length);
+    } catch (_) { /* ignore */ }
+  }
 
   // 🎯 Hàm thêm vào giỏ hàng
+  function addToCart(productId, btnRef) {
+    try {
+      const product = PRODUCTS.find(p => String(p.id) === String(productId));
+      if (!product) return;
+      const qtyInput = btnRef ? btnRef.closest('.buttons')?.querySelector('.quantity-input') : null;
+      const quantity = qtyInput ? Math.max(1, parseInt(qtyInput.value || '1')) : 1;
+      const normalized = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: resolveImage(product.images?.[0]) || DEFAULT_IMAGE,
+        quantity
+      };
+      let cart = [];
+      try { cart = JSON.parse(localStorage.getItem('cart') || '[]'); } catch (_) { cart = []; }
+      cart.push(normalized);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      showNotification('Đã thêm vào giỏ hàng');
+    } catch (e) {
+      console.error('addToCart error:', e);
+      showNotification('Lỗi thêm vào giỏ hàng', 'error');
+    }
+  }
 
   // 🎯 Hàm xem chi tiết
   function viewDetail(id) {
-    window.location.href = `view_detail.html?id=${id}`;
+    window.location.href = `/Best_Sellers/view_detail.html?id=${encodeURIComponent(id)}`;
   }
 
   // 🎯 Hàm render carousel item
   function cardHTML(p, i) {
-    const img = p.images?.[0] || DEFAULT_IMAGE;
+    const img = resolveImage(p.images?.[0]) || DEFAULT_IMAGE;
+    const fetchPriority = i === 0 ? 'high' : 'auto';
     return `
       <div class="carousel-item">
         <div class="carousel-box">
-          <img src="${img}" alt="${p.name}" onerror="this.src='${DEFAULT_IMAGE}'">
+          ${i === 0 
+            ? `<img src="${img}" alt="${p.name}" loading="eager" fetchpriority="${fetchPriority}" onerror="this.src='${DEFAULT_IMAGE}'">`
+            : `<img src="${DEFAULT_IMAGE}" data-src="${img}" class="lazy-img" alt="${p.name}" loading="lazy" decoding="async" fetchpriority="${fetchPriority}" onerror="this.src='${DEFAULT_IMAGE}'">`
+          }
           <div class="num">${String(i + 1).padStart(2, '0')}</div>
           <div class="glass-bottom">
             <h3>${p.name}</h3>
@@ -1026,20 +1158,21 @@ async function loadHTML(url, id) {
 
   // 🎯 Hàm render grid
   function renderGrid() {
-    gridEl.innerHTML = PRODUCTS.map(p => {
-      const img1 = p.images?.[0] || DEFAULT_IMAGE;
-      const img2 = p.images?.[1] || img1;
+    gridEl.innerHTML = PRODUCTS.map((p, idx) => {
+      const img1 = resolveImage(p.images?.[0]) || DEFAULT_IMAGE;
+      const img2 = resolveImage(p.images?.[1]) || img1;
       const hasSale = p.originalPrice && p.originalPrice > p.price;
       const isNew = p.isNew === true;
       const rating = p.rating || 0;
+      const priority = idx < 6 ? 'high' : 'low';
 
       return `
         <div class="product-card">
           <div class="product-image-container">
-            ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
-            ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
-            <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='${DEFAULT_IMAGE}'">
-            <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
+            ${isNew ? '<span class="badge badge-new">NEW</span>' : ''}
+            ${hasSale ? '<span class="badge badge-sale">SALE</span>' : ''}
+            <img src="${DEFAULT_IMAGE}" data-src="${img1}" class="product-img lazy-img" alt="${p.name}" loading="lazy" decoding="async" fetchpriority="${priority}" onerror="this.src='${DEFAULT_IMAGE}'">
+            <img src="${img1}" data-src="${img2}" class="hover-image lazy-img" alt="${p.name}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.src='${img1}'">
           </div>
           <div class="info">
             <h3 title="${p.name}">${p.name}</h3>
@@ -1047,9 +1180,9 @@ async function loadHTML(url, id) {
             <div class="actions">
               <div>
                 <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
-                ${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}
+                ${hasSale ? '<span class="original-price">$' + Number(p.originalPrice).toFixed(2) + '</span>' : ''}
               </div>
-              ${rating > 0 ? `<div class="rating"><i class="fas fa-star star"></i> ${rating.toFixed(1)}</div>` : ''}
+              ${rating > 0 ? '<div class="rating"><i class="fas fa-star star"></i> ' + rating.toFixed(1) + '</div>' : ''}
             </div>
             <div class="buttons">
               <input type="number" value="1" min="1" class="quantity-input">
@@ -1059,15 +1192,21 @@ async function loadHTML(url, id) {
           </div>
         </div>`;
     }).join('');
+    // Quan sát ảnh grid để lazy-load
+    observeLazyImages(gridEl);
   }
 
   // 🎯 Các hàm carousel
   function renderCarousel() {
-    carouselEl.innerHTML = PRODUCTS.slice(0, 10).map(cardHTML).join('');
+    renderedCarouselCount = INITIAL_CAROUSEL_COUNT;
+    carouselEl.innerHTML = PRODUCTS.slice(0, INITIAL_CAROUSEL_COUNT).map((p, i) => cardHTML(p, i)).join('');
     $items = carouselEl.querySelectorAll('.carousel-item');
     $items.forEach(it => it.style.setProperty('--items', $items.length));
+    bindItemClickListeners();
     initCarouselInteractions();
     updateCarousel();
+    // Quan sát ảnh carousel để lazy-load các slide sau
+    observeLazyImages(carouselEl);
   }
 
   function getZIndex(arr, i) {
@@ -1086,7 +1225,36 @@ async function loadHTML(url, id) {
     });
   }
 
+  // Helpers prev/next để thống nhất hành vi và nạp thêm khi cần
+  function prevSlide() {
+    if ($items.length === 0) return;
+    active = (active - 1 + $items.length) % $items.length;
+    progress = ($items.length > 1 ? active / ($items.length - 1) : 0) * 100;
+    updateCarousel();
+  }
+
+  function nextSlide() {
+    if ($items.length === 0) return;
+    active = (active + 1) % $items.length;
+    progress = ($items.length > 1 ? active / ($items.length - 1) : 0) * 100;
+    updateCarousel();
+    checkAndLoadMoreCarousel();
+  }
+
   function initCarouselInteractions() {
+    let pendingDelta = 0;
+    let rafId = null;
+    const schedule = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        progress += pendingDelta;
+        pendingDelta = 0;
+        updateCarousel();
+        checkAndLoadMoreCarousel();
+        rafId = null;
+      });
+    };
+
     document.addEventListener('mousedown', e => { 
       isDown = true; 
       startX = e.clientX; 
@@ -1099,15 +1267,35 @@ async function loadHTML(url, id) {
     document.addEventListener('mousemove', e => {
       if (!isDown) return;
       const move = (e.clientX - startX) * speedDrag;
-      progress += move;
+      pendingDelta += move;
       startX = e.clientX;
-      updateCarousel();
-    });
+      schedule();
+    }, { passive: true });
     
     document.addEventListener('wheel', e => {
-      progress += e.deltaY * speedWheel;
-      updateCarousel();
+      pendingDelta += e.deltaY * speedWheel;
+      schedule();
     }, { passive: true });
+
+    // Hover trái/phải trên .carousel để chuyển một ảnh (cooldown 300ms)
+    let lastHoverSwitch = 0;
+    const HOVER_COOLDOWN_MS = 300;
+    carouselEl.addEventListener('mousemove', (e) => {
+      if (isDown) return; // đang drag thì không chuyển bằng hover
+      const now = performance.now();
+      if (now - lastHoverSwitch < HOVER_COOLDOWN_MS) return;
+      const rect = carouselEl.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const leftThird = rect.width / 3;
+      const rightThird = 2 * rect.width / 3;
+      if (x < leftThird) {
+        prevSlide();
+        lastHoverSwitch = now;
+      } else if (x > rightThird) {
+        nextSlide();
+        lastHoverSwitch = now;
+      }
+    });
 
     $items.forEach((card, i) => {
       card.addEventListener('click', () => {
@@ -1117,17 +1305,79 @@ async function loadHTML(url, id) {
       });
     });
 
-    document.getElementById('btnPrev').onclick = () => {
-      active = (active - 1 + $items.length) % $items.length;
-      progress = (active / ($items.length - 1)) * 100;
-      updateCarousel();
-    }
+    document.getElementById('btnPrev').onclick = () => prevSlide();
 
-    document.getElementById('btnNext').onclick = () => {
-      active = (active + 1) % $items.length;
-      progress = (active / ($items.length - 1)) * 100;
-      updateCarousel();
+    document.getElementById('btnNext').onclick = () => nextSlide();
+  }
+
+  // Gắn click listener cho item mới thêm
+  function bindItemClickListeners() {
+    $items = carouselEl.querySelectorAll('.carousel-item');
+    $items.forEach((card, i) => {
+      if (card.dataset.bound === '1') return;
+      card.addEventListener('click', () => {
+        active = i;
+        progress = ($items.length > 1 ? active / ($items.length - 1) : 0) * 100;
+        updateCarousel();
+      });
+      card.dataset.bound = '1';
+    });
+  }
+
+  // Tự động nạp thêm item khi người dùng tương tác sâu
+  let renderedCarouselCount = 0;
+  function appendCarouselItems(start, count) {
+    const end = Math.min(start + count, PRODUCTS.length);
+    let html = '';
+    for (let i = start; i < end; i++) {
+      html += cardHTML(PRODUCTS[i], i);
     }
+    if (html) {
+      carouselEl.insertAdjacentHTML('beforeend', html);
+      renderedCarouselCount = end;
+      $items = carouselEl.querySelectorAll('.carousel-item');
+      $items.forEach(it => it.style.setProperty('--items', $items.length));
+      bindItemClickListeners();
+      observeLazyImages(carouselEl);
+    }
+  }
+
+  function checkAndLoadMoreCarousel() {
+    if (renderedCarouselCount >= PRODUCTS.length) return;
+    // Khi người dùng đến gần cuối (còn 2 item), nạp thêm
+    if (active >= renderedCarouselCount - 3) {
+      appendCarouselItems(renderedCarouselCount, CAROUSEL_CHUNK);
+    }
+  }
+
+  // IntersectionObserver cho lazy-load ảnh
+  let lazyObserver;
+  function initLazyObserver() {
+    if (lazyObserver) return;
+    lazyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          const src = img.getAttribute('data-src');
+          if (src) {
+            img.src = src;
+            img.removeAttribute('data-src');
+          }
+          // Đánh dấu loaded để bỏ blur
+          if (img.complete) {
+            img.classList.add('loaded');
+          } else {
+            img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+          }
+          lazyObserver.unobserve(img);
+        }
+      });
+    }, { root: null, rootMargin: '300px 0px', threshold: 0.01 });
+  }
+
+  function observeLazyImages(container) {
+    initLazyObserver();
+    container.querySelectorAll('img.lazy-img[data-src]').forEach(img => lazyObserver.observe(img));
   }
 
   // 🎯 Team Carousel
@@ -1136,13 +1386,9 @@ async function initTeamCarousel() {
 
   PRODUCTS.forEach(p => {
     if (!brandMap.has(p.brand)) {
-      // ✅ Xử lý đường dẫn ảnh thương hiệu để không bị sai cấp
+      // ✅ Ảnh thương hiệu: ưu tiên brandImage, fallback ảnh sản phẩm
       let brandImg = p.brandImage || p.images?.[0] || DEFAULT_BRAND_IMAGE;
-
-      // Nếu ảnh nằm trong thư mục Best_Sellers/images thì thêm đường dẫn cha vào
-    if (brandImg.startsWith('./images/brands/') || brandImg.startsWith('images/brands/')) {
-  brandImg = `./${brandImg.replace('./', '')}`;
-}
+      brandImg = resolveImage(brandImg) || DEFAULT_BRAND_IMAGE;
 
 
       brandMap.set(p.brand, {
@@ -1160,10 +1406,12 @@ async function initTeamCarousel() {
   // render cards
   teamTrack.innerHTML = fetchedBrands.map((brand, index) => `
     <div class="team-card" data-index="${index}">
-      <img src="${brand.image}" alt="${brand.name}"
+      <img src="${DEFAULT_BRAND_IMAGE}" data-src="${brand.image}" class="lazy-img" alt="${brand.name}" loading="lazy" decoding="async" fetchpriority="low"
            onerror="this.src='${DEFAULT_BRAND_IMAGE}'">
     </div>
   `).join('');
+  // Quan sát ảnh brand để lazy-load
+  observeLazyImages(teamTrack);
 
   teamDotsContainer.innerHTML = fetchedBrands.map((_, index) =>
     `<div class="team-dot" data-index="${index}"></div>`
@@ -1175,6 +1423,7 @@ async function initTeamCarousel() {
   const teamMemberRole = document.querySelector(".team-member-role");
   const teamUpArrows = document.querySelectorAll(".team-nav-arrow.up");
   const teamDownArrows = document.querySelectorAll(".team-nav-arrow.down");
+  const teamTrackEl = document.getElementById('teamCarouselTrack');
 
   let teamCurrentIndex = 0, teamIsAnimating = false;
 
@@ -1219,7 +1468,7 @@ teamCards.forEach((card, i) => {
     const currentBrand = fetchedBrands[i];
     // Nếu người dùng click vào brand đang ở giữa -> chuyển trang luôn
     if (card.classList.contains("center")) {
-      window.location.href = `../categories/categories.html?brand=${encodeURIComponent(currentBrand.name)}`;
+      window.location.href = `/categories/categories.html?brand=${encodeURIComponent(currentBrand.name)}`;
     } else {
       // Nếu chưa ở giữa -> chỉ animate lên trung tâm
       updateTeamCarousel(i);
@@ -1228,6 +1477,38 @@ teamCards.forEach((card, i) => {
 });
 
   updateTeamCarousel(0);
+
+  // 🖱️ Scroll bằng chuột để chuyển brand (không cần nút)
+  let wheelAccum = 0;
+  teamTrackEl.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    wheelAccum += e.deltaY;
+    if (Math.abs(wheelAccum) > 30) {
+      updateTeamCarousel(teamCurrentIndex + (wheelAccum > 0 ? 1 : -1));
+      wheelAccum = 0;
+    }
+  }, { passive: false });
+
+  // 🖱️ Kéo lên/xuống bằng drag
+  let dragging = false, startY = 0;
+  teamTrackEl.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    startY = e.clientY;
+    try { teamTrackEl.setPointerCapture(e.pointerId); } catch (_) {}
+    teamTrackEl.style.cursor = 'grabbing';
+  });
+  teamTrackEl.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const dy = e.clientY - startY;
+    if (Math.abs(dy) > 30) {
+      updateTeamCarousel(teamCurrentIndex + (dy > 0 ? 1 : -1));
+      startY = e.clientY;
+    }
+  });
+  teamTrackEl.addEventListener('pointerup', () => {
+    dragging = false;
+    teamTrackEl.style.cursor = 'grab';
+  });
 }
 
 
@@ -1252,6 +1533,19 @@ teamCards.forEach((card, i) => {
       PRODUCTS = data.products || [];
       
       console.log(`✅ Loaded ${PRODUCTS.length} products`);
+
+      // Preload ảnh hero để hiển thị siêu nhanh
+      if (PRODUCTS.length > 0) {
+        const heroImg = resolveImage(PRODUCTS[0]?.images?.[0]) || DEFAULT_IMAGE;
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = heroImg;
+        document.head.appendChild(link);
+      }
+
+      // Áp dụng cấu hình theo thiết bị trước khi render carousel
+      applyDeviceConfig();
 
       if (PRODUCTS.length === 0) {
         carouselEl.innerHTML = '<p style="color:#6B4C3B;text-align:center;padding:40px;">No products available</p>';

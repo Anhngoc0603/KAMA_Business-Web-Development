@@ -1,6 +1,9 @@
 <html>
 <head>
     <title>KAMA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
     <link rel='stylesheet' type='text/css' media='screen' href='../header_footer/style.css'>
 </head>
 <body>
@@ -20,12 +23,15 @@
 </a>        <nav>
             <div class="search">
                 <img src="../header_footer/images/find.png" class="icon">
-                <input type="search" placeholder="Search for...">
+                <input type="search" id="search-input-main" placeholder="Search for...">
             </div>
             
             <a href="#" class="acc-icon"><img src="../header_footer/images/account.png"></a>
             <a href="../contact.html/contact.html" class="contact-icon"><img src="../header_footer/images/contact.png"></a>
-            <a href="../cart/cart.html" class="cart-icon"><img src="../header_footer/images/shopping.png" ></a>
+            <a href="../cart/cart.html" class="cart-icon" style="position:relative;">
+              <img src="../header_footer/images/shopping.png" >
+              <span class="cart-count" style="display:none">0</span>
+            </a>
         </nav>
     </div>
  <!--Menu điều hướng đến các trang sản phẩm-->
@@ -89,8 +95,9 @@
 <div class="search-overlay" id="searchOverlay">
     <div class="search-wrapper">
         <img src="../header_footer/images/find.png" class="icon">
-        <input type="search" placeholder="Search for..." autofocus>
+        <input type="search" id="search-input-overlay" placeholder="Search for products, brands..." autofocus>
         <button class="close-search"><img src="../header_footer/images/close.png"></button>
+        <div class="search-results" id="searchResults"></div>
     </div>
 </div>
 <script src="../header_footer/script.js"></script>

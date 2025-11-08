@@ -958,13 +958,13 @@
     const DEBUG = true;
     // ==================== CONFIGURATION ====================
     const CONFIG = {
-      // Thử các đường dẫn khác nhau
+      // Đường dẫn tuyệt đối để hoạt động từ mọi trang
       jsonPaths: [
-        'full.json'
+        '/categories/full.json'
       ],
-      headerPath: './header.html',
-      footerPath: './footer.html',
-      productsPage: '../new/new.html'
+      headerPath: '/header_footer/header.html',
+      footerPath: '/header_footer/footer.html',
+      productsPage: '/categories/categories.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1051,6 +1051,17 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
+        // Chuẩn hoá đường dẫn ảnh từ JSON để phù hợp vị trí trang mới
+        const normalizeImagePath = (p) => {
+          if (!p) return p;
+          if (p.startsWith('./images/')) return p.replace('./images/', '/categories/images/');
+          return p;
+        };
+        data.products = data.products.map(prod => ({
+          ...prod,
+          brandImage: normalizeImagePath(prod.brandImage),
+          images: Array.isArray(prod.images) ? prod.images.map(normalizeImagePath) : prod.images
+        }));
         debugLog('Danh sách sản phẩm:', data.products.map(p => ({ id: p.id, name: p.name })));
         return data.products;
       } catch (error) {
@@ -1110,9 +1121,9 @@
         productPage.innerHTML = `
           <div class="product-gallery">
             <div class="gallery-main">
-              <img src="${product.images?.[0] || 'https://via.placeholder.com/600x600/FFF9F9/E6A6B0?text=Ảnh+sản+phẩm'}" 
+              <img src="${product.images?.[0] || '/header_footer/images/LOGO.png'}" 
                    alt="${product.name}" 
-                   id="main-image">
+                   id="main-image" onerror="this.src='/header_footer/images/LOGO.png'">
             </div>
             <div class="gallery-thumbnails" id="galleryThumbnails">
               ${(product.images || []).map((image, index) => `
@@ -1522,6 +1533,14 @@
           const headerHTML = await headerResponse.text();
           document.getElementById('header-placeholder').innerHTML = headerHTML;
           debugLog('✅ Header loaded');
+          // Ensure shared header script is loaded after injection
+          if (!document.querySelector('script[data-header-footer-script]')) {
+            const s = document.createElement('script');
+            s.src = '/header_footer/script.js';
+            s.defer = true;
+            s.setAttribute('data-header-footer-script', 'true');
+            document.head.appendChild(s);
+          }
           // Re-init header logic sau khi chèn
           initHeader();
         } else {

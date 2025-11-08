@@ -2,6 +2,7 @@
 <head>
     <title>KAMA</title>
     <link rel='stylesheet' type='text/css' media='screen' href='../style/mainstyle.css'>
+    <link rel="stylesheet" href="/header_footer/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         #introContainer {position: fixed;inset: 0;z-index: 99999;background: transparent !important;display: flex;align-items: center;justify-content: center;pointer-events: none;transition: opacity 0.8s ease;}
@@ -20,95 +21,8 @@
       Trình duyệt của bạn không hỗ trợ video.
     </video>
 </div>-->
-<!--HEADER-->
-<header>
-<!--Thanh thông báo chính của web-->
-    <div class="announcement-container">
-        <div class="announcement-wrapper" id="announcementWrapper">
-        <div class="announcement-slide">Free Shipping On Orders Over $100</div>
-        <div class="announcement-slide">Spend $100+, Get a Free Product Randomly!</div>
-        </div>
-    </div>
-<!--Header của trang-->
-    <div class="header">
-        <button class="menu-toggler" id="menu-toggler"><img src="../images/nav.png"></button>        
-        <img src="../images/LOGO.png" alt="LOGO" class="logo">
-        <nav>
-            <div class="search">
-                <img src="../images/find.png" class="icon">
-                <input type="search" placeholder="Search for...">
-            </div>
-            
-            <a href="#" class="acc-icon"><img src="../images/account.png"></a>
-            <a href="../../contact/contact.html" class="contact-icon"><img src="../images/contact.png"></a>
-            <a href="../../cart/cart.html" class="cart-icon"><img src="../images/shopping.png"></a>
-        </nav>
-    </div>
- <!--Menu điều hướng đến các trang sản phẩm-->
-    <nav class="navbar" id="navbar">
-            <a href="../../new/new_arrival.html">NEW</a>
-            <a href="../../Best_Sellers/bestseller.html">BEST SELLERS</a>
-            <a href="../../Sale/sale.html">SALE</a>
-            <a href="../../categories/categories.html" class="shop-all">CATEGORIES</a>
-            <div class="menu-categories">
-                <div class="categories-wrapper">
-                    <div class="category" data-category="Face">
-                        <div class="category-header">
-                            <h3><a href="#">FACE</a></h3>
-                            <button class="next-btn"><img src="../images/next-arrow.png" alt="Next"></button>
-                        </div>
-                        <ul class="product-list">
-                            <li>Blush</li>
-                            <li>Primer</li>
-                            <li>Concealer</li>
-                            <li>Finish Powder</li>
-                            <li>Contour & Highlighter</li>
-                            <li>Makeup Cleansing Balm</li>
-                            <li class="shop-all-link">Shop All Face</li>
-                        </ul>
-                    </div>
-
-                    <div class="category" data-category="Eyes">
-                        <div class="category-header">
-                            <h3><a href="#">EYES</a></h3>
-                            <button class="next-btn"><img src="../images/next-arrow.png" alt="Next"></button>
-                        </div>
-                    <ul class="product-list">
-                        <li>Makeup Palette</li>
-                        <li>Eyebrow Enhancer</li>
-                        <li>Mascara</li>
-                        <li>Eyeliner</li>
-                        <li class="shop-all-link">Shop All Eyes</li>
-                    </ul>
-                    </div>
-                    
-                    <div class="category" data-category="Lips">
-                        <div class="category-header">
-                            <h3><a href="#">LIPS</a></h3>
-                            <button class="next-btn"><img src="../images/next-arrow.png" alt="Next"></button>
-                        </div>
-                    <ul class="product-list">
-                        <li>Lip Cream</li>
-                        <li>Lipstick</li>
-                        <li>Lip Gloss</li>
-                        <li>Lip Lacquer</li>
-                        <li>Lip Glaze</li>
-                        <li>Lip Jelly</li>
-                        <li>Lip Mask</li>
-                        <li class="shop-all-link">Shop All Lips</li>
-                    </ul>
-                    </div>
-                </div>
-            </div>
-    </nav>
-</header>
-<div class="search-overlay" id="searchOverlay">
-    <div class="search-wrapper">
-        <img src="../images/find.png" class="icon">
-        <input type="search" placeholder="Search for..." autofocus>
-        <button class="close-search"><img src="../images/close.png"></button>
-    </div>
-</div>
+<!-- Injected Header -->
+<div id="header-placeholder"></div>
 <!--slide bự nhất để giới thiệu-->
     <section class="hero">
     <div class="slide active">
@@ -629,66 +543,9 @@
             </div>
         </div>
     </section>-->
-<!--Footer-->
-    <footer class="footer">
-            <div class="footer-newsletter">
-                <p>Sign up for updates:</p>
-                <p>Be the first to know about new collections and exclusive offers!</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Enter email here">
-                    <button type="submit"><i class="fas fa-arrow-right"></i></button>
-                </form>
-            </div>
-
-            <div class="footer-main">
-                <div class="footer-section">
-                    <h3>ABOUT KAMA </h3>
-                    <ul>
-                        <li><a href="#">Loyalty Program</a></li>
-                        <li><a href="#">Brand Story</a></li>
-                        <li><a href="#">Affiliate Program</a></li>
-                        <li><a href="#">Student Discount</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Become a Retailer</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>CUSTOMER CARE</h3>
-                    <ul>
-                        <li><a href="#">Shipping Policy</a></li>
-                        <li><a href="#">Refund & Return Policy</a></li>
-                        <li><a href="#">Promotion Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms and Conditions</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>CUSTOMER SERVICE</h3>
-                    <ul>
-                        <li><a href="#">Track Your Order</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Submit a Fake</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section footer-social">
-                    <h3>FOLLOW US</h3>
-                    <div class="social-icons">
-                        <a hres="#"><img src="../images/fblogo.png"></a>
-                        <a hres="#"><img src="../images/twlogo.png"></a>
-                        <a hres="#"><img src="../images/inslogo.png"></a>
-                        <a hres="#"><img src="../images/tiklogo.png"></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 Kama. All rights reserved.</p>
-            </div>
-        </footer>
+<!-- Injected Footer -->
+<div id="footer-placeholder"></div>
+<script src="/header_footer/partials.js"></script>
 <script src="../js/script.js"></script>
 </body>
 </html>

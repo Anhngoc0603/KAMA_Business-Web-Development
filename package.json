@@ -1,0 +1,13 @@
+{
+  "name": "kama-business-web",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Local dev scripts for serving the Checkout page",
+  "scripts": {
+    "serve:checkout": "http-server checkout -p 8080 -c-1",
+    "serve:root": "http-server . -p 8080 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

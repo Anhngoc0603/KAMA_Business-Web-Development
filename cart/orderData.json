@@ -1,3 +1,53 @@
-{
-
-}
+[
+  {
+    "id": "O-2025-0001",
+    "customerId": "C1001",
+    "customer": "Nguyễn Thị Lan",
+    "status": "Pending",
+    "total": 128.00,
+    "eta": "2025-11-20",
+    "items": [
+      { "productId": 8, "name": "Pat McGrath Labs Mothership Eyeshadow Palette", "price": 128.00, "qty": 1 }
+    ]
+  },
+  {
+    "id": "O-2025-0002",
+    "customerId": "C1002",
+    "customer": "Trần Minh Khoa",
+    "status": "Processing",
+    "total": 86.00,
+    "eta": "2025-11-22",
+    "items": [
+      { "productId": 5, "name": "Fenty Beauty Pro Filt'r Primer", "price": 36.00, "qty": 1 },
+      { "productId": 7, "name": "YSL Touche Éclat Radiant Concealer Pen", "price": 40.00, "qty": 1 },
+      { "name": "Engraving Service", "price": 5.00, "qty": 1 },
+      { "name": "Shipping", "price": 5.00, "qty": 1 }
+    ]
+  },
+  {
+    "id": "O-2025-0003",
+    "customerId": "C1003",
+    "customer": "Lê Hoàng Anh",
+    "status": "Shipped",
+    "total": 82.00,
+    "eta": "2025-11-19",
+    "items": [
+      { "productId": 1, "name": "Dior Forever Foundation", "price": 68.00, "qty": 1 },
+      { "name": "Shipping", "price": 3.00, "qty": 1 },
+      { "name": "Discount NEW15", "price": -9.00, "qty": 1 },
+      { "name": "Engraving Service", "price": 5.00, "qty": 1 }
+    ]
+  },
+  {
+    "id": "O-2025-0004",
+    "customerId": "C1004",
+    "customer": "Phạm Thu Trang",
+    "status": "Delivered",
+    "total": 98.00,
+    "eta": "2025-11-15",
+    "items": [
+      { "productId": 2, "name": "Chanel Les Beiges Blush", "price": 52.00, "qty": 1 },
+      { "productId": 3, "name": "Gucci Rouge à Lèvres Mat", "price": 46.00, "qty": 1 }
+    ]
+  }
+]

@@ -4,10 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sakura High-End Beauty</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
 
   <style>
     /* === RESET === */
@@ -18,7 +21,7 @@
       scroll-behavior: smooth;
       background: #FFF9F9;
       color: #6B4C3B;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Crimson Text', serif;
     }
 
     /* === VIDEO NỀN === */
@@ -136,7 +139,7 @@
       padding: 40px 20px;
       background: 
         linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.8)),
-        url('https://images.unsplash.com/photo-1606933238736-7346e0974637?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+  url('/new/images/images (3).jpg') center/cover no-repeat;
       background-attachment: fixed;
       min-height: 100vh;
       backdrop-filter: blur(8px);
@@ -161,7 +164,7 @@
     }
 
     #load-more-button {
-      font-family: "Playfair Display", serif;
+      font-family: "Crimson Text", serif;
       padding: 12px 32px;
       background: linear-gradient(90deg, #E6A6B0, #F9C6CF);
       color: white;
@@ -244,8 +247,8 @@
 
   <!-- VIDEO NỀN -->
   <section class="video-hero" id="videoSection">
-    <video autoplay muted loop playsinline class="hero-video" id="bg-video">
-      <source src="../new/images/Gucci Beauty Limited-Edition Flora Makeup.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline class="hero-video" id="bg-video" poster="/new/images/images (3).jpg">
+      <!-- Video nguồn bị thiếu, dùng poster làm nền để tránh lỗi 404 -->
     </video>
     <div class="overlay-dim"></div>
   </section>

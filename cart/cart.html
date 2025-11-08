@@ -4,11 +4,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Shopping Cart - Luxury Makeup Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="/header_footer/style.css" />
+    
 
 </head>
 <body>
+    <!-- Header (Injected) -->
+    <div id="header-placeholder"></div>
+    
+    <!-- Top shipping bar -->
+    <div class="shipping-bar">
+        <div class="shipping-bar-left">
+            <span class="flag">🇻🇳</span>
+            <span class="ship-text">Shipping to VIETNAM</span>
+        </div>
+        <button id="toggleShippingPanel" class="ship-change">Change</button>
+    </div>
+    <!-- Free shipping progress under top bar -->
+    <div class="free-shipping-banner">
+        <span>Only <strong id="freeShipLeft">$0.00</strong> left for Free Shipping!</span>
+        <div class="progress-bar-bg">
+            <div id="progressBar" class="progress-bar-fill"></div>
+        </div>
+    </div>
     
 <!-- Truck animation overlay -->
 <div id="truckAnimation" class="truck-overlay hidden">
@@ -156,24 +178,26 @@
 </style>
 
     <div class="container">
-        <div class="header">
-            <img src='../1.homepage/images/LOGO.png' width="500" height="auto">
-            <h1 class="main-title"><i>Complete your luxury makeup order</i></h1>
-        </div>
+        <h1 class="main-title" style="text-align:center;"><i>Complete your luxury makeup order</i></h1>
 
         <div class="main-grid">
             <div class="left-column">
                 <div class="glass-section">
+                    <div class="items-row">
+                        <span id="itemCountText">0 items</span>
+                        <button id="removeAllBtn" class="link-btn">Remove all</button>
+                    </div>
                     <h2 class="section-title">Products in your cart</h2>
                     <div id="cartItems"></div>
                     <div id="emptyCart" class="empty-cart-message">
                         <h3>Your cart is empty</h3>
                         <p>Add some products to start shopping.</p>
+                        <a href="/categories/categories.html" class="btn-primary" style="display:inline-block; margin-top:10px; text-decoration:none;">Continue Shopping</a>
                     </div>
                 </div>
-
+                <!-- Personalized Engraving moved from right to left column -->
                 <div class="glass-section">
-                    <h3 class="section-title">✨ Personalized Engraving</h3>
+                    <h3 class="section-title">Personalized Engraving</h3>
                     <p class="service-description">Add a personal touch to your luxury products (+$5).</p>
                     <div class="engrave-container">
                         <input id="engraveNameInput" class="input" placeholder="Enter name for engraving...">
@@ -184,11 +208,63 @@
                         <button id="removeEngravingBtn" class="remove-btn">Remove</button>
                     </div>
                 </div>
+
+                <!-- Discount Code (hidden on Cart) -->
+                
             </div>
 
             <div class="right-column">
-                <div class="glass-section">
-                    <h3 class="section-title">📍 Shipping Information</h3>
+                <!-- Promo & Offers -->
+                <div class="glass-section promo-card">
+                    <div class="summary-header">
+                        <h3 class="section-title">Promo & Offers</h3>
+                        <button id="clearCartBtn" class="clear-cart-btn">Clear All</button>
+                    </div>
+                    <div class="summary-body">
+                        <div class="coupon-container">
+                            <input id="couponInput" class="input" placeholder="Enter Promo Code">
+                            <button id="applyCouponBtn" class="btn-primary">Apply</button>
+                        </div>
+                        <div id="couponMessage" class="coupon-message hidden"></div>
+                        <div class="summary-row">
+                            <span>Coupon</span>
+                            <span class="text-link">Sign in to check available coupons</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Sale</span>
+                            <span id="saleAmount">-$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Preview -->
+                <div class="glass-section order-preview">
+                    <h3 class="section-title">Order Preview</h3>
+                    <div class="summary-body">
+                        <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+                        <div id="engravingFeeRow" class="summary-row"><span>Engraving Fee</span><span id="engravingFee">$0.00</span></div>
+                        <div class="summary-row"><span>Shipping</span><span id="shippingFee">FREE</span></div>
+                        <div id="discountRow" class="summary-row">
+                            <span class="saveup-label">Save up
+                                <span class="info-icon" tabindex="0">i</span>
+                                <span class="tooltip">Áp dụng cho tất cả sản phẩm</span>
+                            </span>
+                            <span id="discount" class="saveup-zero">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Estimated Tax</span>
+                            <span class="tax-note">Charged at customs</span>
+                        </div>
+                        <hr class="summary-divider" />
+                        <div class="summary-row total"><span>Estimated Total</span><span id="total">$0.00</span></div>
+                        <button id="checkoutBtn" class="checkout-btn dark">Proceed to Checkout</button>
+                        <p class="payment-note">The final payment amount may vary due to currency exchange rates.</p>
+                    </div>
+                </div>
+
+                <!-- Hidden Shipping Information panel, opened via top bar 'Change' -->
+                <div id="shippingPanel" class="glass-section" style="display:none">
+                    <h3 class="section-title">Shipping Information</h3>
                     <div class="address-form">
                         <input id="fullname" class="input" placeholder="Full Name">
                         <input id="phone" class="input" placeholder="Phone Number">
@@ -202,40 +278,24 @@
                     </div>
                 </div>
 
-                <div class="glass-section">
-                    <h3 class="section-title">🎫 Discount Code</h3>
-                    <div class="coupon-container">
-                        <input id="couponInput" class="input" placeholder="Enter discount code...">
-                        <button id="applyCouponBtn" class="btn-primary">Apply</button>
-                    </div>
-                    <div id="couponMessage" class="coupon-message"></div>
-                </div>
-
-                <div class="glass-section">
-                    <div class="summary-header">
-                        <h3 class="section-title">💰 Order Summary</h3>
-                        <button id="clearCartBtn" class="clear-cart-btn">Clear All</button>
-                    </div>
-                    <div class="summary-body">
-                        <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0</span></div>
-                        <div id="engravingFeeRow" class="summary-row"><span>Engraving Fee</span><span id="engravingFee">$0</span></div>
-                        <div class="summary-row"><span>Shipping</span><span id="shippingFee">$0</span></div>
-                        <div id="discountRow" class="summary-row"><span>Discount</span><span id="discount">-$0</span></div>
-                        <hr class="summary-divider" />
-                        <div class="summary-row total"><span>Total</span><span id="total">$0</span></div>
-                    </div>
-                    <div class="shipping-progress">
-                        <span>🚚 Free Shipping Progress</span>
-                        <div class="progress-bar-bg">
-                            <div id="progressBar" class="progress-bar-fill"></div>
-                        </div>
-                    </div>
-                    <button id="checkoutBtn" class="checkout-btn">Complete Order</button>
-                </div>
+                <!-- Proceed to Checkout moved inside Order Preview -->
             </div>
         </div>
     </div>
 
+    <!-- Footer (Injected) -->
+    <div id="footer-placeholder"></div>
+    <script src="/header_footer/partials.js"></script>
+    <!-- Upsell Modal for free shipping -->
+    <div id="upsellModal" class="upsell-modal hidden">
+        <div class="upsell-content">
+            <button id="upsellCloseBtn" class="upsell-close" aria-label="Close">×</button>
+            <h3 style="margin:0 0 6px;">Do You Want Free Shipping?</h3>
+            <p class="upsell-sub">Only <strong id="upsellLeftAmount">$0.00</strong> left to reach $80.</p>
+            <div id="upsellList" class="upsell-list"></div>
+            <button id="upsellProceedBtn" class="checkout-btn dark" style="margin-top:12px;">Proceed to Checkout</button>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -960,11 +960,11 @@
     const CONFIG = {
       // Thử các đường dẫn khác nhau
       jsonPaths: [
-        'products_view.json'
+        '/Sale/products.json'
       ],
-      headerPath: './header.html',
-      footerPath: './footer.html',
-      productsPage: '../new/new.html'
+      headerPath: '/header_footer/header.html',
+      footerPath: '/header_footer/footer.html',
+      productsPage: '/Sale/sale.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1051,6 +1051,17 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
+        // Chuẩn hoá đường dẫn ảnh để đảm bảo hoạt động trên mọi trang (Cart/detail)
+        const normalizeImagePath = (p) => {
+          if (!p) return p;
+          if (p.startsWith('./images/')) return p.replace('./images/', '/Sale/images/');
+          if (p.startsWith('images/')) return `/Sale/${p}`;
+          return p; // giữ nguyên nếu là đường dẫn tuyệt đối hoặc URL
+        };
+        data.products = data.products.map(prod => ({
+          ...prod,
+          images: Array.isArray(prod.images) ? prod.images.map(normalizeImagePath) : prod.images
+        }));
         debugLog('Danh sách sản phẩm:', data.products.map(p => ({ id: p.id, name: p.name })));
         return data.products;
       } catch (error) {
@@ -1110,9 +1121,9 @@
         productPage.innerHTML = `
           <div class="product-gallery">
             <div class="gallery-main">
-              <img src="${product.images?.[0] || 'https://via.placeholder.com/600x600/FFF9F9/E6A6B0?text=Ảnh+sản+phẩm'}" 
+              <img src="${product.images?.[0] || '/header_footer/images/LOGO.png'}" 
                    alt="${product.name}" 
-                   id="main-image">
+                   id="main-image" onerror="this.src='/header_footer/images/LOGO.png'">
             </div>
             <div class="gallery-thumbnails" id="galleryThumbnails">
               ${(product.images || []).map((image, index) => `
@@ -1501,6 +1512,37 @@
       const addToCartBtn = document.getElementById('addToCartBtn');
       if (addToCartBtn) {
         addToCartBtn.addEventListener('click', function() {
+          try {
+            const product = window.currentProduct;
+            const qtyEl = document.getElementById('quantity');
+            const shadeEl = document.getElementById('product-variant');
+            const quantity = parseInt(qtyEl?.value) || 1;
+            const selectedShade = shadeEl?.value || '';
+
+            if (product) {
+              let cart = [];
+              try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch (_) { cart = []; }
+              const existing = cart.find(i => String(i.id) === String(product.id));
+              if (existing) {
+                existing.quantity = (parseInt(existing.quantity) || 0) + quantity;
+                if (selectedShade) existing.selectedShade = selectedShade;
+              } else {
+                cart.push({
+                  id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  image: product.images?.[0] || '',
+                  selectedShade,
+                  quantity
+                });
+              }
+              localStorage.setItem('cart', JSON.stringify(cart));
+              if (typeof updateCartCount === 'function') {
+                try { updateCartCount(); } catch (_) {}
+              }
+            }
+          } catch (_) {}
+
           this.textContent = '✓ ADDED TO CART';
           this.style.background = 'var(--secondary-color)';
           setTimeout(() => {
@@ -1522,6 +1564,14 @@
           const headerHTML = await headerResponse.text();
           document.getElementById('header-placeholder').innerHTML = headerHTML;
           debugLog('✅ Header loaded');
+          // Ensure shared header script is loaded after injection
+          if (!document.querySelector('script[data-header-footer-script]')) {
+            const s = document.createElement('script');
+            s.src = '/header_footer/script.js';
+            s.defer = true;
+            s.setAttribute('data-header-footer-script', 'true');
+            document.head.appendChild(s);
+          }
           // Re-init header logic sau khi chèn
           initHeader();
         } else {

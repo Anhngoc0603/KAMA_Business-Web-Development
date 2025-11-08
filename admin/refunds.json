@@ -1,0 +1,6 @@
+[
+  {"id":"R-0001","orderId":"O-2025-0010","reason":"Damaged packaging","status":"Approved","createdAt":"2025-10-13","resolvedAt":"2025-10-14"},
+  {"id":"R-0002","orderId":"O-2025-0007","reason":"Want to change color","status":"Pending","createdAt":"2025-10-31"},
+  {"id":"R-0003","orderId":"O-2025-0008","reason":"Cancel order due to mistake","status":"Rejected","createdAt":"2025-11-04","resolvedAt":"2025-11-04"},
+  {"id":"R-0004","orderId":"O-2025-0015","reason":"Order not received","status":"Reviewing","createdAt":"2025-11-05"}
+]
