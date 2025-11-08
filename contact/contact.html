@@ -22,13 +22,19 @@
   </div>
 
   <main class="page">
-    <!-- Hero Banner -->
-    <section class="contact-hero">
-      <h1 class="hero-title">Contact Us</h1>
-      <p class="hero-subtitle">We'd love to hear from you! Get in touch with us for any questions, feedback, or just to say hello.</p>
+    <!-- Customer Service Header + Tabs -->
+    <section class="cs-header">
+      <h1 class="cs-title">Customer Service</h1>
+      <div class="cs-tabs" id="csTabs">
+        <button class="tab active" data-tab="faqs">FAQS</button>
+        <button class="tab" data-tab="contact">CONTACT US</button>
+        <button class="tab" data-tab="notice">NOTICE</button>
+      </div>
     </section>
 
-    <div class="container">
+    <!-- CONTACT SECTION (kept, remove hero) -->
+    <section id="contactSection" class="hidden">
+      <div class="container">
       <!-- Contact Cards -->
       <section class="cards" id="contactCards">
         <article class="card" data-delay="0">
@@ -65,7 +71,7 @@
         <!-- Left: Form -->
         <div class="left" id="formWrap">
           <div class="panel">
-            <h2>Can't find what you're looking for?</h2>
+    <h2>Submit a fake</h2>
             <form id="contactForm" class="form">
               <div class="row">
                 <div class="col">
@@ -102,18 +108,35 @@
           </div>
         </div>
       </section>
+      </div>
+    </section>
 
-      <!-- FAQ Full Width Below -->
-      <section class="faq-full">
-        <div class="panel" id="faqPanel">
-          <h2>Frequently Asked Questions</h2>
-          <div class="faq-list" id="faqList"></div>
-          <div class="center">
-            <button class="btn outline" id="viewMoreFaq">View More FAQ</button>
-          </div>
+    <!-- FAQS SECTION (grid like provided image) -->
+    <section id="faqsSection" class="faqs-section">
+      <div class="container">
+        <div class="faq-grid" id="faqGrid">
+          <!-- Populated by script.js -->
         </div>
-      </section>
-    </div>
+        <!-- Answers view for a selected FAQ category -->
+        <section class="answers-section hidden" id="answersSection">
+          <div class="answers-header">
+            <button class="back-btn" id="backToFaqGrid" aria-label="Back to FAQ categories">← Back</button>
+            <h3 class="answers-title" id="answersTitle">FAQs</h3>
+          </div>
+          <ul class="qa-list" id="qaList"></ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- NOTICE SECTION -->
+    <section id="noticeSection" class="hidden">
+      <div class="container">
+        <div class="panel">
+          <h2>Notice</h2>
+          <p class="muted">No notices at the moment. Please check back later.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Live Chat Widget (Reusable Component) -->

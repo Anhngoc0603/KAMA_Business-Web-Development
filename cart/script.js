@@ -137,37 +137,25 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const toast = document.createElement('div');
+    toast.textContent = message;
     toast.style.cssText = `
       position: fixed;
       top: 20px;
       right: 20px;
       background: ${colors[type]};
       color: white;
-      padding: 12px 16px;
+      padding: 12px 20px;
       border-radius: 8px;
       z-index: 1000;
       animation: slideInRight 0.3s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      gap: 10px;
     `;
-    const msgSpan = document.createElement('span');
-    msgSpan.textContent = message;
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = '×';
-    closeBtn.setAttribute('aria-label', 'Close');
-    closeBtn.style.cssText = `background: transparent; border: none; color: white; font-weight: 700; cursor: pointer; font-size: 16px; line-height: 1;`;
-    toast.appendChild(msgSpan);
-    toast.appendChild(closeBtn);
 
     document.body.appendChild(toast);
-    const hide = () => {
+    setTimeout(() => {
       toast.style.animation = 'slideOutRight 0.3s ease';
       setTimeout(() => toast.remove(), 300);
-    };
-    const timer = setTimeout(hide, 5000);
-    closeBtn.addEventListener('click', () => { clearTimeout(timer); hide(); });
+    }, 3000);
   };
     
   // Thêm CSS cho animations
@@ -324,34 +312,53 @@ document.addEventListener('DOMContentLoaded', function() {
     emptyCartEl.style.display = "none";
     if (itemCountTextEl) itemCountTextEl.textContent = `${cartItems.length} item${cartItems.length>1?'s':''}`;
 
-    // Chuẩn hoá đường dẫn ảnh để luôn hiển thị đúng trong trang Cart
-    const normalizeCartImagePath = (p) => {
-      if (!p) return '/header_footer/images/LOGO.png';
-      // Giữ nguyên nếu là URL tuyệt đối hoặc data URI
-      if (/^(https?:\/\/|data:|\/)/.test(p)) return p;
-      // Ảnh từ trang Sale/view_product (thường là '../images/...')
-      if (p.startsWith('../images/')) return '/Sale/images/' + p.replace(/^\.\.\/images\//, '');
-      // Ảnh từ Categories hoặc Best_Sellers dạng './images/...'
+    // Tạo danh sách đường dẫn ảnh fallback để đảm bảo hiển thị đúng
+    const resolveImageCandidates = (p) => {
+      const logo = '/header_footer/images/LOGO.png';
+      if (!p) return [logo];
+      // URL tuyệt đối hoặc data URI
+      if (/^(https?:\/\/|data:|\/)/.test(p)) return [p];
+      // ../images/... → thường từ Sale/view_product
+      if (p.startsWith('../images/')) {
+        const file = p.replace(/^\.\.\/images\//, '');
+        return [
+          '/Sale/images/' + file,
+          '/categories/images/' + file,
+          '/Best_Sellers/images/' + file,
+          logo
+        ];
+      }
+      // ./images/... hoặc images/...
       if (p.startsWith('./images/')) {
         const file = p.replace(/^\.\/images\//, '');
-        // Ưu tiên categories vì các sản phẩm trong giỏ từ categories giữ nguyên cấu trúc này
-        return '/categories/images/' + file;
+        return [
+          '/Best_Sellers/images/' + file,
+          '/categories/images/' + file,
+          '/Sale/images/' + file,
+          logo
+        ];
       }
-      // Trường hợp ảnh là 'images/...'
-      if (p.startsWith('images/')) return '/Sale/' + p; // => '/Sale/images/...'
-      return p;
+      if (p.startsWith('images/')) {
+        const file = p.replace(/^images\//, '');
+        return [
+          '/Sale/images/' + file,
+          '/categories/images/' + file,
+          '/Best_Sellers/images/' + file,
+          logo
+        ];
+      }
+      return [p, logo];
     };
 
     cartItems.forEach(item => {
       const div = document.createElement("div");
       div.className = "cart-item";
       const rawImg = item.image || (Array.isArray(item.images) ? item.images[0] : '') || '/header_footer/images/LOGO.png';
-      const imgSrc = normalizeCartImagePath(rawImg);
+      const imgCandidates = resolveImageCandidates(rawImg);
       const shade = item.selectedShade || item.color || item.variant || '';
       const shadeLabel = shade ? `<div class="cart-item-meta">Shade/Color: ${shade}</div>` : '';
 
       div.innerHTML = `
-        <img class="cart-item-img" src="${imgSrc}" alt="${item.name}" onerror="this.src='/header_footer/images/LOGO.png'" />
         <div class="cart-item-info">
           <div class="cart-item-name">${item.name}</div>
           ${shadeLabel}
@@ -364,19 +371,32 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `;
       cartItemsEl.appendChild(div);
+
+      // Ảnh với fallback tuần tự
+      const imgEl = document.createElement('img');
+      imgEl.className = 'cart-item-img';
+      imgEl.alt = item.name;
+      let idx = 0;
+      const tryNext = () => {
+        if (idx >= imgCandidates.length) return;
+        imgEl.src = imgCandidates[idx++];
+      };
+      imgEl.addEventListener('error', tryNext);
+      tryNext();
+      div.insertBefore(imgEl, div.firstChild);
     });
 
     updateTotals();
   }
 
   function changeQuantity(id, change) {
-    const item = cartItems.find(i => i.id === id);
+    const item = cartItems.find(i => String(i.id) === String(id));
     if (item) {
       const prevQty = item.quantity;
       item.quantity += change;
       
       if (item.quantity <= 0) {
-        cartItems = cartItems.filter(i => i.id !== id);
+        cartItems = cartItems.filter(i => String(i.id) !== String(id));
         showMessage(`Removed ${item.name} from cart.`, "warning");
       } else if (change > 0) {
         showMessage(`Added one more ${item.name}!`, "success");
@@ -470,6 +490,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const { subPlusEngraving } = calculateTotals();
     const left = Math.max(FREE_SHIPPING_THRESHOLD - subPlusEngraving, 0);
     if (upsellLeftAmountEl) upsellLeftAmountEl.textContent = formatCurrency(left);
+    // Clarify message when already eligible for free shipping
+    const upsellSubEl = document.querySelector('.upsell-sub');
+    if (upsellSubEl) {
+      if (left <= 0) {
+        if (!upsellSubEl.dataset.originalHtml) {
+          upsellSubEl.dataset.originalHtml = upsellSubEl.innerHTML;
+        }
+        upsellSubEl.textContent = 'You already qualify for Free Shipping.';
+      } else if (upsellSubEl.dataset.originalHtml) {
+        upsellSubEl.innerHTML = upsellSubEl.dataset.originalHtml;
+        if (upsellLeftAmountEl) upsellLeftAmountEl.textContent = formatCurrency(left);
+      }
+    }
 
     try {
       const res = await fetch('../Best_Sellers/full.json');
@@ -506,25 +539,9 @@ document.addEventListener('DOMContentLoaded', function() {
           renderCart();
           try { localStorage.setItem('cart', JSON.stringify(cartItems)); } catch (_) {}
           renderUpsellSuggestions();
-          // Hiển thị thông báo ngay trong modal
-          const content = upsellModal?.querySelector('.upsell-content');
-          if (content) {
-            const note = document.createElement('div');
-            note.textContent = '+1 new item added to cart';
-            note.style.cssText = `
-              position: absolute; top: 10px; right: 12px; background: #16a34a; color: #fff;
-              padding: 8px 12px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-              font-size: 13px; animation: fadeIn 0.2s ease;
-            `;
-            content.style.position = 'relative';
-            content.appendChild(note);
-            setTimeout(() => {
-              note.style.opacity = '0';
-              note.style.transition = 'opacity 0.2s ease';
-              setTimeout(() => note.remove(), 200);
-            }, 2000);
-          } else {
-            showMessage('+1 new item added to cart', 'success');
+          showMessage('+1 item in cart', 'success');
+          if (typeof window.showAddToCartMessage === 'function') {
+            window.showAddToCartMessage();
           }
         });
       });
@@ -533,28 +550,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Auto close timer for upsell modal
-  let upsellAutoTimer = null;
-
   function openUpsellModal() {
     if (!upsellModal) return performCheckout();
     upsellModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     renderUpsellSuggestions();
-    // Tự đóng sau 5s nếu không tương tác
-    if (upsellAutoTimer) clearTimeout(upsellAutoTimer);
-    upsellAutoTimer = setTimeout(() => { closeUpsellModal(); }, 5000);
-    const cancelTimer = () => { if (upsellAutoTimer) { clearTimeout(upsellAutoTimer); upsellAutoTimer = null; } };
-    ['click','mousemove','keydown','touchstart'].forEach(evt => {
-      upsellModal.addEventListener(evt, cancelTimer, { once: true });
-    });
   }
 
   function closeUpsellModal() {
     if (!upsellModal) return;
     upsellModal.classList.add('hidden');
     document.body.style.overflow = '';
-    if (upsellAutoTimer) { clearTimeout(upsellAutoTimer); upsellAutoTimer = null; }
   }
 
   // ===== INITIALIZE =====
@@ -698,11 +704,13 @@ document.addEventListener('DOMContentLoaded', function() {
         engravingName = null;
         engravingDisplay.style.display = 'none';
         discountPercent = 0;
+        discountFixed = 0;
         couponMessage.classList.add('hidden');
         couponInput.value = '';
         localStorage.removeItem('cart');
         localStorage.removeItem('engravingName');
         localStorage.removeItem('discountPercent');
+        localStorage.removeItem('discountFixed');
         localStorage.removeItem('shippingInfo');
         renderCart();
         showMessage('Cart cleared successfully!', 'success');
@@ -719,35 +727,50 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
-    function performCheckout() {
-      if (cartItems.length === 0) return showMessage('Your cart is empty!', 'error');
-      // Chỉ lưu giỏ hàng và khuyến mãi; địa chỉ sẽ nhập trực tiếp ở trang Checkout
+    function performCheckout(skipValidation = false) {
+      const fullname = document.getElementById('fullname')?.value.trim();
+      const phone = document.getElementById('phone')?.value.trim();
+      const province = provinceSelect.value;
+      const district = districtSelect.value;
+      const address = document.getElementById('address')?.value.trim();
+
+      if (!skipValidation) {
+        if (cartItems.length === 0) return showMessage('Your cart is empty!', 'error');
+        if (!fullname) return showMessage('Please enter full name!', 'error');
+        if (!phone) return showMessage('Please enter phone number!', 'error');
+        if (!province) return showMessage('Please select a province/city!', 'error');
+        if (!district) return showMessage('Please select a district!', 'error');
+        if (!address) return showMessage('Please enter detailed address!', 'error');
+      }
+
       saveToLocalStorage();
 
       const truckOverlay = document.getElementById('truckAnimation');
-      if (truckOverlay) {
-        truckOverlay.classList.remove('hidden');
-        document.body.style.overflow = "hidden";
-      }
+      truckOverlay.classList.remove('hidden');
+      document.body.style.overflow = "hidden";
 
       setTimeout(() => {
-        window.location.href = '/checkout/checkout.html';
-      }, 1000);
+        if (typeof window.navigateToRoot === 'function') {
+          window.navigateToRoot('/checkout/checkout.html');
+        } else {
+          // Fallback: điều hướng tương đối từ trang cart sang checkout (hoạt động cả http và file://)
+          const target = new URL('../checkout/checkout.html', window.location.href);
+          window.location.href = target.href;
+        }
+      }, 1800);
     }
 
     checkoutBtn.addEventListener('click', function() {
-      const { subPlusEngraving } = calculateTotals();
-      if (subPlusEngraving < FREE_SHIPPING_THRESHOLD) {
-        openUpsellModal();
-        return;
-      }
-      performCheckout();
+      // Always show upsell modal first per desired flow
+      openUpsellModal();
     });
 
     if (upsellProceedBtn) {
       upsellProceedBtn.addEventListener('click', function() {
+        console.log('[Cart] Upsell proceed clicked');
         closeUpsellModal();
-        performCheckout();
+        // Bỏ qua kiểm tra form ở cart; thu thập thông tin tại trang checkout
+        performCheckout(true);
       });
     }
 

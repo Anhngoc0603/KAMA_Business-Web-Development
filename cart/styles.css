@@ -846,3 +846,7 @@ select.input:disabled {
     align-self: flex-end;
   }
 }
+
+/* ===== Footer spacing (page-specific) ===== */
+.footer { margin-top: 60px; }
+@media (max-width: 768px) { .footer { margin-top: 200px; } }

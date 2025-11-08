@@ -1169,6 +1169,7 @@
               <button class="quantity-btn" id="increase-qty">+</button>
             </div>
             <button class="btn-primary" id="addToCartBtn">ADD TO CART</button>
+            <button class="btn" id="addToWishlistBtn" style="margin-left: 10px;">ADD TO WISHLIST</button>
           </div>
         `;
         window.currentProduct = product;
@@ -1329,7 +1330,7 @@
                 </div>
                 <div class="reviews-count">(${product.reviews?.length || 12} reviews)</div>
               </div>
-              <button class="btn-primary" style="padding: 10px 20px; font-size: 16px;">Write a Review</button>
+              <button class="btn-primary" style="padding: 10px 20px; font-size: 16px;" aria-label="Write a Review" onclick="window.location.href='/account/index.html?view=reviews&tab=writable&productId=${product.id}'">Write a Review</button>
             </div>
             <div class="reviews-list">
               ${generateSampleReviews(product.reviews || []).join('')}
@@ -1518,6 +1519,34 @@
             this.textContent = 'ADD TO CART';
             this.style.background = 'var(--gradient-pink)';
           }, 2000);
+        });
+      }
+
+      // Sự kiện add to wishlist
+      const addToWishlistBtn = document.getElementById('addToWishlistBtn');
+      if (addToWishlistBtn) {
+        const img0 = (product.images && product.images[0]) || '';
+        const normalizedImg = img0 ? (img0.startsWith('./') ? `/categories${img0.slice(1)}` : `/categories/${img0}`) : (document.getElementById('main-image')?.src || '');
+        const wishItem = { id: String(product.id), name: product.name, price: Number(product.price || 0), image: normalizedImg, brand: product.brand || '' };
+        const readWishlist = () => { try { return JSON.parse(localStorage.getItem('wishlist') || '[]'); } catch { return []; } };
+        const isInWishlist = () => readWishlist().some(it => String(it.id) === String(wishItem.id));
+        const updateBtnUi = () => {
+          const added = isInWishlist();
+          addToWishlistBtn.textContent = added ? '✓ IN WISHLIST' : 'ADD TO WISHLIST';
+          addToWishlistBtn.classList.toggle('active', added);
+        };
+        updateBtnUi();
+        addToWishlistBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const toggleFn = typeof window.toggleWishlist === 'function' ? window.toggleWishlist : (prod) => {
+            const list = readWishlist();
+            const idx = list.findIndex(x => String(x.id) === String(prod.id));
+            if (idx >= 0) { list.splice(idx, 1); } else { list.push(prod); }
+            localStorage.setItem('wishlist', JSON.stringify(list));
+          };
+          toggleFn(wishItem);
+          updateBtnUi();
+          if (typeof window.updateWishlistCount === 'function') window.updateWishlistCount();
         });
       }
     }

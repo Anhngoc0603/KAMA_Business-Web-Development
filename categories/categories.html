@@ -664,10 +664,13 @@ window.addToCart = (id, btn) => {
   localStorage.setItem('cart', JSON.stringify(pageCart));
   updateCartCount();
   triggerFireworks();
-  alert(`${product.name} đã thêm vào giỏ!`);
+  // Hiện popup thông báo thêm giỏ hàng nếu có hàm global
+  if (typeof window.showAddToCartMessage === 'function') {
+    window.showAddToCartMessage();
+  }
 };
 window.viewDetail = (id) => {
-  window.location.href = `/src/pages/categories/categories_detail.html?id=${id}`;
+  window.location.href = `/categories/view_detail.html?id=${id}`;
 };
 window.filterByBrand = (brandName) => {
   currentFilters.brand = brandName; // Gán vào biến global

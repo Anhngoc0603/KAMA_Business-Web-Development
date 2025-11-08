@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/header_footer/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header (Injected) -->
+  <div id="header-placeholder"></div>
+
+  <div class="account-container">
+    <!-- Sidebar -->
+    <aside class="account-sidebar">
+
+      <nav class="sidebar-section">
+        <div class="section-label">My Shopping</div>
+        <ul>
+          <li><a href="#" data-view="track-orders">Track Orders</a></li>
+          <li><a href="#" data-view="cancel-history">Cancellation History</a></li>
+          <li><a href="/cart/cart.html">Cart</a></li>
+          <li><a href="#" data-view="wish-list">Wish List</a></li>
+          <li><a href="#" data-view="coupons">Coupons</a></li>
+        </ul>
+      </nav>
+
+      <nav class="sidebar-section">
+        <div class="section-label">My Activities</div>
+        <ul>
+          <li><a href="/contact/contact.html">Contact Us</a></li>
+          <li><a href="#" data-view="reviews">Reviews</a></li>
+          <li><a href="#">Restock Notification</a></li>
+          <li><a href="#">My Event</a></li>
+        </ul>
+      </nav>
+
+      <nav class="sidebar-section">
+        <div class="section-label">My Profile</div>
+        <ul>
+          <li><a href="#">Account Information</a></li>
+          <li><a href="#">Beauty Profile</a></li>
+          <li><a href="#">Addresses</a></li>
+          <li><a href="#">Login History</a></li>
+          <li><a href="#">Deactivate Account</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="account-main">
+      <!-- Heading and membership card -->
+      <div class="top-bar">
+        <h1 id="accountName" class="user-name">Khách hàng</h1>
+      </div>
+
+      <section class="glass-section membership-card">
+        <div class="level-badge">B</div>
+        <div class="level-info">
+          <div class="level-name" id="tierName">BABY OLIVE</div>
+          <div class="level-desc">Spend <strong>US$<span id="toNextAmount">1</span></strong> to reach <strong id="nextTier">PINK OLIVE</strong></div>
+        </div>
+        <div class="scoreboard">
+          <div class="score">
+            <div class="label">Coupons</div>
+            <div class="value" id="couponCount">0</div>
+          </div>
+          <div class="score">
+            <div class="label">Points</div>
+            <div class="value" id="pointsTotal">0.0</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Membership Benefits Modal -->
+      <div id="membershipModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <button id="closeMembershipModal" class="modal-close" type="button">×</button>
+          <h3 class="modal-title">Membership Benefits</h3>
+          <div class="tier-table">
+            <div class="tier-row tier-header">
+              <div class="cell">BABY OLIVE</div>
+              <div class="cell">PINK OLIVE</div>
+              <div class="cell">GREEN OLIVE</div>
+              <div class="cell">BLACK OLIVE</div>
+              <div class="cell">GOLD OLIVE</div>
+            </div>
+            <div class="tier-row">
+              <div class="cell">Immediately after signing up</div>
+              <div class="cell">US$1~119.99</div>
+              <div class="cell">US$120~179.99</div>
+              <div class="cell">US$180~299.99</div>
+              <div class="cell">US$300+</div>
+            </div>
+            <div class="tier-row">
+              <div class="cell">Points of Purchases: 0.5%</div>
+              <div class="cell">Points of Purchases: 1.0%</div>
+              <div class="cell">Points of Purchases: 1.5%</div>
+              <div class="cell">Points of Purchases: 2.0%</div>
+              <div class="cell">Points of Purchases: 2.5%</div>
+            </div>
+            <div class="tier-row">
+              <div class="cell">First Order Coupon: ✓</div>
+              <div class="cell">Birthday Gift: ✓</div>
+              <div class="cell">Birthday Gift: ✓</div>
+              <div class="cell">Birthday Gift: ✓</div>
+              <div class="cell">Birthday Gift: ✓</div>
+            </div>
+            <div class="tier-row">
+              <div class="cell">OY MEMBER'S WEEK: ✓</div>
+              <div class="cell">Membership Coupon: 20% OFF</div>
+              <div class="cell">Membership Coupon: 40% OFF</div>
+              <div class="cell">Membership Coupon: 60% OFF</div>
+              <div class="cell">Membership Coupon: 80% OFF</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Track Orders -->
+      <section class="glass-section" id="trackOrdersSection">
+        <div class="section-header">
+          <h2 class="section-title">Track Orders</h2>
+          <a href="#" class="view-more">View More</a>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="number" id="statCompleted">0</div>
+            <div class="label">Purchase Completed</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" id="statPreparing">0</div>
+            <div class="label">Preparing Shipment</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" id="statTransit">0</div>
+            <div class="label">In Transit</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" id="statDelivered">0</div>
+            <div class="label">Delivered</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" id="statCancelRefund">0</div>
+            <div class="label">Cancel/Refund</div>
+          </div>
+        </div>
+
+        <!-- Filters row -->
+        <div class="track-filters">
+          <select id="filterStatus" class="filter-select">
+            <option value="all">All</option>
+            <option value="completed">Purchase Completed</option>
+            <option value="preparing">Preparing Shipment</option>
+            <option value="transit">In Transit</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelRefund">Cancel/Refund</option>
+          </select>
+
+          <div class="quick-range">
+            <button class="range-btn" data-range="1w">1 Week</button>
+            <button class="range-btn" data-range="1m">1 Month</button>
+            <button class="range-btn" data-range="3m">3 Month</button>
+            <button class="range-btn" data-range="6m">6 Month</button>
+          </div>
+
+          <input type="date" id="dateStart" class="date-input" />
+          <span class="date-sep">~</span>
+          <input type="date" id="dateEnd" class="date-input" />
+          <button id="searchOrders" class="search-btn">Search</button>
+        </div>
+
+        <!-- Orders table -->
+        <table class="orders-table" id="ordersTable">
+          <thead>
+            <tr>
+              <th>Order Date</th>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="no-orders">
+              <td colspan="6">No orders yet.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="order-note">* Order Date is based on KST (UTC+9)</p>
+
+        <!-- Refunds table (shown when selecting Cancel/Refund) -->
+        <table class="refunds-table hidden" id="refundsTable">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Order ID</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Resolved</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="no-orders">
+              <td colspan="6">No cancel/refund requests.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Benefits -->
+      <section class="glass-section" id="benefitsSection">
+        <h2 class="section-title">How to get the benefits</h2>
+        <div class="benefits-grid">
+          <div class="benefit benefit-stack">
+            <img src="/account/images/megaphone.png" alt="Affiliate icon" class="icon-img" />
+            <div class="text">Affiliate program</div>
+          </div>
+          <div class="benefit benefit-stack">
+            <img src="/account/images/people.png" alt="Reference icon" class="icon-img" />
+            <div class="text">My Reference</div>
+          </div>
+          <div class="benefit benefit-stack">
+            <img src="/account/images/reviews.png" alt="Reviews icon" class="icon-img" />
+            <div class="text">Review</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Wish List -->
+      <section class="glass-section" id="wishListSection">
+        <div class="section-header">
+          <h2 class="section-title">Wish List</h2>
+          <a href="#" class="view-more">View More</a>
+        </div>
+        <div class="wishlist-empty">
+          <div class="empty-icon">❕</div>
+          <div class="empty-text">No items found.</div>
+        </div>
+      </section>
+
+      <!-- Coupons -->
+      <section class="glass-section hidden" id="couponsSection">
+        <div class="section-header">
+          <h2 class="section-title">Coupons</h2>
+        </div>
+
+        <div class="coupon-register">
+          <p class="register-help">Enter <strong>10~35</strong> digit serial number without dashes. We only accept the coupons issued by our shopping mall.</p>
+          <div class="register-form">
+            <input type="text" id="couponInput" class="coupon-input" placeholder="Enter Coupon Code" />
+            <button id="registerCoupon" class="coupon-btn">Register</button>
+          </div>
+        </div>
+
+        <div class="coupon-meta">
+          <span class="coupon-count-label"><span id="couponCountLabel">0</span> Coupons</span>
+          <span class="kst-note">All expiration times are based on Korea Standard Time (KST, UTC+9)</span>
+        </div>
+
+        <div class="coupon-list">
+          <div class="coupon-card disabled">
+            <div class="coupon-amount">US$13</div>
+            <div class="coupon-title">[日本配送限定] 新規登録 2000円OFF (6000円+)</div>
+            <div class="coupon-desc">Purchase over US$41.09</div>
+            <div class="coupon-region">Not Available in Your Region</div>
+          </div>
+        </div>
+
+        <div class="coupon-policy">
+          <h3 class="policy-title">Coupon Policy</h3>
+          <ul class="policy-list">
+            <li>Each coupon can be used only once and cannot be combined.</li>
+            <li>Coupons apply to eligible products and orders meeting conditions.</li>
+            <li>Some promotions may exclude coupons; details vary by event.</li>
+            <li>Expired coupons are not valid; times follow KST (UTC+9).</li>
+            <li>Coupons issued outside this mall are not accepted.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Reviews -->
+      <section class="glass-section hidden" id="reviewsSection">
+        <div class="section-header">
+          <h2 class="section-title">Reviews</h2>
+        </div>
+
+        <!-- Tabs -->
+        <div class="reviews-tabs">
+          <button class="tab active" type="button" data-tab="writable">Writable Reviews</button>
+          <button class="tab" type="button" data-tab="mine">My Reviews</button>
+        </div>
+
+        <!-- Writable Reviews content -->
+        <div id="reviewsWritable">
+          <div class="review-banner">
+            <div class="banner-emoji">⭐</div>
+            <div class="banner-text">Write a review and <strong>earn up to 0.3 point</strong> in rewards!</div>
+          </div>
+          <ul class="review-notes">
+            <li>The review can be edited or deleted for 1 day after registration.</li>
+            <li>The points will be awarded 1~2 days after the review is registered.</li>
+            <li>0.15 point is given for a text review and 0.3 point for a photo or video review.</li>
+            <li>If the purchase amount is less than US$ 2 based on payment, the review reward point will not be awarded.</li>
+          </ul>
+          <div id="writableList" class="review-list"></div>
+
+          <!-- Inline form to write a review -->
+          <div id="reviewForm" class="review-form hidden">
+            <div class="form-title">Write a Review</div>
+            <div class="form-row">
+              <label>Product</label>
+              <input id="reviewProduct" type="text" readonly />
+            </div>
+            <div class="form-row">
+              <label>Type</label>
+              <select id="reviewType">
+                <option value="text">Text</option>
+                <option value="photo">Photo</option>
+                <option value="video">Video</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>Content</label>
+              <textarea id="reviewText" rows="4" placeholder="Write your thoughts..."></textarea>
+            </div>
+            <div class="form-row">
+              <label>Upload Media</label>
+              <input id="reviewMediaFile" type="file" accept="image/*,video/*" />
+            </div>
+            <div class="form-actions">
+              <button id="submitReview" class="btn primary" type="button">Submit Review</button>
+              <button id="cancelReview" class="btn" type="button">Cancel</button>
+              <div id="reviewPointsHint" class="points-hint"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Reviews content -->
+        <div id="reviewsMine" class="hidden">
+          <div id="myReviewsList" class="review-list"></div>
+          <div class="reviews-empty" id="myReviewsEmpty">
+            <p>No reviews submitted yet.</p>
+            <button class="browse-btn" type="button">Browse products</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer (Injected) -->
+  <div id="footer-placeholder"></div>
+  <script src="/header_footer/partials.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

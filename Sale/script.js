@@ -341,16 +341,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             cart.push({ id: product.id, name: product.name, price: product.price, image: product.images?.[0], quantity: parseInt(quantity) });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
-        this.showCartPopup(product.name, quantity);
+        // Use global popup for consistency across pages
+        if (typeof window.showAddToCartMessage === 'function') {
+          window.showAddToCartMessage();
+        }
     }
     showCartPopup(productName, quantity) {
-        const popup = document.createElement('div');
-        popup.className = 'added-cart-popup active';
-        popup.innerHTML = `<div class="added-cart-wrapper"><button class="added-cart-close">&times;</button><h3 class="added-cart-title">🎉 Added to Cart!</h3><p class="added-cart-product">${quantity}x ${this.escapeHTML(productName)}</p><p style="margin-top: 10px; color: #9b7c7c; font-size: 14px;">Continue shopping or view cart</p></div>`;
-        document.body.appendChild(popup);
-        setTimeout(() => popup.remove(), 3000);
-        const closeBtn = popup.querySelector('.added-cart-close');
-        closeBtn?.addEventListener('click', () => popup.remove());
+        // Deprecated local popup; delegate to global header popup
+        if (typeof window.showAddToCartMessage === 'function') {
+          window.showAddToCartMessage();
+          return;
+        }
+        // Fallback minimal message
+        const fallback = document.createElement('div');
+        fallback.style.cssText = 'position:fixed;top:100px;right:20px;background:#E6A6B0;color:#fff;padding:12px 16px;border-radius:8px;z-index:10000;';
+        fallback.textContent = `+1 ${quantity}x ${this.escapeHTML(productName)} added to cart`;
+        document.body.appendChild(fallback);
+        setTimeout(() => fallback.remove(), 5000);
     }
   }
 

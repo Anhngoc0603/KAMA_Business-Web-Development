@@ -224,6 +224,42 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     if (elements.emptyCartEl) elements.emptyCartEl.classList.add('hidden');
+
+    // Helper: resolve possible image paths similar to Cart page
+    const logo = '/header_footer/images/LOGO.png';
+    const resolveImageCandidates = (p) => {
+      if (!p) return [logo];
+      if (/^(https?:\/\/|data:|\/)/.test(p)) return [p];
+      if (p.startsWith('../images/')) {
+        const file = p.replace(/^\.\.\/images\//, '');
+        return [
+          '/Sale/images/' + file,
+          '/categories/images/' + file,
+          '/Best_Sellers/images/' + file,
+          logo
+        ];
+      }
+      if (p.startsWith('./images/')) {
+        const file = p.replace(/^\.\/images\//, '');
+        return [
+          '/Best_Sellers/images/' + file,
+          '/categories/images/' + file,
+          '/Sale/images/' + file,
+          logo
+        ];
+      }
+      if (p.startsWith('images/')) {
+        const file = p.replace(/^images\//, '');
+        return [
+          '/Sale/images/' + file,
+          '/categories/images/' + file,
+          '/Best_Sellers/images/' + file,
+          logo
+        ];
+      }
+      return [p, logo];
+    };
+
     orderData.cart.forEach(item => {
       const div = document.createElement('div');
       div.className = 'cart-item';
@@ -239,6 +275,21 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `;
       elements.cartItemsEl.appendChild(div);
+
+      // Insert product image (with fallbacks) before info block
+      const rawImg = item.image || (Array.isArray(item.images) ? item.images[0] : '') || logo;
+      const imgCandidates = resolveImageCandidates(rawImg);
+      const imgEl = document.createElement('img');
+      imgEl.className = 'cart-item-img';
+      imgEl.alt = item.name || 'Product image';
+      let idx = 0;
+      const tryNext = () => {
+        if (idx >= imgCandidates.length) return;
+        imgEl.src = imgCandidates[idx++];
+      };
+      imgEl.addEventListener('error', tryNext);
+      tryNext();
+      div.insertBefore(imgEl, div.firstChild);
     });
   }
 

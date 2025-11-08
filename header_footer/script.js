@@ -17,6 +17,8 @@
       window.location.href = p;
     }
   }
+  // Expose để dùng ngoài IIFE (ví dụ popup toàn cục)
+  try { window.navigateToRoot = navigateToRoot; } catch(_) {}
 
   // ================== ANNOUNCEMENT ==================
   const wrapper1 = document.getElementById('announcementWrapper');
@@ -700,36 +702,98 @@ function updateCartCount() {
 }
 
 function showAddToCartMessage() {
-  // Create or show add to cart message
-  let message = document.querySelector('.add-to-cart-message');
-  if (!message) {
-    message = document.createElement('div');
-    message.className = 'add-to-cart-message';
-    message.style.cssText = `
+  // Rich popup: "+1 new item added to cart" with close and Proceed
+  let popup = document.querySelector('.cart-popup');
+  if (!popup) {
+    popup = document.createElement('div');
+    popup.className = 'cart-popup';
+    popup.innerHTML = `
+      <button class="cart-popup-close" aria-label="Close">&times;</button>
+      <div class="cart-popup-content">
+        <div class="cart-popup-title">+1 new item added to cart</div>
+        <div class="cart-popup-actions">
+          <button class="cart-popup-checkout">Proceed to Checkout</button>
+        </div>
+      </div>
+    `;
+    // Base styles to ensure it works even if CSS file not yet loaded
+    popup.style.cssText = `
       position: fixed;
-      top: 100px;
       right: 20px;
+      top: 90px;
       background: var(--warm-blush);
-      color: white;
-      padding: 15px 25px;
-      border-radius: 8px;
+      color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.16);
       z-index: 10000;
-      transition: all 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      min-width: 280px;
+      border: 1px solid var(--soft-rose);
       font-family: 'Playfair Display', serif;
     `;
-    document.body.appendChild(message);
+    document.body.appendChild(popup);
+
+    const closeBtn = popup.querySelector('.cart-popup-close');
+    closeBtn.style.cssText = `
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      margin-left: 8px;
+    `;
+    closeBtn.addEventListener('click', () => {
+      hideCartPopup();
+    });
+
+    const checkoutBtn = popup.querySelector('.cart-popup-checkout');
+    checkoutBtn.style.cssText = `
+      background: #fff;
+      color: var(--branch-brown);
+      border: none;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    `;
+    checkoutBtn.addEventListener('click', () => {
+      // Điều hướng an toàn hoạt động cả trên server http và khi mở file trực tiếp
+      if (typeof window.navigateToRoot === 'function') {
+        window.navigateToRoot('/checkout/checkout.html');
+      } else {
+        window.location.href = '/checkout/checkout.html';
+      }
+    });
   }
-  
-  message.textContent = 'Product added to cart!';
-  message.style.display = 'block';
-  message.style.opacity = '1';
-  
-  setTimeout(() => {
-    message.style.opacity = '0';
+
+  // Update content if needed and show
+  const titleEl = popup.querySelector('.cart-popup-title');
+  if (titleEl) titleEl.textContent = '+1 new item added to cart';
+  popup.style.opacity = '0';
+  popup.style.display = 'flex';
+  requestAnimationFrame(() => {
+    popup.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    popup.style.transform = 'translateY(0)';
+    popup.style.opacity = '1';
+  });
+
+  // Auto hide after 5 seconds
+  clearTimeout(window.__cartPopupTimer);
+  window.__cartPopupTimer = setTimeout(() => hideCartPopup(), 5000);
+
+  function hideCartPopup() {
+    if (!popup) return;
+    popup.style.opacity = '0';
+    popup.style.transform = 'translateY(-6px)';
     setTimeout(() => {
-      message.style.display = 'none';
-    }, 300);
-  }, 2000);
+      popup.style.display = 'none';
+    }, 250);
+  }
 }
 
 // ================== WISHLIST FUNCTIONALITY ==================
