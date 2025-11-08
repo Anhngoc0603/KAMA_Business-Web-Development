@@ -88,6 +88,152 @@ const cancelReviewBtn = document.getElementById('cancelReview');
   const statsGrid = document.querySelector('#trackOrdersSection .stats-grid');
   const sectionTitleEl = document.querySelector('#trackOrdersSection .section-title');
 
+  // ------- Wishlist helpers & rendering -------
+  const readWishlist = () => {
+    try { return JSON.parse(localStorage.getItem('wishlist') || '[]'); } catch { return []; }
+  };
+  const writeWishlist = (list) => {
+    localStorage.setItem('wishlist', JSON.stringify(list));
+    if (typeof window.updateWishlistCount === 'function') {
+      try { window.updateWishlistCount(); } catch (_) {}
+    }
+  };
+  const removeFromWishlist = (id) => {
+    const list = readWishlist();
+    const idx = list.findIndex(x => String(x.id) === String(id));
+    if (idx >= 0) {
+      list.splice(idx, 1);
+      writeWishlist(list);
+      renderWishlist();
+    }
+  };
+  const safeAddToCart = (prod) => {
+    if (typeof window.addToCart === 'function') {
+      try { window.addToCart(prod); return; } catch (_) {}
+    }
+    // Fallback local add-to-cart
+    let cart = [];
+    try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch (_) { cart = []; }
+    const existing = cart.find(i => String(i.id) === String(prod.id));
+    if (existing) {
+      existing.quantity = (parseInt(existing.quantity) || 0) + 1;
+    } else {
+      cart.push({ id: prod.id, name: prod.name, price: prod.price, image: prod.image, quantity: 1 });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    if (typeof window.updateCartCount === 'function') {
+      try { window.updateCartCount(); } catch (_) {}
+    }
+  };
+
+  const renderWishlist = () => {
+    const section = document.getElementById('wishListSection');
+    if (!section) return;
+    const emptyEl = section.querySelector('.wishlist-empty');
+    let grid = section.querySelector('.wishlist-grid');
+    const items = readWishlist();
+    if (!grid) {
+      grid = document.createElement('div');
+      grid.className = 'wishlist-grid';
+      grid.style.display = 'grid';
+      grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(220px, 1fr))';
+      grid.style.gap = '16px';
+      section.appendChild(grid);
+    }
+    grid.innerHTML = '';
+    if (!items.length) {
+      if (emptyEl) emptyEl.style.display = '';
+      return;
+    }
+    if (emptyEl) emptyEl.style.display = 'none';
+    const normalizeImgPath = (src) => {
+      let s = String(src || '');
+      if (!s) return s;
+      // Leave data URLs and http(s) untouched
+      if (/^(data:|https?:)/i.test(s)) return s;
+      // If starts with './', resolve under categories
+      if (s.startsWith('./')) s = '/categories' + s.slice(1);
+      // If relative without leading '/', anchor under categories
+      else if (!s.startsWith('/')) s = '/categories/' + s;
+      // Collapse duplicate '/categories/' segments
+      s = s.replace(/\/(?:categories\/)+/i, '/categories/');
+      return s;
+    };
+
+    items.forEach((p) => {
+      const card = document.createElement('div');
+      card.className = 'wishlist-card';
+      card.style.border = '1px solid var(--border-color, #333)';
+      card.style.borderRadius = '10px';
+      card.style.padding = '12px';
+      card.style.background = 'rgba(255,255,255,0.03)';
+
+      const img = document.createElement('img');
+      const fromCategories = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+      let fallback = String(p.image || '');
+      const chosen = fromCategories || fallback;
+      img.src = normalizeImgPath(chosen);
+      img.alt = p.name || 'Product';
+      // Fallback if the chosen src fails to load
+      img.onerror = () => {
+        try {
+          const catSrc = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+          const fb = normalizeImgPath(p.image || '');
+          const next = normalizeImgPath(catSrc || fb || '/header_footer/images/LOGO.png');
+          if (img.src !== next) img.src = next;
+        } catch (_) {
+          if (img.src !== '/header_footer/images/LOGO.png') img.src = '/header_footer/images/LOGO.png';
+        }
+      };
+      img.style.width = '100%';
+      img.style.height = '160px';
+      img.style.objectFit = 'cover';
+      img.style.borderRadius = '8px';
+
+      const title = document.createElement('div');
+      title.textContent = p.name || '';
+      title.style.marginTop = '8px';
+      title.style.fontWeight = '600';
+
+      const meta = document.createElement('div');
+      meta.textContent = `${p.brand ? p.brand + ' • ' : ''}${formatMoney(p.price)}`;
+      meta.style.color = 'var(--color-text-medium)';
+      meta.style.fontSize = '14px';
+      meta.style.marginTop = '4px';
+
+      const actions = document.createElement('div');
+      actions.style.display = 'flex';
+      actions.style.gap = '8px';
+      actions.style.marginTop = '10px';
+
+      const moveBtn = document.createElement('button');
+      moveBtn.className = 'btn primary';
+      moveBtn.textContent = 'Move to Cart';
+      moveBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        safeAddToCart({ id: p.id, name: p.name, price: p.price, image: p.image });
+        removeFromWishlist(p.id);
+      });
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'btn';
+      removeBtn.textContent = 'Remove';
+      removeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        removeFromWishlist(p.id);
+      });
+
+      actions.appendChild(moveBtn);
+      actions.appendChild(removeBtn);
+
+      card.appendChild(img);
+      card.appendChild(title);
+      card.appendChild(meta);
+      card.appendChild(actions);
+      grid.appendChild(card);
+    });
+  };
+
   const showHomeSections = () => {
     // Home view: show membership card, benefits, and wish list; hide track orders
     if (membershipCardSection) membershipCardSection.classList.remove('hidden');
@@ -148,6 +294,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (wishListSection) wishListSection.classList.remove('hidden');
         if (trackSection) trackSection.classList.add('hidden');
         if (benefitsSection) benefitsSection.classList.add('hidden');
+        renderWishlist();
         wishListSection && wishListSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
@@ -191,6 +338,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
       sidebarLinks.forEach(l => l.classList.remove('active'));
       // Show home sections as requested
       showHomeSections();
+      renderWishlist();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
@@ -244,6 +392,9 @@ const productsUrl = '/categories/full.json';
     if (t === 'pending') return 'completed';
     return 'completed';
   };
+
+  // Initial wishlist render on load
+  renderWishlist();
 
   // -------- Reviews helpers & rendering --------
   const loadMyReviews = () => {
@@ -308,6 +459,8 @@ const productsUrl = '/categories/full.json';
         case 'wish-list':
           setActiveSidebar('wish-list');
           showOnly({ wish: true });
+          // Ensure wishlist is rendered after potential data loads
+          renderWishlist();
           wishListSection && wishListSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           break;
         case 'coupons':
@@ -768,7 +921,19 @@ const renderMyReviews = (getThumb) => {
         const arr = (productsData && productsData.products) || [];
         arr.forEach(p => {
           const firstImg = (p.images && p.images[0]) || '';
-          const normalized = firstImg.startsWith('./') ? `/categories${firstImg.slice(1)}` : `/categories/${firstImg}`;
+          let normalized = '';
+          if (firstImg) {
+            if (firstImg.startsWith('http')) {
+              normalized = firstImg;
+            } else if (firstImg.startsWith('/')) {
+              // Already absolute; keep as-is to avoid double prefix
+              normalized = firstImg;
+            } else if (firstImg.startsWith('./')) {
+              normalized = `/categories${firstImg.slice(1)}`;
+            } else {
+              normalized = `/categories/${firstImg}`;
+            }
+          }
           productIndex[String(p.id)] = normalized;
         });
       } catch {}
@@ -793,6 +958,8 @@ const renderMyReviews = (getThumb) => {
       // Prepare reviews lists after data loads
       renderWritableList(deriveWritableReviews());
       renderMyReviews();
+      // Re-render wishlist now that product thumbnails are available
+      renderWishlist();
       updatePointsFromReviews();
 
       // Deep-link: nếu view=reviews & có productId, kiểm tra quyền và mở form nếu hợp lệ
