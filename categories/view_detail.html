@@ -958,13 +958,13 @@
     const DEBUG = true;
     // ==================== CONFIGURATION ====================
     const CONFIG = {
-      // Đường dẫn tuyệt đối để hoạt động từ mọi trang
+      // Thử các đường dẫn khác nhau
       jsonPaths: [
-        '/categories/full.json'
+        '/new/products.json',
       ],
       headerPath: '/header_footer/header.html',
       footerPath: '/header_footer/footer.html',
-      productsPage: '/categories/categories.html'
+      productsPage: '/new/new_arrival.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1051,15 +1051,15 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
-        // Chuẩn hoá đường dẫn ảnh từ JSON để phù hợp vị trí trang mới
+        // Chuẩn hoá ảnh để hiển thị đúng và lưu đúng vào Cart
         const normalizeImagePath = (p) => {
           if (!p) return p;
-          if (p.startsWith('./images/')) return p.replace('./images/', '/categories/images/');
+          if (p.startsWith('./images/')) return p.replace('./images/', '/new/images/');
+          if (p.startsWith('images/')) return `/new/${p}`;
           return p;
         };
         data.products = data.products.map(prod => ({
           ...prod,
-          brandImage: normalizeImagePath(prod.brandImage),
           images: Array.isArray(prod.images) ? prod.images.map(normalizeImagePath) : prod.images
         }));
         debugLog('Danh sách sản phẩm:', data.products.map(p => ({ id: p.id, name: p.name })));
@@ -1169,7 +1169,6 @@
               <button class="quantity-btn" id="increase-qty">+</button>
             </div>
             <button class="btn-primary" id="addToCartBtn">ADD TO CART</button>
-            <button class="btn" id="addToWishlistBtn" style="margin-left: 10px;">ADD TO WISHLIST</button>
           </div>
         `;
         window.currentProduct = product;
@@ -1513,40 +1512,43 @@
       const addToCartBtn = document.getElementById('addToCartBtn');
       if (addToCartBtn) {
         addToCartBtn.addEventListener('click', function() {
+          try {
+            const product = window.currentProduct;
+            const qtyEl = document.getElementById('quantity');
+            const shadeEl = document.getElementById('product-variant');
+            const quantity = parseInt(qtyEl?.value) || 1;
+            const selectedShade = shadeEl?.value || '';
+
+            if (product) {
+              let cart = [];
+              try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch (_) { cart = []; }
+              const existing = cart.find(i => String(i.id) === String(product.id));
+              if (existing) {
+                existing.quantity = (parseInt(existing.quantity) || 0) + quantity;
+                if (selectedShade) existing.selectedShade = selectedShade;
+              } else {
+                cart.push({
+                  id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  image: product.images?.[0] || '',
+                  selectedShade,
+                  quantity
+                });
+              }
+              localStorage.setItem('cart', JSON.stringify(cart));
+              if (typeof updateCartCount === 'function') {
+                try { updateCartCount(); } catch (_) {}
+              }
+            }
+          } catch (_) {}
+
           this.textContent = '✓ ADDED TO CART';
           this.style.background = 'var(--secondary-color)';
           setTimeout(() => {
             this.textContent = 'ADD TO CART';
             this.style.background = 'var(--gradient-pink)';
           }, 2000);
-        });
-      }
-
-      // Sự kiện add to wishlist
-      const addToWishlistBtn = document.getElementById('addToWishlistBtn');
-      if (addToWishlistBtn) {
-        const img0 = (product.images && product.images[0]) || '';
-        const normalizedImg = img0 ? (img0.startsWith('./') ? `/categories${img0.slice(1)}` : `/categories/${img0}`) : (document.getElementById('main-image')?.src || '');
-        const wishItem = { id: String(product.id), name: product.name, price: Number(product.price || 0), image: normalizedImg, brand: product.brand || '' };
-        const readWishlist = () => { try { return JSON.parse(localStorage.getItem('wishlist') || '[]'); } catch { return []; } };
-        const isInWishlist = () => readWishlist().some(it => String(it.id) === String(wishItem.id));
-        const updateBtnUi = () => {
-          const added = isInWishlist();
-          addToWishlistBtn.textContent = added ? '✓ IN WISHLIST' : 'ADD TO WISHLIST';
-          addToWishlistBtn.classList.toggle('active', added);
-        };
-        updateBtnUi();
-        addToWishlistBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const toggleFn = typeof window.toggleWishlist === 'function' ? window.toggleWishlist : (prod) => {
-            const list = readWishlist();
-            const idx = list.findIndex(x => String(x.id) === String(prod.id));
-            if (idx >= 0) { list.splice(idx, 1); } else { list.push(prod); }
-            localStorage.setItem('wishlist', JSON.stringify(list));
-          };
-          toggleFn(wishItem);
-          updateBtnUi();
-          if (typeof window.updateWishlistCount === 'function') window.updateWishlistCount();
         });
       }
     }

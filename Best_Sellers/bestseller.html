@@ -54,7 +54,6 @@
       align-items:center;
       gap:24px;
       padding: 120px 0 64px; 
-      margin-bottom: 96px;
       position: relative;
       z-index: 10;
     }
@@ -137,8 +136,6 @@
       position:relative;min-height:540px;height:80vh;max-width:1280px;
       display:flex;align-items:center;justify-content:center;
       perspective:1400px;overflow:visible;padding:0 72px;
-      touch-action: pan-x; /* cho cảm giác kéo tự nhiên */
-      cursor: grab;
     }
 
     .carousel-item{
@@ -159,8 +156,8 @@
       transition:transform 1.2s ease-in-out;
       z-index:var(--zIndex);
     }
-    .carousel-box{position:absolute;inset:0;opacity:var(--opacity);border-radius:22px;overflow:hidden;padding:6px}
-    .carousel-box img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease;will-change:transform,filter;border-radius:18px}
+    .carousel-box{position:absolute;inset:0;opacity:var(--opacity);border-radius:22px;overflow:hidden}
+    .carousel-box img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease}
     .carousel-item:hover .carousel-box img{transform:scale(1.06);filter:brightness(.92) saturate(1.12)}
 
     .num{
@@ -328,7 +325,7 @@
       transform: translate(-50%, -50%);
       width: 20px;
       height: 20px;
-      background: url('../1.homepage/images/shopping.png') no-repeat center;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>') no-repeat center;
       background-size: contain;
     }
     .btn-outline:hover {
@@ -410,7 +407,7 @@
     /* ===== CSS CHO TEAM/BRAND CAROUSEL (3D) ===== */
     /* ============================================= */
     
-    .team-section-container {
+  .team-section-container {
       width: 100%;
       max-width: 1200px;
       margin-top: 60px;
@@ -741,16 +738,6 @@
       background: #FF6B6B;
     }
 
-    /* 🌀 Lazy image placeholder blur */
-    img.lazy-img {
-      filter: blur(12px);
-      will-change: filter, transform;
-    }
-    img.lazy-img.loaded {
-      filter: none;
-      transition: filter 0.25s ease;
-    }
-
     /* 📱 Responsive fixes */
     @media (max-width: 768px) {
       main {
@@ -951,7 +938,7 @@
       <div class="products-grid" id="grid"></div>
     </section>
     
-    <section class="team-section-container" id="teamSection">
+     <section class="team-section-container" id="teamSection">
       <div class="team-main-container">
           <div class="team-carousel-section">
               <div class="team-carousel-viewport">
@@ -1040,6 +1027,7 @@ async function loadHTML(url, id) {
     return false;
   }
 }
+
   let PRODUCTS = [], active = 0, progress = 50, $items = [];
   const speedWheel = 0.02, speedDrag = -0.1;
   let isDown = false, startX = 0;
@@ -1050,38 +1038,10 @@ async function loadHTML(url, id) {
   const carouselWrap = document.getElementById('carouselSection');
   const watermarkEl = document.getElementById('watermark');
 
-  // ⚙️ Cấu hình theo thiết bị cho carousel
-  let INITIAL_CAROUSEL_COUNT = 9;
-  let CAROUSEL_CHUNK = 4;
-  function applyDeviceConfig() {
-    const w = window.innerWidth;
-    if (w <= 768) {
-      INITIAL_CAROUSEL_COUNT = Math.min(7, PRODUCTS.length);
-      CAROUSEL_CHUNK = 3;
-    } else {
-      INITIAL_CAROUSEL_COUNT = Math.min(9, PRODUCTS.length);
-      CAROUSEL_CHUNK = 4;
-    }
-  }
-
-  // Chuẩn hóa đường dẫn ảnh về thư mục Best_Sellers/images
-  function resolveImage(path) {
-    if (!path) return DEFAULT_IMAGE;
-    try {
-      const p = String(path).replace(/^\.\//, '').replace(/^\//, '');
-      if (p.startsWith('Best_Sellers/images/')) return `/${p}`;
-      if (p.startsWith('images/')) return `/Best_Sellers/${p}`;
-      if (p.startsWith('Best_Sellers/')) return `/${p}`;
-      return `/Best_Sellers/images/${p}`;
-    } catch (_) {
-      return DEFAULT_IMAGE;
-    }
-  }
-
   // 🎯 Hàm hiển thị thông báo
   function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
-    notification.className = 'notification' + (type === 'error' ? ' error' : '');
+    notification.className = `notification ${type === 'error' ? 'error' : ''}`;
     notification.textContent = message;
     document.body.appendChild(notification);
 
@@ -1112,7 +1072,7 @@ async function loadHTML(url, id) {
         id: product.id,
         name: product.name,
         price: product.price,
-        image: resolveImage(product.images?.[0]) || DEFAULT_IMAGE,
+        image: product.images?.[0] || DEFAULT_IMAGE,
         quantity
       };
       let cart = [];
@@ -1129,20 +1089,16 @@ async function loadHTML(url, id) {
 
   // 🎯 Hàm xem chi tiết
   function viewDetail(id) {
-    window.location.href = `/Best_Sellers/view_detail.html?id=${encodeURIComponent(id)}`;
+    window.location.href = `view_detail.html?id=${id}`;
   }
 
   // 🎯 Hàm render carousel item
   function cardHTML(p, i) {
-    const img = resolveImage(p.images?.[0]) || DEFAULT_IMAGE;
-    const fetchPriority = i === 0 ? 'high' : 'auto';
+    const img = p.images?.[0] || DEFAULT_IMAGE;
     return `
       <div class="carousel-item">
         <div class="carousel-box">
-          ${i === 0 
-            ? `<img src="${img}" alt="${p.name}" loading="eager" fetchpriority="${fetchPriority}" onerror="this.src='${DEFAULT_IMAGE}'">`
-            : `<img src="${DEFAULT_IMAGE}" data-src="${img}" class="lazy-img" alt="${p.name}" loading="lazy" decoding="async" fetchpriority="${fetchPriority}" onerror="this.src='${DEFAULT_IMAGE}'">`
-          }
+          <img src="${img}" alt="${p.name}" onerror="this.src='${DEFAULT_IMAGE}'">
           <div class="num">${String(i + 1).padStart(2, '0')}</div>
           <div class="glass-bottom">
             <h3>${p.name}</h3>
@@ -1158,21 +1114,20 @@ async function loadHTML(url, id) {
 
   // 🎯 Hàm render grid
   function renderGrid() {
-    gridEl.innerHTML = PRODUCTS.map((p, idx) => {
-      const img1 = resolveImage(p.images?.[0]) || DEFAULT_IMAGE;
-      const img2 = resolveImage(p.images?.[1]) || img1;
+    gridEl.innerHTML = PRODUCTS.map(p => {
+      const img1 = p.images?.[0] || DEFAULT_IMAGE;
+      const img2 = p.images?.[1] || img1;
       const hasSale = p.originalPrice && p.originalPrice > p.price;
       const isNew = p.isNew === true;
       const rating = p.rating || 0;
-      const priority = idx < 6 ? 'high' : 'low';
 
       return `
         <div class="product-card">
           <div class="product-image-container">
-            ${isNew ? '<span class="badge badge-new">NEW</span>' : ''}
-            ${hasSale ? '<span class="badge badge-sale">SALE</span>' : ''}
-            <img src="${DEFAULT_IMAGE}" data-src="${img1}" class="product-img lazy-img" alt="${p.name}" loading="lazy" decoding="async" fetchpriority="${priority}" onerror="this.src='${DEFAULT_IMAGE}'">
-            <img src="${img1}" data-src="${img2}" class="hover-image lazy-img" alt="${p.name}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.src='${img1}'">
+            ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
+            ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
+            <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='${DEFAULT_IMAGE}'">
+            <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
           </div>
           <div class="info">
             <h3 title="${p.name}">${p.name}</h3>
@@ -1180,9 +1135,9 @@ async function loadHTML(url, id) {
             <div class="actions">
               <div>
                 <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
-                ${hasSale ? '<span class="original-price">$' + Number(p.originalPrice).toFixed(2) + '</span>' : ''}
+                ${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}
               </div>
-              ${rating > 0 ? '<div class="rating"><i class="fas fa-star star"></i> ' + rating.toFixed(1) + '</div>' : ''}
+              ${rating > 0 ? `<div class="rating"><i class="fas fa-star star"></i> ${rating.toFixed(1)}</div>` : ''}
             </div>
             <div class="buttons">
               <input type="number" value="1" min="1" class="quantity-input">
@@ -1192,21 +1147,15 @@ async function loadHTML(url, id) {
           </div>
         </div>`;
     }).join('');
-    // Quan sát ảnh grid để lazy-load
-    observeLazyImages(gridEl);
   }
 
   // 🎯 Các hàm carousel
   function renderCarousel() {
-    renderedCarouselCount = INITIAL_CAROUSEL_COUNT;
-    carouselEl.innerHTML = PRODUCTS.slice(0, INITIAL_CAROUSEL_COUNT).map((p, i) => cardHTML(p, i)).join('');
+    carouselEl.innerHTML = PRODUCTS.slice(0, 10).map((p, i) => cardHTML(p, i)).join('');
     $items = carouselEl.querySelectorAll('.carousel-item');
     $items.forEach(it => it.style.setProperty('--items', $items.length));
-    bindItemClickListeners();
     initCarouselInteractions();
     updateCarousel();
-    // Quan sát ảnh carousel để lazy-load các slide sau
-    observeLazyImages(carouselEl);
   }
 
   function getZIndex(arr, i) {
@@ -1225,36 +1174,7 @@ async function loadHTML(url, id) {
     });
   }
 
-  // Helpers prev/next để thống nhất hành vi và nạp thêm khi cần
-  function prevSlide() {
-    if ($items.length === 0) return;
-    active = (active - 1 + $items.length) % $items.length;
-    progress = ($items.length > 1 ? active / ($items.length - 1) : 0) * 100;
-    updateCarousel();
-  }
-
-  function nextSlide() {
-    if ($items.length === 0) return;
-    active = (active + 1) % $items.length;
-    progress = ($items.length > 1 ? active / ($items.length - 1) : 0) * 100;
-    updateCarousel();
-    checkAndLoadMoreCarousel();
-  }
-
   function initCarouselInteractions() {
-    let pendingDelta = 0;
-    let rafId = null;
-    const schedule = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        progress += pendingDelta;
-        pendingDelta = 0;
-        updateCarousel();
-        checkAndLoadMoreCarousel();
-        rafId = null;
-      });
-    };
-
     document.addEventListener('mousedown', e => { 
       isDown = true; 
       startX = e.clientX; 
@@ -1267,36 +1187,16 @@ async function loadHTML(url, id) {
     document.addEventListener('mousemove', e => {
       if (!isDown) return;
       const move = (e.clientX - startX) * speedDrag;
-      pendingDelta += move;
+      progress += move;
       startX = e.clientX;
-      schedule();
-    }, { passive: true });
+      updateCarousel();
+    });
     
     document.addEventListener('wheel', e => {
-      pendingDelta += e.deltaY * speedWheel;
-      schedule();
+      progress += e.deltaY * speedWheel;
+      updateCarousel();
     }, { passive: true });
 
-    // Hover trái/phải trên .carousel để chuyển một ảnh (cooldown 300ms)
-    let lastHoverSwitch = 0;
-    const HOVER_COOLDOWN_MS = 300;
-    carouselEl.addEventListener('mousemove', (e) => {
-      if (isDown) return; // đang drag thì không chuyển bằng hover
-      const now = performance.now();
-      if (now - lastHoverSwitch < HOVER_COOLDOWN_MS) return;
-      const rect = carouselEl.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const leftThird = rect.width / 3;
-      const rightThird = 2 * rect.width / 3;
-      if (x < leftThird) {
-        prevSlide();
-        lastHoverSwitch = now;
-      } else if (x > rightThird) {
-        nextSlide();
-        lastHoverSwitch = now;
-      }
-    });
-
     $items.forEach((card, i) => {
       card.addEventListener('click', () => {
         active = i;
@@ -1305,48 +1205,30 @@ async function loadHTML(url, id) {
       });
     });
 
-    document.getElementById('btnPrev').onclick = () => prevSlide();
-
-    document.getElementById('btnNext').onclick = () => nextSlide();
-  }
-
-  // Gắn click listener cho item mới thêm
-  function bindItemClickListeners() {
-    $items = carouselEl.querySelectorAll('.carousel-item');
-    $items.forEach((card, i) => {
-      if (card.dataset.bound === '1') return;
-      card.addEventListener('click', () => {
-        active = i;
-        progress = ($items.length > 1 ? active / ($items.length - 1) : 0) * 100;
-        updateCarousel();
-      });
-      card.dataset.bound = '1';
-    });
-  }
-
-  // Tự động nạp thêm item khi người dùng tương tác sâu
-  let renderedCarouselCount = 0;
-  function appendCarouselItems(start, count) {
-    const end = Math.min(start + count, PRODUCTS.length);
-    let html = '';
-    for (let i = start; i < end; i++) {
-      html += cardHTML(PRODUCTS[i], i);
+    document.getElementById('btnPrev').onclick = () => {
+      active = (active - 1 + $items.length) % $items.length;
+      progress = (active / ($items.length - 1)) * 100;
+      updateCarousel();
     }
-    if (html) {
-      carouselEl.insertAdjacentHTML('beforeend', html);
-      renderedCarouselCount = end;
-      $items = carouselEl.querySelectorAll('.carousel-item');
-      $items.forEach(it => it.style.setProperty('--items', $items.length));
-      bindItemClickListeners();
-      observeLazyImages(carouselEl);
+
+    document.getElementById('btnNext').onclick = () => {
+      active = (active + 1) % $items.length;
+      progress = (active / ($items.length - 1)) * 100;
+      updateCarousel();
     }
   }
 
-  function checkAndLoadMoreCarousel() {
-    if (renderedCarouselCount >= PRODUCTS.length) return;
-    // Khi người dùng đến gần cuối (còn 2 item), nạp thêm
-    if (active >= renderedCarouselCount - 3) {
-      appendCarouselItems(renderedCarouselCount, CAROUSEL_CHUNK);
+  // Chuẩn hóa đường dẫn ảnh
+  function resolveImage(path) {
+    if (!path) return DEFAULT_IMAGE;
+    try {
+      const p = String(path).replace(/^\.\//, '').replace(/^\//, '');
+      if (p.startsWith('Best_Sellers/images/')) return `/${p}`;
+      if (p.startsWith('images/')) return `/Best_Sellers/${p}`;
+      if (p.startsWith('Best_Sellers/')) return `/${p}`;
+      return `/Best_Sellers/images/${p}`;
+    } catch (_) {
+      return DEFAULT_IMAGE;
     }
   }
 
@@ -1363,7 +1245,6 @@ async function loadHTML(url, id) {
             img.src = src;
             img.removeAttribute('data-src');
           }
-          // Đánh dấu loaded để bỏ blur
           if (img.complete) {
             img.classList.add('loaded');
           } else {
@@ -1389,7 +1270,6 @@ async function initTeamCarousel() {
       // ✅ Ảnh thương hiệu: ưu tiên brandImage, fallback ảnh sản phẩm
       let brandImg = p.brandImage || p.images?.[0] || DEFAULT_BRAND_IMAGE;
       brandImg = resolveImage(brandImg) || DEFAULT_BRAND_IMAGE;
-
 
       brandMap.set(p.brand, {
         name: p.brand,
@@ -1463,18 +1343,19 @@ async function initTeamCarousel() {
   teamUpArrows.forEach(arrow => arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex - 1)));
   teamDownArrows.forEach(arrow => arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex + 1)));
   teamDots.forEach((dot, i) => dot.addEventListener("click", () => updateTeamCarousel(i)));
-teamCards.forEach((card, i) => {
-  card.addEventListener("click", () => {
-    const currentBrand = fetchedBrands[i];
-    // Nếu người dùng click vào brand đang ở giữa -> chuyển trang luôn
-    if (card.classList.contains("center")) {
-      window.location.href = `/categories/categories.html?brand=${encodeURIComponent(currentBrand.name)}`;
-    } else {
-      // Nếu chưa ở giữa -> chỉ animate lên trung tâm
-      updateTeamCarousel(i);
-    }
+  
+  teamCards.forEach((card, i) => {
+    card.addEventListener("click", () => {
+      const currentBrand = fetchedBrands[i];
+      // Nếu người dùng click vào brand đang ở giữa -> chuyển trang luôn
+      if (card.classList.contains("center")) {
+        window.location.href = `/categories/categories.html?brand=${encodeURIComponent(currentBrand.name)}`;
+      } else {
+        // Nếu chưa ở giữa -> chỉ animate lên trung tâm
+        updateTeamCarousel(i);
+      }
+    });
   });
-});
 
   updateTeamCarousel(0);
 
@@ -1511,7 +1392,6 @@ teamCards.forEach((card, i) => {
   });
 }
 
-
   // 🎯 Hàm khởi tạo chính
   (async function init() {
     try {
@@ -1533,19 +1413,6 @@ teamCards.forEach((card, i) => {
       PRODUCTS = data.products || [];
       
       console.log(`✅ Loaded ${PRODUCTS.length} products`);
-
-      // Preload ảnh hero để hiển thị siêu nhanh
-      if (PRODUCTS.length > 0) {
-        const heroImg = resolveImage(PRODUCTS[0]?.images?.[0]) || DEFAULT_IMAGE;
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = heroImg;
-        document.head.appendChild(link);
-      }
-
-      // Áp dụng cấu hình theo thiết bị trước khi render carousel
-      applyDeviceConfig();
 
       if (PRODUCTS.length === 0) {
         carouselEl.innerHTML = '<p style="color:#6B4C3B;text-align:center;padding:40px;">No products available</p>';

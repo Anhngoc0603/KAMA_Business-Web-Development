@@ -672,38 +672,32 @@ window.filterProducts = function(query) {
   });
 };
 
-// ================== CART FUNCTIONALITY ==================
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+function updateCartCount() {
+  const stored = JSON.parse(localStorage.getItem('cart') || '[]');
+  const cartCount = document.querySelector('.cart-count');
 
-function addToCart(product) {
-  const existingItem = cart.find(item => item.id === product.id);
-  
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.push({
-      ...product,
-      quantity: 1
-    });
-  }
-  
-  localStorage.setItem('cart', JSON.stringify(cart));
+  if (!cartCount) return;
+
+  const totalItems = stored.reduce((sum, item) => {
+    return sum + (Number(item.qty ?? item.quantity ?? 0));
+  }, 0);
+
+  cartCount.textContent = totalItems;
+  cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+}
+
+// ✅ HÀM NÀY GIỜ *KHÔNG THÊM GIỎ HÀNG*
+//    -> Chỉ popup + update số lượng
+window.addToCartHeader = function () {
   updateCartCount();
   showAddToCartMessage();
-}
+};
 
-function updateCartCount() {
-  const cartCount = document.querySelector('.cart-count');
-  if (cartCount) {
-    const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity ?? item.qty) || 0), 0);
-    cartCount.textContent = totalItems;
-    cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
-  }
-}
 
+// ✅ POPUP CHUẨN – GIỮ NGUYÊN KHÔNG ĐỤNG GIỎ HÀNG
 function showAddToCartMessage() {
-  // Rich popup: "+1 new item added to cart" with close and Proceed
   let popup = document.querySelector('.cart-popup');
+
   if (!popup) {
     popup = document.createElement('div');
     popup.className = 'cart-popup';
@@ -716,7 +710,8 @@ function showAddToCartMessage() {
         </div>
       </div>
     `;
-    // Base styles to ensure it works even if CSS file not yet loaded
+
+    // Base style
     popup.style.cssText = `
       position: fixed;
       right: 20px;
@@ -733,69 +728,42 @@ function showAddToCartMessage() {
       padding: 14px 16px;
       min-width: 280px;
       border: 1px solid var(--soft-rose);
-      font-family: 'Playfair Display', serif;
+      font-family: 'Playfair-Display', serif;
     `;
+
     document.body.appendChild(popup);
 
-    const closeBtn = popup.querySelector('.cart-popup-close');
-    closeBtn.style.cssText = `
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 22px;
-      line-height: 1;
-      cursor: pointer;
-      margin-left: 8px;
-    `;
-    closeBtn.addEventListener('click', () => {
-      hideCartPopup();
-    });
+    // Close BTN
+    popup.querySelector('.cart-popup-close').onclick = hideCartPopup;
 
-    const checkoutBtn = popup.querySelector('.cart-popup-checkout');
-    checkoutBtn.style.cssText = `
-      background: #fff;
-      color: var(--branch-brown);
-      border: none;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-    `;
-    checkoutBtn.addEventListener('click', () => {
-      // Điều hướng an toàn hoạt động cả trên server http và khi mở file trực tiếp
+    // Checkout BTN
+    popup.querySelector('.cart-popup-checkout').onclick = () => {
       if (typeof window.navigateToRoot === 'function') {
         window.navigateToRoot('/checkout/checkout.html');
       } else {
         window.location.href = '/checkout/checkout.html';
       }
-    });
+    };
   }
 
-  // Update content if needed and show
-  const titleEl = popup.querySelector('.cart-popup-title');
-  if (titleEl) titleEl.textContent = '+1 new item added to cart';
   popup.style.opacity = '0';
   popup.style.display = 'flex';
+
   requestAnimationFrame(() => {
-    popup.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    popup.style.transition = 'opacity .25s ease, transform .25s ease';
     popup.style.transform = 'translateY(0)';
     popup.style.opacity = '1';
   });
 
-  // Auto hide after 5 seconds
   clearTimeout(window.__cartPopupTimer);
-  window.__cartPopupTimer = setTimeout(() => hideCartPopup(), 5000);
+  window.__cartPopupTimer = setTimeout(hideCartPopup, 5000);
 
   function hideCartPopup() {
-    if (!popup) return;
     popup.style.opacity = '0';
     popup.style.transform = 'translateY(-6px)';
-    setTimeout(() => {
-      popup.style.display = 'none';
-    }, 250);
+    setTimeout(() => popup.style.display = 'none', 250);
   }
 }
-
 // ================== WISHLIST FUNCTIONALITY ==================
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
