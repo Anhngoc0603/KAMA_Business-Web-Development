@@ -960,11 +960,11 @@
     const CONFIG = {
       // Thử các đường dẫn khác nhau
       jsonPaths: [
-        '/Sale/products.json'
+        '/new/products.json',
       ],
       headerPath: '/header_footer/header.html',
       footerPath: '/header_footer/footer.html',
-      productsPage: '/Sale/sale.html'
+      productsPage: '/new/new_arrival.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1051,12 +1051,12 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
-        // Chuẩn hoá đường dẫn ảnh để đảm bảo hoạt động trên mọi trang (Cart/detail)
+        // Chuẩn hoá ảnh để hiển thị đúng và lưu đúng vào Cart
         const normalizeImagePath = (p) => {
           if (!p) return p;
-          if (p.startsWith('./images/')) return p.replace('./images/', '/Sale/images/');
-          if (p.startsWith('images/')) return `/Sale/${p}`;
-          return p; // giữ nguyên nếu là đường dẫn tuyệt đối hoặc URL
+          if (p.startsWith('./images/')) return p.replace('./images/', '/new/images/');
+          if (p.startsWith('images/')) return `/new/${p}`;
+          return p;
         };
         data.products = data.products.map(prod => ({
           ...prod,

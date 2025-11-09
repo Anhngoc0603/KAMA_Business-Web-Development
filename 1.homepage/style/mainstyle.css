@@ -792,6 +792,7 @@ body {
       margin-right: 10px;
       border: none;
       margin-top: 8px;
+      font-family: 'Playfair Display';
     }
 .btn:hover{background: var(--soft-rose);} /* Thay #fea1b9 bằng --soft-rose */
 
@@ -1066,6 +1067,8 @@ font-size: 12px;}
   }
   .viewallnew {
     display: none;
+          font-family: 'Playfair Display';
+
   }
   /* Nút View All mới xuất hiện dưới slider */
   .viewallnew-mobile {
@@ -1084,6 +1087,8 @@ font-size: 12px;}
   }
   .viewallnew-mobile:hover {
     background-color: var(--pale-pink); /* Thay #f4f4f4 bằng --pale-pink */
+          font-family: 'Playfair Display';
+
   }
   /* Tạo nút mới hiển thị bên dưới slider */
   .slider-new::after {
@@ -1393,6 +1398,8 @@ opacity:0.4;
   border: 1px solid var(--soft-rose); /* Thêm border nhẹ để định hình, dùng --soft-rose */
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
+        font-family: 'Playfair Display';
+
 }
 .viewall:hover {
   opacity: 0.8;
@@ -1411,10 +1418,14 @@ opacity:0.4;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
+        font-family: 'Playfair Display';
+
 }
 .viewallnew:hover {
   background-color: var(--pale-pink); /* Thay #f4f4f4 bằng --pale-pink để hài hòa, nhẹ hơn */
   color: var(--warm-blush); /* Thêm màu text hover để không quá đơn điệu */
+        font-family: 'Playfair Display';
+
 }
 /*===========SHOW NOW - BUTTON============*/
 .category-info button {
@@ -1427,11 +1438,15 @@ opacity:0.4;
   margin-top:10px;
   letter-spacing: 1.2px;
   transition: background 0.3s, transform 0.2s;
+        font-family: 'Playfair Display';
+
 }
 
 .shopnow:hover {
   background: #d88c97;       /* hơi đậm hơn khi hover */
   transform: translateY(-2px);
+        font-family: 'Playfair Display';
+
 }
 @media (max-width: 768px) {
   .category-showcase {
@@ -1469,12 +1484,17 @@ opacity:0.4;
       justify-content: space-between;
       background-color: var(--pale-pink); /* Thay #fff8f8 bằng --pale-pink */
       height: 390px;
-      padding:0px
+      padding:0px;
+            font-family: 'Playfair Display';
+
+      
     }
 .reward-text {
       flex: 1;
       padding: 80px;
       color: var(--branch-brown); /* Thay #333 bằng --branch-brown */
+            font-family: 'Playfair Display';
+
     }
 .reward-text .subtitle {
       color: #a0a0a0; /* Thay #7b7070 bằng --branch-brown */
@@ -1496,6 +1516,8 @@ opacity:0.4;
       cursor: pointer;
       letter-spacing: 1.5px;
       transition: background 0.3s;
+            font-family: 'Playfair Display';
+
     }
 
 .reward-text button:hover {background: var(--soft-rose);} /* Thay #d17880 bằng --soft-rose */
@@ -1710,4 +1732,338 @@ border-top: 1px solid var(--footer-border-color); color: var(--branch-brown); op
 .footer-main{ grid-template-columns: 1fr; gap: 22px; }
 .footer-section.footer-social{ width: 100%; }
 .footer-social .social-icons{ gap: 20px; }
+}
+/* ============================= */
+/* NEW ARRIVALS HERO STYLE */
+/* ============================= */
+/* =============== NEW ARRIVALS - NÚT GÓC PHẢI TRÊN + 2 ẢNH ĐỀU NHAU =============== */
+.new-arrivals-row {
+    display: flex;
+    gap: 0 !important;   /* ✅ KHÔNG KHOẢNG CÁCH */
+    align-items: stretch;
+    margin-top: 30px;
+}
+
+
+.hero-left,
+.hero-right {
+    flex: 1;
+    position: relative;
+    border-radius: 0 !important;     /* ✅ KHÔNG BO GÓC */
+    overflow: hidden;
+    box-shadow: none !important;     /* Nếu không muốn bóng luôn */
+}
+
+.hero-left img,
+.hero-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.hero-left:hover img,
+.hero-right:hover img {
+    transform: scale(1.03);
+}
+
+/* NÚT VIEW COLLECTION - GÓC PHẢI TRÊN, NỔI BẬT */
+.viewallnew {
+    position: absolute !important;
+    top: 20px !important;
+    right: 20px !important;
+    background: var(--warm-blush) !important; /* MÀU HỒNG NỔI BẬT */
+    color: white !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 2.2px !important;
+    text-transform: uppercase !important;
+    border-radius: 50px !important;
+    text-decoration: none !important;
+    z-index: 40 !important;
+    font-family: 'Playfair Display', serif !important;
+    box-shadow: 0 8px 25px rgba(230, 166, 176, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    transition: all 0.35s ease !important;
+    white-space: nowrap !important;
+}
+
+/* HOVER: SIÊU NỔI */
+.viewallnew:hover {
+    background: #d47882 !important;
+    transform: translateY(-4px) scale(1.05) !important;
+    box-shadow: 0 14px 32px rgba(230, 166, 176, 0.5) !important;
+    letter-spacing: 2.5px !important;
+}
+
+/* RESPONSIVE - MOBILE */
+@media (max-width: 900px) {
+    .new-arrivals-row {
+        flex-direction: column;
+    }
+    .hero-left,
+    .hero-right {
+        height: 400px;
+    }
+    .viewallnew {
+        top: 15px !important;
+        right: 15px !important;
+        padding: 10px 18px !important;
+        font-size: 12px !important;
+    }
+}
+/* ===== STACKED IMAGES ===== */
+
+/* =============== HOTSPOT (DRIBBLE) – SIÊU RÕ, SIÊU ĐẸP =============== */
+.hero-left {
+    position: relative !important; /* BẮT BUỘC */
+    overflow: hidden;
+}
+
+.hotspot {
+    position: absolute !important;
+    width: 18px !important;
+    height: 18px !important;
+    background: white !important;
+    border: 3px solid #e66a76 !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    z-index: 50 !important;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.hotspot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: #e66a76;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hotspot:hover {
+    transform: scale(1.6) !important;
+    border-color: white !important;
+    box-shadow: 0 6px 20px rgba(230, 106, 118, 0.6) !important;
+}
+
+.hotspot:hover::before {
+    background: white;
+}
+
+/* PULSE SIÊU MẠNH */
+.hotspot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(230, 106, 118, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    animation: pulse 1.8s infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+}
+/* =============== HOTSPOT TOOLTIP =============== */
+.hotspot-tooltip {
+    animation: floatUp 0.3s ease forwards;
+}
+
+@keyframes floatUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+/* =============== HOTSPOT & TOOLTIP =============== */
+.hotspot {
+    position: absolute !important;
+    width: 18px !important;
+    height: 18px !important;
+    background: white !important;
+    border: 3px solid #e66a76 !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    z-index: 50 !important;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.hotspot::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 8px; height: 8px;
+    background: #e66a76;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hotspot:hover {
+    transform: scale(1.6) !important;
+    border-color: white !important;
+    box-shadow: 0 6px 20px rgba(230, 106, 118, 0.6) !important;
+}
+
+.hotspot:hover::before { background: white; }
+
+/* PULSE */
+.hotspot::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 100%; height: 100%;
+    background: rgba(230, 106, 118, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    animation: pulse 1.8s infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    to { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+}
+
+/* TOOLTIP */
+.hotspot-tooltip img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.hotspot-tooltip .tooltip-name {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6B4C3B;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: linear-gradient(to top, #fff9f9, white);
+}
+.flash-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+}
+
+/* ========= FAN 3 ========= */
+#fan3 {
+  position: relative;
+  width: 340px;
+  height: 420px;
+  transition: .4s ease;
+}
+
+#fan3.hide {
+  transform: scale(.7);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fan-img {
+  position: absolute;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  border: 8px solid #fff;
+  transition: transform .6s cubic-bezier(.25,.8,.25,1);
+  transform-origin: center 380px;
+}
+
+.fan-img:nth-child(1) { transform: rotate(14deg); }
+.fan-img:nth-child(2) { transform: rotate(0deg); }
+.fan-img:nth-child(3) { transform: rotate(-14deg); }
+
+/* ========= ROW 6 ========= */
+#row6 {
+  display: flex;
+  gap: 28px;
+  margin-top: 40px;
+  transform: translateY(40px) scale(.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .55s cubic-bezier(.25,.8,.25,1);
+}
+
+#row6.show {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ========= Mini item ========= */
+.prod-mini {
+  width: 180px;
+  text-align: center;
+  cursor: pointer;
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform .65s cubic-bezier(.25,.8,.25,1);
+}
+
+#row6.show .prod-mini {
+  animation: slideIn .65s ease forwards;
+}
+
+#row6.show .prod-mini:nth-child(1) { animation-delay: .00s; }
+#row6.show .prod-mini:nth-child(2) { animation-delay: .05s; }
+#row6.show .prod-mini:nth-child(3) { animation-delay: .10s; }
+#row6.show .prod-mini:nth-child(4) { animation-delay: .15s; }
+#row6.show .prod-mini:nth-child(5) { animation-delay: .20s; }
+#row6.show .prod-mini:nth-child(6) { animation-delay: .25s; }
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(0) scale(.7);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+.prod-mini img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 8px solid #fff;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.prod-mini h4 {
+  margin: 8px 0 2px;
+  font-size: 14px;
+  color: var(--branch-brown);
+  font-family: 'Playfair Display';
+}
+
+.prod-mini .brand {
+  color: #9b7c7c;
+  font-size: 12px;
+  margin: 0;
+}
+
+.prod-mini .price {
+  margin: 4px 0 0;
+  color: var(--warm-blush);
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Playfair Display';
 }

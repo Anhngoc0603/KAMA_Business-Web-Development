@@ -3,8 +3,13 @@
     <title>KAMA</title>
     <link rel='stylesheet' type='text/css' media='screen' href='../style/mainstyle.css'>
     <link rel="stylesheet" href="/header_footer/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<style>
         #introContainer {position: fixed;inset: 0;z-index: 99999;background: transparent !important;display: flex;align-items: center;justify-content: center;pointer-events: none;transition: opacity 0.8s ease;}
         #introContainer video {width: 100%;height: 100%;object-fit: cover;background: transparent !important;mix-blend-mode: screen;}
         body {margin: 0;opacity: 1;transition: opacity 0.8s ease;background: #fff9f9;}
@@ -74,51 +79,59 @@
 
     </section>
 <!--NEWCOLLECTION1-->
-    <section class="new-products">
-    <div class="new-left">
-        <div class="header-new">
-            <p>DISCOVER WHAT’S NEW 
-            <br/><span class="header2">The Sweetie Bear <br>Collection</span>
-            <button type="button" class="viewallnew" id="viewallnew">VIEW FULL COLLECTION</button></p>
-        </div>
-        <div class="slider-new">
-            <div class="new-wrapper" id="newwrapper">
-                <div class="newproduct">
-                    <img src="../images/nc_channel.png" alt="Sweetie Bear Essential Set">
-                    <p>Chanel Longwear Eyeliner</p>
-                    <div class="price-new">$89.00</div>
-                </div>
-                <div class="newproduct">
-                    <img src="../images/nc_mascara1.png" alt="Patisserie Charm Set">
-                    <p>Lash-Expert Twist Brush Mascara</p>
-                    <div class="price-new">$121.00</div>
-                </div>
-                <div class="newproduct">
-                    <img src="../images/nc_diorlip.png" alt="Creamy Finish Set">
-                    <p>Rouge Dior Lipsticks</p>
-                    <div class="price-new">$50.00</div>
-                </div>                
-                <div class="newproduct">
-                    <img src="../images/nc2_channel.webp" alt="Sweetie Bear Essential Set">
-                    <p>Sweetie Bear Essential Set</p>
-                    <div class="price-new">$89.00</div>
-                </div>
-                <div class="newproduct">
-                    <img src="../images/nc2_dior.png" alt="Patisserie Charm Set">
-                    <p>Patisserie Charm Set</p>
-                    <div class="price-new">$89.00</div>
-                </div>
-            </div>
-            <!-- Nút điều hướng -->
-            <button class="navigation left" id="prevnew"><img src="../images/prev.png" alt="prev"></button>
-            <button class="navigation right" id="nextnew"><img src="../images/next.png" alt="next"></button>
-        </div>
+    <!-- ✅ NEW ARRIVALS – 5 DRIBBBLE CARDS -->
+<div class="new-arrivals-row">
+    <!-- LEFT HERO -->
+<div class="hero-left">
+    <img id="heroMainImage" src="../images/newcollection.png" alt="New Collection">
+    
+    <a href="#" class="viewallnew" id="viewallnew">VIEW FULL COLLECTION</a>
 
+    <!-- HOTSPOT: ĐÃ ĐỔI CHỖ + DIOR & TERRY NHÍCH PHẢI +1.5CM -->
+
+    <!-- 1. CHANEL BLUSH (đã đổi chỗ từ Foundation) -->
+    <div class="hotspot tag-blush" 
+         data-id="104" 
+         data-img="../images/nc2_channel.webp" 
+         data-name="Chanel Blush"
+                  style="top: 21.5%; left: 25%;"></div>
+
+
+    <!-- 2. DIOR LIPSTICK (nhích phải +1.5cm nữa → tổng +3cm) -->
+    <div class="hotspot tag-lipstick" 
+         data-id="102" 
+         data-img="../images/nc_diorlip.png" 
+         data-name="Dior Rouge Lipstick"
+         style="top: 38%; left: 52.4%;"></div> <!-- +5.2% = +1.5cm nữa -->
+
+    <!-- 3. BY TERRY MASCARA (nhích phải +1.5cm nữa → tổng +3cm) -->
+    <div class="hotspot tag-mascara" 
+         data-id="103" 
+         data-img="../images/nc_mascara1.png" 
+         data-name="By Terry Mascara"
+         style="top: 42%; left: 68.4%;"></div> <!-- +5.2% = +1.5cm nữa -->
+
+    <!-- 4. GIORGIO ARMANI LIPSTICK (giữ nguyên) -->
+    <div class="hotspot tag-dior-lipstick" 
+         data-id="105" 
+         data-img="../images/nc2_dior.png" 
+         data-name="Giorgio Armani Lipstick"
+         style="top: 45%; left: 85%;"></div>
+
+    <!-- 5. CHANEL FOUNDATION (đã đổi chỗ từ Blush) -->
+    <div class="hotspot tag-foundation" 
+         data-id="101" 
+         data-img="../images/nc_channel.png" 
+         data-name="Chanel Eyeliner"
+                  style="top: 75.5%; left: 28%;"></div>
+
+</div>
+    <!-- RIGHT BANNER -->
+    <div class="hero-right">
+        <img src="../images/nc_banner1.jpg" alt="Banner">
     </div>
-    <div class="new-visual">
-        <img src="../images/nc_banner1.jpg" alt="Sweetie Bear Decor">
-    </div>
-    </section>
+</div>
+
 <!--BEST SELLERS-->
     <section class="Bestsellers">
     <p class="title">Shop Our Bestsellers</p>
@@ -326,224 +339,13 @@
         </div>
     </section>
 <!--FLASH SALE-->
-    <section class="product-slider">
-    <p class="title"><span style="font-size: 32px; color: var(--branch-brown)">Flash sale</span><br>Our collection is refreshed regularly. Secure your favorites while they last.</p>
-    <div class="slider-container"> 
-        <div class="slider-wrapper" id="flashsale">
-            <!-- 10 sản phẩm -->
-            <!-- Product 1 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p11.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p12.png" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
+<!--FLASH SALE - CARD FAN EXPAND-->
+<div class="flash-wrapper">
+  <div id="fan3" class="fan-3"></div>
+  <div id="row6" class="row-6"></div>
+</div>
 
-                <div class="info">
-                    <div class="text-content">
-                        <h3>LES 9 OMBRES</h3>
-                        <p>Channel</p>
-                        <p class="meta">Multi-effect eyeshadow palette from matte, satin, shimmer to metallic so you can freely express unlimited creativity.</p>
-                    </div>
 
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 2 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p21.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p22.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>Dior Addict Lip Maximizer</h3>
-                        <p>Dior</p>
-                        <p class="meta">This lip care teams mirror shine, a maximum volume effect and immediate hydration that lasts 24h.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 3 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p31.jpg" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p32.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>Diorshow</h3>
-                        <p>Dior</p>
-                        <p class="meta">the Dior mascara composed of 90%* natural-origin ingredients, with no transfer and 24h wear.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 4 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p41.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p42.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>Touche Eclat Glow Pact Cushion</h3>
-                        <p>YSL</p>
-                        <p class="meta">Multi-effect eyeshadow palette from matte, satin, shimmer to metallic so you can freely express unlimited creativity.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            <!-- Product 5 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p51.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p52.jpg" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>LES 9 OMBRES</h3>
-                        <p>Channel</p>
-                        <p class="meta">Multi-effect eyeshadow palette from matte, satin, shimmer to metallic so you can freely express unlimited creativity.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Navigation-->
-        <button class="navigation left" id="prev"><img src="../images/prev.png"></button>
-        <button class="navigation right" id="next"><img src="../images/next.png"></button>
-        <button type="button" name="viewallflashsale" id="viewallflashsale" class="viewall">VIEW ALL</button>
-    </div>
-    </section>
-<!--Explore Previous Collections
-    <section class="Prevcollections">
-        <h2>Explore Previous Collections</h2>
-        <div class="grid">
-
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1708572727896-117b5ea25a86" alt="">
-                <div class="card-content">
-                    <h3>Matcha Dream</h3>
-                    <p class="price">$5.90</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1529474944862-bf4949bd2f1a" alt="">
-                <div class="card-content">
-                    <h3>Brown Sugar Bliss</h3>
-                    <p class="price">$6.50</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1603898579713-fd8250f9f1b4" alt="">
-                <div class="card-content">
-                    <h3>Tropical Passion</h3>
-                    <p class="price">$5.20</p>
-                </div>
-            </div>
-        </div>
-    </section>-->
-<!-- Injected Footer -->
 <div id="footer-placeholder"></div>
 <script src="/header_footer/partials.js"></script>
 <script src="../js/script.js"></script>

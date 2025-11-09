@@ -883,6 +883,10 @@
       outline: 2px solid #E6A6B0;
       outline-offset: 2px;
     }
+    #header-placeholder {
+    min-height: 220px; /* hoặc 150px nếu header cao hơn */
+}
+
   </style>
 </head>
 <body>
@@ -1265,9 +1269,9 @@ async function loadHTML(url, id) {
 async function initTeamCarousel() {
   const brandMap = new Map();
 
+  // Gom thương hiệu + ảnh
   PRODUCTS.forEach(p => {
     if (!brandMap.has(p.brand)) {
-      // ✅ Ảnh thương hiệu: ưu tiên brandImage, fallback ảnh sản phẩm
       let brandImg = p.brandImage || p.images?.[0] || DEFAULT_BRAND_IMAGE;
       brandImg = resolveImage(brandImg) || DEFAULT_BRAND_IMAGE;
 
@@ -1280,42 +1284,53 @@ async function initTeamCarousel() {
   });
 
   const fetchedBrands = Array.from(brandMap.values());
-  const teamTrack = document.getElementById('teamCarouselTrack');
-  const teamDotsContainer = document.getElementById('teamDotsContainer');
+  const teamTrack = document.getElementById("teamCarouselTrack");
+  const teamDotsContainer = document.getElementById("teamDotsContainer");
 
-  // render cards
+  // ✅ Render card
   teamTrack.innerHTML = fetchedBrands.map((brand, index) => `
     <div class="team-card" data-index="${index}">
-      <img src="${DEFAULT_BRAND_IMAGE}" data-src="${brand.image}" class="lazy-img" alt="${brand.name}" loading="lazy" decoding="async" fetchpriority="low"
+      <img src="${DEFAULT_BRAND_IMAGE}" 
+           data-src="${brand.image}" 
+           class="lazy-img" 
+           alt="${brand.name}"
+           loading="lazy" 
+           decoding="async"
            onerror="this.src='${DEFAULT_BRAND_IMAGE}'">
     </div>
   `).join('');
-  // Quan sát ảnh brand để lazy-load
+
   observeLazyImages(teamTrack);
 
+  // ✅ Render dots
   teamDotsContainer.innerHTML = fetchedBrands.map((_, index) =>
     `<div class="team-dot" data-index="${index}"></div>`
-  ).join('');
+  ).join("");
 
+  // ✅ Quan trọng nhất: query lại sau khi render
   const teamCards = document.querySelectorAll(".team-card");
   const teamDots = document.querySelectorAll(".team-dot");
   const teamMemberName = document.querySelector(".team-member-name");
   const teamMemberRole = document.querySelector(".team-member-role");
   const teamUpArrows = document.querySelectorAll(".team-nav-arrow.up");
   const teamDownArrows = document.querySelectorAll(".team-nav-arrow.down");
-  const teamTrackEl = document.getElementById('teamCarouselTrack');
+  const teamTrackEl = document.getElementById("teamCarouselTrack");
 
-  let teamCurrentIndex = 0, teamIsAnimating = false;
+  let teamCurrentIndex = 0;
+  let teamIsAnimating = false;
 
   function updateTeamCarousel(newIndex) {
     if (teamIsAnimating) return;
     teamIsAnimating = true;
+
     teamCurrentIndex = (newIndex + teamCards.length) % teamCards.length;
     const currentBrand = fetchedBrands[teamCurrentIndex];
 
+    // ✅ Update vị trí 3D
     teamCards.forEach((card, i) => {
       const offset = (i - teamCurrentIndex + teamCards.length) % teamCards.length;
       card.className = "team-card";
+
       if (offset === 0) card.classList.add("center");
       else if (offset === 1) card.classList.add("down-1");
       else if (offset === 2) card.classList.add("down-2");
@@ -1324,8 +1339,10 @@ async function initTeamCarousel() {
       else card.classList.add("hidden");
     });
 
+    // ✅ Update dots
     teamDots.forEach((dot, i) => dot.classList.toggle("active", i === teamCurrentIndex));
 
+    // ✅ Update text
     if (teamMemberName && teamMemberRole) {
       teamMemberName.style.opacity = "0";
       teamMemberRole.style.opacity = "0";
@@ -1334,34 +1351,40 @@ async function initTeamCarousel() {
         teamMemberRole.textContent = currentBrand.slogan;
         teamMemberName.style.animation = "brandFadeIn 0.8s ease forwards";
         teamMemberRole.style.animation = "brandFadeIn 1s ease 0.1s forwards";
-      }, 300);
+      }, 200);
     }
 
-    setTimeout(() => teamIsAnimating = false, 800);
+    setTimeout(() => (teamIsAnimating = false), 700);
   }
 
-  teamUpArrows.forEach(arrow => arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex - 1)));
-  teamDownArrows.forEach(arrow => arrow.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex + 1)));
-  teamDots.forEach((dot, i) => dot.addEventListener("click", () => updateTeamCarousel(i)));
-  
+  // ✅ Click lên card
   teamCards.forEach((card, i) => {
     card.addEventListener("click", () => {
-      const currentBrand = fetchedBrands[i];
-      // Nếu người dùng click vào brand đang ở giữa -> chuyển trang luôn
+      const brand = fetchedBrands[i];
+
       if (card.classList.contains("center")) {
-        window.location.href = `/categories/categories.html?brand=${encodeURIComponent(currentBrand.name)}`;
-      } else {
-        // Nếu chưa ở giữa -> chỉ animate lên trung tâm
-        updateTeamCarousel(i);
+        // ✅ Click brand đang ở giữa → chuyển trang
+        window.location.href = `./categories/categories.html?brand=${encodeURIComponent(brand.name)}`;
+        return;
       }
+
+      // ✅ Click brand chưa ở giữa → animate vào giữa
+      updateTeamCarousel(i);
     });
   });
 
-  updateTeamCarousel(0);
+  // ✅ Dot click
+  teamDots.forEach((dot, i) => {
+    dot.addEventListener("click", () => updateTeamCarousel(i));
+  });
 
-  // 🖱️ Scroll bằng chuột để chuyển brand (không cần nút)
+  // ✅ Up/down arrows
+  teamUpArrows.forEach(btn => btn.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex - 1)));
+  teamDownArrows.forEach(btn => btn.addEventListener("click", () => updateTeamCarousel(teamCurrentIndex + 1)));
+
+  // ✅ Scroll mouse
   let wheelAccum = 0;
-  teamTrackEl.addEventListener('wheel', (e) => {
+  teamTrackEl.addEventListener("wheel", e => {
     e.preventDefault();
     wheelAccum += e.deltaY;
     if (Math.abs(wheelAccum) > 30) {
@@ -1370,26 +1393,33 @@ async function initTeamCarousel() {
     }
   }, { passive: false });
 
-  // 🖱️ Kéo lên/xuống bằng drag
-  let dragging = false, startY = 0;
-  teamTrackEl.addEventListener('pointerdown', (e) => {
+  // ✅ Drag to scroll
+  let dragging = false;
+  let startY = 0;
+
+  teamTrackEl.addEventListener("pointerdown", e => {
     dragging = true;
     startY = e.clientY;
     try { teamTrackEl.setPointerCapture(e.pointerId); } catch (_) {}
     teamTrackEl.style.cursor = 'grabbing';
   });
-  teamTrackEl.addEventListener('pointermove', (e) => {
+
+  teamTrackEl.addEventListener("pointermove", e => {
     if (!dragging) return;
     const dy = e.clientY - startY;
-    if (Math.abs(dy) > 30) {
+    if (Math.abs(dy) > 40) {
       updateTeamCarousel(teamCurrentIndex + (dy > 0 ? 1 : -1));
       startY = e.clientY;
     }
   });
-  teamTrackEl.addEventListener('pointerup', () => {
+
+  teamTrackEl.addEventListener("pointerup", () => {
     dragging = false;
     teamTrackEl.style.cursor = 'grab';
   });
+
+  // ✅ Initial load
+  updateTeamCarousel(0);
 }
 
   // 🎯 Hàm khởi tạo chính
@@ -1471,6 +1501,27 @@ async function initTeamCarousel() {
       `;
     }
   })();
+  // ✅ Quan trọng: attach observer sau khi header load
+function attachHeaderObserver() {
+  const header = document.querySelector("#header-placeholder header");
+  const main = document.querySelector("main");
+
+  if (!header || !main) return;
+
+  const ro = new ResizeObserver(() => {
+    main.style.paddingTop = header.offsetHeight + "px";
+  });
+
+  ro.observe(header);
+}
+
+// gọi sau khi header được inject
+setTimeout(() => {
+  attachHeaderObserver();
+}, 150);
+
+document.fonts?.ready?.then(() => attachHeaderObserver());
+
   </script>
 </body>
 </html>
