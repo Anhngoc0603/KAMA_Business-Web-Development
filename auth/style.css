@@ -1,0 +1,362 @@
+/* Sign In page styles */
+:root {
+  --auth-max: 680px;
+}
+
+.auth-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  background: linear-gradient(rgba(255,249,249,0.85), rgba(255,249,249,0.85)), url('/Sale/images/Banner.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  border-radius: 18px;
+}
+
+.signin-card {
+  max-width: var(--auth-max);
+  margin: 0 auto;
+  /* Glassmorphism: nền mờ trong suốt để hòa cùng background */
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 18px;
+  backdrop-filter: saturate(120%) blur(8px);
+  -webkit-backdrop-filter: saturate(120%) blur(8px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.10);
+  padding: 32px 28px;
+}
+.signin-card h1 { text-align: center; margin: 0 0 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+.field label { font-size: 12px; color: #666; }
+.field input {
+  height: 46px;
+  border: 1px solid var(--soft-rose);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.92);
+  outline: none;
+}
+.field select {
+  height: 46px;
+  border: 1px solid var(--soft-rose);
+  border-radius: 12px;
+  padding: 0 14px;
+  background: rgba(255,255,255,0.92);
+  outline: none;
+}
+.field input:focus {
+  border-color: var(--warm-blush);
+  box-shadow: 0 0 0 3px rgba(230,166,176,0.25);
+}
+.field select:focus {
+  border-color: var(--warm-blush);
+  box-shadow: 0 0 0 3px rgba(230,166,176,0.25);
+}
+
+.options-row { display: flex; align-items: center; gap: 18px; margin: 12px 0 18px; }
+.chk { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #333; }
+.chk .info { font-size: 13px; color: #999; margin-left: 4px; }
+
+.btn { border: none; cursor: pointer; border-radius: 12px; padding: 12px 16px; font-weight: 700; }
+.btn.primary { background: var(--warm-blush); color: #fff; width: 100%; height: 46px; }
+.btn.primary:hover { background: var(--soft-rose); }
+
+.links-row { display: flex; justify-content: space-between; margin: 14px 0; }
+.links-row a { color: var(--branch-brown); text-decoration: none; font-size: 13px; }
+.links-row a:hover { color: var(--warm-blush); }
+
+.divider { display: flex; align-items: center; justify-content: center; color: #999; margin: 18px 0 10px; }
+.divider span { background: #fff; padding: 0 8px; }
+.divider span { background: rgba(255,255,255,0.85); }
+
+.socials { display: grid; gap: 12px; }
+.btn.social { display: flex; align-items: center; gap: 10px; width: 100%; height: 46px; padding: 0 16px; box-sizing: border-box; line-height: 1; text-decoration: none; color: inherit; }
+.btn.social .icon { display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; }
+.btn.social.google { background: #fff; border: 1px solid var(--footer-border-color); }
+.btn.social.apple { background: #fff; border: 1px solid var(--footer-border-color); }
+.btn.social:hover { box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
+
+/* Ensure image logos inside social icons render correctly */
+.btn.social .icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Reset page links styled consistently with sign-in/sign-up */
+.auth-bg-signin .auth-container .signin-card .links-row a {
+  color: var(--warm-blush);
+  text-decoration: none;
+}
+.auth-bg-signin .auth-container .signin-card .links-row a:hover {
+  color: color-mix(in srgb, var(--warm-blush) 85%, white);
+}
+
+.benefits { text-align: center; padding: 10px 0 30px; }
+.benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 700px; margin: 16px auto 0; }
+.benefit { display: flex; align-items: center; gap: 10px; justify-content: center; background: var(--pale-pink); padding: 14px; border: 1px solid var(--footer-border-color); border-radius: 12px; }
+.benefit-icon { font-size: 20px; }
+.benefit-text .title { font-weight: 700; color: var(--branch-brown); }
+.benefit-text .desc { font-size: 12px; color: #666; }
+
+@media (max-width: 320px) {
+  .auth-container { margin-top: 20px; }
+  .benefit-grid { grid-template-columns: 1fr; }
+}
+/* ===== Full-page background & wider sign-in card (auth page) ===== */
+html, body {
+  height: 100%;
+}
+
+/* Fill the entire page with the background image */
+body {
+  background-image: url('../Sale/images/Banner.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Overlay to increase opacity for better contrast */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  /* tăng opacity nhẹ để làm mờ nền hơn */
+  background: rgba(255, 240, 244, 0.75);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== Per-page auth background variants ===== */
+/* Sign In page explicit class (keeps same image, ensures consistency) */
+.auth-bg-signin {
+  background-image: url('/Sale/images/Banner.webp');
+}
+.auth-bg-signin::before {
+  background: rgba(255, 240, 244, 0.75);
+}
+
+/* Sign Up page uses a different brand image but same tone */
+.auth-bg-signup {
+  background-image: url('/auth/images/Signupbg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.auth-bg-signup::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 240, 244, 0.75);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure page content stays above the overlay */
+header, main, footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Remove local background on main if previously set */
+.auth-container {
+  background: transparent !important;
+}
+.auth-container::before {
+  background: transparent !important;
+}
+
+/* Widen the sign-in section for a more spacious layout */
+.auth-container .signin-card {
+  width: 820px;
+  max-width: 92vw;
+}
+
+@media (max-width: 992px) {
+  .auth-container .signin-card { width: 700px; }
+}
+
+@media (max-width: 768px) {
+  .auth-container .signin-card { width: min(95vw, 560px); }
+}
+
+@media (max-width: 480px) {
+  .auth-container .signin-card { width: 92vw; }
+}
+
+/* Sign Up specific: narrower card width ~470px */
+.auth-bg-signup .auth-container .signin-card { width: 470px; max-width: 92vw; }
+@media (max-width: 992px) {
+  .auth-bg-signup .auth-container .signin-card { width: 470px; }
+}
+@media (max-width: 768px) {
+  .auth-bg-signup .auth-container .signin-card { width: min(95vw, 470px); }
+}
+@media (max-width: 480px) {
+  .auth-bg-signup .auth-container .signin-card { width: 92vw; }
+}
+
+/* Typography sync & label emphasis */
+.signin-card,
+.signin-card * { font-family: inherit; }
+.signin-card h1 { font-weight: 700; }
+/* Sign Up heading: pink glow */
+.auth-bg-signup .signin-card h1 {
+  color: var(--warm-blush, #d77986);
+  font-size: 32px;
+  text-shadow: 0 2px 10px rgba(215,121,134,0.45), 0 0 18px rgba(215,121,134,0.35);
+  letter-spacing: 0.3px;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0% { text-shadow: 0 2px 10px rgba(215,121,134,0.45), 0 0 18px rgba(215,121,134,0.35); }
+  50% { text-shadow: 0 3px 14px rgba(215,121,134,0.55), 0 0 24px rgba(215,121,134,0.45); }
+  100% { text-shadow: 0 2px 10px rgba(215,121,134,0.45), 0 0 18px rgba(215,121,134,0.35); }
+}
+.field label { font-size: 14px; font-weight: 600; letter-spacing: 0.2px; color: #4a4a4a; }
+.links-row a { font-weight: 600; }
+
+/* Simple grid helpers for multi-column rows */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-row .field { margin: 0; }
+
+.required-note { text-align: right; font-size: 12px; color: #666; margin-bottom: 8px; }
+
+.agreements { 
+  margin-top: 10px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px;
+}
+.agreements .chk { 
+  margin: 0; 
+}
+/* Align checkbox label content into columns for straight vertical layout */
+.agreements label.chk { 
+  display: grid; 
+  grid-template-columns: 20px 1fr auto; 
+  column-gap: 10px; 
+  align-items: center; 
+}
+.agreements label.chk input[type="checkbox"] { 
+  width: 18px; 
+  height: 18px; 
+}
+.agreements .sub { 
+  margin: 4px 0 8px 30px; 
+  color: #666; 
+  font-size: 13px; 
+}
+/* Nested optional channels under Marketing */
+.agreements .sub .chk { 
+  display: grid; 
+  grid-template-columns: 20px 1fr; 
+  column-gap: 10px; 
+  margin: 6px 0; 
+}
+.agreements a { 
+  color: var(--link-color, #1a73e8); 
+  text-decoration: none; 
+}
+.agreements a:hover { text-decoration: underline; }
+/* Inline Read More link next to main text */
+.agreements .sub-link { 
+  margin-left: 12px; 
+  font-size: 13px; 
+  color: #666; 
+}
+.agreements .sub-link:hover { color: var(--link-color, #1a73e8); }
+
+/* Sign Up page: deep pink accents */
+.auth-bg-signup .field .sub { color: var(--warm-blush, #d77986); }
+.auth-bg-signup .agreements a,
+.auth-bg-signup .agreements .sub-link { color: var(--warm-blush, #d77986); }
+.auth-bg-signup .agreements a:hover,
+.auth-bg-signup .agreements .sub-link:hover { color: #ff7fa0; }
+
+/* Call-to-action button emphasis */
+.auth-bg-signup .btn.primary {
+  font-size: 18px;
+  height: 50px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 10px 22px rgba(215,121,134,0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.auth-bg-signup .btn.primary:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 16px 28px rgba(215,121,134,0.45);
+}
+
+/* Legal page tweaks */
+.legal-card { max-width: 900px; }
+.legal-content h2 { margin-top: 8px; color: var(--branch-brown); }
+.legal-content h3 { margin-top: 18px; color: var(--branch-brown); }
+.legal-content p, .legal-content li { color: #333; font-size: 14px; line-height: 1.7; }
+.legal-content ol { padding-left: 18px; }
+
+/* Beautiful checkboxes */
+.chk input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1.6px solid rgba(0,0,0,0.25);
+  appearance: none;
+  -webkit-appearance: none;
+  background: #fff;
+  position: relative;
+  accent-color: var(--warm-blush, #d77986);
+}
+.chk input[type="checkbox"]:focus { box-shadow: 0 0 0 2px rgba(215,121,134,0.25); }
+.chk input[type="checkbox"]:checked { background: var(--warm-blush, #d77986); border-color: var(--warm-blush, #d77986); }
+.chk input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translate(4px, 1px) rotate(45deg);
+  width: 6px;
+  height: 10px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+/* ===== Sign In page specific tweaks (width, heading glow, CTA) ===== */
+/* Narrower card width for Sign In */
+.auth-bg-signin .auth-container .signin-card { width: 470px; max-width: 92vw; }
+@media (max-width: 992px) {
+  .auth-bg-signin .auth-container .signin-card { width: 470px; }
+}
+@media (max-width: 768px) {
+  .auth-bg-signin .auth-container .signin-card { width: min(95vw, 470px); }
+}
+@media (max-width: 480px) {
+  .auth-bg-signin .auth-container .signin-card { width: 92vw; }
+}
+
+/* H1 glow on Sign In */
+.auth-bg-signin .signin-card h1 {
+  color: var(--warm-blush, #d77986);
+  text-shadow: 0 2px 10px rgba(215,121,134,0.45), 0 0 18px rgba(215,121,134,0.35);
+  letter-spacing: 0.3px;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* CTA button emphasis on Sign In */
+.auth-bg-signin .btn.primary {
+  font-size: 18px;
+  height: 50px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 10px 22px rgba(215,121,134,0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.auth-bg-signin .btn.primary:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 16px 28px rgba(215,121,134,0.45);
+}

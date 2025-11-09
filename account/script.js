@@ -77,6 +77,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const myReviewsEmptyEl = document.getElementById('myReviewsEmpty');
   const browseBtns = document.querySelectorAll('#reviewsSection .browse-btn');
   const tabs = document.querySelectorAll('#reviewsSection .tab');
+  const accountInfoSection = document.getElementById('accountInfoSection');
+  const aiForm = document.getElementById('accountInfoForm');
+  const aiEls = {
+    first: document.getElementById('ai_first'),
+    last: document.getElementById('ai_last'),
+    email: document.getElementById('ai_email'),
+    password: document.getElementById('ai_password'),
+    age: document.getElementById('ai_age'),
+    lang: document.getElementById('ai_lang'),
+    birthMonth: document.getElementById('ai_birth_month'),
+    birthDay: document.getElementById('ai_birth_day'),
+    gender: document.getElementById('ai_gender'),
+    referrer: document.getElementById('ai_referrer'),
+    marketing: document.getElementById('ai_marketing'),
+    marketingEmail: document.getElementById('ai_marketing_email'),
+    marketingPush: document.getElementById('ai_marketing_push'),
+    saveBtn: document.getElementById('saveAccountInfo'),
+    resetBtn: document.getElementById('resetAccountInfo'),
+  };
 const reviewFormEl = document.getElementById('reviewForm');
 const reviewProductEl = document.getElementById('reviewProduct');
 const reviewTypeEl = document.getElementById('reviewType');
@@ -317,6 +336,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (benefitsSection) benefitsSection.classList.add('hidden');
         if (wishListSection) wishListSection.classList.add('hidden');
         if (couponsSection) couponsSection.classList.add('hidden');
+        if (accountInfoSection) accountInfoSection.classList.add('hidden');
         // Default to Writable tab
         tabs.forEach(t => t.classList.remove('active'));
         const writableTab = document.querySelector('#reviewsSection .tab[data-tab="writable"]');
@@ -325,6 +345,20 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (reviewsMineEl) reviewsMineEl.classList.add('hidden');
         if (reviewFormEl) reviewFormEl.classList.add('hidden');
         reviewsSection && reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Handle Account Information view
+      if (view === 'account-info') {
+        if (membershipCardSection) membershipCardSection.classList.remove('hidden');
+        if (accountInfoSection) accountInfoSection.classList.remove('hidden');
+        if (trackSection) trackSection.classList.add('hidden');
+        if (benefitsSection) benefitsSection.classList.add('hidden');
+        if (wishListSection) wishListSection.classList.add('hidden');
+        if (couponsSection) couponsSection.classList.add('hidden');
+        if (reviewsSection) reviewsSection.classList.add('hidden');
+        // Prefill form on open
+        prefillAccountInfoForm(loadCurrentProfile());
+        accountInfoSection && accountInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
@@ -420,6 +454,7 @@ const productsUrl = '/categories/full.json';
         if (wishListSection) wishListSection.classList.add('hidden');
         if (couponsSection) couponsSection.classList.add('hidden');
         if (reviewsSection) reviewsSection.classList.add('hidden');
+        if (accountInfoSection) accountInfoSection.classList.add('hidden');
         // Always show membership card by default on section views
         if (membershipCardSection) membershipCardSection.classList.remove('hidden');
         // Apply options
@@ -428,6 +463,7 @@ const productsUrl = '/categories/full.json';
         opts.wish && wishListSection && wishListSection.classList.remove('hidden');
         opts.coupons && couponsSection && couponsSection.classList.remove('hidden');
         opts.reviews && reviewsSection && reviewsSection.classList.remove('hidden');
+        opts.accountInfo && accountInfoSection && accountInfoSection.classList.remove('hidden');
         // Tables visibility for track/cancel history
         if (opts.trackCancel) {
           if (statsGrid) statsGrid.classList.add('hidden');
@@ -486,6 +522,12 @@ const productsUrl = '/categories/full.json';
           sidebarLinks.forEach(l => l.classList.remove('active'));
           showOnly({ benefits: true });
           benefitsSection && benefitsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        case 'account-info':
+          setActiveSidebar('account-info');
+          showOnly({ accountInfo: true });
+          prefillAccountInfoForm(loadCurrentProfile());
+          accountInfoSection && accountInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           break;
         default:
           // Account home
@@ -696,6 +738,137 @@ const renderMyReviews = (getThumb) => {
     window.location.href = '/Best_Sellers/bestseller.html';
   }));
 
+  // ---------- Account Information: load, prefill, save ----------
+  const isValidEmail = (v) => /.+@.+\..+/.test(String(v||'').trim());
+  const isValidPassword = (p) => !p || (typeof p === 'string' && p.length >= 8 && p.length <= 16);
+  let currentProfileEmail = null;
+
+  const readRegisteredUsers = () => {
+    try { return JSON.parse(localStorage.getItem('auth.registeredUsers') || '[]') || []; } catch { return []; }
+  };
+  const writeRegisteredUsers = (list) => {
+    localStorage.setItem('auth.registeredUsers', JSON.stringify(list || []));
+  };
+  const loadCurrentProfile = () => {
+    const user = (window.Auth && typeof Auth.getUser === 'function') ? Auth.getUser() : {
+      email: localStorage.getItem('user.email'),
+      name: localStorage.getItem('user.name'),
+    };
+    const email = user && user.email;
+    currentProfileEmail = email || null;
+    const list = readRegisteredUsers();
+    const match = email ? list.find(p => String(p.email).toLowerCase() === String(email).toLowerCase()) : null;
+    if (match) return match;
+    // Fallback profile from localStorage
+    const nameLs = localStorage.getItem('user.name') || '';
+    const [firstName='', lastName=''] = String(nameLs).split(' ');
+    return {
+      firstName, lastName,
+      name: nameLs || `${firstName} ${lastName}`.trim(),
+      email: email || '',
+      password: '',
+      ageGroup: localStorage.getItem('user.ageGroup') || '',
+      language: localStorage.getItem('user.language') || '',
+      birthMonth: Number(localStorage.getItem('user.birthMonth') || '0') || null,
+      birthDay: Number(localStorage.getItem('user.birthDay') || '0') || null,
+      gender: localStorage.getItem('user.gender') || '',
+      referrer: localStorage.getItem('user.referrer') || '',
+      marketing: {
+        consent: localStorage.getItem('user.marketing.consent') === 'true',
+        email: localStorage.getItem('user.marketing.email') === 'true',
+        push: localStorage.getItem('user.marketing.push') === 'true',
+      }
+    };
+  };
+  const prefillAccountInfoForm = (profile) => {
+    if (!aiForm || !profile) return;
+    if (aiEls.first) aiEls.first.value = profile.firstName || '';
+    if (aiEls.last) aiEls.last.value = profile.lastName || '';
+    if (aiEls.email) aiEls.email.value = profile.email || '';
+    if (aiEls.password) aiEls.password.value = '';
+    if (aiEls.age) aiEls.age.value = profile.ageGroup || '';
+    if (aiEls.lang) aiEls.lang.value = profile.language || '';
+    if (aiEls.birthMonth) aiEls.birthMonth.value = profile.birthMonth || '';
+    if (aiEls.birthDay) aiEls.birthDay.value = profile.birthDay || '';
+    if (aiEls.gender) aiEls.gender.value = profile.gender || '';
+    if (aiEls.referrer) aiEls.referrer.value = profile.referrer || '';
+    if (aiEls.marketing) aiEls.marketing.checked = !!(profile.marketing && profile.marketing.consent);
+    if (aiEls.marketingEmail) aiEls.marketingEmail.checked = !!(profile.marketing && profile.marketing.email);
+    if (aiEls.marketingPush) aiEls.marketingPush.checked = !!(profile.marketing && profile.marketing.push);
+  };
+
+  const saveAccountInfo = () => {
+    const first = (aiEls.first && aiEls.first.value || '').trim();
+    const last = (aiEls.last && aiEls.last.value || '').trim();
+    const email = (aiEls.email && aiEls.email.value || '').trim();
+    const newPass = (aiEls.password && aiEls.password.value || '').trim();
+    const age = (aiEls.age && aiEls.age.value || '').trim();
+    const lang = (aiEls.lang && aiEls.lang.value || '').trim();
+    const bMonth = aiEls.birthMonth && aiEls.birthMonth.value ? Number(aiEls.birthMonth.value) : null;
+    const bDay = aiEls.birthDay && aiEls.birthDay.value ? Number(aiEls.birthDay.value) : null;
+    const gender = (aiEls.gender && aiEls.gender.value || '').trim();
+    const ref = (aiEls.referrer && aiEls.referrer.value || '').trim();
+    const mkConsent = !!(aiEls.marketing && aiEls.marketing.checked);
+    const mkEmail = !!(aiEls.marketingEmail && aiEls.marketingEmail.checked);
+    const mkPush = !!(aiEls.marketingPush && aiEls.marketingPush.checked);
+
+    if (!first) { aiEls.first && aiEls.first.focus(); alert('Please enter your first name.'); return; }
+    if (!last) { aiEls.last && aiEls.last.focus(); alert('Please enter your last name.'); return; }
+    if (!isValidEmail(email)) { aiEls.email && aiEls.email.focus(); alert('Please enter a valid email.'); return; }
+    if (!isValidPassword(newPass)) { aiEls.password && aiEls.password.focus(); alert('Password must be 8–16 characters if provided.'); return; }
+    if (!age) { aiEls.age && aiEls.age.focus(); alert('Please select your age group.'); return; }
+    if (!lang) { aiEls.lang && aiEls.lang.focus(); alert('Please select your language.'); return; }
+
+    const list = readRegisteredUsers();
+    let profile = null;
+    let idx = -1;
+    if (currentProfileEmail) {
+      idx = list.findIndex(p => String(p.email).toLowerCase() === String(currentProfileEmail).toLowerCase());
+      if (idx >= 0) profile = list[idx];
+    }
+    if (!profile) {
+      // Create if not exists
+      profile = {};
+      idx = list.length;
+      list.push(profile);
+    }
+
+    profile.firstName = first;
+    profile.lastName = last;
+    profile.name = `${first} ${last}`.trim();
+    profile.email = email;
+    if (newPass) profile.password = newPass;
+    profile.ageGroup = age;
+    profile.language = lang;
+    profile.birthMonth = bMonth;
+    profile.birthDay = bDay;
+    profile.gender = gender || null;
+    profile.referrer = ref || null;
+    profile.marketing = { consent: mkConsent, email: mkEmail, push: mkPush };
+
+    writeRegisteredUsers(list);
+
+    // Update auth + header name
+    try {
+      if (window.Auth && typeof Auth.setLogin === 'function') {
+        Auth.setLogin({ email, name: profile.name, keepSignedIn: true });
+      } else {
+        localStorage.setItem('user.isLoggedIn', 'true');
+        localStorage.setItem('user.email', email);
+        localStorage.setItem('user.name', profile.name);
+      }
+    } catch {}
+
+    // Update display name
+    if (els.accountName) els.accountName.textContent = `${profile.name}'s Account`;
+    alert('Account information updated.');
+    currentProfileEmail = email;
+    prefillAccountInfoForm(profile);
+  };
+
+  if (aiEls.saveBtn) aiEls.saveBtn.addEventListener('click', saveAccountInfo);
+  if (aiEls.resetBtn) aiEls.resetBtn.addEventListener('click', () => prefillAccountInfoForm(loadCurrentProfile()));
+
   const displayStatusLabel = (norm) => {
     switch (norm) {
       case 'preparing': return 'Preparing Shipment';
@@ -905,16 +1078,25 @@ const renderMyReviews = (getThumb) => {
 
   const boot = async () => {
     try {
-      const [ordersRes, refundsRes, customersRes, productsRes] = await Promise.all([
+      const results = await Promise.allSettled([
         fetch(ordersUrl),
         fetch(refundsUrl),
         fetch(customersUrl),
         fetch(productsUrl)
       ]);
-      orders = await ordersRes.json();
-      refunds = await refundsRes.json();
-      customers = await customersRes.json();
-      const productsData = await productsRes.json();
+      const toJson = async (res) => {
+        try {
+          if (!res || !res.ok) return null;
+          return await res.json();
+        } catch { return null; }
+      };
+      const ordersData = results[0].status === 'fulfilled' ? await toJson(results[0].value) : null;
+      const refundsData = results[1].status === 'fulfilled' ? await toJson(results[1].value) : null;
+      const customersData = results[2].status === 'fulfilled' ? await toJson(results[2].value) : null;
+      const productsData = results[3].status === 'fulfilled' ? await toJson(results[3].value) : null;
+      orders = Array.isArray(ordersData) ? ordersData : [];
+      refunds = Array.isArray(refundsData) ? refundsData : [];
+      customers = Array.isArray(customersData) ? customersData : [];
 
       let productIndex = {};
       try {

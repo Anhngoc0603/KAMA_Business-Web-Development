@@ -155,3 +155,43 @@ body { background: var(--color-background); color: var(--color-text-dark); paddi
 .tier-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem; }
 .tier-row .cell { background: #fff7fa; border: 1px dashed var(--soft-rose); border-radius: 8px; padding: .6rem; font-size: .9rem; }
 .tier-header .cell { background: #ffeef5; font-weight: 700; color: var(--color-secondary); }
+
+/* Account Information form */
+.account-info-form { border: 1px dashed var(--soft-rose); border-radius: 12px; padding: .8rem; background: #fff7fa; }
+.account-info-form .form-row { display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: .6rem; margin: .4rem 0; }
+.account-info-form input, .account-info-form select { padding: .6rem .8rem; border: 1px solid #ddd; border-radius: 8px; }
+.account-info-form .form-checks { display: flex; gap: 1rem; align-items: center; }
+.account-info-form .form-actions { display: flex; gap: .6rem; align-items: center; margin-top: .8rem; }
+.account-info-form .form-note { color: var(--color-text-medium); margin-top: .4rem; font-size: .9rem; }
+
+/* Beauty Profile (upgraded) */
+#beautyProfileSection .bp-top { display: grid; grid-template-columns: 1fr; gap: .8rem; margin-bottom: .8rem; }
+#beautyProfileSection .bp-id-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .8rem; border: 1px dashed var(--soft-rose); border-radius: 12px; padding: .8rem; background: #fff7fa; }
+.bp-id-card .bp-row { display: flex; gap: .8rem; flex-wrap: wrap; }
+.bp-id-card .bp-pill { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .6rem; border-radius: 999px; border: 1px solid var(--soft-rose); background: #fff; font-weight: 600; }
+.bp-id-card .bp-icon { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #ffeef5; border: 1px solid var(--soft-rose); }
+
+#beautyProfileSection .bp-progress { display: grid; grid-template-columns: 160px 1fr auto; align-items: center; gap: .6rem; }
+.bp-progress .label { font-weight: 600; color: var(--color-text-medium); }
+.bp-progress .bar { height: 12px; border-radius: 999px; background: #f1f5f9; border: 1px solid #e2e8f0; overflow: hidden; }
+.bp-progress .bar .fill { height: 100%; width: 0%; background: var(--soft-rose); transition: width .25s ease; }
+.bp-progress .pct { font-weight: 700; color: var(--color-secondary); }
+
+#beautyProfileSection .bp-benefits { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: .8rem; }
+.bp-benefits .title { font-weight: 700; margin-bottom: .4rem; }
+.bp-benefits ul { margin-left: 1rem; color: var(--color-text-medium); }
+
+/* Chip buttons */
+.chip { display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .8rem; border: 1px solid #e2e8f0; border-radius: 999px; background: #fff; color: var(--color-text-dark); cursor: pointer; margin: .25rem .3rem; user-select: none; }
+.chip .swatch { width: 16px; height: 16px; border-radius: 50%; border: 1px solid #d1d5db; }
+.chip.selected { background: #fff2f6; border-color: var(--soft-rose); color: var(--color-secondary); box-shadow: 0 4px 10px rgba(230,166,176,0.15); }
+
+.bp-group { margin-top: .8rem; padding: .8rem; border: 1px dashed var(--soft-rose); border-radius: 12px; background: #fff7fa; }
+.bp-group .group-title { display: flex; align-items: center; gap: .6rem; font-weight: 700; margin-bottom: .4rem; }
+.bp-group .group-title .emoji { font-size: 1.2rem; }
+.bp-group .chips { display: flex; flex-wrap: wrap; }
+
+.bp-consent { margin-top: .8rem; background: #f8f8f8; border: 1px solid #eee; border-radius: 12px; padding: .8rem; }
+.bp-consent .title { font-weight: 600; margin-bottom: .4rem; display: flex; align-items: center; gap: .6rem; }
+.bp-consent .note { color: var(--color-text-medium); }
+.bp-actions { display: flex; justify-content: center; gap: .8rem; margin-top: 1rem; }

@@ -4,6 +4,7 @@
     <link rel='stylesheet' type='text/css' media='screen' href='../style/mainstyle.css'>
     <link rel="stylesheet" href="/header_footer/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/quiz/quiz.css">
     <style>
         #introContainer {position: fixed;inset: 0;z-index: 99999;background: transparent !important;display: flex;align-items: center;justify-content: center;pointer-events: none;transition: opacity 0.8s ease;}
         #introContainer video {width: 100%;height: 100%;object-fit: cover;background: transparent !important;mix-blend-mode: screen;}
@@ -25,6 +26,14 @@
 <div id="header-placeholder"></div>
 <!--slide bự nhất để giới thiệu-->
     <section class="hero">
+    <!-- Beauty Quiz CTA Banner -->
+    <div class="bq-home-cta">
+      <div>
+        <div class="text">Tìm sản phẩm "chân ái" trong 2 phút!</div>
+        <div class="sub">Quiz tương tác toàn màn hình – có thưởng điểm.</div>
+      </div>
+      <button class="cta-btn" data-open-beauty-quiz>Bắt đầu ngay</button>
+    </div>
     <div class="slide active">
         <img src="../images/banner1.jpg" alt="">
         <div class="hero-content">
@@ -118,6 +127,22 @@
     <div class="new-visual">
         <img src="../images/nc_banner1.jpg" alt="Sweetie Bear Decor">
     </div>
+    </section>
+    
+    <!-- Beauty Quiz Banner -->
+    <section class="bq-banner-section">
+      <div class="bq-banner-container">
+        <img src="../images/bannerr.png" alt="KAMA Beauty Quiz" class="bq-banner-img" data-open-beauty-quiz>
+        <button class="bq-banner-cta" type="button" aria-label="Open Beauty Quiz" data-open-beauty-quiz="framed">Do Quiz</button>
+        <!-- Framed popup hosts the quiz inside the ornate frame image -->
+        <div class="bq-framed-popup" id="bqFramedPopup" aria-hidden="true">
+          <div class="bq-frame">
+            <img src="../images/khung ảnh.png" alt="KAMA frame" class="bq-frame-img">
+            <button class="bq-frame-close" type="button" aria-label="Close">×</button>
+            <div class="bq-framed-host" id="bqFramedHost"></div>
+          </div>
+        </div>
+      </div>
     </section>
 <!--BEST SELLERS-->
     <section class="Bestsellers">
@@ -547,5 +572,6 @@
 <div id="footer-placeholder"></div>
 <script src="/header_footer/partials.js"></script>
 <script src="../js/script.js"></script>
+<script src="/quiz/quiz.js"></script>
 </body>
 </html>

@@ -1,0 +1,4 @@
+{
+  "signupEmail": "/auth/signup.html",
+  "forgotPassword": "/auth/forgot.html"
+}

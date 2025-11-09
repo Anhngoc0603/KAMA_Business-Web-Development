@@ -2,6 +2,16 @@
   function initHeaderScript() {
     if (window.__headerScriptInitialized) return;
     window.__headerScriptInitialized = true;
+  // ================== AUTH HELPERS ==================
+  function isLoggedIn() {
+    try {
+      if (window.Auth && typeof Auth.isLoggedIn === 'function') return !!Auth.isLoggedIn();
+      return localStorage.getItem('user.isLoggedIn') === 'true';
+    } catch (_) { return false; }
+  }
+  function redirectToLogin() {
+    navigateToRoot('/auth/login.html');
+  }
   // ================== NAVIGATION HELPER ==================
   // Điều hướng an toàn tới đường dẫn gốc của dự án, hoạt động với cả server (http) và mở file trực tiếp (file:///)
   function navigateToRoot(pathWithQuery) {
@@ -298,6 +308,83 @@
     }, 100);
 
     window.addEventListener('resize', handleResize);
+  }
+
+  // ================== ACCOUNT DROPDOWN ==================
+  const accountBtn = document.getElementById('accountMenuBtn');
+  const accountDropdown = document.getElementById('accountDropdown');
+  if (accountBtn && accountDropdown) {
+    accountBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!isLoggedIn()) {
+        redirectToLogin();
+        return;
+      }
+      accountDropdown.classList.toggle('open');
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      const withinMenu = accountDropdown.contains(e.target) || accountBtn.contains(e.target);
+      if (!withinMenu) accountDropdown.classList.remove('open');
+    });
+    // Close on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') accountDropdown.classList.remove('open');
+    });
+    // Close after navigating via item, and gate protected links
+    accountDropdown.querySelectorAll('.dropdown-item').forEach(a => {
+      a.addEventListener('click', (ev) => {
+        const href = a.getAttribute('href') || '';
+        if (!isLoggedIn() && href && !href.includes('/auth/login.html')) {
+          ev.preventDefault();
+          redirectToLogin();
+          return;
+        }
+        accountDropdown.classList.remove('open');
+      });
+    });
+
+    // Update menu items based on auth state: My Account + Sign Out
+    try {
+      const items = Array.from(accountDropdown.querySelectorAll('.dropdown-item'));
+      if (isLoggedIn()) {
+        if (items[0]) {
+          items[0].textContent = 'My Account';
+          items[0].setAttribute('href', '/account/index.html');
+        }
+        // Ensure Sign Out item exists
+        let signOut = accountDropdown.querySelector('#headerSignOut');
+        if (!signOut) {
+          signOut = document.createElement('a');
+          signOut.className = 'dropdown-item';
+          signOut.id = 'headerSignOut';
+          signOut.href = '#';
+          signOut.textContent = 'Sign Out';
+          accountDropdown.appendChild(signOut);
+        }
+        signOut.addEventListener('click', (e) => {
+          e.preventDefault();
+          try {
+            if (window.Auth && typeof Auth.logout === 'function') Auth.logout();
+            else {
+              localStorage.removeItem('user.isLoggedIn');
+              localStorage.removeItem('user.email');
+              localStorage.removeItem('user.keepSignedIn');
+              localStorage.removeItem('user.provider');
+            }
+          } catch (_) {}
+          navigateToRoot('/1.homepage/html/landingpage.html');
+        });
+      } else {
+        if (items[0]) {
+          items[0].textContent = 'Sign In / Sign Up';
+          items[0].setAttribute('href', '/auth/login.html');
+        }
+        const signOut = accountDropdown.querySelector('#headerSignOut');
+        if (signOut) signOut.remove();
+      }
+    } catch (_) {}
   }
 
   function closeMobileMenu() {
@@ -838,6 +925,7 @@ function setupProductCardInteractions() {
     if (wishlistBtn) {
       wishlistBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (!isLoggedIn()) { redirectToLogin(); return; }
         const product = getProductData(card);
         toggleWishlist(product);
         updateWishlistButton(wishlistBtn, product.id);
@@ -847,6 +935,7 @@ function setupProductCardInteractions() {
     if (addToCartBtn) {
       addToCartBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (!isLoggedIn()) { redirectToLogin(); return; }
         const product = getProductData(card);
         addToCart(product);
       });

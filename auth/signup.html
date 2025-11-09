@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="/header_footer/style.css">
+  <link rel="stylesheet" href="/auth/style.css">
+</head>
+<body class="auth-bg-signup">
+  <div id="header-placeholder"></div>
+  <main class="auth-container">
+    <section class="signin-card">
+      <h1>Sign Up</h1>
+      <div class="required-note">Required *</div>
+      <form id="signupForm" novalidate>
+        <!-- Name -->
+        <div class="field">
+          <label>Name *</label>
+          <div class="field-row">
+            <div class="field">
+              <input type="text" id="su_first" placeholder="First Name" required>
+            </div>
+            <div class="field">
+              <input type="text" id="su_last" placeholder="Last Name (Family Name)" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email & Passwords -->
+        <div class="field">
+          <label for="su_email">Email ID *</label>
+          <input type="email" id="su_email" name="email" placeholder="Enter your email address to use as login ID." autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="su_password">Password *</label>
+          <input type="password" id="su_password" name="password" placeholder="Password (8 to 16 characters)" autocomplete="new-password" required>
+        </div>
+        <div class="field">
+          <label for="su_password2">Confirm Password *</label>
+          <input type="password" id="su_password2" name="password2" placeholder="Confirm Password" autocomplete="new-password" required>
+        </div>
+
+        <!-- Age group -->
+        <div class="field">
+          <label for="su_age">Age Group *</label>
+          <select id="su_age" required>
+            <option value="">Select</option>
+            <option>16-18</option>
+            <option>19-24</option>
+            <option>25-34</option>
+            <option>35-44</option>
+            <option>45+</option>
+          </select>
+          <div class="sub">Service is available for 16 years of age or older.</div>
+        </div>
+
+        <!-- Language preference -->
+        <div class="field">
+          <label for="su_lang">Language Preference *</label>
+          <select id="su_lang" required>
+            <option>English</option>
+            <option>Vietnamese</option>
+            <option>Japanese</option>
+          </select>
+        </div>
+
+        <!-- Date of birth -->
+        <div class="field">
+          <label>Date of Birth</label>
+          <div class="field-row">
+            <div class="field">
+              <select id="su_birth_month">
+                <option value="">Month</option>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">May</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Aug</option>
+                <option value="9">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+              </select>
+            </div>
+            <div class="field">
+              <select id="su_birth_day">
+                <option value="">Day</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+              </select>
+            </div>
+          </div>
+          <div class="sub">Get your birthday gift every year.</div>
+        </div>
+
+        <!-- Gender -->
+        <div class="field">
+          <label for="su_gender">Gender</label>
+          <select id="su_gender">
+            <option value="">Select</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Other</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+
+        <!-- Referrer -->
+        <div class="field">
+          <label for="su_referrer">Referrer</label>
+          <input type="email" id="su_referrer" placeholder="Email Address">
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- Agreements -->
+        <div class="agreements">
+          <label class="chk"><input type="checkbox" id="agree_all"> <span>I Agree to all terms. (Required/Optional).</span></label>
+
+          <label class="chk"><input type="checkbox" id="agree_terms" required> <span><a href="/auth/terms.html" target="_blank">Terms of Use</a></span> <span class="sub">(Required)</span></label>
+          <label class="chk"><input type="checkbox" id="agree_info_req" required> <span>Collection and use of personal information <a class="sub-link" href="/auth/terms.html#personal-info" target="_blank">Read More</a></span> <span class="sub">(Required)</span></label>
+          <label class="chk"><input type="checkbox" id="agree_info_opt"> <span>Collection and use of personal information <a class="sub-link" href="/auth/terms.html#personal-info" target="_blank">Read More</a></span> <span class="sub">(Optional)</span></label>
+
+          <label class="chk"><input type="checkbox" id="agree_marketing"> <span>Marketing usage and notification about offers and new products</span> <span class="sub">(Optional)</span></label>
+          <div class="sub">
+            <label class="chk"><input type="checkbox" id="agree_marketing_email"> <span>Email</span></label>
+            <label class="chk"><input type="checkbox" id="agree_marketing_push"> <span>Mobile APP Push</span></label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn primary">Sign Up</button>
+        <div class="links-row">
+          <a href="/auth/login.html">Back to Sign In</a>
+        </div>
+      </form>
+    </section>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/header_footer/partials.js"></script>
+  <script src="/auth/state.js"></script>
+  <script src="/auth/signup.js"></script>
+</body>
+</html>

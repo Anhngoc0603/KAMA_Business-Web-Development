@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="/header_footer/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/quiz/quiz.css" />
 </head>
 <body>
   <!-- Header (Injected) -->
@@ -40,8 +41,8 @@
       <nav class="sidebar-section">
         <div class="section-label">My Profile</div>
         <ul>
-          <li><a href="#">Account Information</a></li>
-          <li><a href="#">Beauty Profile</a></li>
+          <li><a href="#" data-view="account-info">Account Information</a></li>
+          <li><a href="#" data-view="beauty-profile">Beauty Profile</a></li>
           <li><a href="#">Addresses</a></li>
           <li><a href="#">Login History</a></li>
           <li><a href="#">Deactivate Account</a></li>
@@ -349,12 +350,459 @@
           </div>
         </div>
       </section>
+
+      <!-- Beauty Profile -->
+      <section class="glass-section hidden" id="beautyProfileSection">
+        <h2 class="section-title">Beauty Profile</h2>
+        <div class="beauty-hero">
+          <div class="bubble">What are your skin type and concerns?</div>
+          <img class="beauty-people" src="/account/images/people.png" alt="Beauty profile illustration" />
+        </div>
+        <div class="beauty-card">
+          <ul class="beauty-points">
+            <li>Tell us more about yourself with your Beauty Profile.</li>
+            <li>If you register your beauty profile <strong>for the first time</strong>, you will get <strong>0.5 point</strong>.</li>
+          </ul>
+          <p class="beauty-note">OLIVE YOUNG Global recommends more suitable products and reviews based on it.</p>
+          <div class="beauty-actions">
+            <button id="bp_edit" class="btn primary" type="button">EDIT</button>
+          </div>
+        </div>
+
+        <!-- Upgraded top: Beauty ID Card + Progress + Benefit Box -->
+        <div class="bp-top">
+          <div class="bp-id-card">
+            <div class="bp-icon">🪪</div>
+            <div class="bp-row" id="bpIdRow">
+              <!-- Filled dynamically: Skin • Hair • Eye summary -->
+            </div>
+            <div class="bp-cert">Verified by KAMA</div>
+          </div>
+          <div class="bp-progress">
+            <div class="label">Độ hoàn thiện hồ sơ</div>
+            <div class="bar"><div class="fill" id="bpProgressFill"></div></div>
+            <div class="pct" id="bpProgressPct">0%</div>
+          </div>
+          <div class="bp-benefits">
+            <div class="title">Hoàn thành hồ sơ để KAMA có thể:</div>
+            <ul>
+              <li>⭐️ Gợi ý sản phẩm "chuẩn" nhất cho bạn.</li>
+              <li>⭐️ Cảnh báo các thành phần có thể không hợp với da/tóc bạn.</li>
+              <li>⭐️ Gửi tặng bạn ưu đãi độc quyền cho loại da của mình.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Summary after saved -->
+        <div id="beautyProfileSummary" class="beauty-summary hidden"></div>
+
+        <!-- Inline edit form -->
+        <form id="beautyProfileForm" class="beauty-form hidden">
+          <!-- Skin -->
+          <div class="bp-group" id="bpSkinGroup">
+            <div class="group-title"><span class="emoji">🧴</span> Skin</div>
+            <div class="chips" data-group="skinTone">
+              <div class="chip" data-group="skinTone" data-value="porcelain"><span class="swatch" style="background:#f3dfcf"></span> Porcelain</div>
+              <div class="chip" data-group="skinTone" data-value="fair-light"><span class="swatch" style="background:#f1d3ba"></span> Fair/Light</div>
+              <div class="chip" data-group="skinTone" data-value="medium"><span class="swatch" style="background:#d9b08c"></span> Medium</div>
+              <div class="chip" data-group="skinTone" data-value="tan"><span class="swatch" style="background:#c5956b"></span> Tan</div>
+              <div class="chip" data-group="skinTone" data-value="olive"><span class="swatch" style="background:#b17e57"></span> Olive</div>
+              <div class="chip" data-group="skinTone" data-value="deep"><span class="swatch" style="background:#8c5a33"></span> Deep</div>
+              <div class="chip" data-group="skinTone" data-value="dark"><span class="swatch" style="background:#6c4226"></span> Dark</div>
+              <div class="chip" data-group="skinTone" data-value="ebony"><span class="swatch" style="background:#4a2b18"></span> Ebony</div>
+            </div>
+            <div class="chips" data-group="skinType">
+              <div class="chip" data-group="skinType" data-value="oily">Oily</div>
+              <div class="chip" data-group="skinType" data-value="dry">Dry</div>
+              <div class="chip" data-group="skinType" data-value="normal">Normal</div>
+              <div class="chip" data-group="skinType" data-value="combination">Combination</div>
+              <div class="chip" data-group="skinType" data-value="sensitive">Sensitive</div>
+            </div>
+            <div class="chips" data-group="skinConcerns" data-multi="true">
+              <div class="chip" data-value="acne">Acne</div>
+              <div class="chip" data-value="blackheads">Blackheads</div>
+              <div class="chip" data-value="brightening">Brightening</div>
+              <div class="chip" data-value="cellulite">Cellulite</div>
+              <div class="chip" data-value="dullness">Dullness</div>
+              <div class="chip" data-value="moisturising">Moisturising</div>
+              <div class="chip" data-value="puffiness">Puffiness</div>
+              <div class="chip" data-value="scarring">Scarring</div>
+              <div class="chip" data-value="sculpting">Sculpting</div>
+              <div class="chip" data-value="slimming">Slimming</div>
+              <div class="chip" data-value="soothing">Soothing</div>
+              <div class="chip" data-value="stress">Stress</div>
+              <div class="chip" data-value="stretch-marks">Stretch Marks</div>
+              <div class="chip" data-value="sun-care">Sun Care</div>
+              <div class="chip" data-value="visible-pores">Visible Pores</div>
+              <div class="chip" data-value="well-aging">Well-aging</div>
+              <div class="chip" data-value="fine-dust-removal">Fine Dust Removal</div>
+            </div>
+          </div>
+
+          <!-- Hair -->
+          <div class="bp-group" id="bpHairGroup">
+            <div class="group-title"><span class="emoji">💇</span> Hair</div>
+            <div class="chips" data-group="hairColor">
+              <div class="chip" data-group="hairColor" data-value="blonde">Blonde</div>
+              <div class="chip" data-group="hairColor" data-value="brown">Brown</div>
+              <div class="chip" data-group="hairColor" data-value="black">Black</div>
+              <div class="chip" data-group="hairColor" data-value="red">Red</div>
+              <div class="chip" data-group="hairColor" data-value="grey">Grey</div>
+            </div>
+            <div class="chips" data-group="hairType">
+              <div class="chip" data-value="colored">Colored</div>
+              <div class="chip" data-value="curly-wavy">Curly & Wavy</div>
+              <div class="chip" data-value="dry">Dry</div>
+              <div class="chip" data-value="fine">Fine</div>
+              <div class="chip" data-value="frizzy">Frizzy</div>
+              <div class="chip" data-value="greying">Greying</div>
+              <div class="chip" data-value="hair-loss">Hair loss</div>
+              <div class="chip" data-value="thinning">Thinning</div>
+              <div class="chip" data-value="weakened">Weakened</div>
+            </div>
+            <div class="chips" data-group="hairConcerns" data-multi="true">
+              <div class="chip" data-value="anti-dandruff">Anti-Dandruff</div>
+              <div class="chip" data-value="anti-frizz">Anti-Frizz</div>
+              <div class="chip" data-value="balancing">Balancing</div>
+              <div class="chip" data-value="color-protection">Color Protection</div>
+              <div class="chip" data-value="damage-repair">Damage Repair</div>
+              <div class="chip" data-value="hair-growth">Hair Growth</div>
+              <div class="chip" data-value="heat-protection">Heat Protection</div>
+              <div class="chip" data-value="hydrating">Hydrating</div>
+              <div class="chip" data-value="purifying">Purifying</div>
+              <div class="chip" data-value="scalp-treatment">Scalp Treatment</div>
+              <div class="chip" data-value="shine">Shine</div>
+              <div class="chip" data-value="thickening">Thickening</div>
+              <div class="chip" data-value="volumizing">Volumizing</div>
+            </div>
+          </div>
+
+          <!-- Eye -->
+          <div class="bp-group" id="bpEyeGroup">
+            <div class="group-title"><span class="emoji">👁️</span> Eye</div>
+            <div class="chips" data-group="eyeColor">
+              <div class="chip" data-value="blue">Blue</div>
+              <div class="chip" data-value="brown">Brown</div>
+              <div class="chip" data-value="green">Green</div>
+              <div class="chip" data-value="grey">Grey</div>
+              <div class="chip" data-value="black">Black</div>
+            </div>
+          </div>
+
+          <!-- Consent -->
+          <div class="bp-consent">
+            <div class="title"><input type="checkbox" id="bpConsent" /> Collection and Use of Personal Information (Optional)</div>
+            <div class="note">
+              Bằng cách đồng ý, bạn giúp KAMA cá nhân hóa trải nghiệm mua sắm của bạn tốt hơn.
+              Chúng tôi chỉ dùng thông tin về Skin, Hair, Eye để gợi ý sản phẩm phù hợp và tối ưu ưu đãi.
+              Bạn có thể thay đổi lựa chọn bất cứ lúc nào.
+            </div>
+          </div>
+
+          <div class="bp-actions">
+            <button id="bp_cancel" class="btn" type="button">CANCEL</button>
+            <button id="bp_save" class="btn primary" type="button">SAVE</button>
+          </div>
+          <p class="form-note">Saving for the first time awards 0.5 point.</p>
+        </form>
+
+        <!-- Scoped styles for Beauty Profile -->
+        <style>
+          .beauty-hero { display: flex; align-items: center; gap: 24px; padding: 16px 0 8px; }
+          .beauty-hero .bubble { flex: 1; background: #fff7ed; border: 1px solid #fbd38d; border-radius: 12px; padding: 16px 20px; font-weight: 600; }
+          .beauty-hero .beauty-people { height: 120px; }
+          .beauty-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; margin-top: 10px; }
+          .beauty-points { margin: 0 0 8px 0; padding-left: 20px; }
+          .beauty-note { color: #64748b; margin: 6px 0 12px 0; }
+          .beauty-actions { text-align: center; }
+          .beauty-summary { margin-top: 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; }
+          .beauty-form { margin-top: 12px; }
+          .beauty-form .form-row { margin-bottom: 12px; }
+          .beauty-form .form-checks { display: flex; flex-wrap: wrap; gap: 12px 20px; }
+          .beauty-form .form-actions { display: flex; gap: 12px; }
+          .form-note { color: #64748b; font-size: 0.9rem; }
+        </style>
+
+        <script>
+          (function() {
+            const $ = (sel, root = document) => root.querySelector(sel);
+            const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+            const beautyProfileSection = $('#beautyProfileSection');
+            const bpEditBtn = $('#bp_edit');
+            const bpForm = $('#beautyProfileForm');
+            const bpSaveBtn = $('#bp_save');
+            const bpCancelBtn = $('#bp_cancel');
+            const bpSummary = $('#beautyProfileSummary');
+            const bpIdRow = $('#bpIdRow');
+            const bpProgressFill = $('#bpProgressFill');
+            const bpProgressPct = $('#bpProgressPct');
+
+            const membershipCardSection = $('#membershipCardSection') || $('#membershipCard') || $('.membership-card');
+            const sectionsToHide = ['#trackSection','#benefitsSection','#wishListSection','#couponsSection','#reviewsSection','#accountInfoSection']
+              .map(s => $(s)).filter(Boolean);
+
+            function hideAll() { sectionsToHide.forEach(s => s.classList.add('hidden')); }
+            function showBeautyView() {
+              hideAll();
+              if (membershipCardSection) membershipCardSection.classList.remove('hidden');
+              beautyProfileSection.classList.remove('hidden');
+              renderFromStorage();
+            }
+
+            // Data helpers
+            const STORAGE_KEY = 'beauty.profile';
+            const QUIZ_KEYS = ['beauty.quiz','quiz.beauty','user.beautyQuiz','beautyQuiz'];
+            function safeRead(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; } }
+            function loadBeautyProfile() { return safeRead(STORAGE_KEY) || { createdAt: null, updatedAt: null }; }
+            function loadBeautyQuiz() {
+              for (const k of QUIZ_KEYS) { const v = safeRead(k); if (v) return v; }
+              return null;
+            }
+            function mergeQuiz(profile) {
+              const quiz = loadBeautyQuiz();
+              if (!quiz) return profile;
+              // Map common fields if empty
+              const out = { ...profile };
+              if (!out.skinTone && quiz.skinTone) out.skinTone = quiz.skinTone;
+              if (!out.skinType && quiz.skinType) out.skinType = quiz.skinType;
+              if ((!out.skinConcerns || !out.skinConcerns.length) && quiz.skinConcerns) out.skinConcerns = quiz.skinConcerns;
+              if (!out.hairColor && quiz.hairColor) out.hairColor = quiz.hairColor;
+              if (!out.hairType && quiz.hairType) out.hairType = quiz.hairType;
+              if ((!out.hairConcerns || !out.hairConcerns.length) && quiz.hairConcerns) out.hairConcerns = quiz.hairConcerns;
+              if (!out.eyeColor && quiz.eyeColor) out.eyeColor = quiz.eyeColor;
+              return out;
+            }
+
+            function collectSelections() {
+              const singleGroups = ['skinTone','skinType','hairColor','hairType','eyeColor'];
+              const data = {};
+              singleGroups.forEach(g => {
+                const selected = $('.chips[data-group="'+g+'"] .chip.selected');
+                data[g] = selected ? selected.getAttribute('data-value') : null;
+              });
+              const skinCs = $$('.chips[data-group="skinConcerns"] .chip.selected').map(c => c.getAttribute('data-value'));
+              const hairCs = $$('.chips[data-group="hairConcerns"] .chip.selected').map(c => c.getAttribute('data-value'));
+              data.skinConcerns = skinCs;
+              data.hairConcerns = hairCs;
+              data.consent = $('#bpConsent')?.checked || false;
+              return data;
+            }
+
+            function prefillChips(profile) {
+              const selectOne = (group, value) => {
+                $$('.chips[data-group="'+group+'"] .chip').forEach(ch => {
+                  ch.classList.toggle('selected', ch.getAttribute('data-value') === String(value));
+                });
+              };
+              const selectMany = (group, list = []) => {
+                const set = new Set(list || []);
+                $$('.chips[data-group="'+group+'"] .chip').forEach(ch => {
+                  ch.classList.toggle('selected', set.has(ch.getAttribute('data-value')));
+                });
+              };
+              selectOne('skinTone', profile.skinTone);
+              selectOne('skinType', profile.skinType);
+              selectMany('skinConcerns', profile.skinConcerns);
+              selectOne('hairColor', profile.hairColor);
+              selectOne('hairType', profile.hairType);
+              selectMany('hairConcerns', profile.hairConcerns);
+              selectOne('eyeColor', profile.eyeColor);
+              const consentEl = $('#bpConsent'); if (consentEl) consentEl.checked = !!profile.consent;
+            }
+
+            function renderIdCard(profile) {
+              const pills = [];
+              if (profile.skinType) pills.push(`<span class="bp-pill"><span class="bp-icon">🧴</span>${profile.skinType}</span>`);
+              if (profile.hairColor || profile.hairType) pills.push(`<span class="bp-pill"><span class="bp-icon">💇</span>${profile.hairType || ''} ${profile.hairColor || ''}`.trim()+`</span>`);
+              if (profile.eyeColor) pills.push(`<span class="bp-pill"><span class="bp-icon">👁️</span>${profile.eyeColor}</span>`);
+              bpIdRow.innerHTML = pills.length ? pills.join(' ') : '<span class="bp-pill">Chưa có dữ liệu. Hãy bấm EDIT để điền.</span>';
+            }
+
+            function computeCompleteness(p) {
+              const checks = [p.skinTone, p.skinType, p.hairColor, p.hairType, p.eyeColor, (p.skinConcerns||[]).length>0, (p.hairConcerns||[]).length>0];
+              const filled = checks.reduce((n, ok) => n + (ok ? 1 : 0), 0);
+              const total = checks.length;
+              const pct = Math.round((filled/total)*100);
+              return { pct, filled, total };
+            }
+
+            function updateProgress(p) {
+              const { pct } = computeCompleteness(p);
+              if (bpProgressFill) bpProgressFill.style.width = pct + '%';
+              if (bpProgressPct) bpProgressPct.textContent = pct + '%';
+            }
+
+            function renderSummary(p) {
+              if (!bpSummary) return;
+              const hasData = !!(p.skinType || (p.skinConcerns && p.skinConcerns.length) || p.hairType || p.eyeColor);
+              if (!hasData) { bpSummary.classList.add('hidden'); return; }
+              bpSummary.innerHTML = `
+                <div><strong>Skin:</strong> Tone: ${p.skinTone||'—'} • Type: ${p.skinType||'—'} • Concerns: ${(p.skinConcerns||[]).join(', ')||'—'}</div>
+                <div><strong>Hair:</strong> Color: ${p.hairColor||'—'} • Type: ${p.hairType||'—'} • Concerns: ${(p.hairConcerns||[]).join(', ')||'—'}</div>
+                <div><strong>Eye:</strong> Color: ${p.eyeColor||'—'}</div>
+              `;
+              bpSummary.classList.remove('hidden');
+            }
+
+            function renderFromStorage() {
+              const current = mergeQuiz(loadBeautyProfile());
+              prefillChips(current);
+              renderIdCard(current);
+              renderSummary(current);
+              updateProgress(current);
+            }
+
+            function showBeautyForm(show) {
+              if (!bpForm) return;
+              if (show) { renderFromStorage(); bpForm.classList.remove('hidden'); }
+              else { bpForm.classList.add('hidden'); }
+            }
+
+            function saveBeautyProfile() {
+              const selections = collectSelections();
+              const current = loadBeautyProfile();
+              const firstTime = !current.createdAt;
+              const payload = { ...current, ...selections, createdAt: firstTime ? Date.now() : current.createdAt, updatedAt: Date.now() };
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+              if (firstTime) {
+                const awarded = Number(localStorage.getItem('user.pointsBeautyProfile') || 0);
+                if (!awarded) localStorage.setItem('user.pointsBeautyProfile', '0.5');
+              }
+              // Update total points (simple aggregation)
+              const baseTotal = Number(localStorage.getItem('user.pointsTotal') || 0);
+              const beauty = Number(localStorage.getItem('user.pointsBeautyProfile') || 0);
+              const finalTotal = Math.max(baseTotal, beauty);
+              localStorage.setItem('user.pointsTotal', String(finalTotal));
+              const pointsTotalEl = $('#pointsTotal');
+              if (pointsTotalEl) pointsTotalEl.textContent = String(finalTotal.toFixed ? finalTotal.toFixed(1) : finalTotal);
+              renderFromStorage();
+              showBeautyForm(false);
+            }
+
+            // Chip interactions
+            function onChipClick(ev) {
+              const chip = ev.currentTarget;
+              const groupEl = chip.closest('.chips');
+              const group = groupEl?.getAttribute('data-group');
+              const isMulti = groupEl?.getAttribute('data-multi') === 'true';
+              if (!group) return;
+              if (isMulti) {
+                chip.classList.toggle('selected');
+              } else {
+                $$('.chips[data-group="'+group+'"] .chip').forEach(c => c.classList.remove('selected'));
+                chip.classList.add('selected');
+              }
+              updateProgress(collectSelections());
+            }
+            $$('.chip').forEach(ch => ch.addEventListener('click', onChipClick));
+
+            // Buttons
+            bpEditBtn?.addEventListener('click', () => showBeautyForm(true));
+            bpCancelBtn?.addEventListener('click', () => showBeautyForm(false));
+            bpSaveBtn?.addEventListener('click', saveBeautyProfile);
+
+            // Sidebar navigation
+            $$('nav.sidebar-section a[data-view="beauty-profile"]').forEach(a => a.addEventListener('click', (ev) => { ev.preventDefault(); showBeautyView(); }));
+            const params = new URLSearchParams(location.search);
+            if (params.get('view') === 'beauty-profile') showBeautyView();
+          })();
+        </script>
+      </section>
+
+      <!-- Account Information -->
+      <section class="glass-section hidden" id="accountInfoSection">
+        <div class="section-header">
+          <h2 class="section-title">Account Information</h2>
+        </div>
+        <form id="accountInfoForm" class="account-info-form">
+          <div class="form-row">
+            <label for="ai_first">First Name</label>
+            <input id="ai_first" type="text" placeholder="Enter first name" />
+          </div>
+          <div class="form-row">
+            <label for="ai_last">Last Name</label>
+            <input id="ai_last" type="text" placeholder="Enter last name" />
+          </div>
+          <div class="form-row">
+            <label for="ai_email">Email</label>
+            <input id="ai_email" type="email" placeholder="your@email.com" />
+          </div>
+          <div class="form-row">
+            <label for="ai_password">New Password</label>
+            <input id="ai_password" type="password" placeholder="8–16 characters" />
+          </div>
+          <div class="form-row">
+            <label for="ai_age">Age Group</label>
+            <select id="ai_age">
+              <option value="">Select age group</option>
+              <option value="10s">10s</option>
+              <option value="20s">20s</option>
+              <option value="30s">30s</option>
+              <option value="40s">40s</option>
+              <option value="50s+">50s+</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ai_lang">Language</label>
+            <select id="ai_lang">
+              <option value="">Select language</option>
+              <option value="en">English</option>
+              <option value="vi">Tiếng Việt</option>
+              <option value="jp">日本語</option>
+              <option value="kr">한국어</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ai_birth_month">Birth Month</label>
+            <input id="ai_birth_month" type="number" min="1" max="12" placeholder="1-12" />
+          </div>
+          <div class="form-row">
+            <label for="ai_birth_day">Birth Day</label>
+            <input id="ai_birth_day" type="number" min="1" max="31" placeholder="1-31" />
+          </div>
+          <div class="form-row">
+            <label for="ai_gender">Gender</label>
+            <select id="ai_gender">
+              <option value="">Prefer not to say</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ai_referrer">Referrer</label>
+            <input id="ai_referrer" type="text" placeholder="Referral code or name" />
+          </div>
+          <div class="form-row">
+            <label>Marketing</label>
+            <div class="form-checks">
+              <label><input id="ai_marketing" type="checkbox" /> Allow marketing</label>
+              <label><input id="ai_marketing_email" type="checkbox" /> Email</label>
+              <label><input id="ai_marketing_push" type="checkbox" /> Push</label>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="saveAccountInfo" class="btn primary" type="button">Save Changes</button>
+            <button id="resetAccountInfo" class="btn" type="button">Reset</button>
+          </div>
+          <p class="form-note">After saving, your name and email are updated and used for login and in the header.</p>
+        </form>
+      </section>
     </main>
   </div>
 
   <!-- Footer (Injected) -->
   <div id="footer-placeholder"></div>
   <script src="/header_footer/partials.js"></script>
+  <script src="/auth/state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.Auth && typeof Auth.requireAuth === 'function') {
+        Auth.requireAuth('/auth/login.html');
+      }
+    });
+  </script>
   <script src="script.js"></script>
 </body>
+  <script src="/quiz/quiz.js"></script>
 </html>

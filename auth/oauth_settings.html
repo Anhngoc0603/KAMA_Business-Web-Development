@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OAuth Settings</title>
+  <link rel="stylesheet" href="/header_footer/style.css">
+  <link rel="stylesheet" href="/auth/style.css">
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <main class="auth-container">
+    <section class="signin-card">
+      <h1>OAuth Settings</h1>
+      <form id="oauthForm" novalidate>
+        <div class="field">
+          <label for="google_client_id">Google Client ID</label>
+          <input type="text" id="google_client_id" placeholder="xxxxxxxx.apps.googleusercontent.com">
+        </div>
+        <div class="field">
+          <label for="google_redirect">Google Redirect URI</label>
+          <input type="text" id="google_redirect" placeholder="http://localhost:5500/account/index.html">
+        </div>
+
+        <div class="field">
+          <label for="apple_client_id">Apple Client ID</label>
+          <input type="text" id="apple_client_id" placeholder="com.example.web">
+        </div>
+        <div class="field">
+          <label for="apple_redirect">Apple Redirect URI</label>
+          <input type="text" id="apple_redirect" placeholder="http://localhost:5500/account/index.html">
+        </div>
+
+        <button type="submit" class="btn primary">Save Settings</button>
+        <div class="links-row">
+          <a href="/auth/login.html">Back to Sign In</a>
+        </div>
+      </form>
+    </section>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/header_footer/partials.js"></script>
+  <script src="/auth/oauth_settings.js"></script>
+</body>
+</html>
+
