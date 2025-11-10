@@ -779,6 +779,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Toggle Shipping panel via top bar "Change"
     const toggleShippingPanelBtn = document.getElementById('toggleShippingPanel');
+    // Chuẩn hóa qty từ dữ liệu cũ
+cartItems = cartItems
+  .map(item => ({
+    ...item,
+    qty: Number(item.qty || item.quantity || 1)
+  }))
+  .filter(item => item.id && item.name);  // ✅ không có id/name → xóa
+
     const shippingPanel = document.getElementById('shippingPanel');
     if (toggleShippingPanelBtn && shippingPanel) {
       toggleShippingPanelBtn.addEventListener('click', () => {

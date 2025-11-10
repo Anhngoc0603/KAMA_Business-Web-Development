@@ -371,74 +371,7 @@
         "Versatile Shades: Different powders create different lighting effects."
       ]
     },
-    {
-      "id": 10,
-      "name": "Armani Beauty Luminous Silk Foundation",
-      "brand": "Armani Beauty",
-      "brandImage": "./images/brands/armani.jpg",
-      "price": 69.00,
-      "originalPrice": null,
-      "rating": 4.9,
-      "category": "Face",
-      "subtype": "Foundation",
-      "images": [
-        "./images/12.1.webp",
-        "./images/12.2.jpg",
-        "./images/12.3.webp"
-      ],
-      "description": "Award-winning, oil-free foundation that delivers a luminous, buildable finish.",
-      "detailedDescription": "Inspired by charmeuse silk, Armani's Luminous Silk Foundation offers a flawless, radiant finish. The Micro–fil™ technology allows for buildable coverage from sheer to medium, gliding seamlessly onto the skin.",
-      "ingredients": "Aqua/Water, Cyclopentasiloxane, Glycerin, Isododecane...",
-      "weight": "30ml",
-      "shades": [
-        { "value": "3-very-fair-golden", "label": "3 Very Fair, Golden" },
-        { "value": "5-medium-neutral", "label": "5 Medium, Neutral" },
-        { "value": "9-deep-peach", "label": "9 Deep, Peach" }
-      ],
-      "launchDate": "2000-01-01",
-      "usageInstructions": "Apply with fingertips or foundation brush, starting from the center of the face and blending outwards.",
-      "isNew": false,
-      "isSale": false,
-      "benefits": [
-        "Radiant Finish: Creates a lit-from-within glow.",
-        "Buildable Coverage: Perfect for customizing your look.",
-        "Oil-Free Formula: Suitable for most skin types.",
-        "Seamless Application: Blends effortlessly for a natural look."
-      ]
-    },
-    {
-      "id": 11,
-      "name": "NARS Orgasm Blush",
-      "brand": "NARS",
-      "brandImage": "./images/brands/nars.png",
-      "price": 32.00,
-      "originalPrice": null,
-      "rating": 4.9,
-      "category": "Face",
-      "subtype": "Blush",
-      "images": [
-        "./images/13.1.jpg",
-        "./images/13.2.jpg",
-        "./images/13.3.jpg"
-      ],
-      "description": "Iconic peachy-pink blush with golden shimmer.",
-      "detailedDescription": "The universally flattering NARS Orgasm Blush provides a natural-looking flush with a hint of shimmer. Its micronized powder ensures soft, blendable application.",
-      "ingredients": "Talc, Octyldodecyl Stearate, Octyldodecyl Stearoyl Stearate...",
-      "weight": "4.8g",
-      "shades": [
-        { "value": "orgasm", "label": "Orgasm (Peachy Pink with Golden Shimmer)" }
-      ],
-      "launchDate": "1999-01-01",
-      "usageInstructions": "Apply to the apples of the cheeks using a blush brush.",
-      "isNew": false,
-      "isSale": true,
-      "benefits": [
-        "Universally Flattering Shade: Suits a wide range of skin tones.",
-        "Buildable Color: From subtle flush to bold pop.",
-        "Subtle Shimmer: Adds a healthy glow.",
-        "Blendable Formula: Applies smoothly and evenly."
-      ]
-    },
+    
     {
       "id": 12,
       "name": "Dior Addict Lip Glow Oil",

@@ -6,7 +6,6 @@
   <title>Product Details</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="/header_footer/style.css">
   <style>
     :root {
       --primary-color: #E6A6B0;
@@ -954,7 +953,6 @@
   </div>
 
   <!-- JavaScript code remains the same -->
-  <script src="/header_footer/partials.js"></script>
   <script>
     // ==================== DEBUG MODE ====================
     const DEBUG = true;
@@ -962,10 +960,11 @@
     const CONFIG = {
       // Thử các đường dẫn khác nhau
       jsonPaths: [
-        '/Best_Sellers/full.json'
+        '/new/products.json',
       ],
-      // Header/Footer được inject bởi /src/assets/scripts/partials.js
-      productsPage: '/Best_Sellers/bestseller.html'
+      headerPath: '/header_footer/header.html',
+      footerPath: '/header_footer/footer.html',
+      productsPage: '/new/new_arrival.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1052,11 +1051,11 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
-        // Chuẩn hoá đường dẫn ảnh để đảm bảo hiển thị đúng ở trang detail và Cart
+        // Chuẩn hoá ảnh để hiển thị đúng và lưu đúng vào Cart
         const normalizeImagePath = (p) => {
           if (!p) return p;
-          if (p.startsWith('./images/')) return p.replace('./images/', '/Best_Sellers/images/');
-          if (p.startsWith('images/')) return `/Best_Sellers/${p}`;
+          if (p.startsWith('./images/')) return p.replace('./images/', '/new/images/');
+          if (p.startsWith('images/')) return `/new/${p}`;
           return p;
         };
         data.products = data.products.map(prod => ({
@@ -1170,7 +1169,6 @@
               <button class="quantity-btn" id="increase-qty">+</button>
             </div>
             <button class="btn-primary" id="addToCartBtn">ADD TO CART</button>
-            <button class="btn" id="addToWishlistBtn" style="margin-left: 10px;">ADD TO WISHLIST</button>
           </div>
         `;
         window.currentProduct = product;
@@ -1553,48 +1551,60 @@
           }, 2000);
         });
       }
-
-      // Sự kiện add to wishlist
-      const addToWishlistBtn = document.getElementById('addToWishlistBtn');
-      if (addToWishlistBtn) {
-        const p = window.currentProduct || product;
-        const mainImageEl = document.getElementById('main-image');
-        const wishItem = {
-          id: String(p?.id || ''),
-          name: p?.name || '',
-          price: Number(p?.price || 0),
-          image: mainImageEl?.src || (p?.images?.[0] || ''),
-          brand: p?.brand || ''
-        };
-        const readWishlist = () => { try { return JSON.parse(localStorage.getItem('wishlist') || '[]'); } catch { return []; } };
-        const writeWishlist = (list) => localStorage.setItem('wishlist', JSON.stringify(list));
-        const isInWishlist = () => readWishlist().some(it => String(it.id) === String(wishItem.id));
-        const updateBtnUi = () => {
-          const added = isInWishlist();
-          addToWishlistBtn.textContent = added ? '✓ IN WISHLIST' : 'ADD TO WISHLIST';
-          addToWishlistBtn.classList.toggle('active', added);
-        };
-        updateBtnUi();
-        addToWishlistBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const toggleFn = typeof window.toggleWishlist === 'function' ? window.toggleWishlist : (prod) => {
-            const list = readWishlist();
-            const idx = list.findIndex(x => String(x.id) === String(prod.id));
-            if (idx >= 0) { list.splice(idx, 1); } else { list.push(prod); }
-            writeWishlist(list);
-          };
-          toggleFn(wishItem);
-          updateBtnUi();
-          if (typeof window.updateWishlistCount === 'function') {
-            try { window.updateWishlistCount(); } catch (_) {}
-          }
-        });
-      }
     }
 
-    // ==================== HEADER/FOOTER VIA PARTIALS ====================
-    // Header/Footer sẽ được inject bởi /src/assets/scripts/partials.js vào các placeholder.
-    // Observer sẽ khởi tạo lại header logic và điều chỉnh padding khi nội dung được chèn.
+    // ==================== HEADER/FOOTER LOADING ====================
+    async function loadHeaderFooter() {
+      debugLog('Bắt đầu tải header và footer...');
+      
+      try {
+        // Tải header
+        const headerResponse = await fetch(CONFIG.headerPath);
+        if (headerResponse.ok) {
+          const headerHTML = await headerResponse.text();
+          document.getElementById('header-placeholder').innerHTML = headerHTML;
+          debugLog('✅ Header loaded');
+          // Ensure shared header script is loaded after injection
+          if (!document.querySelector('script[data-header-footer-script]')) {
+            const s = document.createElement('script');
+            s.src = '/header_footer/script.js';
+            s.defer = true;
+            s.setAttribute('data-header-footer-script', 'true');
+            document.head.appendChild(s);
+          }
+          // Re-init header logic sau khi chèn
+          initHeader();
+        } else {
+          throw new Error(`HTTP ${headerResponse.status}`);
+        }
+      } catch (error) {
+        debugLog('❌ Lỗi tải header:', error.message);
+        document.getElementById('header-placeholder').innerHTML = `
+          <div style="padding: 20px; text-align: center; color: var(--text-light); font-size: 18px;">
+            <p>Header không khả dụng</p>
+          </div>
+        `;
+      }
+
+      try {
+        // Tải footer
+        const footerResponse = await fetch(CONFIG.footerPath);
+        if (footerResponse.ok) {
+          const footerHTML = await footerResponse.text();
+          document.getElementById('footer-placeholder').innerHTML = footerHTML;
+          debugLog('✅ Footer loaded');
+        } else {
+          throw new Error(`HTTP ${footerResponse.status}`);
+        }
+      } catch (error) {
+        debugLog('❌ Lỗi tải footer:', error.message);
+        document.getElementById('footer-placeholder').innerHTML = `
+          <div style="padding: 20px; text-align: center; color: var(--text-light); font-size: 18px;">
+            <p>Footer không khả dụng</p>
+          </div>
+        `;
+      }
+    }
 
     // ===== HEADER INIT FUNCTION (to fix mobile nav dropdown) =====
     function initHeader() {
@@ -1911,19 +1921,16 @@
       debugLog('🚀 Bắt đầu khởi tạo trang...');
       
       try {
-        // Adjust padding dynamically sau khi header được inject
+        // Tải header và footer
+        await loadHeaderFooter();
+        
+        // Adjust padding dynamically
         const main = document.querySelector("main");
-        let headerInitialized = false;
         function adjustPadding() {
           const header = document.querySelector("#header-placeholder header");
           if (header && main) {
             const headerHeight = header.offsetHeight;
             main.style.paddingTop = (headerHeight + 40) + "px";
-            if (!headerInitialized) {
-              // Khởi tạo các xử lý liên quan đến header một lần sau khi inject
-              initHeader();
-              headerInitialized = true;
-            }
           }
         }
         // Lặp kiểm tra cho đến khi header được load xong

@@ -1,20 +1,64 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>KAMA</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='../style/mainstyle.css'>
-    <link rel="stylesheet" href="/header_footer/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="/quiz/quiz.css">
-    <style>
-        #introContainer {position: fixed;inset: 0;z-index: 99999;background: transparent !important;display: flex;align-items: center;justify-content: center;pointer-events: none;transition: opacity 0.8s ease;}
-        #introContainer video {width: 100%;height: 100%;object-fit: cover;background: transparent !important;mix-blend-mode: screen;}
-        body {margin: 0;opacity: 1;transition: opacity 0.8s ease;background: #fff9f9;}
-        body.hide-intro {opacity: 1;}
-        .fade-out {opacity: 0;visibility: hidden;}
-    </style>
+  <!-- ✅ BASIC META -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="KAMA - Luxury Beauty. Discover premium makeup, skincare, and exclusive flash sales."/>
+  <title>KAMA - Luxury Beauty</title>
+  
+
+  <!-- ✅ FAVICON -->
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon"/>
+
+  <!-- ✅ GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ✅ IONICONS -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="/quiz/quiz.js"></script>
+
+  <!-- ✅ STYLESHEETS -->
+  <link rel="stylesheet" href="../style/mainstyle.css"/>
+  <link rel="stylesheet" href="/header_footer/style.css"/>
+  <link rel="stylesheet" href="../../quiz/quiz.css"/>
+  <!-- ✅ INTRO VIDEO OVERLAY -->
+  <style>
+    #introContainer {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+    #introContainer video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      mix-blend-mode: screen;
+    }
+    #introContainer.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    body {
+      margin: 0;
+      background: #fff9f9;
+      overflow-x: hidden;
+    }
+  </style>
 </head>
 
 <body>
+
 <!-- ✅ VIDEO INTRO 
 <div id="introContainer">
     <video id="introVideo" autoplay muted playsinline>
@@ -22,556 +66,210 @@
       Trình duyệt của bạn không hỗ trợ video.
     </video>
 </div>-->
-<!-- Injected Header -->
-<div id="header-placeholder"></div>
-<!--slide bự nhất để giới thiệu-->
-    <section class="hero">
-    <!-- Beauty Quiz CTA Banner -->
-    <div class="bq-home-cta">
-      <div>
-        <div class="text">Tìm sản phẩm "chân ái" trong 2 phút!</div>
-        <div class="sub">Quiz tương tác toàn màn hình – có thưởng điểm.</div>
+
+  <!-- ✅ HEADER (INJECTED BY partials.js) -->
+  <div id="header-placeholder"></div>
+
+  <!-- ========================================================= -->
+  <!-- HERO SLIDER -->
+  <!-- ========================================================= -->
+  <section class="hero">
+    <div class="slide active">
+      <img src="../images/banner1.jpg" alt="Glow With Confidence">
+      <div class="hero-content">
+        <h2>Glow With Confidence</h2>
+        <p>Discover our products designed to make you shine every day.</p>
+        <button class="btn">Shop Now</button>
       </div>
-      <button class="cta-btn" data-open-beauty-quiz>Bắt đầu ngay</button>
     </div>
-    <div class="slide active">
-        <img src="../images/banner1.jpg" alt="">
-        <div class="hero-content">
-            <h2>Glow With Confidence</h2>
-            <p>Discover our products designed to make you shine every day.</p>
-            <button class="btn">Shop Now</button>
-        </div>
-    </div>
-    <div class="slide active">
-        <img src="../images/banner2.png" alt="">
-        <div class="hero-content">
-            <h2>Express Your Style</h2>
-            <p>Dare to shine. Create looks that define your beauty.</p>
-            <button class="btn">View All Products</button>
-        </div>
+    <div class="slide">
+      <img src="../images/banner2.png" alt="Express Your Style">
+      <div class="hero-content">
+        <h2>Express Your Style</h2>
+        <p>Dare to shine. Create looks that define your beauty.</p>
+        <button class="btn">View All Products</button>
+      </div>
     </div>
     <div class="dots"></div>
-    </section>
-<!--CATEGORY SHOWCASE-->
-    <section class="category-showcase">
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- CATEGORY SHOWCASE -->
+  <!-- ========================================================= -->
+  <section class="category-showcase">
     <div class="category-card face">
-        <img src="../images/face.png" alt="Makeup Brushes">
-        <div class="category-info">            
-            <h3>Face</h3>
-            <p>Flawless & Radiant</p>
-            <button type="button" class="shopnow" id="shopnowface">SHOP NOW</button>
-        </div>
-    </div>
-
-    <div class="category-card lips">
-        <img src="../images/lip.png">
-        <div class="category-info">
-            <h3>Lips</h3>
-            <p>For Your Perfect Smile</p>
-            <button type="button" class="shopnow lips" id="shopnowlips">SHOP NOW</button>
-        </div>
-    </div>
-
-    <div class="category-card eyes">
-        <img src="../images/eyes.png" >
-            <div class="category-info">
-            <h3>Eyes</h3>
-            <p>Expressive Beauty</p>
-            <button type="button" class="shopnow eyes" id="shopnoweyes">SHOP NOW</button>
-        </div>
-    </div>
-
-    </section>
-<!--NEWCOLLECTION1-->
-    <section class="new-products">
-    <div class="new-left">
-        <div class="header-new">
-            <p>DISCOVER WHAT’S NEW 
-            <br/><span class="header2">The Sweetie Bear <br>Collection</span>
-            <button type="button" class="viewallnew" id="viewallnew">VIEW FULL COLLECTION</button></p>
-        </div>
-        <div class="slider-new">
-            <div class="new-wrapper" id="newwrapper">
-                <div class="newproduct">
-                    <img src="../images/nc_channel.png" alt="Sweetie Bear Essential Set">
-                    <p>Chanel Longwear Eyeliner</p>
-                    <div class="price-new">$89.00</div>
-                </div>
-                <div class="newproduct">
-                    <img src="../images/nc_mascara1.png" alt="Patisserie Charm Set">
-                    <p>Lash-Expert Twist Brush Mascara</p>
-                    <div class="price-new">$121.00</div>
-                </div>
-                <div class="newproduct">
-                    <img src="../images/nc_diorlip.png" alt="Creamy Finish Set">
-                    <p>Rouge Dior Lipsticks</p>
-                    <div class="price-new">$50.00</div>
-                </div>                
-                <div class="newproduct">
-                    <img src="../images/nc2_channel.webp" alt="Sweetie Bear Essential Set">
-                    <p>Sweetie Bear Essential Set</p>
-                    <div class="price-new">$89.00</div>
-                </div>
-                <div class="newproduct">
-                    <img src="../images/nc2_dior.png" alt="Patisserie Charm Set">
-                    <p>Patisserie Charm Set</p>
-                    <div class="price-new">$89.00</div>
-                </div>
-            </div>
-            <!-- Nút điều hướng -->
-            <button class="navigation left" id="prevnew"><img src="../images/prev.png" alt="prev"></button>
-            <button class="navigation right" id="nextnew"><img src="../images/next.png" alt="next"></button>
-        </div>
-
-    </div>
-    <div class="new-visual">
-        <img src="../images/nc_banner1.jpg" alt="Sweetie Bear Decor">
-    </div>
-    </section>
-    
-    <!-- Beauty Quiz Banner -->
-    <section class="bq-banner-section">
-      <div class="bq-banner-container">
-        <img src="../images/bannerr.png" alt="KAMA Beauty Quiz" class="bq-banner-img" data-open-beauty-quiz>
-        <button class="bq-banner-cta" type="button" aria-label="Open Beauty Quiz" data-open-beauty-quiz="framed">Do Quiz</button>
-        <!-- Framed popup hosts the quiz inside the ornate frame image -->
-        <div class="bq-framed-popup" id="bqFramedPopup" aria-hidden="true">
-          <div class="bq-frame">
-            <img src="../images/khung ảnh.png" alt="KAMA frame" class="bq-frame-img">
-            <button class="bq-frame-close" type="button" aria-label="Close">×</button>
-            <div class="bq-framed-host" id="bqFramedHost"></div>
-          </div>
-        </div>
+      <img src="../images/face.png" alt="Face Makeup">
+      <div class="category-info">
+        <h3>Face</h3>
+        <p>Flawless & Radiant</p>
+        <button class="shopnow" id="shopnowface">SHOP NOW</button>
       </div>
-    </section>
-<!--BEST SELLERS-->
-    <section class="Bestsellers">
-    <p class="title">Shop Our Bestsellers</p>
-    <div class="sliderBestsellers"> 
-        <div class="wrapperBestseller" id="bestseller">
-            <!-- 10 sản phẩm -->
-            <!-- Product 1 -->
-            <div class="product-card"
-                data-category="Eyes"
-                data-brand="Lancôme"
-                data-price="30.00"
-                data-rating="4.8">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/p_lancome1.webp" class="product-img" alt="Product 1">
-                    <img src="../images/p_lancome2.avif" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="infos">
-                        <h3>Lancôme Lash Idôle Mascara</h3>
-                        <p>Lancôme</p>
-                        <p class="meta">Lash-lifting mascara for fanned-out volume</p>
-
-                    <div class="action">
-                        <span class="price">$30.00</span>
-                        <span class="rating">
-                        <img src="../images/Star.png" class="star" alt="Lancôme">
-                        4.8
-                        </span>
-                    </div>
-
-                    <div class="buttons">
-                        <a href="../../new/view_product/view_new.html?id=4" class="btn-outline">View Detail</a>
-                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 2 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Charlotte Tilbury"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/p_charlotte1.webp" class="product-img" alt="Product 1">
-                    <img src="../images/p_charlotte2.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="infos">
-                        <h3>Luxury Palette Pillow Talk</h3>
-                        <p>Charlotte Tilbury</p>
-                        <p class="meta">Iconic eyeshadow quad in the dreamy Pillow Talk shade for a romantic, wide-awake look.</p>
-
-                    <div class="action">
-                        <span class="price">$125.50</span>
-                        <span class="rating">
-                        <img src="../images/Star.png" class="star" alt="">
-                        4.9
-                        </span>
-                    </div>
-
-                    <div class="buttons">
-                        <a href="../..//Sale/view_product/view_sale.html?id=1" class="btn-outline">View Detail</a>
-                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 3 -->
-            <div class="product-card"
-                data-category="Lips"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px; width:300px;">
-                    <img src="../images/p_dior1.webp" class="product-img" alt="Product 1">
-                    <img src="../images/p_dior2.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="infos">
-                        <h3>Addict Lip Glow Button</h3>
-                        <p>Dior</p>
-                        <p class="meta">Custom-color reviving balm that enhances your natural lip tone with a glossy finish.</p>
-                    <div class="action">
-                        <span class="price">$55.00</span>
-                        <span class="rating">
-                        <img src="../images/Star.png" class="star" alt="">
-                        4.5
-                        </span>
-                    </div>
-
-                    <div class="buttons">
-                        <a href="../../Sale/view_product/view_sale.html?id=2" class="btn-outline">View Detail</a>
-                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 4 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Gucci"
-                data-price="325.50"
-                data-rating="4.3">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/p_gucci1.jpg" class="product-img" alt="Product 1">
-                    <img src="../images/p_gucci2.jpg" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="infos">
-                        <h3>Gucci Blush De Beauté</h3>
-                        <p>Gucci</p>
-                        <p class="meta">Silky blush that blends like cream and finishes like powder for a natural flush.</p>
-
-                    <div class="action">
-                        <span class="price">$325.50</span>
-                        <span class="rating">
-                        <img src="../images/Star.png" class="star" alt="">
-                        4.3
-                        </span>
-                    </div>
-
-                    <div class="buttons">
-                        <a href="../../Sale/view_product/view_sale.html?id=3" class="btn-outline">View Detail</a>
-                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                    </div>
-                </div>
-            </div> 
-            <!-- Product 5 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Charlotte Tilbury"
-                data-price="302.00"
-                data-rating="4.6">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/p_charlotte3.jpg" class="product-img" alt="Product 1">
-                    <img src="../images/p_charlotte4.jpg" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="infos">
-                        <h3>Pillow Talk Multi-Glow</h3>
-                        <p>Charlotte Tilbury</p>
-                        <p class="meta">Cream-powder highlighter that delivers a candlelit glow from within.</p>
-
-                    <div class="action">
-                        <span class="price">$302.00</span>
-                        <span class="rating">
-                        <img src="../images/Star.png" class="star" alt="">
-                        4.6
-                        </span>
-                    </div>
-
-                    <div class="buttons">
-                        <a href="../../Sale/view_product/view_sale.html?id=5" class="btn-outline">View Detail</a>
-                        <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 6 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/p_dior3.webp" class="product-img" alt="Product 1">
-                    <img src="../images/p_dior4.png" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="infos">
-                    <div class="text-content">
-                        <h3>Dior Addict Lip Glow</h3>
-                        <p>Dior</p>
-                        <p class="meta">Dior Addict Lip Glow is the iconic Dior tinted lip balm that is the perfect combination of lip care and makeup.</p>
-                    </div>
-                    <div class="bottom">
-                        <div class="action">
-                            <span class="price">$24.99</span>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
-        <!--Navigation-->
-        <button class="navigation left" id="preBestsellers"><img src="../images/prev.png"></button>
-        <button class="navigation right" id="nextBestsellers"><img src="../images/next.png"></button>
-        <button type="button" name="viewallBestsellers" id="viewallBestsellers" class="viewall">VIEW ALL</button>
     </div>
-    </section>
-<!--REWARD-->
-    <section class="reward-section">
-        <div class="reward-text">
-            <p class="subtitle">JOIN WITH 100 POINTS</p>
-            <h2>Get Rewarded While You Shop</h2>
-            <button type="button" id="shopnow">SHOP NOW</button>
-        </div>
-        <div class="reward-image">
-            <img src="../images/img_getawards.png" alt="Celebration">
-        </div>
-    </section>
-<!--FLASH SALE-->
-    <section class="product-slider">
-    <p class="title"><span style="font-size: 32px; color: var(--branch-brown)">Flash sale</span><br>Our collection is refreshed regularly. Secure your favorites while they last.</p>
-    <div class="slider-container"> 
-        <div class="slider-wrapper" id="flashsale">
-            <!-- 10 sản phẩm -->
-            <!-- Product 1 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p11.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p12.png" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>LES 9 OMBRES</h3>
-                        <p>Channel</p>
-                        <p class="meta">Multi-effect eyeshadow palette from matte, satin, shimmer to metallic so you can freely express unlimited creativity.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 2 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p21.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p22.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>Dior Addict Lip Maximizer</h3>
-                        <p>Dior</p>
-                        <p class="meta">This lip care teams mirror shine, a maximum volume effect and immediate hydration that lasts 24h.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 3 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p31.jpg" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p32.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>Diorshow</h3>
-                        <p>Dior</p>
-                        <p class="meta">the Dior mascara composed of 90%* natural-origin ingredients, with no transfer and 24h wear.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 4 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p41.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p42.webp" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>Touche Eclat Glow Pact Cushion</h3>
-                        <p>YSL</p>
-                        <p class="meta">Multi-effect eyeshadow palette from matte, satin, shimmer to metallic so you can freely express unlimited creativity.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            <!-- Product 5 -->
-            <div class="product-card"
-                data-category="Face"
-                data-brand="Dior"
-                data-price="25.50"
-                data-rating="4.5">
-                <div class="image-wrap" style="position:relative; height:300px;">
-                    <img src="../images/fs_p51.webp" class="product-img" alt="Product 1">
-                    <img src="../images/fs_p52.jpg" class="product-img hover-image" alt="Product 1 (hover)">
-                </div>
-
-                <div class="info">
-                    <div class="text-content">
-                        <h3>LES 9 OMBRES</h3>
-                        <p>Channel</p>
-                        <p class="meta">Multi-effect eyeshadow palette from matte, satin, shimmer to metallic so you can freely express unlimited creativity.</p>
-                    </div>
-
-                    <div class="bottom">
-                        <div class="actions">
-                            <div class="allprice">
-                                <p class="oldprice">$26.50</p><span class="price">$25.50</span>
-                            </div>
-                            <span class="rating">
-                            <img src="../images/Star.png" class="star" alt="">
-                            4.5
-                            </span>
-                        </div>
-                        <div class="buttons">
-                            <a href="#" class="btn-outline">View Detail</a>
-                            <button class="add-to-cart"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Navigation-->
-        <button class="navigation left" id="prev"><img src="../images/prev.png"></button>
-        <button class="navigation right" id="next"><img src="../images/next.png"></button>
-        <button type="button" name="viewallflashsale" id="viewallflashsale" class="viewall">VIEW ALL</button>
+    <div class="category-card lips">
+      <img src="../images/lip.png" alt="Lip Products">
+      <div class="category-info">
+        <h3>Lips</h3>
+        <p>For Your Perfect Smile</p>
+        <button class="shopnow" id="shopnowlips">SHOP NOW</button>
+      </div>
     </div>
-    </section>
-<!--Explore Previous Collections
-    <section class="Prevcollections">
-        <h2>Explore Previous Collections</h2>
-        <div class="grid">
+    <div class="category-card eyes">
+      <img src="../images/eyes.png" alt="Eye Makeup">
+      <div class="category-info">
+        <h3>Eyes</h3>
+        <p>Expressive Beauty</p>
+        <button class="shopnow" id="shopnoweyes">SHOP NOW</button>
+      </div>
+    </div>
+  </section>
+<section class="bq-banner-section">
+  <div class="bq-banner-container">
+    <img src="../images/bannerr.png" class="bq-banner-img" data-open-beauty-quiz>
+    <button class="bq-banner-cta" data-open-beauty-quiz="framed">Do Quiz</button>
 
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1708572727896-117b5ea25a86" alt="">
-                <div class="card-content">
-                    <h3>Matcha Dream</h3>
-                    <p class="price">$5.90</p>
-                </div>
-            </div>
+    <div class="bq-framed-popup" id="bqFramedPopup" aria-hidden="true">
+      <div class="bq-frame">
+        <img src="../images/khung ảnh.png" class="bq-frame-img">
+        <button class="bq-frame-close">×</button>
+        <div class="bq-framed-host" id="bqFramedHost"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1529474944862-bf4949bd2f1a" alt="">
-                <div class="card-content">
-                    <h3>Brown Sugar Bliss</h3>
-                    <p class="price">$6.50</p>
-                </div>
-            </div>
+  <!-- ========================================================= -->
+  <!-- NEW COLLECTION + HOTSPOTS -->
+  <!-- ========================================================= -->
+  <section class="new-arrivals-row">
+    <div class="hero-left">
+      <img id="heroMainImage" src="../images/newcollection.png" alt="New Collection 2025">
+      <a href="#" id="viewallnew" class="viewallnew">VIEW FULL COLLECTION</a>
 
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1603898579713-fd8250f9f1b4" alt="">
-                <div class="card-content">
-                    <h3>Tropical Passion</h3>
-                    <p class="price">$5.20</p>
-                </div>
-            </div>
-        </div>
-    </section>-->
-<!-- Injected Footer -->
-<div id="footer-placeholder"></div>
-<script src="/header_footer/partials.js"></script>
-<script src="../js/script.js"></script>
-<script src="/quiz/quiz.js"></script>
+      <!-- HOTSPOTS -->
+      <div class="hotspot tag-blush"
+           data-id="104"
+           data-img="../images/nc2_channel.webp"
+           data-name="Chanel Blush"
+           style="top: 21.5%; left: 25%;"></div>
+      <div class="hotspot tag-lipstick"
+           data-id="102"
+           data-img="../images/nc_diorlip.png"
+           data-name="Dior Rouge Lipstick"
+           style="top: 38%; left: 52.4%;"></div>
+      <div class="hotspot tag-mascara"
+           data-id="103"
+           data-img="../images/nc_mascara1.png"
+           data-name="By Terry Mascara"
+           style="top: 42%; left: 68.4%;"></div>
+      <div class="hotspot"
+           data-id="105"
+           data-img="../images/nc2_dior.png"
+           data-name="Giorgio Armani Lipstick"
+           style="top: 45%; left: 85%;"></div>
+      <div class="hotspot"
+           data-id="101"
+           data-img="../images/nc_channel.png"
+           data-name="Chanel Eyeliner"
+           style="top: 75.5%; left: 28%;"></div>
+    </div>
+    <div class="hero-right">
+      <img src="../images/nc_banner1.jpg" alt="New Collection Banner">
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- BEST SELLERS - GSAP 3D GALLERY -->
+  <!-- ========================================================= -->
+  <section class="bestseller-gsap">
+    <div class="gsap-title-wrapper">
+      <h2 class="gsap-title">Best <span>Sellers</span></h2>
+      <p class="gsap-subtitle">Discover our most loved products</p>
+    </div>
+    <div class="gsap-gallery">
+      <div class="main">
+        <div class="mainBoxes"></div>
+      </div>
+      <div class="mainClose">
+        <svg viewBox="0 0 60 60">
+          <circle cx="30" cy="30" r="28" fill="rgba(0,0,0,0.4)"/>
+          <path d="M18,18L42,42 M42,18L18,42" stroke="#fff" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- REWARD SECTION -->
+  <!-- ========================================================= -->
+  <section class="reward-section">
+    <div class="reward-text">
+      <p class="subtitle">JOIN WITH 100 POINTS</p>
+      <h2>Get Rewarded While You Shop</h2>
+      <button id="shopnow">SHOP NOW</button>
+    </div>
+    <div class="reward-image">
+      <img src="../images/7-millefee-makeup.jpg" alt="Earn Rewards">
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- FLASH SALE – FAN3 + ROW6 (ĐÃ SỬA CHUẨN) -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+<!-- FLASH SALE – SIÊU NHỎ GỌN + THÔNG BÁO NỔI BẬT -->
+<!-- ========================================================= -->
+<section class="flash-sale-section">
+  <div class="container">
+    <!-- Tiêu đề + Thông báo -->
+    <div class="section-header">
+      <h2 class="flash-title">
+        <span class="gradient-text">FLASH</span> SALE
+        <span class="sale-badge">UP TO 60% OFF</span>
+      </h2>
+      <p class="section-subtitle">
+        <span class="timer-text">Kết thúc trong:</span>
+        <span id="countdown" class="countdown">23:59:59</span>
+      </p>
+    </div>
+
+    <div class="flash-wrapper">
+      <!-- 3 ẢNH QUẠT – SIÊU NHỎ GỌN -->
+      <div id="fan3" class="fan-3"></div>
+
+      <!-- 6 SẢN PHẨM – BUNG RA MỞ RỘNG -->
+      <div id="row6" class="track-wrapper">
+        <ul class="track" id="trackList"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- ✅ FOOTER (INJECTED BY partials.js) -->
+  <div id="footer-placeholder"></div>
+
+  <!-- ========================================================= -->
+  <!-- SCRIPTS -->
+  <!-- ========================================================= -->
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+  <!-- PARTIALS (HEADER/FOOTER) -->
+  <script src="/header_footer/partials.js"></script>
+
+  <!-- MAIN SCRIPT (ĐÃ SỬA FLASH SALE) -->
+  <script src="../js/script.js"></script>
+
+  <!-- ✅ TỰ ĐỘNG ẨN INTRO VIDEO SAU 3S -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const intro = document.getElementById("introContainer");
+      setTimeout(() => {
+        intro.classList.add("hidden");
+        setTimeout(() => intro.remove(), 800);
+      }, 3000);
+    });
+  </script>
+
 </body>
 </html>

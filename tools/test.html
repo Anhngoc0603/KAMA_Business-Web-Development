@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAMA</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='../style/mainstyle.css'>
+    <link rel="stylesheet" href="/header_footer/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        /* ===== TRẠNG THÁI FAN ===== */
+        .cardfan {
+          width: 320px;
+          margin: 2rem auto;
+          position: relative;
+          cursor: pointer;
+          transition: opacity .5s ease;
+        }
+
+        .cardfan img {
+          position: absolute;
+          width: 100%;
+          border: 12px solid #fffbe7;
+          border-radius: 10px;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+          transform-origin: center 400px;
+          transition: transform .8s ease;
+        }
+
+        .cardfan img:nth-child(1) { transform: rotate(12deg); }
+        .cardfan img:nth-child(2) { transform: rotate(0deg); }
+        .cardfan img:nth-child(3) { transform: rotate(-12deg); }
+
+        .cardfan.hidden {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        /* ===== HÀNG 6 ẢNH BUNG RA ===== */
+        .expanded-row {
+          width: 100%;
+          max-width: 1200px;
+          margin: 2rem auto;
+          display: none;
+          justify-content: center;
+          gap: 20px;
+          padding: 0 20px;
+          flex-wrap: wrap;
+        }
+
+        .expanded-row.active {
+          display: flex;
+          animation: fadeIn 0.6s ease;
+        }
+
+        .expanded-row img {
+          width: 15%;
+          min-width: 140px;
+          border-radius: 10px;
+          border: 8px solid #fffbe7;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+          transition: transform .4s ease;
+        }
+
+        .expanded-row img:hover {
+          transform: scale(1.08);
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive cho mobile */
+        @media (max-width: 768px) {
+          .cardfan { width: 280px; }
+          .expanded-row img { width: 30%; min-width: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Injected Header -->
+<div id="header-placeholder"></div>
+
+<!-- ... [Các section khác giữ nguyên: hero, category, new arrivals, bestsellers, reward] ... -->
+
+<!--FLASH SALE - CARD FAN EXPAND-->
+<section style="padding: 80px 0; background-color: var(--petal-white); text-align: center;">
+  <p class="title" style="font-size: 32px; color: var(--branch-brown); margin-bottom: 10px;">
+    Flash Sale
+  </p>
+  <p style="color: #8c7b7b; font-size: 16px; margin-bottom: 30px;">
+    Tap to reveal the full collection
+  </p>
+
+  <!-- 3 ẢNH FAN -->
+  <div class="cardfan" id="cardfan">
+    <!-- Sẽ được JS fill từ products.json -->
+  </div>
+
+  <!-- 6 ẢNH BUNG RA -->
+  <div class="expanded-row" id="expandedRow">
+    <!-- Sẽ được JS fill từ products.json -->
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="/header_footer/partials.js"></script>
+<script src="../js/script.js"></script>
+
+<script>
+/* ================== FLASH SALE - CARD FAN EXPAND ================== */
+document.addEventListener('DOMContentLoaded', async () => {
+  const cardfan = document.getElementById("cardfan");
+  const expanded = document.getElementById("expandedRow");
+  let isExpanded = false;
+
+  // Load products.json
+  let products = [];
+  try {
+    const res = await fetch('../../Sale/products.json');
+    products = await res.json();
+  } catch (err) {
+    console.error("Không load được products.json", err);
+    return;
+  }
+
+  // Lấy 6 sản phẩm đầu tiên
+  const flashProducts = products.slice(0, 6);
+
+  // Tạo 3 ảnh fan
+  flashProducts.slice(0, 3).forEach((p, i) => {
+    const img = document.createElement('img');
+    img.src = p.img;
+    img.alt = p.name;
+    img.loading = 'lazy';
+    cardfan.appendChild(img);
+  });
+
+  // Tạo 6 ảnh bung ra
+  flashProducts.forEach(p => {
+    const img = document.createElement('img');
+    img.src = p.img;
+    img.alt = p.name;
+    img.loading = 'lazy';
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', () => {
+      window.location.href = `../../Sale/view_product/view_sale.html?id=${p.id}`;
+    });
+    expanded.appendChild(img);
+  });
+
+  // Click để mở rộng / thu gọn
+  cardfan.addEventListener("click", () => {
+    if (!isExpanded) {
+      cardfan.classList.add("hidden");
+      expanded.classList.add("active");
+    } else {
+      cardfan.classList.remove("hidden");
+      expanded.classList.remove("active");
+    }
+    isExpanded = !isExpanded;
+  });
+
+  expanded.addEventListener("click", (e) => {
+    if (isExpanded && !e.target.closest('img')) {
+      cardfan.classList.remove("hidden");
+      expanded.classList.remove("active");
+      isExpanded = false;
+    }
+  });
+});
+</script>
+
+</body>
+</html>

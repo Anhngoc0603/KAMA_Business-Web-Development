@@ -234,28 +234,57 @@
   <div id="footer-placeholder"><div style="text-align:center; padding: 20px; color:#aaa;">Loading Footer...</div></div>
 <script src="/header_footer/partials.js"></script>
 <script>
-// === KHAI BÁO BIẾN TOÀN CỤC (GLOBAL SCOPE) ===
-// Sửa lỗi nghiêm trọng: Di chuyển các biến này ra ngoài để mọi hàm đều truy cập được
+// =====================================================
+// ✅ HÀM HỖ TRỢ BẮT BUỘC PHẢI CÓ
+// =====================================================
+
+// ✅ Load header/footer từ thư mục /header_footer
+async function loadHTML(file, placeholderId) {
+  try {
+    const res = await fetch(`/header_footer/${file}`);
+    const html = await res.text();
+    document.getElementById(placeholderId).innerHTML = html;
+  } catch (err) {
+    console.error(`❌ Failed to loadHTML (${file}):`, err);
+  }
+}
+
+// ✅ Chuẩn hóa chuỗi để so sánh, loại trùng sản phẩm
+function normalizeText(str) {
+  return String(str || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+// =====================================================
+// ✅ BIẾN GLOBAL
+// =====================================================
 let pageCart = JSON.parse(localStorage.getItem('cart') || '[]');
 let allProducts = [];
 let currentFilters = { category: 'ALL-IN', brand: null, price: 300 };
+
 const DEFAULT_IMAGE_PATH = '/header_footer/images/LOGO.png';
 const DEFAULT_BRAND_IMAGE_PATH = '/header_footer/images/LOGO.png';
 const TOP_SEARCH_RESULTS = 8;
 
-// === HÀM HỖ TRỢ (HELPERS) ===
+// =====================================================
+// ✅ CÁC HÀM HỖ TRỢ
+// =====================================================
 function updateCartCount() {
-    const cartData = JSON.parse(localStorage.getItem('cart') || '[]');
-    const count = cartData.reduce((sum, item) => sum + item.qty, 0);
-    const cartIcon = document.querySelector('.cart-count');
-    if (cartIcon) cartIcon.textContent = count;
+  const cartData = JSON.parse(localStorage.getItem('cart') || '[]');
+  const count = cartData.reduce((sum, item) => sum + item.qty, 0);
+  const cartIcon = document.querySelector('.cart-count');
+  if (cartIcon) cartIcon.textContent = count;
 }
 
 function getValidImageUrl(path) {
-  if (!path) return DEFAULT_BRAND_IMAGE_PATH; // Ảnh mặc định
+  if (!path) return DEFAULT_BRAND_IMAGE_PATH;
   if (path.startsWith('./images/')) return path.replace('./images/', '../images/');
   return path;
 }
+
 function triggerFireworks() {
   const container = document.querySelector('.fireworks-container');
   for (let i = 0; i < 8; i++) {
@@ -269,10 +298,13 @@ function triggerFireworks() {
     setTimeout(() => p.remove(), 1800);
   }
 }
-// === HÀM KHỞI TẠO SỰ KIỆN (EVENT HANDLERS) ===
+
+// =====================================================
+// ✅ HEADER EVENTS
+// =====================================================
 function initHeaderEvents() {
   console.log('🔄 Initializing header events...');
- 
+
   const menuToggler = document.querySelector('.menu-toggler');
   const navbar = document.querySelector('.navbar');
   const searchIcon = document.querySelector('.search .icon');
@@ -281,23 +313,18 @@ function initHeaderEvents() {
   const shopAll = document.querySelector('.shop-all');
   const menuCategories = document.querySelector('.menu-categories');
   const nextBtns = document.querySelectorAll('.next-btn');
-  // 🟢 Mobile menu toggle
+
   if (menuToggler && navbar) {
-    // Phải dùng .cloneNode và .replaceWith để xóa các event listener cũ
     const newMenuToggler = menuToggler.cloneNode(true);
     menuToggler.parentNode.replaceChild(newMenuToggler, menuToggler);
-   
     newMenuToggler.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      console.log('📱 Menu toggler clicked');
       navbar.classList.toggle('active');
       document.body.style.overflow = navbar.classList.contains('active') ? 'hidden' : '';
     });
-  } else {
-    console.warn('Menu toggler or navbar not found');
   }
-  // 🟢 Shop All dropdown
+
   if (shopAll && menuCategories) {
     shopAll.addEventListener('click', (e) => {
       e.preventDefault();
@@ -306,18 +333,14 @@ function initHeaderEvents() {
       shopAll.classList.toggle('active');
     });
   }
-  // 🟢 Search functionality
+
   if (searchIcon && searchOverlay) {
-    searchIcon.addEventListener('click', () => {
-      searchOverlay.classList.add('active');
-    });
+    searchIcon.addEventListener('click', () => searchOverlay.classList.add('active'));
   }
-  if (closeSearch && searchOverlay) {
-    closeSearch.addEventListener('click', () => {
-      searchOverlay.classList.remove('active');
-    });
+  if (closeSearch) {
+    closeSearch.addEventListener('click', () => searchOverlay.classList.remove('active'));
   }
-  // 🟢 Next buttons in categories
+
   nextBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -326,44 +349,52 @@ function initHeaderEvents() {
       list.classList.toggle('active');
     });
   });
-  // 🟢 Close menus when clicking outside
+
   document.addEventListener('click', (e) => {
-    if (navbar && navbar.classList.contains('active') &&
-        !navbar.contains(e.target) &&
-        !e.target.closest('.menu-toggler')) {
+    if (navbar?.classList.contains('active') && !navbar.contains(e.target) && !e.target.closest('.menu-toggler')) {
       navbar.classList.remove('active');
       document.body.style.overflow = '';
     }
-    if (menuCategories && menuCategories.classList.contains('active') &&
-        !menuCategories.contains(e.target) &&
-        !e.target.closest('.shop-all')) {
+    if (menuCategories?.classList.contains('active') && !menuCategories.contains(e.target) && !e.target.closest('.shop-all')) {
       menuCategories.classList.remove('active');
-      if (shopAll) shopAll.classList.remove('active');
+      shopAll?.classList.remove('active');
     }
-    if (searchOverlay && searchOverlay.classList.contains('active') &&
-        !searchOverlay.contains(e.target) &&
-        !e.target.closest('.search .icon')) {
+    if (searchOverlay?.classList.contains('active') && !searchOverlay.contains(e.target) && !e.target.closest('.search .icon')) {
       searchOverlay.classList.remove('active');
     }
   });
-  if (navbar) navbar.addEventListener('click', (e) => e.stopPropagation());
-  if (menuCategories) menuCategories.addEventListener('click', (e) => e.stopPropagation());
+
+  navbar?.addEventListener('click', (e) => e.stopPropagation());
+  menuCategories?.addEventListener('click', (e) => e.stopPropagation());
+
   console.log('✅ Header events initialized successfully');
 }
+
+// =====================================================
+// ✅ FILTER EVENTS
+// =====================================================
 function setupFilterEvents() {
   console.log('🔄 Initializing filter events...');
+
   document.querySelectorAll('#categoryCircles .circle').forEach(circle => {
     circle.addEventListener('click', () => {
       const value = circle.getAttribute('data-value');
       currentFilters.category = value;
+
       document.querySelectorAll('#categoryCircles .circle').forEach(c => c.classList.remove('active'));
       circle.classList.add('active');
+
       applyFilters();
       updateCount();
       triggerFireworks();
-      window.scrollTo({ top: document.querySelector('.products-page-container').offsetTop - 100, behavior: 'smooth' });
+
+      window.scrollTo({
+        top: document.querySelector('.products-page-container').offsetTop - 100,
+        behavior: 'smooth'
+      });
     });
   });
+
   document.getElementById('clearFilters').addEventListener('click', e => {
     e.preventDefault();
     currentFilters = { category: 'ALL-IN', brand: null, price: 300 };
@@ -374,14 +405,17 @@ function setupFilterEvents() {
     applyFilters();
     updateCount();
   });
+
   const slider = document.getElementById('priceSlider');
   const valueEl = document.getElementById('priceValue');
+
   slider.addEventListener('input', () => {
     currentFilters.price = slider.value;
     valueEl.textContent = `$${slider.value}`;
     applyFilters();
     updateCount();
   });
+
   document.querySelectorAll('#brandFilters input').forEach(cb => {
     cb.addEventListener('change', () => {
       const checked = Array.from(document.querySelectorAll('#brandFilters input:checked')).map(c => c.value);
@@ -390,12 +424,15 @@ function setupFilterEvents() {
       updateCount();
     });
   });
+
   console.log('✅ Filter events initialized.');
 }
-// === HÀM XỬ LÝ DỮ LIỆU (DATA HANDLERS) ===
+
+// =====================================================
+// ✅ LOAD PRODUCTS
+// =====================================================
 async function loadProducts() {
   try {
-    // Hợp nhất dữ liệu từ nhiều nguồn để đảm bảo có đủ sản phẩm cho mỗi category
     const sources = [
       { url: '/categories/full.json', base: '/categories' },
       { url: '/Best_Sellers/full.json', base: '/Best_Sellers' },
@@ -405,23 +442,19 @@ async function loadProducts() {
 
     const normalizeImagePath = (p, base) => {
       if (!p) return p;
-      if (typeof p === 'string' && p.startsWith('./images/')) {
+      if (typeof p === 'string' && p.startsWith('./images/'))
         return p.replace('./images/', `${base}/images/`);
-      }
-      if (typeof p === 'string' && p.startsWith('images/') && base === '/Sale') {
+      if (typeof p === 'string' && p.startsWith('images/') && base === '/Sale')
         return `${base}/${p}`;
-      }
-      return p; // Giữ nguyên URL tuyệt đối hoặc các trường hợp khác
+      return p;
     };
 
     const normalizeBrandImage = (b, base) => {
       if (!b) return b;
-      if (typeof b === 'string' && b.startsWith('./images/')) {
+      if (typeof b === 'string' && b.startsWith('./images/'))
         return b.replace('./images/', `${base}/images/`);
-      }
-      if (typeof b === 'string' && b.startsWith('images/') && base === '/Sale') {
+      if (typeof b === 'string' && b.startsWith('images/') && base === '/Sale')
         return `${base}/${b}`;
-      }
       return b;
     };
 
@@ -441,7 +474,8 @@ async function loadProducts() {
         merged = merged.concat(list);
       }
     }
-    // Loại bỏ trùng theo brand + name (ưu tiên bản đầu tiên gặp)
+
+    // ✅ Loại trùng theo brand + name
     const seenKeys = new Set();
     allProducts = merged.filter(p => {
       const key = `${normalizeText(p.brand)}|${normalizeText(p.name)}`;
@@ -449,126 +483,110 @@ async function loadProducts() {
       seenKeys.add(key);
       return true;
     });
-    // SỬA LỖI: Bỏ comment khối này
+
+    // ✅ Render brand filters
     const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
     const brandContainer = document.getElementById('brandFilters');
     brandContainer.innerHTML = brands.map(brand => `
       <label><input type="checkbox" value="${brand}"> ${brand}</label>
     `).join('');
+
+    // ✅ Render category circles
     const categories = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
     const catContainer = document.getElementById('categoryCircles');
     catContainer.innerHTML = "";
+
     categories.forEach((cat, index) => {
       const prod = allProducts.find(p => p.category === cat);
       const img = prod?.images?.[0] || DEFAULT_IMAGE_PATH;
-      const html = `
-        <div class="circle" data-value="${cat}" style="animation-delay: ${index * 0.1}s;">
-         <img src="${img}" alt="${cat}" onerror="this.src='${DEFAULT_IMAGE_PATH}'">
-         <div class="text"><h3>${cat}</h3></div>
-       </div>`;
-      catContainer.insertAdjacentHTML('beforeend', html);
+
+      catContainer.insertAdjacentHTML('beforeend', `
+        <div class="circle" data-value="${cat}" style="animation-delay:${index * 0.1}s;">
+          <img src="${img}" alt="${cat}" onerror="this.src='${DEFAULT_IMAGE_PATH}'">
+          <div class="text"><h3>${cat}</h3></div>
+        </div>
+      `);
     });
+
+    // ✅ Render brand canvas grid
     const brandGrid = document.getElementById('brandGrid');
     brandGrid.innerHTML = "";
+
     const uniqueBrands = [...new Map(
       allProducts.map(p => [p.brand, { name: p.brand, logo: p.brandImage }])
     ).values()].filter(b => b.logo);
+
     uniqueBrands.forEach((brand, i) => {
-      const logoImg = getValidImageUrl(brand.logo); // Dùng hàm helper
+      const logoImg = getValidImageUrl(brand.logo);
       const safeId = `grad-${encodeURIComponent(brand.name)}-${i}`;
-      const html = `
+
+      brandGrid.insertAdjacentHTML('beforeend', `
         <a href="#" class="canvas" data-brand="${brand.name}" onclick="filterByBrand('${brand.name}')">
-         <div class="canvas_border">
-           <svg><defs>
-             <linearGradient id="${safeId}" x1="0%" y1="0%" x2="100%" y2="0%">
-               <stop offset="0%" stop-color="#E6A6B0"></stop>
-               <stop offset="100%" stop-color="#F9C6CF"></stop>
-             </linearGradient>
-           </defs>
-           <rect width="100%" height="100%" fill="none" stroke="url(#${safeId})" stroke-width="4"/>
-         </svg>
-         </div>
+          <div class="canvas_border">
+            <svg><defs>
+              <linearGradient id="${safeId}" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#E6A6B0"></stop>
+                <stop offset="100%" stop-color="#F9C6CF"></stop>
+              </linearGradient>
+            </defs>
+              <rect width="100%" height="100%" fill="none" stroke="url(#${safeId})" stroke-width="4"></rect>
+            </svg>
+          </div>
           <div class="canvas_img-wrapper">
-           <img class="canvas_img" src="${logoImg}" alt="${brand.name}" onerror="this.src='${DEFAULT_BRAND_IMAGE_PATH}'">
-         </div>
-         <div class="canvas_copy">
-           <span class="canvas_copy_subtitle">Luxury Brand</span>
-           <strong class="canvas_copy_title">${brand.name}</strong>
-         </div>
-       </a>`;
-      brandGrid.insertAdjacentHTML('beforeend', html);
+            <img class="canvas_img" src="${logoImg}" onerror="this.src='${DEFAULT_BRAND_IMAGE_PATH}'">
+          </div>
+          <div class="canvas_copy">
+            <span class="canvas_copy_subtitle">Luxury Brand</span>
+            <strong class="canvas_copy_title">${brand.name}</strong>
+          </div>
+        </a>
+      `);
     });
+
     renderProducts(allProducts);
     updateCount();
-    setupFilterEvents(); // Đổi tên hàm
+    setupFilterEvents();
+
   } catch (err) {
-    console.error('❌ Lỗi tải sản phẩm chi tiết:', err);
+    console.error('❌ Lỗi tải sản phẩm:', err);
     document.getElementById('products-grid').innerHTML =
       '<p style="color:red;text-align:center;">Lỗi tải sản phẩm</p>';
   }
 }
-// Render products into a specific grid element
-function renderProductsToGrid(list, gridEl) {
-  if (!gridEl) return;
-  if (!list || list.length === 0) {
-    gridEl.innerHTML = '<p style="text-align:center; color:#aaa;">No products found.</p>';
-    return;
-  }
-  const html = list.map(p => {
-    const img1 = p.images?.[0] || DEFAULT_IMAGE_PATH;
-    const img2 = p.images?.[1] || img1;
-    const hasSale = p.originalPrice && p.originalPrice > p.price;
-    const isNew = p.isNew === true;
-    return `
-      <div class="product-card">
-        <div class="product-image-container">
-          ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
-          ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
-          <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='${DEFAULT_IMAGE_PATH}'">
-          <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
-        </div>
-        <div class="info">
-          <h3 title="${p.name}">${p.name}</h3>
-          <p>${p.description || ''}</p>
-          <div class="meta">SKU: ${p.id} • ${p.brand}</div>
-          <div class="actions">
-            <div><span class="price">$${Number(p.price || 0).toFixed(2)}</span>${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}</div>
-            <div class="rating"><i class="fas fa-star star"></i> ${p.rating?.toFixed(1) || '0.0'}</div>
-          </div>
-          <div class="buttons">
-            <button class="btn-outline" onclick="addToCart(${p.id}, this)"></button>
-            <button class="btn-view-details" onclick="viewDetail(${p.id})"><span>View Details</span></button>
-          </div>
-        </div>
-      </div>`;
-  }).join('');
-  gridEl.innerHTML = html;
-}
+
+// =====================================================
+// ✅ RENDER PRODUCTS
+// =====================================================
 function renderProducts(list) {
   const grid = document.getElementById('products-grid');
+
   if (!list || list.length === 0) {
-    grid.innerHTML = '<p style="text-align:center; color:#aaa;">No products found.</p>';
+    grid.innerHTML = '<p style="text-align:center;color:#aaa;">No products found.</p>';
     return;
   }
+
   const html = list.map(p => {
     const img1 = p.images?.[0] || DEFAULT_IMAGE_PATH;
     const img2 = p.images?.[1] || img1;
     const hasSale = p.originalPrice && p.originalPrice > p.price;
     const isNew = p.isNew === true;
+
     return `
       <div class="product-card">
         <div class="product-image-container">
           ${isNew ? `<span class="badge badge-new">NEW</span>` : ''}
           ${hasSale ? `<span class="badge badge-sale">SALE</span>` : ''}
-          <img src="${img1}" alt="${p.name}" class="product-img" onerror="this.src='${DEFAULT_IMAGE_PATH}'">
-          <img src="${img2}" alt="${p.name}" class="hover-image" onerror="this.src='${img1}'">
+          <img src="${img1}" class="product-img" onerror="this.src='${DEFAULT_IMAGE_PATH}'">
+          <img src="${img2}" class="hover-image" onerror="this.src='${img1}'">
         </div>
         <div class="info">
-          <h3 title="${p.name}">${p.name}</h3>
+          <h3>${p.name}</h3>
           <p>${p.description || ''}</p>
           <div class="meta">SKU: ${p.id} • ${p.brand}</div>
           <div class="actions">
-            <div><span class="price">$${Number(p.price || 0).toFixed(2)}</span>${hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''}</div>
+            <div><span class="price">$${Number(p.price || 0).toFixed(2)}</span>${
+              hasSale ? `<span class="original-price">$${Number(p.originalPrice).toFixed(2)}</span>` : ''
+            }</div>
             <div class="rating"><i class="fas fa-star star"></i> ${p.rating?.toFixed(1) || '0.0'}</div>
           </div>
           <div class="buttons">
@@ -576,82 +594,144 @@ function renderProducts(list) {
             <button class="btn-view-details" onclick="viewDetail(${p.id})"><span>View Details</span></button>
           </div>
         </div>
-      </div>`;
+      </div>
+    `;
   }).join('');
+
   grid.innerHTML = html;
 }
-function updateCount() {
-  const filtered = applyFilters(); // Sẽ gọi applyFilters 1 lần
-  document.getElementById('productCount').textContent = `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
-}
+
+// =====================================================
+// ✅ FILTER PRODUCTS
+// =====================================================
 function applyFilters() {
-  let result = [...allProducts]; // Dùng biến global
-  if (currentFilters.category && currentFilters.category !== 'ALL-IN') { // Dùng biến global
+  let result = [...allProducts];
+
+  if (currentFilters.category && currentFilters.category !== 'ALL-IN') {
     result = result.filter(p => p.category === currentFilters.category);
   }
   if (currentFilters.subtype) {
     const sub = String(currentFilters.subtype).toLowerCase();
     result = result.filter(p => String(p.subtype || '').toLowerCase() === sub);
   }
-  if (currentFilters.brand) { // Dùng biến global
+  if (currentFilters.brand) {
     result = result.filter(p => p.brand === currentFilters.brand);
   }
+
   result = result.filter(p => p.price <= currentFilters.price);
+
   renderProducts(result);
+
   return result;
 }
-// === CÁC HÀM TƯƠNG TÁC (ACTIONS) ===
-window.addToCart = (id, btn) => {
-  const product = allProducts.find(p => p.id === id); // Dùng biến global
-  if (!product) return;
-  const existing = pageCart.find(item => item.id === id); // Dùng biến global
-  if (existing) existing.qty += 1;
-  else pageCart.push({ ...product, qty: 1 });
+
+function updateCount() {
+  const filtered = applyFilters();
+  document.getElementById('productCount').textContent =
+    `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
+}
+
+// =====================================================
+// ✅ CART + VIEW DETAIL
+// =====================================================
+window.addToCart = (id) => {
+  const p = allProducts.find(x => x.id === id);
+  if (!p) {
+    console.error("❌ Không tìm thấy sản phẩm:", id);
+    return;
+  }
+
+  const mainImage =
+    Array.isArray(p.images) && p.images.length > 0
+      ? p.images[0]
+      : "/header_footer/images/LOGO.png";
+
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  const existing = cart.find(item => item.id === id);
+  if (existing) {
+    existing.qty = (existing.qty || 1) + 1;
+  } else {
+    cart.push({
+      id: p.id,
+      name: p.name,
+      price: Number(p.price) || 0,
+      qty: 1,
+      image: mainImage,
+      images: p.images || [mainImage],
+      brand: p.brand || "",
+      category: p.category || ""
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  triggerFireworks();
+};
+
+
   localStorage.setItem('cart', JSON.stringify(pageCart));
   updateCartCount();
   triggerFireworks();
-  // Hiện popup thông báo thêm giỏ hàng nếu có hàm global
+
   if (typeof window.showAddToCartMessage === 'function') {
     window.showAddToCartMessage();
   }
-};
+
 window.viewDetail = (id) => {
   window.location.href = `/categories/view_detail.html?id=${id}`;
 };
+
 window.filterByBrand = (brandName) => {
-  currentFilters.brand = brandName; // Gán vào biến global
+  currentFilters.brand = brandName;
   document.querySelectorAll('#brandFilters input').forEach(cb => cb.checked = false);
   const cb = document.querySelector(`#brandFilters input[value="${brandName}"]`);
   if (cb) cb.checked = true;
+
   applyFilters();
   updateCount();
   triggerFireworks();
 };
-// === HÀM KHỞI CHẠY CHÍNH (MAIN EXECUTION) ===
+
+// =====================================================
+// ✅ MAIN EXECUTION – CHỈ CÓ 1 LẦN
+// =====================================================
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 Starting application...');
- 
-  const headerPlaceholder = document.getElementById('header-placeholder');
-  const observer = new MutationObserver((mutationsList, observer) => {
-      for(let mutation of mutationsList) {
-          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-              if (headerPlaceholder.querySelector('.header')) {
-                  console.log('Header loaded, initializing events and cart count.');
-                  initHeaderEvents();
-                  updateCartCount();
-                  observer.disconnect(); 
-                  break;
-              }
-          }
-      }
-  });
-  observer.observe(headerPlaceholder, { childList: true, subtree: true });
 
-  // Cập nhật giỏ hàng ngay lập tức và sau đó khi header được tải
+  try {
+    await Promise.all([
+      loadHTML('header.html', 'header-placeholder'),
+      loadHTML('footer.html', 'footer-placeholder')
+    ]);
+
+    setTimeout(initHeaderEvents, 120);
+  } catch (err) {
+    console.error('❌ Failed to load header/footer:', err);
+  }
+
   updateCartCount();
-  // Tải sản phẩm (hàm này sẽ tự động gọi render, updateCount, và setupFilterEvents)
+
   await loadProducts();
+
+  // ✅ tự động lọc brand nếu URL có ?brand=XYZ
+  const params = new URLSearchParams(window.location.search);
+  const brandFromURL = params.get('brand');
+
+  if (brandFromURL) {
+    currentFilters.brand = brandFromURL;
+
+    const checkbox = document.querySelector(`#brandFilters input[value="${brandFromURL}"]`);
+    if (checkbox) checkbox.checked = true;
+
+    applyFilters();
+    updateCount();
+
+    const titleEl = document.querySelector('h2');
+    if (titleEl) titleEl.textContent = `Brand: ${brandFromURL}`;
+  }
 });
 </script>
+
 </body>
 </html>

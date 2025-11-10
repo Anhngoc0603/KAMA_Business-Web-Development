@@ -2,16 +2,6 @@
   function initHeaderScript() {
     if (window.__headerScriptInitialized) return;
     window.__headerScriptInitialized = true;
-  // ================== AUTH HELPERS ==================
-  function isLoggedIn() {
-    try {
-      if (window.Auth && typeof Auth.isLoggedIn === 'function') return !!Auth.isLoggedIn();
-      return localStorage.getItem('user.isLoggedIn') === 'true';
-    } catch (_) { return false; }
-  }
-  function redirectToLogin() {
-    navigateToRoot('/auth/login.html');
-  }
   // ================== NAVIGATION HELPER ==================
   // Điều hướng an toàn tới đường dẫn gốc của dự án, hoạt động với cả server (http) và mở file trực tiếp (file:///)
   function navigateToRoot(pathWithQuery) {
@@ -308,83 +298,6 @@
     }, 100);
 
     window.addEventListener('resize', handleResize);
-  }
-
-  // ================== ACCOUNT DROPDOWN ==================
-  const accountBtn = document.getElementById('accountMenuBtn');
-  const accountDropdown = document.getElementById('accountDropdown');
-  if (accountBtn && accountDropdown) {
-    accountBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!isLoggedIn()) {
-        redirectToLogin();
-        return;
-      }
-      accountDropdown.classList.toggle('open');
-    });
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      const withinMenu = accountDropdown.contains(e.target) || accountBtn.contains(e.target);
-      if (!withinMenu) accountDropdown.classList.remove('open');
-    });
-    // Close on ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') accountDropdown.classList.remove('open');
-    });
-    // Close after navigating via item, and gate protected links
-    accountDropdown.querySelectorAll('.dropdown-item').forEach(a => {
-      a.addEventListener('click', (ev) => {
-        const href = a.getAttribute('href') || '';
-        if (!isLoggedIn() && href && !href.includes('/auth/login.html')) {
-          ev.preventDefault();
-          redirectToLogin();
-          return;
-        }
-        accountDropdown.classList.remove('open');
-      });
-    });
-
-    // Update menu items based on auth state: My Account + Sign Out
-    try {
-      const items = Array.from(accountDropdown.querySelectorAll('.dropdown-item'));
-      if (isLoggedIn()) {
-        if (items[0]) {
-          items[0].textContent = 'My Account';
-          items[0].setAttribute('href', '/account/index.html');
-        }
-        // Ensure Sign Out item exists
-        let signOut = accountDropdown.querySelector('#headerSignOut');
-        if (!signOut) {
-          signOut = document.createElement('a');
-          signOut.className = 'dropdown-item';
-          signOut.id = 'headerSignOut';
-          signOut.href = '#';
-          signOut.textContent = 'Sign Out';
-          accountDropdown.appendChild(signOut);
-        }
-        signOut.addEventListener('click', (e) => {
-          e.preventDefault();
-          try {
-            if (window.Auth && typeof Auth.logout === 'function') Auth.logout();
-            else {
-              localStorage.removeItem('user.isLoggedIn');
-              localStorage.removeItem('user.email');
-              localStorage.removeItem('user.keepSignedIn');
-              localStorage.removeItem('user.provider');
-            }
-          } catch (_) {}
-          navigateToRoot('/1.homepage/html/landingpage.html');
-        });
-      } else {
-        if (items[0]) {
-          items[0].textContent = 'Sign In / Sign Up';
-          items[0].setAttribute('href', '/auth/login.html');
-        }
-        const signOut = accountDropdown.querySelector('#headerSignOut');
-        if (signOut) signOut.remove();
-      }
-    } catch (_) {}
   }
 
   function closeMobileMenu() {
@@ -759,38 +672,32 @@ window.filterProducts = function(query) {
   });
 };
 
-// ================== CART FUNCTIONALITY ==================
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+function updateCartCount() {
+  const stored = JSON.parse(localStorage.getItem('cart') || '[]');
+  const cartCount = document.querySelector('.cart-count');
 
-function addToCart(product) {
-  const existingItem = cart.find(item => item.id === product.id);
-  
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.push({
-      ...product,
-      quantity: 1
-    });
-  }
-  
-  localStorage.setItem('cart', JSON.stringify(cart));
+  if (!cartCount) return;
+
+  const totalItems = stored.reduce((sum, item) => {
+    return sum + (Number(item.qty ?? item.quantity ?? 0));
+  }, 0);
+
+  cartCount.textContent = totalItems;
+  cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+}
+
+// ✅ HÀM NÀY GIỜ *KHÔNG THÊM GIỎ HÀNG*
+//    -> Chỉ popup + update số lượng
+window.addToCartHeader = function () {
   updateCartCount();
   showAddToCartMessage();
-}
+};
 
-function updateCartCount() {
-  const cartCount = document.querySelector('.cart-count');
-  if (cartCount) {
-    const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity ?? item.qty) || 0), 0);
-    cartCount.textContent = totalItems;
-    cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
-  }
-}
 
+// ✅ POPUP CHUẨN – GIỮ NGUYÊN KHÔNG ĐỤNG GIỎ HÀNG
 function showAddToCartMessage() {
-  // Rich popup: "+1 new item added to cart" with close and Proceed
   let popup = document.querySelector('.cart-popup');
+
   if (!popup) {
     popup = document.createElement('div');
     popup.className = 'cart-popup';
@@ -803,7 +710,8 @@ function showAddToCartMessage() {
         </div>
       </div>
     `;
-    // Base styles to ensure it works even if CSS file not yet loaded
+
+    // Base style
     popup.style.cssText = `
       position: fixed;
       right: 20px;
@@ -820,69 +728,42 @@ function showAddToCartMessage() {
       padding: 14px 16px;
       min-width: 280px;
       border: 1px solid var(--soft-rose);
-      font-family: 'Playfair Display', serif;
+      font-family: 'Playfair-Display', serif;
     `;
+
     document.body.appendChild(popup);
 
-    const closeBtn = popup.querySelector('.cart-popup-close');
-    closeBtn.style.cssText = `
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 22px;
-      line-height: 1;
-      cursor: pointer;
-      margin-left: 8px;
-    `;
-    closeBtn.addEventListener('click', () => {
-      hideCartPopup();
-    });
+    // Close BTN
+    popup.querySelector('.cart-popup-close').onclick = hideCartPopup;
 
-    const checkoutBtn = popup.querySelector('.cart-popup-checkout');
-    checkoutBtn.style.cssText = `
-      background: #fff;
-      color: var(--branch-brown);
-      border: none;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-    `;
-    checkoutBtn.addEventListener('click', () => {
-      // Điều hướng an toàn hoạt động cả trên server http và khi mở file trực tiếp
+    // Checkout BTN
+    popup.querySelector('.cart-popup-checkout').onclick = () => {
       if (typeof window.navigateToRoot === 'function') {
         window.navigateToRoot('/checkout/checkout.html');
       } else {
         window.location.href = '/checkout/checkout.html';
       }
-    });
+    };
   }
 
-  // Update content if needed and show
-  const titleEl = popup.querySelector('.cart-popup-title');
-  if (titleEl) titleEl.textContent = '+1 new item added to cart';
   popup.style.opacity = '0';
   popup.style.display = 'flex';
+
   requestAnimationFrame(() => {
-    popup.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    popup.style.transition = 'opacity .25s ease, transform .25s ease';
     popup.style.transform = 'translateY(0)';
     popup.style.opacity = '1';
   });
 
-  // Auto hide after 5 seconds
   clearTimeout(window.__cartPopupTimer);
-  window.__cartPopupTimer = setTimeout(() => hideCartPopup(), 5000);
+  window.__cartPopupTimer = setTimeout(hideCartPopup, 5000);
 
   function hideCartPopup() {
-    if (!popup) return;
     popup.style.opacity = '0';
     popup.style.transform = 'translateY(-6px)';
-    setTimeout(() => {
-      popup.style.display = 'none';
-    }, 250);
+    setTimeout(() => popup.style.display = 'none', 250);
   }
 }
-
 // ================== WISHLIST FUNCTIONALITY ==================
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
@@ -925,7 +806,6 @@ function setupProductCardInteractions() {
     if (wishlistBtn) {
       wishlistBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!isLoggedIn()) { redirectToLogin(); return; }
         const product = getProductData(card);
         toggleWishlist(product);
         updateWishlistButton(wishlistBtn, product.id);
@@ -935,7 +815,6 @@ function setupProductCardInteractions() {
     if (addToCartBtn) {
       addToCartBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!isLoggedIn()) { redirectToLogin(); return; }
         const product = getProductData(card);
         addToCart(product);
       });
