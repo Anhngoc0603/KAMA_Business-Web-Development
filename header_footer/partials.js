@@ -43,6 +43,15 @@
         console.warn('Header/Footer sizing warning:', e);
       }
 
+      // Ensure auth state utility loads before header behavior script
+      if (!document.querySelector('script[data-auth-state-script]')) {
+        const a = document.createElement('script');
+        a.src = base + 'auth/state.js';
+        a.defer = true;
+        a.setAttribute('data-auth-state-script', 'true');
+        document.head.appendChild(a);
+      }
+
       // Ensure header behavior script loads once
       if (!document.querySelector('script[data-header-footer-script]')) {
         const s = document.createElement('script');

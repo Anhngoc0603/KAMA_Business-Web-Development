@@ -1,0 +1,16 @@
+{
+  "google": {
+    "client_id": "",
+    "redirect_uri": "http://localhost:5500/account/index.html",
+    "response_type": "token",
+    "scope": "openid email profile",
+    "state": "kama-dev"
+  },
+  "apple": {
+    "client_id": "",
+    "redirect_uri": "http://localhost:5500/account/index.html",
+    "response_type": "code id_token",
+    "scope": "name email",
+    "state": "kama-dev"
+  }
+}

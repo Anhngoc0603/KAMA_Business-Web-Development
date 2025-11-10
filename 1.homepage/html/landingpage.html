@@ -3,13 +3,8 @@
     <title>KAMA</title>
     <link rel='stylesheet' type='text/css' media='screen' href='../style/mainstyle.css'>
     <link rel="stylesheet" href="/header_footer/style.css">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
-
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
         #introContainer {position: fixed;inset: 0;z-index: 99999;background: transparent !important;display: flex;align-items: center;justify-content: center;pointer-events: none;transition: opacity 0.8s ease;}
         #introContainer video {width: 100%;height: 100%;object-fit: cover;background: transparent !important;mix-blend-mode: screen;}
         body {margin: 0;opacity: 1;transition: opacity 0.8s ease;background: #fff9f9;}
@@ -30,6 +25,14 @@
 <div id="header-placeholder"></div>
 <!--slide bự nhất để giới thiệu-->
     <section class="hero">
+    <!-- Beauty Quiz CTA Banner -->
+    <div class="bq-home-cta">
+      <div>
+        <div class="text">Tìm sản phẩm "chân ái" trong 2 phút!</div>
+        <div class="sub">Quiz tương tác toàn màn hình – có thưởng điểm.</div>
+      </div>
+      <button class="cta-btn" data-open-beauty-quiz>Bắt đầu ngay</button>
+    </div>
     <div class="slide active">
         <img src="../images/banner1.jpg" alt="">
         <div class="hero-content">
@@ -130,8 +133,10 @@
     <div class="hero-right">
         <img src="../images/nc_banner1.jpg" alt="Banner">
     </div>
-</div>
-
+    <div class="new-visual">
+        <img src="../images/nc_banner1.jpg" alt="Sweetie Bear Decor">
+    </div>
+    </section>
 <!--BEST SELLERS-->
     <section class="Bestsellers">
     <p class="title">Shop Our Bestsellers</p>
@@ -349,5 +354,6 @@
 <div id="footer-placeholder"></div>
 <script src="/header_footer/partials.js"></script>
 <script src="../js/script.js"></script>
+<script src="/quiz/quiz.js"></script>
 </body>
 </html>
