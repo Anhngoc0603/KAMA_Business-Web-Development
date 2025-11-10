@@ -134,13 +134,14 @@
         h.overlay = overlay; h.modal = modal;
       }
     }
-    h.progressBar = modal.querySelector('#bqProgressBar');
-    h.progressText = modal.querySelector('#bqProgressText');
-    h.content = modal.querySelector('#bqSteps');
-    h.btnPrev = modal.querySelector('#bqPrev');
-    h.btnNext = modal.querySelector('#bqNext');
-    h.btnStart = modal.querySelector('#bqStart');
-    modal.querySelector('#bqClose').addEventListener('click', close);
+h.progressBar = h.modal.querySelector('#bqProgressBar');
+h.progressText = h.modal.querySelector('#bqProgressText');
+h.content = h.modal.querySelector('#bqSteps');
+h.btnPrev = h.modal.querySelector('#bqPrev');
+h.btnNext = h.modal.querySelector('#bqNext');
+h.btnStart = h.modal.querySelector('#bqStart');
+h.modal.querySelector('#bqClose').addEventListener('click', close);
+
     h.btnPrev.addEventListener('click', prev);
     h.btnNext.addEventListener('click', next);
     h.btnStart.addEventListener('click', () => { state.stepIndex = 1; render(); });
