@@ -1,19 +1,12 @@
 # KAMA_Business-Web-Development
 FINAL PROJECT
-Repo chính: Anhngoc0603/KAMA_Business-Web-Development
+Tài khoản admin mặc định:
 
-+ Lần đầu clone về máy. Chỉ cần làm 1 lần duy nhất:
-git clone https://github.com/Anhngoc0603/KAMA_Business-Web-Development.git
-cd KAMA_Business-Web-Development
+- Email: admin@kama.local
+- Name: KAMA Admin
+- Password: Admin@2025
 
-+ Trước khi sửa bất kỳ file nào, luôn kéo bản mới nhất về:
-git pull origin main
-
-+ Chạy 3 lệnh vàng này để đẩy code lên GitHub:
-git add .
-git commit -m "mô tả ngắn gọn phần bạn sửa"
-git push origin main
-
-+ Kiểm tra nhánh đang đứng
-git branch
-
+- Hyhy (khách đã có dữ liệu xuyên suốt):
+- Email: hyhy@kama.local
+- Password: Hyhymacoi05
+- Role: customer
