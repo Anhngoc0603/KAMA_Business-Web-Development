@@ -565,15 +565,14 @@ body {
         height: 30px;
       }
 
-      nav {
-        gap: -100px;
-      }
+      /* Không dùng gap âm để tránh chồng lấn clickable area */
       
       nav a img {
         width: 32px;
         height: 32px;
       }
-      .acc-icon, .contact-icon{display:none;}
+      /* Không ẩn icon account/contact ở desktop. Nếu cần ẩn trên mobile,
+         hãy đặt trong @media (max-width: 900px). */
       .search {
         width: auto; /* vừa icon */
         margin-left: auto;
