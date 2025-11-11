@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="KAMA - Luxury Beauty. Discover premium makeup, skincare, and exclusive flash sales."/>
   <title>KAMA - Luxury Beauty</title>
-  
 
   <!-- ✅ FAVICON -->
   <link rel="icon" href="../images/favicon.ico" type="image/x-icon"/>
@@ -19,14 +18,16 @@
   <!-- ✅ IONICONS -->
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<script src="/quiz/quiz.js"></script>
+  <script src="/quiz/quiz.js"></script>
 
   <!-- ✅ STYLESHEETS -->
   <link rel="stylesheet" href="../style/mainstyle.css"/>
   <link rel="stylesheet" href="/header_footer/style.css"/>
   <link rel="stylesheet" href="../../quiz/quiz.css"/>
+
   <!-- ✅ INTRO VIDEO OVERLAY -->
   <style>
+    
     #introContainer {
       position: fixed;
       inset: 0;
@@ -53,185 +54,282 @@
       margin: 0;
       background: #fff9f9;
       overflow-x: hidden;
+      opacity: 0;
+      animation: fadeInPage 0.9s ease forwards;
     }
+    @keyframes fadeInPage {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ✅ REVEAL-UP */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 0.8s ease;
+    }
+    .reveal-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ✅ IMAGE LUXURY HOVER */
+    img {
+      transition: transform .4s ease, filter .4s ease;
+    }
+    /* ✅ HEADER SCROLL BLUR */
+    header.scrolled {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      background-color: rgba(255,249,249,0.9) !important;
+      backdrop-filter: blur(8px);
+    }
+
+    /* ✅ BUTTON SHINE */
+    button, .btn, .shopnow, .viewall, .viewallnew {
+      position: relative;
+      overflow: hidden;
+    }
+    button::after,
+    .btn::after,
+    .shopnow::after,
+    .viewall::after,
+    .viewallnew::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 150%; height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.6), transparent 60%);
+      transition: .5s;
+    }
+    button:hover::after,
+    .btn:hover::after,
+    .shopnow:hover::after,
+    .viewall:hover::after,
+    .viewallnew:hover::after {
+      left: 120%;
+    }
+
+    /* ✅ CARD ZOOM */
+    .category-card,
+    .track__item,
+    .newproduct,
+    .prodBestsellers {
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+      transition: 0.7s ease;
+    }
+    .category-card.show,
+    .track__item.show,
+    .newproduct.show,
+    .prodBestsellers.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .category-card:hover,
+    .newproduct:hover,
+    .product-card:hover {
+      box-shadow: 0 8px 35px rgba(255,180,200,.35) !important;
+    }
+
+    /* ✅ BESTSELLER PHOTOBOX GLOW */
+    .photoBox {
+      transition: filter .4s ease, transform .4s ease;
+    }
+    .photoBox:hover {
+      filter: brightness(1.15);
+    }
+    a, a:link, a:visited {
+  text-decoration: none !important;
+}
+.hero {
+
+  position: relative;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+}
+header {
+  z-index: 10 !important;
+}
+.hero .slide img {
+  pointer-events: none !important;
+}
+button.btn::after {
+  pointer-events: none !important;
+}
+/* Link dạng nút: không gạch chân */
+a, a:link, a:visited { text-decoration: none !important; }
+
+/* HERO stacking & click */
+.hero { position: relative; }
+
+.hero .hero-content{
+  position:absolute; left:4%; bottom:22%;
+  z-index: 5;
+  pointer-events: auto;              /* cho click */
+}
+
+/* Bản thân nút luôn click được */
+.btn, .shopnow, .viewall, .viewallnew{
+  display:inline-block;
+  cursor:pointer;
+  text-decoration:none !important;
+  position:relative;
+  z-index: 6;
+  pointer-events: auto !important;
+}
+
+/* Hiệu ứng shine không chặn click */
+button::after,
+.btn::after,
+.shopnow::after,
+.viewall::after,
+.viewallnew::after{
+  pointer-events: none !important;
+}
+
+/* Nếu từng có overlay nào phủ lên hero bằng ::before/::after */
+.hero .slide::before,
+.hero .slide::after{ pointer-events:none !important; }
+
+
   </style>
 </head>
 
 <body>
 
-<!-- ✅ VIDEO INTRO 
-<div id="introContainer">
-    <video id="introVideo" autoplay muted playsinline>
-      <source src="../images/0001-0250.webm" type="video/webm">
-      Trình duyệt của bạn không hỗ trợ video.
-    </video>
-</div>-->
+<!-- ✅ HEADER -->
+<div id="header-placeholder"></div>
 
-  <!-- ✅ HEADER (INJECTED BY partials.js) -->
-  <div id="header-placeholder"></div>
+<!-- ✅ HERO -->
+<section class="hero reveal-up">
+<div class="slide active">
+  <img src="../images/banner1.jpg" alt="Glow With Confidence">
+  <div class="hero-content">
+    <h2>Glow With Confidence</h2>
+    <p>Discover our products designed to make you shine every day.</p>
+    <a class="btn" href="../../Categories/all.html">Shop Now</a>
+  </div>
+</div>
 
-  <!-- ========================================================= -->
-  <!-- HERO SLIDER -->
-  <!-- ========================================================= -->
-  <section class="hero">
-    <div class="slide active">
-      <img src="../images/banner1.jpg" alt="Glow With Confidence">
-      <div class="hero-content">
-        <h2>Glow With Confidence</h2>
-        <p>Discover our products designed to make you shine every day.</p>
-        <button class="btn">Shop Now</button>
-      </div>
-    </div>
-    <div class="slide">
-      <img src="../images/banner2.png" alt="Express Your Style">
-      <div class="hero-content">
-        <h2>Express Your Style</h2>
-        <p>Dare to shine. Create looks that define your beauty.</p>
-        <button class="btn">View All Products</button>
-      </div>
-    </div>
-    <div class="dots"></div>
-  </section>
+<div class="slide">
+  <img src="../images/banner2.png" alt="Express Your Style">
+  <div class="hero-content">
+    <h2>Express Your Style</h2>
+    <p>Dare to shine. Create looks that define your beauty.</p>
+    <a class="btn" href="../../Categories/all.html">View All Products</a>
+  </div>
+</div>
 
-  <!-- ========================================================= -->
-  <!-- CATEGORY SHOWCASE -->
-  <!-- ========================================================= -->
-  <section class="category-showcase">
-    <div class="category-card face">
-      <img src="../images/face.png" alt="Face Makeup">
-      <div class="category-info">
-        <h3>Face</h3>
-        <p>Flawless & Radiant</p>
-        <button class="shopnow" id="shopnowface">SHOP NOW</button>
-      </div>
+
+  <div class="dots"></div>
+</section>
+
+<!-- ✅ CATEGORY -->
+<section class="category-showcase reveal-up">
+  <div class="category-card face">
+    <img src="../images/face.png">
+    <div class="category-info">
+      <h3>Face</h3>
+      <p>Flawless & Radiant</p>
+      <button class="shopnow" id="shopnowface">SHOP NOW</button>
     </div>
-    <div class="category-card lips">
-      <img src="../images/lip.png" alt="Lip Products">
-      <div class="category-info">
-        <h3>Lips</h3>
-        <p>For Your Perfect Smile</p>
-        <button class="shopnow" id="shopnowlips">SHOP NOW</button>
-      </div>
+  </div>
+
+  <div class="category-card lips">
+    <img src="../images/lip.png">
+    <div class="category-info">
+      <h3>Lips</h3>
+      <p>For Your Perfect Smile</p>
+      <button class="shopnow" id="shopnowlips">SHOP NOW</button>
     </div>
-    <div class="category-card eyes">
-      <img src="../images/eyes.png" alt="Eye Makeup">
-      <div class="category-info">
-        <h3>Eyes</h3>
-        <p>Expressive Beauty</p>
-        <button class="shopnow" id="shopnoweyes">SHOP NOW</button>
-      </div>
+  </div>
+
+  <div class="category-card eyes">
+    <img src="../images/eyes.png">
+    <div class="category-info">
+      <h3>Eyes</h3>
+      <p>Expressive Beauty</p>
+      <button class="shopnow" id="shopnoweyes">SHOP NOW</button>
     </div>
-  </section>
-<section id="beauty-quiz" class="bq-banner-section">
+  </div>
+</section>
+
+<!-- ✅ QUIZ BANNER -->
+<section id="beauty-quiz" class="bq-banner-section reveal-up">
   <div class="bq-banner-container">
-    <a href="/quiz/quiz.html" aria-label="Open Beauty Quiz">
+    <a href="/quiz/quiz.html">
       <img src="../images/bannerr.png" class="bq-banner-img">
     </a>
     <a class="bq-banner-cta" href="/quiz/quiz.html">Do Quiz</a>
   </div>
 </section>
 
-  <!-- ========================================================= -->
-  <!-- NEW COLLECTION + HOTSPOTS -->
-  <!-- ========================================================= -->
-  <section class="new-arrivals-row">
-    <div class="hero-left">
-      <img id="heroMainImage" src="../images/newcollection.png" alt="New Collection 2025">
-      <a href="#" id="viewallnew" class="viewallnew">VIEW FULL COLLECTION</a>
+<!-- ✅ NEW COLLECTION -->
+<section class="new-arrivals-row reveal-up">
+  <div class="hero-left">
+    <img id="heroMainImage" src="../images/newcollection.png">
+    <a href="../../new/new_arrival.html" class="viewallnew">VIEW FULL COLLECTION</a>
 
-      <!-- HOTSPOTS -->
-      <div class="hotspot tag-blush"
-           data-id="104"
-           data-img="../images/nc2_channel.webp"
-           data-name="Chanel Blush"
-           style="top: 21.5%; left: 25%;"></div>
-      <div class="hotspot tag-lipstick"
-           data-id="102"
-           data-img="../images/nc_diorlip.png"
-           data-name="Dior Rouge Lipstick"
-           style="top: 38%; left: 52.4%;"></div>
-      <div class="hotspot tag-mascara"
-           data-id="103"
-           data-img="../images/nc_mascara1.png"
-           data-name="By Terry Mascara"
-           style="top: 42%; left: 68.4%;"></div>
-      <div class="hotspot"
-           data-id="105"
-           data-img="../images/nc2_dior.png"
-           data-name="Giorgio Armani Lipstick"
-           style="top: 45%; left: 85%;"></div>
-      <div class="hotspot"
-           data-id="101"
-           data-img="../images/nc_channel.png"
-           data-name="Chanel Eyeliner"
-           style="top: 75.5%; left: 28%;"></div>
-    </div>
-    <div class="hero-right">
-      <img src="../images/nc_banner1.jpg" alt="New Collection Banner">
-    </div>
-  </section>
+    <!-- Hotspots giữ nguyên -->
+    <div class="hotspot tag-blush" data-id="104" data-img="../images/nc2_channel.webp" data-name="Chanel Blush" style="top:21.5%;left:25%;"></div>
+    <div class="hotspot tag-lipstick" data-id="102" data-img="../images/nc_diorlip.png" data-name="Dior Rouge Lipstick" style="top:38%;left:52.4%;"></div>
+    <div class="hotspot tag-mascara" data-id="103" data-img="../images/nc_mascara1.png" data-name="By Terry Mascara" style="top:42%;left:68.4%;"></div>
+    <div class="hotspot" data-id="105" data-img="../images/nc2_dior.png" data-name="Giorgio Armani Lipstick" style="top:45%;left:85%;"></div>
+    <div class="hotspot" data-id="101" data-img="../images/nc_channel.png" data-name="Chanel Eyeliner" style="top:75.5%;left:28%;"></div>
+  </div>
 
-  <!-- ========================================================= -->
-  <!-- BEST SELLERS - GSAP 3D GALLERY -->
-  <!-- ========================================================= -->
-  <section class="bestseller-gsap">
-    <div class="gsap-title-wrapper">
-      <h2 class="gsap-title">Best <span>Sellers</span></h2>
-      <p class="gsap-subtitle">Discover our most loved products</p>
-    </div>
-    <div class="gsap-gallery">
-      <div class="main">
-        <div class="mainBoxes"></div>
-      </div>
-      <div class="mainClose">
-        <svg viewBox="0 0 60 60">
-          <circle cx="30" cy="30" r="28" fill="rgba(0,0,0,0.4)"/>
-          <path d="M18,18L42,42 M42,18L18,42" stroke="#fff" stroke-width="2.5"/>
-        </svg>
-      </div>
-    </div>
-  </section>
+  <div class="hero-right">
+    <img src="../images/nc_banner1.jpg">
+  </div>
+</section>
 
-  <!-- ========================================================= -->
-  <!-- REWARD SECTION -->
-  <!-- ========================================================= -->
-  <section class="reward-section">
-    
-    <div class="reward-image">
-      <img src="../images/PT_EX_NEW_RANGE_SEPHORA_PRODUCTS_NO_EXLUSIVE_resized_4x3.jpg" alt="Earn Rewards">
-    </div>
-    <div class="reward-text">
-      <p class="subtitle">JOIN WITH 100 POINTS</p>
-      <h2>Get Rewarded While You Shop</h2>
-      <button id="shopnow">SHOP NOW</button>
-    </div>
-  </section>
+<!-- ✅ BESTSELLER GSAP -->
+<section class="bestseller-gsap reveal-up">
+  <div class="gsap-title-wrapper">
+    <h2 class="gsap-title">Best <span>Sellers</span></h2>
+    <p class="gsap-subtitle">Discover our most loved products</p>
+  </div>
 
-  <!-- ========================================================= -->
-  <!-- FLASH SALE – FAN3 + ROW6 (ĐÃ SỬA CHUẨN) -->
-  <!-- ========================================================= -->
-  <!-- ========================================================= -->
-<!-- FLASH SALE – SIÊU NHỎ GỌN + THÔNG BÁO NỔI BẬT -->
-<!-- ========================================================= -->
-<section class="flash-sale-section">
+  <div class="gsap-gallery">
+    <div class="main"><div class="mainBoxes"></div></div>
+    <div class="mainClose">
+      <svg viewBox="0 0 60 60">
+        <circle cx="30" cy="30" r="28" fill="rgba(0,0,0,0.4)"/>
+        <path d="M18,18L42,42 M42,18L18,42" stroke="#fff" stroke-width="2.5"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ REWARD -->
+<section class="reward-section reveal-up">
+  <div class="reward-image">
+    <img src="../images/PT_EX_NEW_RANGE_SEPHORA_PRODUCTS_NO_EXLUSIVE_resized_4x3.jpg">
+  </div>
+  <div class="reward-text">
+    <p class="subtitle">JOIN WITH 100 POINTS</p>
+    <h2>Get Rewarded While You Shop</h2>
+    <button id="shopnow">SHOP NOW</button>
+  </div>
+</section>
+
+<!-- ✅ FLASH SALE -->
+<section class="flash-sale-section reveal-up">
   <div class="container">
-    <!-- Tiêu đề + Thông báo -->
     <div class="section-header">
       <h2 class="flash-title">
         <span class="gradient-text">FLASH</span> SALE
         <span class="sale-badge">UP TO 60% OFF</span>
       </h2>
       <p class="section-subtitle">
-        <span class="timer-text">Kết thúc trong:</span>
-        <span id="countdown" class="countdown">23:59:59</span>
+        <span class="timer-text">End in:</span>
+        <span id="countdown">23:59:59</span>
       </p>
     </div>
 
     <div class="flash-wrapper">
-      <!-- 3 ẢNH QUẠT – SIÊU NHỎ GỌN -->
       <div id="fan3" class="fan-3"></div>
-
-      <!-- 6 SẢN PHẨM – BUNG RA MỞ RỘNG -->
       <div id="row6" class="track-wrapper">
         <ul class="track" id="trackList"></ul>
       </div>
@@ -239,34 +337,75 @@
   </div>
 </section>
 
-  <!-- ✅ FOOTER (INJECTED BY partials.js) -->
-  <div id="footer-placeholder"></div>
+<!-- ✅ FOOTER -->
+<div id="footer-placeholder"></div>
 
-  <!-- ========================================================= -->
-  <!-- SCRIPTS -->
-  <!-- ========================================================= -->
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+<!-- ✅ SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+<script src="/header_footer/partials.js"></script>
+<script src="../js/script.js"></script>
 
-  <!-- PARTIALS (HEADER/FOOTER) -->
-  <script src="/header_footer/partials.js"></script>
+<!-- ✅ PAGE EFFECT JS -->
+<script>
+/* SCROLL REVEAL */
+document.addEventListener("DOMContentLoaded", () => {
+  const els = document.querySelectorAll('.reveal-up');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, { threshold: 0.15 });
+  els.forEach(el => obs.observe(el));
+});
 
-  <!-- MAIN SCRIPT (ĐÃ SỬA FLASH SALE) -->
-  <script src="../js/script.js"></script>
+/* HEADER BLUR */
+window.addEventListener("scroll", () => {
+  const header = document.querySelector("header");
+  if (!header) return;
+  header.classList.toggle("scrolled", window.scrollY > 40);
+});
 
-  <!-- ✅ TỰ ĐỘNG ẨN INTRO VIDEO SAU 3S -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const intro = document.getElementById("introContainer");
-      // Guard: introContainer có thể bị tắt (comment) -> tránh lỗi null
-      if (!intro) return;
-      setTimeout(() => {
-        intro.classList.add("hidden");
-        setTimeout(() => intro.remove(), 800);
-      }, 3000);
+/* PARALLAX HERO */
+document.addEventListener("mousemove", (e) => {
+  const active = document.querySelector(".slide.active img");
+  if (!active) return;
+
+  const x = (window.innerWidth - e.pageX) / 40;
+  const y = (window.innerHeight - e.pageY) / 40;
+
+  active.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const catFromURL = params.get("category");
+
+  if (catFromURL) {
+    console.log("✅ Category from homepage:", catFromURL);
+
+    // set filter
+    currentFilters.category = catFromURL;
+
+    // active UI circle
+    document.querySelectorAll("#categoryCircles .circle").forEach(c => {
+      if (c.getAttribute("data-value") === catFromURL) {
+        c.classList.add("active");
+      } else {
+        c.classList.remove("active");
+      }
     });
-  </script>
+
+    // apply filter
+    applyFilters();
+    updateCount();
+
+    // scroll đến sản phẩm
+    window.scrollTo({
+      top: document.querySelector('.products-page-container').offsetTop - 100,
+      behavior: "smooth"
+    });
+  }
+});
+
+</script>
 
 </body>
 </html>

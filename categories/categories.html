@@ -695,9 +695,8 @@ window.filterByBrand = (brandName) => {
 
 // =====================================================
 // ✅ MAIN EXECUTION – CHỈ CÓ 1 LẦN
-// =====================================================
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('🚀 Starting application...');
+  console.log('Starting application...');
 
   try {
     await Promise.all([
@@ -707,30 +706,49 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     setTimeout(initHeaderEvents, 120);
   } catch (err) {
-    console.error('❌ Failed to load header/footer:', err);
+    console.error('Failed to load header/footer:', err);
   }
 
   updateCartCount();
-
   await loadProducts();
 
-  // ✅ tự động lọc brand nếu URL có ?brand=XYZ
+  // === XỬ LÝ ?category=... TỪ URL ===
   const params = new URLSearchParams(window.location.search);
-  const brandFromURL = params.get('brand');
+  const catFromURL = params.get("category");
+  const brandFromURL = params.get("brand");
+
+  if (catFromURL) {
+    currentFilters.category = catFromURL;
+
+    // Chờ DOM render xong (categoryCircles đã có)
+    setTimeout(() => {
+      const circle = document.querySelector(`#categoryCircles .circle[data-value="${catFromURL}"]`);
+      if (circle) {
+        document.querySelectorAll('#categoryCircles .circle').forEach(c => c.classList.remove('active'));
+        circle.classList.add('active');
+        circle.click(); // Tự động trigger filter
+      }
+      applyFilters();
+      updateCount();
+
+      window.scrollTo({
+        top: document.querySelector('.products-page-container').offsetTop - 100,
+        behavior: 'smooth'
+      });
+    }, 300); // Đợi render xong
+  }
 
   if (brandFromURL) {
     currentFilters.brand = brandFromURL;
-
-    const checkbox = document.querySelector(`#brandFilters input[value="${brandFromURL}"]`);
-    if (checkbox) checkbox.checked = true;
-
-    applyFilters();
-    updateCount();
-
-    const titleEl = document.querySelector('h2');
-    if (titleEl) titleEl.textContent = `Brand: ${brandFromURL}`;
+    setTimeout(() => {
+      const cb = document.querySelector(`#brandFilters input[value="${brandFromURL}"]`);
+      if (cb) cb.checked = true;
+      applyFilters();
+      updateCount();
+    }, 300);
   }
 });
+
 </script>
 
 </body>

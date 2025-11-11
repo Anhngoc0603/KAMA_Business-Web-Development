@@ -114,30 +114,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* =========================================================
    BEST SELLERS — GSAP 3D GALLERY
+/* =========================================================
+   BEST SELLERS — GSAP 3D GALLERY (ĐÃ SỬA 100%)
 ========================================================= */
 let currentImg = undefined,
     currentImgProps = { x: 0, y: 0 },
     isZooming = false,
-    column = -1,
     mouse = { x: 0, y: 0 },
     delayedPlay;
 
 async function loadBestSellerGallery() {
   try {
     const res = await fetch("../products.json");
-    if (!res.ok) throw new Error(`HTTP ${res.status}: Không load được products.json`);
-    
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
     const data = await res.json();
     const products = Array.isArray(data) ? data : data.products || [];
 
-    if (products.length === 0) throw new Error("Không có sản phẩm trong JSON");
+    if (products.length === 0) throw new Error("Không có sản phẩm");
 
     initGSAPGallery(products);
   } catch (err) {
     console.error("Lỗi Best Sellers:", err);
     const container = document.querySelector('.bestseller-gsap');
     if (container) {
-      container.innerHTML += `<p style="color:#fff; text-align:center; padding:20px; font-family:sans-serif;">
+      container.innerHTML += `<p style="color:#fff; text-align:center; padding:20px;">
         Không tải được sản phẩm. Vui lòng kiểm tra file JSON.
       </p>`;
     }
@@ -149,36 +150,44 @@ function initGSAPGallery(products) {
   if (!container) return;
 
   container.innerHTML = '';
-  column = -1;
+
+  // Đảm bảo 12 sản phẩm
+  let list = [...products];
+  while (list.length < 12) list = list.concat(products.slice(0, 12 - list.length));
+  list = list.slice(0, 12);
+
+  const yStart = [-575, 800, 800];
+  const yEnd   = [ 800, -575, -575];
+  const dur    = [   40,   35,   26];
+  const xPos   = [   60,  280,  500];
 
   for (let i = 0; i < 12; i++) {
-    if (i % 4 === 0) column++;
+    const p = list[i];
+    const col = Math.floor(i / 4);
 
-    const p = products[i % products.length];
     const imgUrl = getFirstImage(p.images);
     const displayName = `${p.brand} ${p.name}`;
-    const displayPrice = p.originalPrice 
+    const displayPrice = p.originalPrice
       ? `<del>$${p.originalPrice.toFixed(2)}</del> <strong>$${p.price.toFixed(2)}</strong>`
       : `$${p.price.toFixed(2)}`;
 
     const b = document.createElement('div');
-    b.className = `photoBox pb-col${column}`;
+    b.className = `photoBox pb-col${col}`;
     b.id = `b${i}`;
     b.dataset.name = displayName;
     b.dataset.price = displayPrice.replace(/<\/?[^>]+(>|$)/g, "");
     b.dataset.brand = p.brand;
-
     b.style.backgroundImage = `url(${imgUrl})`;
     b.style.backgroundSize = 'cover';
     b.style.backgroundPosition = 'center';
-
     b.setAttribute('data-tooltip', displayName);
     b.setAttribute('data-price-html', displayPrice);
-
     container.appendChild(b);
 
+    addImageFallback(b);
+
     gsap.set(b, {
-      x: [60, 280, 500][column],
+      x: xPos[col],
       width: 400,
       height: 640,
       borderRadius: 20,
@@ -186,30 +195,26 @@ function initGSAPGallery(products) {
       zIndex: 1,
       opacity: 1,
       cursor: 'pointer',
-      overflow: 'hidden',
     });
 
     b.tl = gsap.timeline({ paused: true, repeat: -1 })
-      .fromTo(b, 
-        { y: [-575, 800, 800][column], rotation: -0.05 }, 
-        {
-          duration: [40, 35, 26][column],
-          y: [800, -575, -575][column],
-          rotation: 0.05,
-          ease: 'none'
-        }
-      )
-      .progress((i % 4) / 4);
+      .fromTo(b, { y: yStart[col], rotation: -0.05 }, {
+        duration: dur[col],
+        y: yEnd[col],
+        rotation: 0.05,
+        ease: 'none'
+      })
+      .progress((i % 4) / 4)
+      .play();
   }
 
   setupGSAPInteractions();
 }
 
+
 function getFirstImage(images) {
   if (!Array.isArray(images) || images.length === 0) return "../images/placeholder.png";
-  const first = images[0];
-  if (first.startsWith('http')) return first;
-  return `../${first}`;
+  return resolveImagePath(images[0]); // DÙNG HÀM CÓ SẴN
 }
 
 function addImageFallback(box) {
@@ -398,7 +403,7 @@ let expanded = false; // ← TOÀN CỤC
                 </span>
               </div>
               <div class="view-details-container">
-                <a href="../Sale/view_product/view_sale.html?id=${p.id}" class="btn-view-details">
+                <a href="../../Sale/view_product/view_sale.html?id=${p.id}" class="btn-view-details">
                   View Details
                 </a>
               </div>
@@ -689,6 +694,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
 /* =========================================================
    9) STICKY HEADER
 ========================================================= */
@@ -698,6 +704,121 @@ window.addEventListener("scroll", () => {
   header.classList.toggle("sticky", window.scrollY > 40);
 });
 
+/* =========================================================
+   BEST SELLER AUTO-EXPANSION ON FLASH SALE HOVER
+========================================================= */
+function initBestSellerExpansion() {
+  const flashSaleRow = document.getElementById('row6');
+  const bestSellersSection = document.querySelector('.bestseller-gsap');
+  
+  if (!flashSaleRow || !bestSellersSection) return;
+
+  let expansionTimeout;
+  let isExpanded = false;
+
+  // Function to expand Best Sellers
+  function expandBestSellers() {
+    if (isExpanded) return;
+    
+    isExpanded = true;
+    bestSellersSection.classList.add('expanded');
+    
+    // Add smooth height transition
+    gsap.to(bestSellersSection, {
+      duration: 0.6,
+      height: '700px',
+      ease: 'power2.out'
+    });
+    
+    // Scale up the gallery content
+    gsap.to('.gsap-gallery', {
+      duration: 0.5,
+      scale: 1.05,
+      ease: 'back.out(1.7)'
+    });
+  }
+
+  // Function to collapse Best Sellers
+  function collapseBestSellers() {
+    if (!isExpanded) return;
+    
+    isExpanded = false;
+    
+    // Animate back to original state
+    gsap.to(bestSellersSection, {
+      duration: 0.5,
+      height: '100vh',
+      ease: 'power2.inOut',
+      onComplete: () => {
+        bestSellersSection.classList.remove('expanded');
+      }
+    });
+    
+    // Scale back gallery content
+    gsap.to('.gsap-gallery', {
+      duration: 0.4,
+      scale: 1,
+      ease: 'power2.inOut'
+    });
+  }
+
+  // Event listeners for Flash Sale hover
+  flashSaleRow.addEventListener('mouseenter', () => {
+    clearTimeout(expansionTimeout);
+    expansionTimeout = setTimeout(expandBestSellers, 300);
+  });
+
+  flashSaleRow.addEventListener('mouseleave', () => {
+    clearTimeout(expansionTimeout);
+    expansionTimeout = setTimeout(collapseBestSellers, 500);
+  });
+
+  // Also trigger on track items hover for better UX
+  const trackItems = document.querySelectorAll('.track__item');
+  trackItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      clearTimeout(expansionTimeout);
+      expansionTimeout = setTimeout(expandBestSellers, 200);
+    });
+  });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initBestSellerExpansion);
+/* HERO SLIDE BUTTONS → GO TO CATEGORIES PAGE (ĐÃ SỬA ỔN ĐỊNH) */
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".hero .btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault(); // ← Ngăn hành vi mặc định (nếu là <a>)
+      e.stopPropagation(); // ← Ngăn lan truyền
+
+      // Đường dẫn đúng theo cấu trúc bạn
+      window.location.href = "../../categories/categories.html";
+    });
+  });
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const faceBtn = document.getElementById("shopnowface");
+  if (faceBtn) {
+    faceBtn.addEventListener("click", () => {
+      window.location.href = "../../categories/categories.html?category=Face";
+    });
+  }
+
+  const lipsBtn = document.getElementById("shopnowlips");
+  if (lipsBtn) {
+    lipsBtn.addEventListener("click", () => {
+      window.location.href = "../../categories/categories.html?category=Lips";
+    });
+  }
+
+  const eyesBtn = document.getElementById("shopnoweyes");
+  if (eyesBtn) {
+    eyesBtn.addEventListener("click", () => {
+      window.location.href = "../../categories/categories.html?category=Eyes";
+    });
+  }
+});
 /* =========================================================
    DONE — END OF FULL SCRIPT
 ========================================================= */
