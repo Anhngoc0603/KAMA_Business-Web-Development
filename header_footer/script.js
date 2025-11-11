@@ -57,6 +57,92 @@
       navigateToRoot('/1.homepage/html/landingpage.html');
     });
   }
+  // Account icon: toggle dropdown and render items based on auth state
+  const accountBtn = document.getElementById('accountMenuBtn') || document.querySelector('.acc-icon');
+  const accountDropdown = document.getElementById('accountDropdown');
+
+  function isUserLoggedIn() {
+    try {
+      if (window.Auth && typeof Auth.isLoggedIn === 'function') return !!Auth.isLoggedIn();
+      return localStorage.getItem('user.isLoggedIn') === 'true';
+    } catch (_) { return false; }
+  }
+
+  function doSignOut() {
+    try {
+      if (window.Auth && typeof Auth.logout === 'function') Auth.logout();
+      else localStorage.removeItem('user.isLoggedIn');
+    } catch (_) {}
+    // Clear shopping-related state
+    try {
+      ['cart', 'wishlist', 'engravingName', 'discountPercent', 'discountFixed', 'shippingInfo']
+        .forEach(k => localStorage.removeItem(k));
+    } catch (_) {}
+    try {
+      if (typeof window.updateCartCount === 'function') updateCartCount();
+      if (typeof window.updateWishlistCount === 'function') updateWishlistCount();
+    } catch (_) {}
+    // Close dropdown and go home
+    if (accountDropdown) accountDropdown.classList.remove('open');
+    navigateToRoot('/1.homepage/html/landingpage.html');
+  }
+
+  function renderAccountMenu() {
+    if (!accountDropdown) return;
+    const loggedIn = isUserLoggedIn();
+    const items = loggedIn ? [
+      { text: 'My Account', href: '/account/index.html' },
+      { text: 'Track Orders', href: '/account/index.html?view=track-orders' },
+      { text: 'My Wishlist', href: '/account/index.html?view=wish-list' },
+      { text: 'Sign Out', onClick: () => doSignOut() }
+    ] : [
+      { text: 'Sign In / Sign Up', href: '/auth/login.html' },
+      { text: 'Track Orders', href: '/auth/login.html' },
+      { text: 'My Wishlist', href: '/auth/login.html' }
+    ];
+
+    // Rebuild dropdown content
+    accountDropdown.innerHTML = '';
+    items.forEach(it => {
+      const a = document.createElement('a');
+      a.className = 'dropdown-item';
+      a.textContent = it.text;
+      if (it.onClick) {
+        a.href = '#';
+        a.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); it.onClick(); });
+      } else if (it.href) {
+        a.href = it.href;
+        a.addEventListener('click', (e) => {
+          // Normalize navigation using helper
+          try { e.preventDefault(); e.stopPropagation(); } catch (_) {}
+          navigateToRoot(it.href);
+          if (accountDropdown) accountDropdown.classList.remove('open');
+        });
+      }
+      accountDropdown.appendChild(a);
+    });
+  }
+
+  if (accountBtn && accountDropdown) {
+    // Initial render
+    renderAccountMenu();
+    // Toggle dropdown on icon click
+    accountBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      accountDropdown.classList.toggle('open');
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!accountDropdown.classList.contains('open')) return;
+      const target = e.target;
+      if (!accountDropdown.contains(target) && !accountBtn.contains(target)) {
+        accountDropdown.classList.remove('open');
+      }
+    });
+    // React to auth state changes
+    document.addEventListener('auth:change', renderAccountMenu);
+  }
   // Toggle menu
   if (menuToggler && navbar) {
     menuToggler.addEventListener('click', (e) => {

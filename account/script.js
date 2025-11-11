@@ -62,6 +62,279 @@ document.addEventListener('DOMContentLoaded', () => {
   byId('statDelivered').textContent = stats.delivered;
   byId('statCancelRefund').textContent = stats.cancelRefund;
 
+  // ---------- Beauty Profile: chips UI, link by email, prefill from quiz ----------
+  const bpNodes = {
+    skinTone: byId('bpSkinTone'),
+    skinType: byId('bpSkinTypeTags'),
+    skinConcerns: byId('bpSkinConcerns'),
+    hairColor: byId('bpHairColor'),
+    hairType: byId('bpHairType'),
+    hairConcerns: byId('bpHairConcerns'),
+    eyeColor: byId('bpEyeColor'),
+    consent: byId('bpConsent'),
+    editBtn: byId('bpEditBtn'),
+    saveBtn: byId('bpSaveBtn'),
+    cancelBtn: byId('bpCancelBtn'),
+    saveStatus: byId('bpSaveStatus')
+  };
+
+  const getCurrentEmail = () => {
+    try {
+      if (window.Auth && typeof Auth.getUser === 'function') {
+        const u = Auth.getUser();
+        if (u && u.email) return String(u.email).toLowerCase();
+      }
+    } catch {}
+    const e = localStorage.getItem('user.email');
+    return e ? String(e).toLowerCase() : null;
+  };
+  const keyForEmail = (email) => email ? `beauty.profile:${email}` : 'beauty.profile';
+
+  const readBeautyProfileEmail = () => {
+    const email = getCurrentEmail();
+    const key = keyForEmail(email);
+    try {
+      const raw = localStorage.getItem(key) || localStorage.getItem('beauty.profile');
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    return null;
+  };
+  const writeBeautyProfileEmail = (profile) => {
+    const email = getCurrentEmail();
+    const key = keyForEmail(email);
+    try { localStorage.setItem(key, JSON.stringify(profile || {})); } catch {}
+    // Keep global for backward compatibility
+    try { localStorage.setItem('beauty.profile', JSON.stringify(profile || {})); } catch {}
+    window.dispatchEvent(new CustomEvent('beautyProfileSaved', { detail: profile }));
+  };
+
+  // Ensure Beauty Profile section exists only when requested
+  function refreshBPRefs() {
+    bpNodes.skinTone = byId('bpSkinTone');
+    bpNodes.skinType = byId('bpSkinTypeTags');
+    bpNodes.skinConcerns = byId('bpSkinConcerns');
+    bpNodes.hairColor = byId('bpHairColor');
+    bpNodes.hairType = byId('bpHairType');
+    bpNodes.hairConcerns = byId('bpHairConcerns');
+    bpNodes.eyeColor = byId('bpEyeColor');
+    bpNodes.consent = byId('bpConsent');
+    bpNodes.editBtn = byId('bpEditBtn');
+    bpNodes.saveBtn = byId('bpSaveBtn');
+    bpNodes.cancelBtn = byId('bpCancelBtn');
+    bpNodes.saveStatus = byId('bpSaveStatus');
+  }
+
+  function ensureBeautyProfileSection() {
+    let host = document.getElementById('beauty-profile');
+    if (!host) {
+      const main = document.querySelector('.account-main');
+      if (!main) return;
+      const section = document.createElement('section');
+      section.className = 'glass-section hidden';
+      section.id = 'beauty-profile';
+      section.innerHTML = `
+        <div class="section-header">
+          <h2 class="section-title">Beauty Profile</h2>
+          <div class="bp-actions">
+            <button id="bpEditBtn" class="btn" type="button">Edit</button>
+            <button id="bpSaveBtn" class="btn primary" type="button" disabled>Save</button>
+            <button id="bpCancelBtn" class="btn" type="button" disabled>Cancel</button>
+            <div id="bpSaveStatus" class="save-status"></div>
+          </div>
+        </div>
+        <div class="bp-row">
+          <div class="bp-group"><div class="bp-label">Skin Tone</div><div id="bpSkinTone" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Skin Type</div><div id="bpSkinTypeTags" class="bp-tags"></div></div>
+          <div class="bp-group full"><div class="bp-label">Skin Concerns</div><div id="bpSkinConcerns" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Hair Color</div><div id="bpHairColor" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Hair Type</div><div id="bpHairType" class="bp-tags"></div></div>
+          <div class="bp-group full"><div class="bp-label">Hair Concerns</div><div id="bpHairConcerns" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Eye Color</div><div id="bpEyeColor" class="bp-tags"></div></div>
+          <div class="bp-group"><label><input type="checkbox" id="bpConsent" /> Allow personalization</label></div>
+        </div>
+      `;
+      main.appendChild(section);
+      host = section;
+    }
+
+    // Refresh references to the dynamically inserted nodes
+    refreshBPRefs();
+
+    // Render tag options for the newly inserted hosts
+    renderTags(bpNodes.skinTone, OPT.skinTone, false);
+    renderTags(bpNodes.skinType, OPT.skinType, false);
+    renderTags(bpNodes.skinConcerns, OPT.skinConcerns, true);
+    renderTags(bpNodes.hairColor, OPT.hairColor, false);
+    renderTags(bpNodes.hairType, OPT.hairType, false);
+    renderTags(bpNodes.hairConcerns, OPT.hairConcerns, true);
+    renderTags(bpNodes.eyeColor, OPT.eyeColor, false);
+
+    // Prefill from saved profile (email-aware)
+    const saved = readBeautyProfileEmail();
+    if (saved) applyPrefill(saved);
+    setEditMode(false);
+
+    // Wire action buttons once
+    if (bpNodes.editBtn && !bpNodes.editBtn._bound) {
+      bpNodes.editBtn.addEventListener('click', () => { originalBP = Object.assign({}, collectFromUI()); setEditMode(true); });
+      bpNodes.editBtn._bound = true;
+    }
+    if (bpNodes.saveBtn && !bpNodes.saveBtn._bound) {
+      bpNodes.saveBtn.addEventListener('click', saveBP);
+      bpNodes.saveBtn._bound = true;
+    }
+    if (bpNodes.cancelBtn && !bpNodes.cancelBtn._bound) {
+      bpNodes.cancelBtn.addEventListener('click', cancelEdit);
+      bpNodes.cancelBtn._bound = true;
+    }
+  }
+
+  // Options (superset để khớp hình + quiz)
+  const OPT = {
+    skinTone: ['Porcelain','Fair','Light','Medium','Tan','Olive','Deep','Dark','Ebony'],
+    skinType: ['Oily','Dry','Normal','Combination','Sensitive'],
+    skinConcerns: ['Acne','Oiliness','Dryness','Sensitivity','Redness','Dark Spots','Pores','Dullness','Fine Lines','Moisturising','Puffiness','Scarring','Sculpting','Slimming','Soothing','Stress','Stretch Marks','Sun Care','Visible Pores','Well-aging','Fine Dust Removal'],
+    hairColor: ['Blonde','Brown','Black','Red','Grey'],
+    hairType: ['Straight','Wavy','Curly','Coily','Colored','Dry','Fine','Frizzy','Greying','Hair loss','Thinning','Weakened'],
+    hairConcerns: ['Anti-Dandruff','Anti-Frizz','Balancing','Color Protection','Damage Repair','Hair Growth','Heat Protection','Hydrating','Purifying','Scalp Treatment','Shine','Thickening','Volumizing','Breakage','Dry Scalp','Oily Scalp','Split Ends','Color Care'],
+    eyeColor: ['Blue','Brown','Green','Grey','Black']
+  };
+
+  let bpEditMode = false;
+  let currentBP = { skinTone:null, skinType:null, skinConcerns:[], hairColor:null, hairType:null, hairConcerns:[], eyeColor:null, consent:false };
+  let originalBP = null;
+
+  function renderTags(host, options, multiple=false) {
+    if (!host) return;
+    host.innerHTML = '';
+    options.forEach(opt => {
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'bp-tag';
+      el.textContent = opt;
+      el.dataset.value = opt;
+      el.disabled = !bpEditMode;
+      el.addEventListener('click', () => {
+        if (!bpEditMode) return;
+        if (multiple) {
+          const arr = host._selected || [];
+          const idx = arr.indexOf(opt);
+          if (idx >= 0) arr.splice(idx,1); else arr.push(opt);
+          host._selected = arr;
+          el.classList.toggle('selected');
+        } else {
+          // single: clear others
+          host.querySelectorAll('.bp-tag').forEach(b => b.classList.remove('selected'));
+          el.classList.add('selected');
+          host._selected = [opt];
+        }
+      });
+      host.appendChild(el);
+    });
+  }
+
+  function applyPrefill(bp){
+    if (!bp) return;
+    // Set selections visually
+    const setSelected = (host, values) => {
+      if (!host) return;
+      const arr = Array.isArray(values) ? values : (values ? [values] : []);
+      host._selected = arr.slice();
+      host.querySelectorAll('.bp-tag').forEach(b => {
+        const v = b.dataset.value;
+        if (arr.includes(v)) b.classList.add('selected'); else b.classList.remove('selected');
+      });
+    };
+    setSelected(bpNodes.skinTone, bp.skinTone);
+    setSelected(bpNodes.skinType, bp.skinType);
+    setSelected(bpNodes.skinConcerns, bp.skinConcerns || []);
+    setSelected(bpNodes.hairColor, bp.hairColor);
+    setSelected(bpNodes.hairType, bp.hairType);
+    setSelected(bpNodes.hairConcerns, bp.hairConcerns || []);
+    setSelected(bpNodes.eyeColor, bp.eyeColor);
+    if (bpNodes.consent) bpNodes.consent.checked = !!bp.consent;
+    currentBP = {
+      skinTone: bp.skinTone || null,
+      skinType: bp.skinType || null,
+      skinConcerns: Array.isArray(bp.skinConcerns) ? bp.skinConcerns.slice() : [],
+      hairColor: bp.hairColor || null,
+      hairType: bp.hairType || null,
+      hairConcerns: Array.isArray(bp.hairConcerns) ? bp.hairConcerns.slice() : [],
+      eyeColor: bp.eyeColor || null,
+      consent: !!bp.consent
+    };
+  }
+
+  function collectFromUI(){
+    const getSingle = (host) => host && Array.isArray(host._selected) ? (host._selected[0] || null) : null;
+    const getMulti = (host) => host && Array.isArray(host._selected) ? host._selected.slice() : [];
+    return {
+      skinTone: getSingle(bpNodes.skinTone),
+      skinType: getSingle(bpNodes.skinType),
+      skinConcerns: getMulti(bpNodes.skinConcerns),
+      hairColor: getSingle(bpNodes.hairColor),
+      hairType: getSingle(bpNodes.hairType),
+      hairConcerns: getMulti(bpNodes.hairConcerns),
+      eyeColor: getSingle(bpNodes.eyeColor),
+      consent: !!(bpNodes.consent && bpNodes.consent.checked)
+    };
+  }
+
+  function setEditMode(on){
+    bpEditMode = !!on;
+    [bpNodes.skinTone,bpNodes.skinType,bpNodes.skinConcerns,bpNodes.hairColor,bpNodes.hairType,bpNodes.hairConcerns,bpNodes.eyeColor].forEach(host => {
+      if (!host) return;
+      host.querySelectorAll('.bp-tag').forEach(b => { b.disabled = !bpEditMode; });
+    });
+    if (bpNodes.saveBtn) bpNodes.saveBtn.disabled = !bpEditMode;
+    if (bpNodes.cancelBtn) bpNodes.cancelBtn.disabled = !bpEditMode;
+  }
+
+  function saveBP(){
+    const next = collectFromUI();
+    writeBeautyProfileEmail(next);
+    applyPrefill(next);
+    setEditMode(false);
+    if (bpNodes.saveStatus) {
+      bpNodes.saveStatus.textContent = 'Profile saved.';
+      setTimeout(() => { bpNodes.saveStatus && (bpNodes.saveStatus.textContent = ''); }, 2000);
+    }
+  }
+
+  function cancelEdit(){
+    if (originalBP) applyPrefill(originalBP);
+    setEditMode(false);
+  }
+
+  // Render tags
+  renderTags(bpNodes.skinTone, OPT.skinTone, false);
+  renderTags(bpNodes.skinType, OPT.skinType, false);
+  renderTags(bpNodes.skinConcerns, OPT.skinConcerns, true);
+  renderTags(bpNodes.hairColor, OPT.hairColor, false);
+  renderTags(bpNodes.hairType, OPT.hairType, false);
+  renderTags(bpNodes.hairConcerns, OPT.hairConcerns, true);
+  renderTags(bpNodes.eyeColor, OPT.eyeColor, false);
+
+  // Prefill from email-specific or quiz global
+  const initial = readBeautyProfileEmail() || {};
+  // If quiz saved globally, map keys
+  const quizRaw = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile')||'null'); } catch { return null; } })();
+  const base = Object.assign({}, quizRaw || {}, initial || {});
+  applyPrefill(base);
+  setEditMode(false);
+  originalBP = Object.assign({}, currentBP);
+
+  // Events
+  if (bpNodes.editBtn) bpNodes.editBtn.addEventListener('click', () => { originalBP = Object.assign({}, collectFromUI()); setEditMode(true); });
+  if (bpNodes.saveBtn) bpNodes.saveBtn.addEventListener('click', saveBP);
+  if (bpNodes.cancelBtn) bpNodes.cancelBtn.addEventListener('click', cancelEdit);
+
+  // React to quiz updates in real-time
+  window.addEventListener('beautyProfileSaved', (e) => {
+    const p = (e && e.detail) || readBeautyProfileEmail();
+    if (p) { applyPrefill(p); originalBP = Object.assign({}, p); }
+  });
+
   // Sidebar interactions: active state + hide sections when viewing Track Orders
   const sidebarLinks = document.querySelectorAll('.account-sidebar a[href="#"]');
   const trackSection = document.getElementById('trackOrdersSection');
@@ -78,6 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const browseBtns = document.querySelectorAll('#reviewsSection .browse-btn');
   const tabs = document.querySelectorAll('#reviewsSection .tab');
   const accountInfoSection = document.getElementById('accountInfoSection');
+  const beautyProfileSection = document.getElementById('beauty-profile');
   const aiForm = document.getElementById('accountInfoForm');
   const aiEls = {
     first: document.getElementById('ai_first'),
@@ -106,6 +380,12 @@ const cancelReviewBtn = document.getElementById('cancelReview');
   const reviewPointsHintEl = document.getElementById('reviewPointsHint');
   const statsGrid = document.querySelector('#trackOrdersSection .stats-grid');
   const sectionTitleEl = document.querySelector('#trackOrdersSection .section-title');
+
+  // Helper: always hide Beauty Profile unless specifically requested
+  const hideBeautyProfile = () => {
+    const bpEl = document.getElementById('beauty-profile');
+    if (bpEl) bpEl.classList.add('hidden');
+  };
 
   // ------- Wishlist helpers & rendering -------
   const readWishlist = () => {
@@ -259,6 +539,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
     if (benefitsSection) benefitsSection.classList.remove('hidden');
     if (wishListSection) wishListSection.classList.remove('hidden');
     if (trackSection) trackSection.classList.add('hidden');
+    hideBeautyProfile();
   };
 
   sidebarLinks.forEach(link => {
@@ -274,6 +555,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         // Hide the two sections below
         if (benefitsSection) benefitsSection.classList.add('hidden');
         if (wishListSection) wishListSection.classList.add('hidden');
+        hideBeautyProfile();
         // Show track orders section
         if (trackSection) trackSection.classList.remove('hidden');
         // Keep membership card visible on Track Orders
@@ -292,6 +574,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         // Hide non-essential sections
         if (benefitsSection) benefitsSection.classList.add('hidden');
         if (wishListSection) wishListSection.classList.add('hidden');
+        hideBeautyProfile();
         // Show membership card and track section container
         if (membershipCardSection) membershipCardSection.classList.remove('hidden');
         trackSection.classList.remove('hidden');
@@ -313,6 +596,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (wishListSection) wishListSection.classList.remove('hidden');
         if (trackSection) trackSection.classList.add('hidden');
         if (benefitsSection) benefitsSection.classList.add('hidden');
+        hideBeautyProfile();
         renderWishlist();
         wishListSection && wishListSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -325,6 +609,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (benefitsSection) benefitsSection.classList.add('hidden');
         if (wishListSection) wishListSection.classList.add('hidden');
         if (reviewsSection) reviewsSection.classList.add('hidden');
+        hideBeautyProfile();
         couponsSection && couponsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
@@ -337,6 +622,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (wishListSection) wishListSection.classList.add('hidden');
         if (couponsSection) couponsSection.classList.add('hidden');
         if (accountInfoSection) accountInfoSection.classList.add('hidden');
+        hideBeautyProfile();
         // Default to Writable tab
         tabs.forEach(t => t.classList.remove('active'));
         const writableTab = document.querySelector('#reviewsSection .tab[data-tab="writable"]');
@@ -356,6 +642,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (wishListSection) wishListSection.classList.add('hidden');
         if (couponsSection) couponsSection.classList.add('hidden');
         if (reviewsSection) reviewsSection.classList.add('hidden');
+        hideBeautyProfile();
         // Prefill form on open
         prefillAccountInfoForm(loadCurrentProfile());
         accountInfoSection && accountInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -455,6 +742,10 @@ const productsUrl = '/categories/full.json';
         if (couponsSection) couponsSection.classList.add('hidden');
         if (reviewsSection) reviewsSection.classList.add('hidden');
         if (accountInfoSection) accountInfoSection.classList.add('hidden');
+        {
+          const bpEl = document.getElementById('beauty-profile');
+          if (bpEl) bpEl.classList.add('hidden');
+        }
         // Always show membership card by default on section views
         if (membershipCardSection) membershipCardSection.classList.remove('hidden');
         // Apply options
@@ -464,6 +755,10 @@ const productsUrl = '/categories/full.json';
         opts.coupons && couponsSection && couponsSection.classList.remove('hidden');
         opts.reviews && reviewsSection && reviewsSection.classList.remove('hidden');
         opts.accountInfo && accountInfoSection && accountInfoSection.classList.remove('hidden');
+        if (opts.beauty) {
+          const bpEl2 = document.getElementById('beauty-profile');
+          if (bpEl2) bpEl2.classList.remove('hidden');
+        }
         // Tables visibility for track/cancel history
         if (opts.trackCancel) {
           if (statsGrid) statsGrid.classList.add('hidden');
@@ -516,6 +811,16 @@ const productsUrl = '/categories/full.json';
           reviewsMineEl && reviewsMineEl.classList.add('hidden');
           reviewFormEl && reviewFormEl.classList.add('hidden');
           reviewsSection && reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        case 'beauty-profile':
+          // Create the section lazily when the link/hash is used
+          ensureBeautyProfileSection();
+          // Show Membership Card + Beauty Profile only
+          showOnly({ beauty: true });
+          {
+            const bpEl3 = document.getElementById('beauty-profile');
+            bpEl3 && bpEl3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
           break;
         case 'benefits':
           // Show Membership Card + Benefits only

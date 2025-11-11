@@ -51,6 +51,20 @@ body { background: var(--color-background); color: var(--color-text-dark); paddi
 .view-more { font-size: .9rem; color: var(--color-primary-dark); text-decoration: none; }
 .view-more:hover { text-decoration: underline; }
 
+/* Beauty Profile chips */
+.bp-actions { display: flex; gap: .5rem; align-items: center; }
+.bp-group { border: 1px dashed var(--soft-rose); border-radius: 12px; padding: .8rem; margin: .8rem 0; background: #fff7fa; }
+.bp-header { font-weight: 700; margin-bottom: .4rem; color: var(--color-secondary); }
+.bp-sub { font-weight: 600; margin: .4rem 0 .2rem; }
+.bp-note { font-size: .85rem; color: var(--color-text-medium); font-weight: 400; }
+.bp-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.bp-tags.single .bp-tag { border-color: var(--soft-rose); }
+.bp-tag { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .8rem; border-radius: 999px; border: 1px solid var(--color-text-medium); cursor: pointer; background: #fff; color: var(--color-text-dark); user-select: none; }
+.bp-tag .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #ddd; display: inline-block; }
+.bp-tag.selected { border-color: var(--soft-rose); background: #fff2f6; color: var(--warm-blush); }
+.bp-consent { display: flex; align-items: center; gap: .5rem; margin-top: .6rem; }
+.save-status { margin-top: .6rem; color: var(--color-text-medium); }
+
 .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
 .stat-card { text-align: center; padding: 1rem; border: 1px dashed var(--color-primary-light); border-radius: 12px; background: #fff7fa; }
 .stat-card .number { font-size: 2rem; font-weight: 700; color: var(--color-secondary); }
