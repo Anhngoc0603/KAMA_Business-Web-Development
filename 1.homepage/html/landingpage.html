@@ -145,8 +145,7 @@
 .hero {
 
   position: relative;
-  z-index: 999999 !important;
-  pointer-events: auto !important;
+
 }
 header {
   z-index: 10 !important;
@@ -191,6 +190,195 @@ button::after,
 /* Nếu từng có overlay nào phủ lên hero bằng ::before/::after */
 .hero .slide::before,
 .hero .slide::after{ pointer-events:none !important; }
+/* ✅ DISABLE CLICK FOR BESTSELLER GSAP */
+.bestseller-gsap .gsap-gallery,
+.bestseller-gsap .main,
+.bestseller-gsap .mainBoxes {
+  pointer-events: none !important;
+}
+/* ✅ VIEW MORE BUTTON BELOW TITLE */
+/* ✅ LUXURY VIEW MORE BUTTON – MATCH REWARD BUTTON */
+.gsap-viewmore-btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 13px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  color: #6B4C3B;
+  background: linear-gradient(135deg, #FCE7ED, #F7C4D1 40%, #E6A6B0);
+  box-shadow: 0 6px 20px rgba(230,166,176,0.45);
+  text-align: center;
+  transition: all .35s ease;
+  position: relative;
+  overflow: hidden;
+  animation: viewPulse 2.5s infinite ease-in-out;
+}
+
+/* ✅ Hover nâng lên + sáng mạnh */
+.gsap-viewmore-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(230,166,176,0.65);
+}
+
+/* ✅ Hiệu ứng shine chạy ngang */
+.gsap-viewmore-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.45), transparent 70%);
+  transition: .6s;
+  pointer-events: none;
+}
+.gsap-viewmore-btn:hover::after {
+  left: 130%;
+}
+
+/* ✅ Glow pulse giống Reward nhưng mềm hơn */
+@keyframes viewPulse {
+  0%   { box-shadow: 0 6px 20px rgba(230,166,176,0.45); }
+  50%  { box-shadow: 0 8px 28px rgba(230,166,176,0.65); }
+  100% { box-shadow: 0 6px 20px rgba(230,166,176,0.45); }
+}
+
+
+/* ✅ REWARD – SHOP NOW LUXURY BUTTON */
+.reward-section .btn {
+  display: inline-block;
+  padding: 14px 34px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  border-radius: 50px;
+  color: #6B4C3B;
+  background: linear-gradient(135deg, #FCE7ED, #F7C4D1 40%, #E6A6B0);
+  box-shadow: 0 6px 20px rgba(230,166,176,0.45);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  animation: rewardPulse 2.5s infinite ease-in-out;
+}
+
+/* ✅ Hover: sáng mạnh + nâng lên */
+.reward-section .btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(230,166,176,0.65);
+}
+
+/* ✅ Hiệu ứng shine chạy ngang */
+.reward-section .btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.55), transparent 70%);
+  transition: .6s;
+  pointer-events: none;
+}
+
+.reward-section .btn:hover::after {
+  left: 130%;
+}
+
+/* ✅ Animation nhấp nháy glow sang trọng */
+@keyframes rewardPulse {
+  0% { box-shadow: 0 6px 20px rgba(230,166,176,0.45); }
+  50% { box-shadow: 0 8px 28px rgba(230,166,176,0.7); }
+  100% { box-shadow: 0 6px 20px rgba(230,166,176,0.45); }
+}
+/* ✅ FIX: Đưa FLASH SALE LÊN TRÊN GSAP HOÀN TOÀN */
+.flash-sale-section {
+  position: relative;
+  z-index: 999999 !important;
+}
+
+/* ✅ Best Seller hạ thấp lại – không đè lên Flash Sale nữa */
+.bestseller-gsap {
+  position: relative;
+  z-index: 1 !important;
+}
+
+/* ✅ Đảm bảo wrapper của flash sale bắt được click */
+.flash-wrapper {
+  position: relative;
+  z-index: 10 !important;
+}
+/* THÊM VÀO <style> TRONG <head> */
+.track-wrapper {
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+/* Ẩn thanh cuộn nhưng vẫn cho cuộn */
+.track-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.track-wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* Wrapper giữ scroll ngang */
+.track-wrapper{
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 0;
+}
+
+/* Danh sách không được co lại, để tổng width = tổng item => tạo overflow */
+.track{
+  display: flex;
+  flex-wrap: nowrap;     /* không xuống hàng */
+  gap: 20px;
+  margin: 0;
+  padding: 0 64px;       /* chừa chỗ cho nút hai bên */
+  list-style: none;
+  width: max-content;    /* quan trọng: không cho flex co lại */
+}
+
+/* Mỗi card là một khối cố định, không co */
+.track__item{
+  flex: 0 0 auto;        /* không co */
+  width: 320px;          /* tùy theo card của bạn */
+}
+
+/* Nút điều hướng nổi (không nằm trong luồng flex) */
+.flash-nav-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px; height: 44px;
+  border: 0; outline: 0; background: transparent;
+  cursor: pointer;
+  z-index: 5;            /* nổi trên ảnh */
+  padding: 0;
+  display: grid; place-items: center;
+  pointer-events: auto;  /* đảm bảo click được */
+}
+.flash-nav-btn img{ width: 100%; height: 100%; object-fit: contain; }
+
+/* Vị trí hai nút */
+.flash-nav-btn.prev{ left: 8px; }
+.flash-nav-btn.next{ right: 8px; }
+
+/* Đảm bảo không có lớp vô tình chặn click trong Flash Sale */
+.flash-sale-section,
+.flash-sale-section *{
+  pointer-events: auto;
+}
 
 
   </style>
@@ -208,7 +396,7 @@ button::after,
   <div class="hero-content">
     <h2>Glow With Confidence</h2>
     <p>Discover our products designed to make you shine every day.</p>
-    <a class="btn" href="../../Categories/all.html">Shop Now</a>
+    <a class="btn" href="../../categories/categories.html">Shop Now</a>
   </div>
 </div>
 
@@ -217,7 +405,7 @@ button::after,
   <div class="hero-content">
     <h2>Express Your Style</h2>
     <p>Dare to shine. Create looks that define your beauty.</p>
-    <a class="btn" href="../../Categories/all.html">View All Products</a>
+    <a class="btn" href="../../categories/categories.html">Shop Now</a>
   </div>
 </div>
 
@@ -269,14 +457,14 @@ button::after,
 <section class="new-arrivals-row reveal-up">
   <div class="hero-left">
     <img id="heroMainImage" src="../images/newcollection.png">
-    <a href="../../new/new_arrival.html" class="viewallnew">VIEW FULL COLLECTION</a>
+    <a href="../../new/new_arrival.html" class="viewallnew">CHECK OUT OUR NEW PRODUCTS</a>
 
     <!-- Hotspots giữ nguyên -->
-    <div class="hotspot tag-blush" data-id="104" data-img="../images/nc2_channel.webp" data-name="Chanel Blush" style="top:21.5%;left:25%;"></div>
-    <div class="hotspot tag-lipstick" data-id="102" data-img="../images/nc_diorlip.png" data-name="Dior Rouge Lipstick" style="top:38%;left:52.4%;"></div>
-    <div class="hotspot tag-mascara" data-id="103" data-img="../images/nc_mascara1.png" data-name="By Terry Mascara" style="top:42%;left:68.4%;"></div>
-    <div class="hotspot" data-id="105" data-img="../images/nc2_dior.png" data-name="Giorgio Armani Lipstick" style="top:45%;left:85%;"></div>
-    <div class="hotspot" data-id="101" data-img="../images/nc_channel.png" data-name="Chanel Eyeliner" style="top:75.5%;left:28%;"></div>
+    <div class="hotspot tag-blush" data-id="2" data-img="../images/nc2_channel.webp" data-name="Chanel Blush" style="top:21.5%;left:25%;"></div>
+    <div class="hotspot tag-lipstick" data-id="3" data-img="../images/nc_diorlip.png" data-name="Dior Rouge Lipstick" style="top:38%;left:52.4%;"></div>
+    <div class="hotspot tag-mascara" data-id="4" data-img="../images/nc_mascara1.png" data-name="By Terry Mascara" style="top:42%;left:68.4%;"></div>
+    <div class="hotspot" data-id="5" data-img="../images/nc2_dior.png" data-name="Giorgio Armani Lipstick" style="top:45%;left:85%;"></div>
+    <div class="hotspot" data-id="6" data-img="../images/nc_channel.png" data-name="Chanel Eyeliner" style="top:75.5%;left:28%;"></div>
   </div>
 
   <div class="hero-right">
@@ -289,7 +477,10 @@ button::after,
   <div class="gsap-title-wrapper">
     <h2 class="gsap-title">Best <span>Sellers</span></h2>
     <p class="gsap-subtitle">Discover our most loved products</p>
+    <a href="../../Best_Sellers/bestseller.html" class="gsap-viewmore-btn">VIEW MORE HERE</a>
+
   </div>
+
 
   <div class="gsap-gallery">
     <div class="main"><div class="mainBoxes"></div></div>
@@ -310,7 +501,7 @@ button::after,
   <div class="reward-text">
     <p class="subtitle">JOIN WITH 100 POINTS</p>
     <h2>Get Rewarded While You Shop</h2>
-    <button id="shopnow">SHOP NOW</button>
+    <a class="btn" href="../../categories/categories.html">Shop Now</a>
   </div>
 </section>
 
@@ -318,6 +509,7 @@ button::after,
 <section class="flash-sale-section reveal-up">
   <div class="container">
     <div class="section-header">
+      
       <h2 class="flash-title">
         <span class="gradient-text">FLASH</span> SALE
         <span class="sale-badge">UP TO 60% OFF</span>
@@ -330,8 +522,18 @@ button::after,
 
     <div class="flash-wrapper">
       <div id="fan3" class="fan-3"></div>
-      <div id="row6" class="track-wrapper">
-        <ul class="track" id="trackList"></ul>
+
+        <!-- THAY TOÀN BỘ #row6 BẰNG ĐOẠN NÀY -->
+<div id="row6" class="track-wrapper">
+  <ul class="track" id="trackList"></ul>
+
+  <!-- NÚT DÙNG ẢNH -->
+  <button id="flashPrev" class="flash-nav-btn prev">
+    <img src="../images/prev.png" alt="Prev">
+  </button>
+  <button id="flashNext" class="flash-nav-btn next">
+    <img src="../images/next.png" alt="Next">
+  </button>
       </div>
     </div>
   </div>

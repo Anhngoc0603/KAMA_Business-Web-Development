@@ -316,15 +316,15 @@
       });
 
       // Deep link điều hướng: bấm vào tiêu đề category (FACE/EYES/LIPS)
-      document.querySelectorAll('.category[data-category] .category-header h3 a').forEach(anchor => {
-        anchor.addEventListener('click', (e) => {
-          e.preventDefault();
-          const cat = anchor.closest('.category')?.getAttribute('data-category');
-          if (cat) {
-            navigateToRoot(`categories/categories.html?cat=${encodeURIComponent(cat)}`);
-          }
-        });
-      });
+document.querySelectorAll('.category[data-category] .category-header h3 a').forEach(anchor => {
+  anchor.addEventListener('click', (e) => {
+    e.preventDefault();
+    const cat = anchor.closest('.category')?.getAttribute('data-category');
+    if (cat) {
+      navigateToRoot(`categories/categories.html?category=${encodeURIComponent(cat)}`);
+    }
+  });
+});
 
       // Deep link điều hướng: bấm "Shop All <Category>" trong dropdown
       document.querySelectorAll('.category[data-category] .product-list .shop-all-link').forEach(li => {

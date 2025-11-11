@@ -360,7 +360,7 @@ let expanded = false; // ← TOÀN CỤC
       if (!res.ok) throw new Error("Không load được Sale/products.json");
 
       const data = await res.json();
-      const items = (data.products || []).slice(0, 6);
+      const items = (data.products || []).slice(0, 4);
 
       /* ============ FAN 3 ẢNH ============ */
       items.slice(0, 3).forEach((p, i) => {
@@ -431,6 +431,51 @@ function toggleExpand() {
     expandFlashSale();
   }
 }
+document.addEventListener("DOMContentLoaded", () => {
+  // Cuộn phần tử thật sự có overflow-x (wrapper), KHÔNG phải <ul>
+  const trackWrapper = document.getElementById("row6");
+  const prevBtn = document.getElementById("flashPrev");
+  const nextBtn = document.getElementById("flashNext");
+
+  if (!trackWrapper || !prevBtn || !nextBtn) return;
+
+  // Nếu vì lý do nào đó CSS chưa áp, fallback bắt buộc để tạo overflow
+  trackWrapper.style.overflowX = "auto";
+  const track = document.getElementById("trackList");
+  if (track){
+    track.style.width = "max-content";
+    track.style.flexWrap = "nowrap";
+  }
+
+  const SCROLL = 350;
+
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    trackWrapper.scrollBy({ left: -SCROLL, behavior: "smooth" });
+  });
+
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    trackWrapper.scrollBy({ left: SCROLL, behavior: "smooth" });
+  });
+
+  function updateButtonStates(){
+    const isStart = trackWrapper.scrollLeft <= 10;
+    const isEnd = trackWrapper.scrollLeft + trackWrapper.clientWidth >= trackWrapper.scrollWidth - 10;
+
+    prevBtn.style.opacity = isStart ? "0.35" : "1";
+    nextBtn.style.opacity = isEnd ? "0.35" : "1";
+    prevBtn.style.pointerEvents = isStart ? "none" : "auto";
+    nextBtn.style.pointerEvents = isEnd ? "none" : "auto";
+  }
+
+  trackWrapper.addEventListener("scroll", updateButtonStates);
+  window.addEventListener("resize", updateButtonStates);
+
+  // gọi sau khi bạn đã append <li> vào #trackList
+  setTimeout(updateButtonStates, 0);
+});
+
 
 function expandFlashSale() {
   expanded = true;
@@ -655,7 +700,7 @@ function pushFooterDown() {
 
     spot.addEventListener("click", e => {
       e.stopPropagation();
-      window.location.href = `../new/view_product/view_new.html?id=${id}`;
+      window.location.href = `../../new/view_product/view_new.html?id=${id}`;
     });
   });
 })();

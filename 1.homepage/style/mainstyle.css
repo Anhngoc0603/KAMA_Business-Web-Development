@@ -1487,7 +1487,7 @@ opacity:0.4;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: var(--pale-pink); /* Thay #fff8f8 bằng --pale-pink */
+      background-color: #ffffff; /* Thay #fff8f8 bằng --pale-pink */
       height: 390px;
       padding:0px;
             font-family: 'Playfair Display';
@@ -2692,6 +2692,10 @@ body {
     margin-bottom: 0 !important;
     height: auto !important;
 }
+.track-wrapper {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
 
 .flash-wrapper {
     background: transparent !important;
@@ -3427,12 +3431,6 @@ body {
 }
 
 /* Đảm bảo không có overflow ẩn làm mất content */
-.flash-wrapper,
-.track-wrapper,
-.track {
-  overflow: visible !important;
-}
-
 /* Thêm khoảng cách an toàn trước footer */
 .main-content {
   flex: 1; /* Chiếm không gian còn lại */
@@ -3760,4 +3758,78 @@ position: relative;
 .category-card::before,
 .category-card::after {
   pointer-events: none !important;
+}
+
+/* =========================================================
+   FLASH SALE NAVIGATION BUTTONS FIX
+========================================================= */
+.flash-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #E6A6B0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.flash-nav-btn:hover {
+  background: #E6A6B0;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(230, 166, 176, 0.4);
+}
+
+.flash-nav-btn img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.flash-nav-btn.prev {
+  left: 20px;
+}
+
+.flash-nav-btn.next {
+  right: 20px;
+}
+
+/* Đảm bảo track-wrapper có position relative */
+.track-wrapper {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+/* Ẩn thanh cuộn */
+.track-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.track-wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Đảm bảo track có đủ không gian */
+.track {
+  display: flex;
+  gap: 30px;
+  padding: 0 60px; /* Thêm padding để nút không che nội dung */
+  list-style: none;
+  margin: 0;
+  width: max-content;
 }

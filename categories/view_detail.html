@@ -7,6 +7,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
+    #header-placeholder {
+  all: unset !important;
+  display: block !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  background: white !important;
+}
+/* ================== FIX ZOOM & FULL WIDTH ================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--background-color);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Đảm bảo main và footer full width */
+main, .product-info-enhanced, #footer-placeholder {
+  width: 100%;
+  flex: 1;
+}
+
+/* Fix container tràn */
+.product-page,
+.product-info-enhanced,
+.animated-section,
+.section-inner {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Fix circles không tràn */
+.circles-container {
+  overflow: hidden;
+}
+
+/* Fix header padding */
+#header-placeholder {
+  position: sticky !important;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
     :root {
       --primary-color: #E6A6B0;
       --secondary-color: #F9C6CF;
@@ -958,16 +1017,13 @@
     const DEBUG = true;
     // ==================== CONFIGURATION ====================
     const CONFIG = {
-      // Thử các đường dẫn khác nhau (ưu tiên Categories)
+      // Thử các đường dẫn khác nhau
       jsonPaths: [
-        '/categories/full.json',
-        '/Best_Sellers/full.json',
-        '/1.homepage/products.json',
-        '/new/products.json'
+        '/new/products.json',
       ],
       headerPath: '/header_footer/header.html',
       footerPath: '/header_footer/footer.html',
-      productsPage: '/categories/categories.html'
+      productsPage: '/new/new_arrival.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1054,21 +1110,11 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
-        // Chuẩn hoá ảnh để hiển thị đúng theo nguồn dữ liệu
-        const baseDir = (() => {
-          try {
-            const url = new URL(result.path, window.location.origin);
-            const segments = url.pathname.split('/').filter(Boolean);
-            return `/${segments[0] || ''}`; // ví dụ: /categories, /new, /Best_Sellers, /1.homepage
-          } catch { return '/categories'; }
-        })();
-
+        // Chuẩn hoá ảnh để hiển thị đúng và lưu đúng vào Cart
         const normalizeImagePath = (p) => {
           if (!p) return p;
-          if (p.startsWith('http')) return p;
-          if (p.startsWith('/')) return p;
-          if (p.startsWith('./images/')) return p.replace('./images/', `${baseDir}/images/`);
-          if (p.startsWith('images/')) return `${baseDir}/${p}`;
+          if (p.startsWith('./images/')) return p.replace('./images/', '/new/images/');
+          if (p.startsWith('images/')) return `/new/${p}`;
           return p;
         };
         data.products = data.products.map(prod => ({
@@ -1567,57 +1613,54 @@
     }
 
     // ==================== HEADER/FOOTER LOADING ====================
-    async function loadHeaderFooter() {
-      debugLog('Bắt đầu tải header và footer...');
-      
-      try {
-        // Tải header
-        const headerResponse = await fetch(CONFIG.headerPath);
-        if (headerResponse.ok) {
-          const headerHTML = await headerResponse.text();
-          document.getElementById('header-placeholder').innerHTML = headerHTML;
-          debugLog('✅ Header loaded');
-          // Ensure shared header script is loaded after injection
-          if (!document.querySelector('script[data-header-footer-script]')) {
-            const s = document.createElement('script');
-            s.src = '/header_footer/script.js';
-            s.defer = true;
-            s.setAttribute('data-header-footer-script', 'true');
-            document.head.appendChild(s);
-          }
-          // Re-init header logic sau khi chèn
-          initHeader();
-        } else {
-          throw new Error(`HTTP ${headerResponse.status}`);
-        }
-      } catch (error) {
-        debugLog('❌ Lỗi tải header:', error.message);
-        document.getElementById('header-placeholder').innerHTML = `
-          <div style="padding: 20px; text-align: center; color: var(--text-light); font-size: 18px;">
-            <p>Header không khả dụng</p>
-          </div>
-        `;
-      }
+async function loadHeaderFooter() {
+  try {
+    const headerResponse = await fetch(CONFIG.headerPath);
+    if (!headerResponse.ok) throw new Error("Header not found");
+    const headerHTML = await headerResponse.text();
+    document.getElementById('header-placeholder').innerHTML = headerHTML;
 
-      try {
-        // Tải footer
-        const footerResponse = await fetch(CONFIG.footerPath);
-        if (footerResponse.ok) {
-          const footerHTML = await footerResponse.text();
-          document.getElementById('footer-placeholder').innerHTML = footerHTML;
-          debugLog('✅ Footer loaded');
+    // ĐỢI HEADER HIỂN THỊ HOÀN TOÀN
+    await new Promise(resolve => {
+      const check = () => {
+        const header = document.querySelector("#header-placeholder header");
+        if (header && header.offsetHeight > 0) {
+          resolve();
         } else {
-          throw new Error(`HTTP ${footerResponse.status}`);
+          requestAnimationFrame(check);
         }
-      } catch (error) {
-        debugLog('❌ Lỗi tải footer:', error.message);
-        document.getElementById('footer-placeholder').innerHTML = `
-          <div style="padding: 20px; text-align: center; color: var(--text-light); font-size: 18px;">
-            <p>Footer không khả dụng</p>
-          </div>
-        `;
-      }
+      };
+      check();
+    });
+
+    const header = document.querySelector("#header-placeholder header");
+    const headerHeight = header.offsetHeight;
+    const main = document.querySelector("main");
+    if (main) {
+      main.style.paddingTop = `${headerHeight + 20}px`; // giảm từ 40 → 20
     }
+
+    // Load footer
+    const footerResponse = await fetch(CONFIG.footerPath);
+    if (footerResponse.ok) {
+      const footerHTML = await footerResponse.text();
+      document.getElementById('footer-placeholder').innerHTML = footerHTML;
+    }
+
+    initHeader();
+  } catch (error) {
+    console.error("Load header/footer failed:", error);
+
+    // fallback
+    document.getElementById('header-placeholder').innerHTML = `
+      <div style="padding:20px;text-align:center;color:#aaa">Header không khả dụng</div>
+    `;
+    document.getElementById('footer-placeholder').innerHTML = `
+      <div style="padding:20px;text-align:center;color:#aaa">Footer không khả dụng</div>
+    `;
+  }
+}
+
 
     // ===== HEADER INIT FUNCTION (to fix mobile nav dropdown) =====
     function initHeader() {

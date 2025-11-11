@@ -49,9 +49,9 @@
     "category": "Face",
     "subtype": "Blush",
     "images": [
-      "https://i.postimg.cc/TPPL1RH4/2-1.avif",
-      "https://i.postimg.cc/mrrzkb54/2-2.avif",
-      "https://i.postimg.cc/ZqqBnTMh/2-3.avif"
+  "images/nc2_channel.webp",
+  "images/nc2_channel.webp",
+  "images/nc2_channel.webp"
     ],
     "description": "Soft rosy blush that gives a healthy radiance with every sweep.",
     "detailedDescription": "Chanel Les Beiges Blush delivers a soft, natural-looking flush that enhances your complexion with a healthy radiance.",
@@ -73,17 +73,15 @@
   },
   {
     "id": 3,
-    "name": "Gucci Rouge à Lèvres Mat",
-    "brand": "Gucci",
+    "name": "Dior Rouge Lipstick",
+    "brand": "Dior",
     "price": 46.00,
     "originalPrice": null,
     "rating": 4.7,
     "category": "Lips",
     "subtype": "Lipstick",
     "images": [
-      "https://i.postimg.cc/hPkgKkTz/temp-Image-K271Ih.avif",
-      "https://i.postimg.cc/m2vRTvC7/temp-Imagec-UV5Hh.avif",
-      "https://i.postimg.cc/zBB4C7K2/temp-Imaget-EBc-IL.avif"
+      "images/nc_diorlip.png"
     ],
     "description": "Rich, creamy matte lipstick with intense color payoff.",
     "detailedDescription": "A new matte lipstick from Gucci Beauty. Delivers vibrant color with a soft, velvety feel. Long-lasting wear without drying the lips.",

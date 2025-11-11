@@ -886,6 +886,24 @@
     #header-placeholder {
     min-height: 220px; /* hoặc 150px nếu header cao hơn */
 }
+.team-card img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.team-carousel-track {
+  pointer-events: auto;
+  z-index: 99 !important;
+}
+
+.team-nav-arrow {
+  z-index: 100 !important;
+  pointer-events: auto;
+}
+
+.team-card {
+  pointer-events: auto !important;
+}
+
 
   </style>
 </head>
@@ -1356,22 +1374,15 @@ async function initTeamCarousel() {
 
     setTimeout(() => (teamIsAnimating = false), 700);
   }
+teamCards.forEach((card, i) => {
+  card.addEventListener("click", (e) => {
+    e.stopPropagation();   // ✅ NGĂN drag/wheel NUỐT CLICK
 
-  // ✅ Click lên card
-  teamCards.forEach((card, i) => {
-    card.addEventListener("click", () => {
-      const brand = fetchedBrands[i];
-
-      if (card.classList.contains("center")) {
-        // ✅ Click brand đang ở giữa → chuyển trang
-        window.location.href = `./categories/categories.html?brand=${encodeURIComponent(brand.name)}`;
-        return;
-      }
-
-      // ✅ Click brand chưa ở giữa → animate vào giữa
-      updateTeamCarousel(i);
-    });
+    const brand = fetchedBrands[i];
+    window.location.href = `../categories/categories.html?brand=${encodeURIComponent(brand.name)}`;
   });
+});
+
 
   // ✅ Dot click
   teamDots.forEach((dot, i) => {
@@ -1400,7 +1411,6 @@ async function initTeamCarousel() {
   teamTrackEl.addEventListener("pointerdown", e => {
     dragging = true;
     startY = e.clientY;
-    try { teamTrackEl.setPointerCapture(e.pointerId); } catch (_) {}
     teamTrackEl.style.cursor = 'grabbing';
   });
 
