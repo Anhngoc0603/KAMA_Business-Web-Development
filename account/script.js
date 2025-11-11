@@ -142,6 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <div id="bpSaveStatus" class="save-status"></div>
           </div>
         </div>
+        <div id="bpRecsQuiz" class="bp-group full">
+          <div class="bp-label">Quiz Recommendations</div>
+          <div class="bp-note" style="display:none"></div>
+          <div id="bpRecsQuizGrid" class="review-list"></div>
+        </div>
         <div class="bp-row">
           <div class="bp-group"><div class="bp-label">Skin Tone</div><div id="bpSkinTone" class="bp-tags"></div></div>
           <div class="bp-group"><div class="bp-label">Skin Type</div><div id="bpSkinTypeTags" class="bp-tags"></div></div>
@@ -151,6 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="bp-group full"><div class="bp-label">Hair Concerns</div><div id="bpHairConcerns" class="bp-tags"></div></div>
           <div class="bp-group"><div class="bp-label">Eye Color</div><div id="bpEyeColor" class="bp-tags"></div></div>
           <div class="bp-group"><label><input type="checkbox" id="bpConsent" /> Allow personalization</label></div>
+        </div>
+        <div id="bpRecs" class="bp-group full">
+          <div class="bp-label">Recommendations</div>
+          <div class="bp-note" style="display:none"></div>
+          <div id="bpRecsGrid" class="review-list"></div>
         </div>
       `;
       main.appendChild(section);
@@ -187,6 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
       bpNodes.cancelBtn.addEventListener('click', cancelEdit);
       bpNodes.cancelBtn._bound = true;
     }
+
+    // Bảo đảm quiz recs được render ngay khi tạo section
+    try { renderQuizRecommendations(); } catch(_){}
+    // Nếu dữ liệu sản phẩm đã nạp trước đó, render phần recommendations dựa trên profile
+    try {
+      const initial = readBeautyProfileEmail() || {};
+      const quizRaw = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile')||'null'); } catch { return null; } })();
+      const base = Object.assign({}, quizRaw || {}, initial || {});
+      renderProfileRecommendations(base);
+    } catch(_){}
   }
 
   // Options (superset để khớp hình + quiz)
@@ -299,6 +319,111 @@ document.addEventListener('DOMContentLoaded', () => {
       bpNodes.saveStatus.textContent = 'Profile saved.';
       setTimeout(() => { bpNodes.saveStatus && (bpNodes.saveStatus.textContent = ''); }, 2000);
     }
+    // Call recommendation API and render recommendations (no reasons)
+    try {
+      const selections = [];
+      if (next.skinType) selections.push(next.skinType);
+      if (Array.isArray(next.skinConcerns)) selections.push(...next.skinConcerns);
+      if (next.hairType) selections.push(next.hairType);
+      if (Array.isArray(next.hairConcerns)) selections.push(...next.hairConcerns);
+      if ((next.skinConcerns||[]).length) selections.push('Face');
+      if ((next.hairConcerns||[]).length) selections.push('Hair');
+      const qs = encodeURIComponent(selections.join(','));
+      fetch(`/api/recommend?selections=${qs}&mode=promo`).then(r => r.json()).then(data => {
+        const grid = document.getElementById('bpRecsGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        const abs = (rel) => {
+          if (!rel) return '';
+          rel = String(rel).trim();
+          if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+          if (rel.startsWith('/')) return rel;
+          return '/categories/' + rel.replace(/^\/+/, '');
+        };
+        const resolveThumb = (p) => {
+          try {
+            const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+            if (byId) return byId;
+          } catch {}
+          const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '';
+          if (imgRel) return abs(imgRel);
+          const brandRel = (p.brandImage || '').trim();
+          if (brandRel) return abs(brandRel);
+          try {
+            const bLogo = (typeof resolveBrandLogo === 'function') ? resolveBrandLogo(p.brand) : '';
+            if (bLogo) return bLogo;
+          } catch {}
+          return '/header_footer/images/LOGO.png';
+        };
+        (data.results||[]).slice(0,6).forEach(p => {
+          const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+          const item = document.createElement('div');
+          item.className = 'review-item';
+          item.innerHTML = `
+            <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+            <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+            <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+          `;
+          grid.appendChild(item);
+        });
+      }).catch(()=>{});
+      // Track interactions
+      try { fetch('/api/track/interactions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ source:'beauty_profile', selections }) }); } catch{}
+    } catch{}
+  }
+
+  // Auto-render recommendations from saved profile on load
+  // (without requiring manual Save)
+  function renderProfileRecommendations(profile){
+    try {
+      const selections = [];
+      if (profile.skinType) selections.push(profile.skinType);
+      if (Array.isArray(profile.skinConcerns)) selections.push(...profile.skinConcerns);
+      if (profile.hairType) selections.push(profile.hairType);
+      if (Array.isArray(profile.hairConcerns)) selections.push(...profile.hairConcerns);
+      if ((profile.skinConcerns||[]).length) selections.push('Face');
+      if ((profile.hairConcerns||[]).length) selections.push('Hair');
+      const qs = encodeURIComponent(selections.join(','));
+      fetch(`/api/recommend?selections=${qs}&mode=promo`).then(r => r.json()).then(data => {
+        const grid = document.getElementById('bpRecsGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        const abs = (rel) => {
+          if (!rel) return '';
+          rel = String(rel).trim();
+          if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+          if (rel.startsWith('/')) return rel;
+          return '/categories/' + rel.replace(/^\/+/, '');
+        };
+        const resolveThumb = (p) => {
+          try {
+            const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+            if (byId) return byId;
+          } catch {}
+          const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '';
+          if (imgRel) return abs(imgRel);
+          const brandRel = (p.brandImage || '').trim();
+          if (brandRel) return abs(brandRel);
+          try {
+            const bLogo = (typeof resolveBrandLogo === 'function') ? resolveBrandLogo(p.brand) : '';
+            if (bLogo) return bLogo;
+          } catch {}
+          return '/header_footer/images/LOGO.png';
+        };
+        (data.results||[]).slice(0,6).forEach(p => {
+          const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+          const item = document.createElement('div');
+          item.className = 'review-item';
+          item.innerHTML = `
+            <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+            <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+            <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+          `;
+          grid.appendChild(item);
+        });
+      }).catch(()=>{});
+      try { fetch('/api/track/interactions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ source:'beauty_profile', selections }) }); } catch{}
+    } catch{}
   }
 
   function cancelEdit(){
@@ -323,6 +448,113 @@ document.addEventListener('DOMContentLoaded', () => {
   applyPrefill(base);
   setEditMode(false);
   originalBP = Object.assign({}, currentBP);
+  // Đợi dữ liệu sản phẩm sẵn sàng để đảm bảo có thumbnail theo product ID
+  window.addEventListener('productsLoaded', () => {
+    try { renderProfileRecommendations(base); } catch (_) {}
+  });
+
+  // Render Quiz Recommendations if available (callable)
+  function renderQuizRecommendations(){
+    try {
+      const el = document.getElementById('bpRecsQuiz');
+      const grid = document.getElementById('bpRecsQuizGrid');
+      if (!el || !grid) return;
+      const quizDone = localStorage.getItem('beautyQuizCompleted') === 'true';
+      const quizProfile = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile')||'null'); } catch { return null; } })();
+      const savedRecs = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile.recs')||'[]'); } catch { return []; } })();
+      // Hiển thị nếu có recs lưu hoặc có profile đã hoàn thành quiz
+      if ((!quizDone || !quizProfile) && (!Array.isArray(savedRecs) || savedRecs.length === 0)) { el.style.display = 'none'; return; }
+      el.style.display = '';
+      const selections = [];
+      if (quizProfile?.skinType) selections.push(quizProfile.skinType);
+      if (Array.isArray(quizProfile?.skinConcerns)) selections.push(...quizProfile.skinConcerns);
+      if (quizProfile?.hairType) selections.push(quizProfile.hairType);
+      if (Array.isArray(quizProfile?.hairConcerns)) selections.push(...quizProfile.hairConcerns);
+      if ((quizProfile?.skinConcerns||[]).length) selections.push('Face');
+      if ((quizProfile?.hairConcerns||[]).length) selections.push('Hair');
+      const qs = encodeURIComponent(selections.join(','));
+      const renderList = (list) => {
+        grid.innerHTML = '';
+        const abs = (rel) => {
+          if (!rel) return '';
+          rel = String(rel).trim();
+          if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+          if (rel.startsWith('/')) return rel;
+          return '/categories/' + rel.replace(/^\/+/, '');
+        };
+        const resolveThumb = (p) => {
+          try {
+            const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+            if (byId) return byId;
+          } catch {}
+          const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '';
+          if (imgRel) return abs(imgRel);
+          const brandRel = (p.brandImage || '').trim();
+          return brandRel ? abs(brandRel) : '/header_footer/images/LOGO.png';
+        };
+        (list||[]).slice(0,6).forEach(p => {
+          const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+          const item = document.createElement('div');
+          item.className = 'review-item';
+          item.innerHTML = `
+            <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+            <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+            <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+          `;
+          grid.appendChild(item);
+        });
+      };
+      if (Array.isArray(savedRecs) && savedRecs.length > 0) {
+        renderList(savedRecs);
+      } else {
+        fetch(`/api/recommend?selections=${qs}&mode=promo`).then(r => r.json()).then(data => {
+          const list = (data && Array.isArray(data.results)) ? data.results : [];
+          renderList(list);
+        }).catch(()=>{});
+      }
+      try { fetch('/api/track/interactions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ source:'beauty_profile_quiz', selections }) }); } catch{}
+    } catch{}
+  }
+
+  // Initial attempt (in case DOM is already present)
+  try { renderQuizRecommendations(); } catch(_){}
+
+  // Re-render quiz recommendations when products are loaded for better thumbnails
+  try { window.addEventListener('productsLoaded', () => { try { (function(){
+    const el = document.getElementById('bpRecsQuiz');
+    const grid = document.getElementById('bpRecsQuizGrid');
+    if (!el || !grid || el.style.display === 'none') return;
+    const savedRecs = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile.recs')||'[]'); } catch { return []; } })();
+    if (Array.isArray(savedRecs) && savedRecs.length) {
+      // Minimal re-render using saved list to upgrade thumbnails
+      grid.innerHTML = '';
+      const abs = (rel) => {
+        if (!rel) return '';
+        rel = String(rel).trim();
+        if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+        if (rel.startsWith('/')) return rel;
+        return '/categories/' + rel.replace(/^\/+/, '');
+      };
+      const resolveThumb = (p) => {
+        try { const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : ''; if (byId) return byId; } catch {}
+        return '/header_footer/images/LOGO.png';
+      };
+      savedRecs.slice(0,6).forEach(p => {
+        const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+        const item = document.createElement('div');
+        item.className = 'review-item';
+        item.innerHTML = `
+          <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+          <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+          <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+  })(); } catch(_){} }); } catch(_){}
+
+  // Re-render when quiz saves recs (from modal)
+  try { window.addEventListener('beautyQuizRecsSaved', () => { try { renderQuizRecommendations(); } catch(_){} }); } catch(_){}
 
   // Events
   if (bpNodes.editBtn) bpNodes.editBtn.addEventListener('click', () => { originalBP = Object.assign({}, collectFromUI()); setEditMode(true); });
@@ -684,6 +916,7 @@ const productsUrl = '/categories/full.json';
   // Reviews state
   let currentReviewTarget = null; // { orderId, productName }
   let resolveProductThumb = (id) => '';
+  let resolveBrandLogo = (brand) => '';
 
   let orders = [];
   let refunds = [];
@@ -1404,6 +1637,7 @@ const renderMyReviews = (getThumb) => {
       customers = Array.isArray(customersData) ? customersData : [];
 
       let productIndex = {};
+      let brandIndex = {};
       try {
         const arr = (productsData && productsData.products) || [];
         arr.forEach(p => {
@@ -1411,7 +1645,8 @@ const renderMyReviews = (getThumb) => {
           let normalized = '';
           if (firstImg) {
             if (firstImg.startsWith('http')) {
-              normalized = firstImg;
+              // Tránh ảnh ngoài bị ORB chặn, ưu tiên ảnh nội bộ nếu có
+              normalized = '';
             } else if (firstImg.startsWith('/')) {
               // Already absolute; keep as-is to avoid double prefix
               normalized = firstImg;
@@ -1422,11 +1657,29 @@ const renderMyReviews = (getThumb) => {
             }
           }
           productIndex[String(p.id)] = normalized;
+          // Brand logo index
+          const brandRel = (p.brandImage || '').trim();
+          if (brandRel) {
+            let brandNorm = '';
+            if (brandRel.startsWith('/')) {
+              brandNorm = brandRel;
+            } else if (brandRel.startsWith('./')) {
+              brandNorm = `/categories${brandRel.slice(1)}`;
+            } else if (/^https?:/i.test(brandRel)) {
+              brandNorm = '';
+            } else {
+              brandNorm = `/categories/${brandRel}`;
+            }
+            if (p.brand) brandIndex[String(p.brand)] = brandNorm;
+          }
         });
       } catch {}
 
       const getProductThumb = (id) => productIndex[String(id)] || '';
       resolveProductThumb = getProductThumb;
+      const getBrandLogo = (brand) => brandIndex[String(brand)] || '';
+      resolveBrandLogo = getBrandLogo;
+      try { window.dispatchEvent(new Event('productsLoaded')); } catch {}
 
       // Determine current customer from localStorage
       const storedCustomerId = localStorage.getItem('user.customerId');

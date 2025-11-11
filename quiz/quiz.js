@@ -356,33 +356,69 @@ h.modal.querySelector('#bqClose').addEventListener('click', close);
     const c = el(`<div class="bq-step active bq-loading">
       <div>
         <div class="bq-spinner" style="margin:0 auto"></div>
-        <div style="text-align:center; margin-top:16px;">Thanks! We’re matching your perfect KAMA picks…</div>
+        <div style="text-align:center; margin-top:16px;">Thanks! Matching recommendations tailored for you…</div>
       </div>
     </div>`);
     h.btnPrev.style.display = 'none';
     h.btnNext.style.display = 'none';
     h.btnStart.style.display = 'none';
-    // fetch products then proceed
-    fetchProducts().then(() => {
-      setTimeout(() => { state.stepIndex = state.steps.indexOf('results'); render(); }, 900);
+    // fetch products and API recommendations then proceed
+    fetchProducts().then(async () => {
+      try {
+        const selections = [];
+        if (state.profile.skinType) selections.push(state.profile.skinType);
+        if (Array.isArray(state.profile.skinConcerns)) selections.push(...state.profile.skinConcerns);
+        if (state.profile.hairType) selections.push(state.profile.hairType);
+        if (Array.isArray(state.profile.hairConcerns)) selections.push(...state.profile.hairConcerns);
+        if ((state.profile.skinConcerns||[]).length) selections.push('Face');
+        if ((state.profile.hairConcerns||[]).length) selections.push('Hair');
+        const qs = encodeURIComponent(selections.join(','));
+        const url = `/api/recommend?selections=${qs}&mode=promo`;
+        const resp = await fetch(url);
+        state.recommendations = await resp.json();
+        // Track interactions
+        try {
+          fetch('/api/track/interactions', {
+            method: 'POST', headers: { 'Content-Type':'application/json' },
+            body: JSON.stringify({ source: 'quiz', selections })
+          });
+        } catch(e){}
+      } catch(e){ state.recommendations = null; }
+      setTimeout(() => { state.stepIndex = state.steps.indexOf('results'); render(); }, 600);
     });
     return c;
   }
   function stepResults(){
     const c = el(`<div class="bq-step active">
-      <div class="bq-question">Based on your profile, here are your KAMA matches!</div>
-      <div class="bq-subtext">Pick a product to view details or save your profile.</div>
+      <div class="bq-question">Based on your selections, these are great matches!</div>
+      <div class="bq-subtext">Personalized picks curated from your selections.</div>
     </div>`);
     const grid = el(`<div class="bq-products"></div>`);
-    const picks = recommendProducts(state.profile, state.products).slice(0,5);
+    const picks = (state.recommendations && Array.isArray(state.recommendations.results))
+      ? state.recommendations.results.slice(0,5)
+      : recommendProducts(state.profile, state.products).slice(0,5);
+    // Persist top picks to localStorage so Beauty Profile can show them without relying on API
+    try {
+      const compact = picks.map(p => ({ id: p.id, name: p.name, brand: p.brand, category: p.category }));
+      localStorage.setItem('beauty.profile.recs', JSON.stringify(compact));
+      try { window.dispatchEvent(new CustomEvent('beautyQuizRecsSaved', { detail: compact })); } catch(_) {}
+    } catch(_) {}
     picks.forEach(p => {
       const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
-      const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '/header_footer/images/LOGO.png';
+      const byId = (Array.isArray(state.products) ? state.products.find(x => String(x.id) === String(p.id)) : null);
+      const imgRel = (Array.isArray(p.images) && p.images[0])
+        ? p.images[0]
+        : (byId && Array.isArray(byId.images) && byId.images[0] ? byId.images[0] : '/header_footer/images/LOGO.png');
       const imgSrc = imgRel.startsWith('./')
         ? ('/categories' + imgRel.slice(1))
         : (imgRel.startsWith('/') ? imgRel : ('/categories/' + imgRel.replace(/^\/+/, '')));
+      const brandRelRaw = (p.brandImage || (byId && byId.brandImage) || '').trim();
+      const brandSrc = brandRelRaw
+        ? (brandRelRaw.startsWith('./') ? ('/categories' + brandRelRaw.slice(1))
+          : (brandRelRaw.startsWith('/') ? brandRelRaw : ('/categories/' + brandRelRaw.replace(/^\/+/, ''))))
+        : '/header_footer/images/LOGO.png';
       const card = el(`<div class="bq-card">
-        <img src="${imgSrc}" alt="${p.name}" onerror="this.src='/header_footer/images/LOGO.png'">
+        <img src="${imgSrc}" alt="${p.name}" onerror="this.onerror=null;this.src='${brandSrc}'">
         <div class="body">
           <div class="title">${p.name}</div>
           <div class="meta">${p.brand || ''} • ${p.category || ''}</div>
@@ -466,6 +502,18 @@ h.modal.querySelector('#bqClose').addEventListener('click', close);
       localStorage.setItem('beauty.profile', JSON.stringify(profile));
       localStorage.setItem('beautyQuizCompleted', 'true');
       window.dispatchEvent(new CustomEvent('beautyProfileSaved', {detail: profile}));
+    } catch(e){}
+    // Track interaction for weighting
+    try {
+      const selections = [];
+      if (profile.skinType) selections.push(profile.skinType);
+      if (Array.isArray(profile.skinConcerns)) selections.push(...profile.skinConcerns);
+      if (profile.hairType) selections.push(profile.hairType);
+      if (Array.isArray(profile.hairConcerns)) selections.push(...profile.hairConcerns);
+      fetch('/api/track/interactions', {
+        method: 'POST', headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({ source: 'quiz', selections })
+      });
     } catch(e){}
   }
 
