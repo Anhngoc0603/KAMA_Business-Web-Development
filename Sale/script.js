@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const fireworks = document.querySelector('.fireworks-container');
   if (fireworks) {
     const colors = ['pink-1', 'pink-2', 'pink-3', 'pink-4'];
-    for (let i = 0; i < 120; i++) {
+    // Giảm số lượng hạt pháo hoa để nhẹ CPU/GPU
+    for (let i = 0; i < 36; i++) {
       const p = document.createElement('div');
       p.className = `firework-particle ${colors[Math.floor(Math.random() * colors.length)]}`;
       p.style.setProperty('--tx', `${Math.random() * 200 - 100}vw`);

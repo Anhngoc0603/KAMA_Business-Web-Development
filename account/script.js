@@ -62,6 +62,511 @@ document.addEventListener('DOMContentLoaded', () => {
   byId('statDelivered').textContent = stats.delivered;
   byId('statCancelRefund').textContent = stats.cancelRefund;
 
+  // ---------- Beauty Profile: chips UI, link by email, prefill from quiz ----------
+  const bpNodes = {
+    skinTone: byId('bpSkinTone'),
+    skinType: byId('bpSkinTypeTags'),
+    skinConcerns: byId('bpSkinConcerns'),
+    hairColor: byId('bpHairColor'),
+    hairType: byId('bpHairType'),
+    hairConcerns: byId('bpHairConcerns'),
+    eyeColor: byId('bpEyeColor'),
+    consent: byId('bpConsent'),
+    editBtn: byId('bpEditBtn'),
+    saveBtn: byId('bpSaveBtn'),
+    cancelBtn: byId('bpCancelBtn'),
+    saveStatus: byId('bpSaveStatus')
+  };
+
+  const getCurrentEmail = () => {
+    try {
+      if (window.Auth && typeof Auth.getUser === 'function') {
+        const u = Auth.getUser();
+        if (u && u.email) return String(u.email).toLowerCase();
+      }
+    } catch {}
+    const e = localStorage.getItem('user.email');
+    return e ? String(e).toLowerCase() : null;
+  };
+  const keyForEmail = (email) => email ? `beauty.profile:${email}` : 'beauty.profile';
+
+  const readBeautyProfileEmail = () => {
+    const email = getCurrentEmail();
+    const key = keyForEmail(email);
+    try {
+      const raw = localStorage.getItem(key) || localStorage.getItem('beauty.profile');
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    return null;
+  };
+  const writeBeautyProfileEmail = (profile) => {
+    const email = getCurrentEmail();
+    const key = keyForEmail(email);
+    try { localStorage.setItem(key, JSON.stringify(profile || {})); } catch {}
+    // Keep global for backward compatibility
+    try { localStorage.setItem('beauty.profile', JSON.stringify(profile || {})); } catch {}
+    window.dispatchEvent(new CustomEvent('beautyProfileSaved', { detail: profile }));
+  };
+
+  // Ensure Beauty Profile section exists only when requested
+  function refreshBPRefs() {
+    bpNodes.skinTone = byId('bpSkinTone');
+    bpNodes.skinType = byId('bpSkinTypeTags');
+    bpNodes.skinConcerns = byId('bpSkinConcerns');
+    bpNodes.hairColor = byId('bpHairColor');
+    bpNodes.hairType = byId('bpHairType');
+    bpNodes.hairConcerns = byId('bpHairConcerns');
+    bpNodes.eyeColor = byId('bpEyeColor');
+    bpNodes.consent = byId('bpConsent');
+    bpNodes.editBtn = byId('bpEditBtn');
+    bpNodes.saveBtn = byId('bpSaveBtn');
+    bpNodes.cancelBtn = byId('bpCancelBtn');
+    bpNodes.saveStatus = byId('bpSaveStatus');
+  }
+
+  function ensureBeautyProfileSection() {
+    let host = document.getElementById('beauty-profile');
+    if (!host) {
+      const main = document.querySelector('.account-main');
+      if (!main) return;
+      const section = document.createElement('section');
+      section.className = 'glass-section hidden';
+      section.id = 'beauty-profile';
+      section.innerHTML = `
+        <div class="section-header">
+          <h2 class="section-title">Beauty Profile</h2>
+          <div class="bp-actions">
+            <button id="bpEditBtn" class="btn" type="button">Edit</button>
+            <button id="bpSaveBtn" class="btn primary" type="button" disabled>Save</button>
+            <button id="bpCancelBtn" class="btn" type="button" disabled>Cancel</button>
+            <div id="bpSaveStatus" class="save-status"></div>
+          </div>
+        </div>
+        <div id="bpRecsQuiz" class="bp-group full">
+          <div class="bp-label">Quiz Recommendations</div>
+          <div class="bp-note" style="display:none"></div>
+          <div id="bpRecsQuizGrid" class="review-list"></div>
+        </div>
+        <div class="bp-row">
+          <div class="bp-group"><div class="bp-label">Skin Tone</div><div id="bpSkinTone" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Skin Type</div><div id="bpSkinTypeTags" class="bp-tags"></div></div>
+          <div class="bp-group full"><div class="bp-label">Skin Concerns</div><div id="bpSkinConcerns" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Hair Color</div><div id="bpHairColor" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Hair Type</div><div id="bpHairType" class="bp-tags"></div></div>
+          <div class="bp-group full"><div class="bp-label">Hair Concerns</div><div id="bpHairConcerns" class="bp-tags"></div></div>
+          <div class="bp-group"><div class="bp-label">Eye Color</div><div id="bpEyeColor" class="bp-tags"></div></div>
+          <div class="bp-group"><label><input type="checkbox" id="bpConsent" /> Allow personalization</label></div>
+        </div>
+        <div id="bpRecs" class="bp-group full">
+          <div class="bp-label">Recommendations</div>
+          <div class="bp-note" style="display:none"></div>
+          <div id="bpRecsGrid" class="review-list"></div>
+        </div>
+      `;
+      main.appendChild(section);
+      host = section;
+    }
+
+    // Refresh references to the dynamically inserted nodes
+    refreshBPRefs();
+
+    // Render tag options for the newly inserted hosts
+    renderTags(bpNodes.skinTone, OPT.skinTone, false);
+    renderTags(bpNodes.skinType, OPT.skinType, false);
+    renderTags(bpNodes.skinConcerns, OPT.skinConcerns, true);
+    renderTags(bpNodes.hairColor, OPT.hairColor, false);
+    renderTags(bpNodes.hairType, OPT.hairType, false);
+    renderTags(bpNodes.hairConcerns, OPT.hairConcerns, true);
+    renderTags(bpNodes.eyeColor, OPT.eyeColor, false);
+
+    // Prefill from saved profile (email-aware)
+    const saved = readBeautyProfileEmail();
+    if (saved) applyPrefill(saved);
+    setEditMode(false);
+
+    // Wire action buttons once
+    if (bpNodes.editBtn && !bpNodes.editBtn._bound) {
+      bpNodes.editBtn.addEventListener('click', () => { originalBP = Object.assign({}, collectFromUI()); setEditMode(true); });
+      bpNodes.editBtn._bound = true;
+    }
+    if (bpNodes.saveBtn && !bpNodes.saveBtn._bound) {
+      bpNodes.saveBtn.addEventListener('click', saveBP);
+      bpNodes.saveBtn._bound = true;
+    }
+    if (bpNodes.cancelBtn && !bpNodes.cancelBtn._bound) {
+      bpNodes.cancelBtn.addEventListener('click', cancelEdit);
+      bpNodes.cancelBtn._bound = true;
+    }
+
+    // Bảo đảm quiz recs được render ngay khi tạo section
+    try { renderQuizRecommendations(); } catch(_){}
+    // Nếu dữ liệu sản phẩm đã nạp trước đó, render phần recommendations dựa trên profile
+    try {
+      const initial = readBeautyProfileEmail() || {};
+      const quizRaw = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile')||'null'); } catch { return null; } })();
+      const base = Object.assign({}, quizRaw || {}, initial || {});
+      renderProfileRecommendations(base);
+    } catch(_){}
+  }
+
+  // Options (superset để khớp hình + quiz)
+  const OPT = {
+    skinTone: ['Porcelain','Fair','Light','Medium','Tan','Olive','Deep','Dark','Ebony'],
+    skinType: ['Oily','Dry','Normal','Combination','Sensitive'],
+    skinConcerns: ['Acne','Oiliness','Dryness','Sensitivity','Redness','Dark Spots','Pores','Dullness','Fine Lines','Moisturising','Puffiness','Scarring','Sculpting','Slimming','Soothing','Stress','Stretch Marks','Sun Care','Visible Pores','Well-aging','Fine Dust Removal'],
+    hairColor: ['Blonde','Brown','Black','Red','Grey'],
+    hairType: ['Straight','Wavy','Curly','Coily','Colored','Dry','Fine','Frizzy','Greying','Hair loss','Thinning','Weakened'],
+    hairConcerns: ['Anti-Dandruff','Anti-Frizz','Balancing','Color Protection','Damage Repair','Hair Growth','Heat Protection','Hydrating','Purifying','Scalp Treatment','Shine','Thickening','Volumizing','Breakage','Dry Scalp','Oily Scalp','Split Ends','Color Care'],
+    eyeColor: ['Blue','Brown','Green','Grey','Black']
+  };
+
+  let bpEditMode = false;
+  let currentBP = { skinTone:null, skinType:null, skinConcerns:[], hairColor:null, hairType:null, hairConcerns:[], eyeColor:null, consent:false };
+  let originalBP = null;
+
+  function renderTags(host, options, multiple=false) {
+    if (!host) return;
+    host.innerHTML = '';
+    options.forEach(opt => {
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'bp-tag';
+      el.textContent = opt;
+      el.dataset.value = opt;
+      el.disabled = !bpEditMode;
+      el.addEventListener('click', () => {
+        if (!bpEditMode) return;
+        if (multiple) {
+          const arr = host._selected || [];
+          const idx = arr.indexOf(opt);
+          if (idx >= 0) arr.splice(idx,1); else arr.push(opt);
+          host._selected = arr;
+          el.classList.toggle('selected');
+        } else {
+          // single: clear others
+          host.querySelectorAll('.bp-tag').forEach(b => b.classList.remove('selected'));
+          el.classList.add('selected');
+          host._selected = [opt];
+        }
+      });
+      host.appendChild(el);
+    });
+  }
+
+  function applyPrefill(bp){
+    if (!bp) return;
+    // Set selections visually
+    const setSelected = (host, values) => {
+      if (!host) return;
+      const arr = Array.isArray(values) ? values : (values ? [values] : []);
+      host._selected = arr.slice();
+      host.querySelectorAll('.bp-tag').forEach(b => {
+        const v = b.dataset.value;
+        if (arr.includes(v)) b.classList.add('selected'); else b.classList.remove('selected');
+      });
+    };
+    setSelected(bpNodes.skinTone, bp.skinTone);
+    setSelected(bpNodes.skinType, bp.skinType);
+    setSelected(bpNodes.skinConcerns, bp.skinConcerns || []);
+    setSelected(bpNodes.hairColor, bp.hairColor);
+    setSelected(bpNodes.hairType, bp.hairType);
+    setSelected(bpNodes.hairConcerns, bp.hairConcerns || []);
+    setSelected(bpNodes.eyeColor, bp.eyeColor);
+    if (bpNodes.consent) bpNodes.consent.checked = !!bp.consent;
+    currentBP = {
+      skinTone: bp.skinTone || null,
+      skinType: bp.skinType || null,
+      skinConcerns: Array.isArray(bp.skinConcerns) ? bp.skinConcerns.slice() : [],
+      hairColor: bp.hairColor || null,
+      hairType: bp.hairType || null,
+      hairConcerns: Array.isArray(bp.hairConcerns) ? bp.hairConcerns.slice() : [],
+      eyeColor: bp.eyeColor || null,
+      consent: !!bp.consent
+    };
+  }
+
+  function collectFromUI(){
+    const getSingle = (host) => host && Array.isArray(host._selected) ? (host._selected[0] || null) : null;
+    const getMulti = (host) => host && Array.isArray(host._selected) ? host._selected.slice() : [];
+    return {
+      skinTone: getSingle(bpNodes.skinTone),
+      skinType: getSingle(bpNodes.skinType),
+      skinConcerns: getMulti(bpNodes.skinConcerns),
+      hairColor: getSingle(bpNodes.hairColor),
+      hairType: getSingle(bpNodes.hairType),
+      hairConcerns: getMulti(bpNodes.hairConcerns),
+      eyeColor: getSingle(bpNodes.eyeColor),
+      consent: !!(bpNodes.consent && bpNodes.consent.checked)
+    };
+  }
+
+  function setEditMode(on){
+    bpEditMode = !!on;
+    [bpNodes.skinTone,bpNodes.skinType,bpNodes.skinConcerns,bpNodes.hairColor,bpNodes.hairType,bpNodes.hairConcerns,bpNodes.eyeColor].forEach(host => {
+      if (!host) return;
+      host.querySelectorAll('.bp-tag').forEach(b => { b.disabled = !bpEditMode; });
+    });
+    if (bpNodes.saveBtn) bpNodes.saveBtn.disabled = !bpEditMode;
+    if (bpNodes.cancelBtn) bpNodes.cancelBtn.disabled = !bpEditMode;
+  }
+
+  function saveBP(){
+    const next = collectFromUI();
+    writeBeautyProfileEmail(next);
+    applyPrefill(next);
+    setEditMode(false);
+    if (bpNodes.saveStatus) {
+      bpNodes.saveStatus.textContent = 'Profile saved.';
+      setTimeout(() => { bpNodes.saveStatus && (bpNodes.saveStatus.textContent = ''); }, 2000);
+    }
+    // Call recommendation API and render recommendations (no reasons)
+    try {
+      const selections = [];
+      if (next.skinType) selections.push(next.skinType);
+      if (Array.isArray(next.skinConcerns)) selections.push(...next.skinConcerns);
+      if (next.hairType) selections.push(next.hairType);
+      if (Array.isArray(next.hairConcerns)) selections.push(...next.hairConcerns);
+      if ((next.skinConcerns||[]).length) selections.push('Face');
+      if ((next.hairConcerns||[]).length) selections.push('Hair');
+      const qs = encodeURIComponent(selections.join(','));
+      fetch(`/api/recommend?selections=${qs}&mode=promo`).then(r => r.json()).then(data => {
+        const grid = document.getElementById('bpRecsGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        const abs = (rel) => {
+          if (!rel) return '';
+          rel = String(rel).trim();
+          if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+          if (rel.startsWith('/')) return rel;
+          return '/categories/' + rel.replace(/^\/+/, '');
+        };
+        const resolveThumb = (p) => {
+          try {
+            const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+            if (byId) return byId;
+          } catch {}
+          const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '';
+          if (imgRel) return abs(imgRel);
+          const brandRel = (p.brandImage || '').trim();
+          if (brandRel) return abs(brandRel);
+          try {
+            const bLogo = (typeof resolveBrandLogo === 'function') ? resolveBrandLogo(p.brand) : '';
+            if (bLogo) return bLogo;
+          } catch {}
+          return '/header_footer/images/LOGO.png';
+        };
+        (data.results||[]).slice(0,6).forEach(p => {
+          const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+          const item = document.createElement('div');
+          item.className = 'review-item';
+          item.innerHTML = `
+            <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+            <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+            <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+          `;
+          grid.appendChild(item);
+        });
+      }).catch(()=>{});
+      // Track interactions
+      try { fetch('/api/track/interactions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ source:'beauty_profile', selections }) }); } catch{}
+    } catch{}
+  }
+
+  // Auto-render recommendations from saved profile on load
+  // (without requiring manual Save)
+  function renderProfileRecommendations(profile){
+    try {
+      const selections = [];
+      if (profile.skinType) selections.push(profile.skinType);
+      if (Array.isArray(profile.skinConcerns)) selections.push(...profile.skinConcerns);
+      if (profile.hairType) selections.push(profile.hairType);
+      if (Array.isArray(profile.hairConcerns)) selections.push(...profile.hairConcerns);
+      if ((profile.skinConcerns||[]).length) selections.push('Face');
+      if ((profile.hairConcerns||[]).length) selections.push('Hair');
+      const qs = encodeURIComponent(selections.join(','));
+      fetch(`/api/recommend?selections=${qs}&mode=promo`).then(r => r.json()).then(data => {
+        const grid = document.getElementById('bpRecsGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        const abs = (rel) => {
+          if (!rel) return '';
+          rel = String(rel).trim();
+          if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+          if (rel.startsWith('/')) return rel;
+          return '/categories/' + rel.replace(/^\/+/, '');
+        };
+        const resolveThumb = (p) => {
+          try {
+            const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+            if (byId) return byId;
+          } catch {}
+          const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '';
+          if (imgRel) return abs(imgRel);
+          const brandRel = (p.brandImage || '').trim();
+          if (brandRel) return abs(brandRel);
+          try {
+            const bLogo = (typeof resolveBrandLogo === 'function') ? resolveBrandLogo(p.brand) : '';
+            if (bLogo) return bLogo;
+          } catch {}
+          return '/header_footer/images/LOGO.png';
+        };
+        (data.results||[]).slice(0,6).forEach(p => {
+          const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+          const item = document.createElement('div');
+          item.className = 'review-item';
+          item.innerHTML = `
+            <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+            <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+            <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+          `;
+          grid.appendChild(item);
+        });
+      }).catch(()=>{});
+      try { fetch('/api/track/interactions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ source:'beauty_profile', selections }) }); } catch{}
+    } catch{}
+  }
+
+  function cancelEdit(){
+    if (originalBP) applyPrefill(originalBP);
+    setEditMode(false);
+  }
+
+  // Render tags
+  renderTags(bpNodes.skinTone, OPT.skinTone, false);
+  renderTags(bpNodes.skinType, OPT.skinType, false);
+  renderTags(bpNodes.skinConcerns, OPT.skinConcerns, true);
+  renderTags(bpNodes.hairColor, OPT.hairColor, false);
+  renderTags(bpNodes.hairType, OPT.hairType, false);
+  renderTags(bpNodes.hairConcerns, OPT.hairConcerns, true);
+  renderTags(bpNodes.eyeColor, OPT.eyeColor, false);
+
+  // Prefill from email-specific or quiz global
+  const initial = readBeautyProfileEmail() || {};
+  // If quiz saved globally, map keys
+  const quizRaw = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile')||'null'); } catch { return null; } })();
+  const base = Object.assign({}, quizRaw || {}, initial || {});
+  applyPrefill(base);
+  setEditMode(false);
+  originalBP = Object.assign({}, currentBP);
+  // Đợi dữ liệu sản phẩm sẵn sàng để đảm bảo có thumbnail theo product ID
+  window.addEventListener('productsLoaded', () => {
+    try { renderProfileRecommendations(base); } catch (_) {}
+  });
+
+  // Render Quiz Recommendations if available (callable)
+  function renderQuizRecommendations(){
+    try {
+      const el = document.getElementById('bpRecsQuiz');
+      const grid = document.getElementById('bpRecsQuizGrid');
+      if (!el || !grid) return;
+      const quizDone = localStorage.getItem('beautyQuizCompleted') === 'true';
+      const quizProfile = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile')||'null'); } catch { return null; } })();
+      const savedRecs = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile.recs')||'[]'); } catch { return []; } })();
+      // Hiển thị nếu có recs lưu hoặc có profile đã hoàn thành quiz
+      if ((!quizDone || !quizProfile) && (!Array.isArray(savedRecs) || savedRecs.length === 0)) { el.style.display = 'none'; return; }
+      el.style.display = '';
+      const selections = [];
+      if (quizProfile?.skinType) selections.push(quizProfile.skinType);
+      if (Array.isArray(quizProfile?.skinConcerns)) selections.push(...quizProfile.skinConcerns);
+      if (quizProfile?.hairType) selections.push(quizProfile.hairType);
+      if (Array.isArray(quizProfile?.hairConcerns)) selections.push(...quizProfile.hairConcerns);
+      if ((quizProfile?.skinConcerns||[]).length) selections.push('Face');
+      if ((quizProfile?.hairConcerns||[]).length) selections.push('Hair');
+      const qs = encodeURIComponent(selections.join(','));
+      const renderList = (list) => {
+        grid.innerHTML = '';
+        const abs = (rel) => {
+          if (!rel) return '';
+          rel = String(rel).trim();
+          if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+          if (rel.startsWith('/')) return rel;
+          return '/categories/' + rel.replace(/^\/+/, '');
+        };
+        const resolveThumb = (p) => {
+          try {
+            const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : '';
+            if (byId) return byId;
+          } catch {}
+          const imgRel = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : '';
+          if (imgRel) return abs(imgRel);
+          const brandRel = (p.brandImage || '').trim();
+          return brandRel ? abs(brandRel) : '/header_footer/images/LOGO.png';
+        };
+        (list||[]).slice(0,6).forEach(p => {
+          const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+          const item = document.createElement('div');
+          item.className = 'review-item';
+          item.innerHTML = `
+            <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+            <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+            <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+          `;
+          grid.appendChild(item);
+        });
+      };
+      if (Array.isArray(savedRecs) && savedRecs.length > 0) {
+        renderList(savedRecs);
+      } else {
+        fetch(`/api/recommend?selections=${qs}&mode=promo`).then(r => r.json()).then(data => {
+          const list = (data && Array.isArray(data.results)) ? data.results : [];
+          renderList(list);
+        }).catch(()=>{});
+      }
+      try { fetch('/api/track/interactions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ source:'beauty_profile_quiz', selections }) }); } catch{}
+    } catch{}
+  }
+
+  // Initial attempt (in case DOM is already present)
+  try { renderQuizRecommendations(); } catch(_){}
+
+  // Re-render quiz recommendations when products are loaded for better thumbnails
+  try { window.addEventListener('productsLoaded', () => { try { (function(){
+    const el = document.getElementById('bpRecsQuiz');
+    const grid = document.getElementById('bpRecsQuizGrid');
+    if (!el || !grid || el.style.display === 'none') return;
+    const savedRecs = (() => { try { return JSON.parse(localStorage.getItem('beauty.profile.recs')||'[]'); } catch { return []; } })();
+    if (Array.isArray(savedRecs) && savedRecs.length) {
+      // Minimal re-render using saved list to upgrade thumbnails
+      grid.innerHTML = '';
+      const abs = (rel) => {
+        if (!rel) return '';
+        rel = String(rel).trim();
+        if (rel.startsWith('./')) return '/categories' + rel.slice(1);
+        if (rel.startsWith('/')) return rel;
+        return '/categories/' + rel.replace(/^\/+/, '');
+      };
+      const resolveThumb = (p) => {
+        try { const byId = (typeof resolveProductThumb === 'function') ? resolveProductThumb(p.id) : ''; if (byId) return byId; } catch {}
+        return '/header_footer/images/LOGO.png';
+      };
+      savedRecs.slice(0,6).forEach(p => {
+        const href = `/categories/view_detail.html?id=${encodeURIComponent(p.id)}`;
+        const item = document.createElement('div');
+        item.className = 'review-item';
+        item.innerHTML = `
+          <div class="thumb-wrap"><img class="review-thumb" src="${resolveThumb(p)}" alt="${p.name}" onerror="this.onerror=null;this.src='/header_footer/images/LOGO.png'"/></div>
+          <div class="meta"><strong>${p.name}</strong> • ${p.brand||''} • ${p.category||''}</div>
+          <div class="actions"><a class="btn primary" href="${href}">Shop</a></div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+  })(); } catch(_){} }); } catch(_){}
+
+  // Re-render when quiz saves recs (from modal)
+  try { window.addEventListener('beautyQuizRecsSaved', () => { try { renderQuizRecommendations(); } catch(_){} }); } catch(_){}
+
+  // Events
+  if (bpNodes.editBtn) bpNodes.editBtn.addEventListener('click', () => { originalBP = Object.assign({}, collectFromUI()); setEditMode(true); });
+  if (bpNodes.saveBtn) bpNodes.saveBtn.addEventListener('click', saveBP);
+  if (bpNodes.cancelBtn) bpNodes.cancelBtn.addEventListener('click', cancelEdit);
+
+  // React to quiz updates in real-time
+  window.addEventListener('beautyProfileSaved', (e) => {
+    const p = (e && e.detail) || readBeautyProfileEmail();
+    if (p) { applyPrefill(p); originalBP = Object.assign({}, p); }
+  });
+
   // Sidebar interactions: active state + hide sections when viewing Track Orders
   const sidebarLinks = document.querySelectorAll('.account-sidebar a[href="#"]');
   const trackSection = document.getElementById('trackOrdersSection');
@@ -78,6 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const browseBtns = document.querySelectorAll('#reviewsSection .browse-btn');
   const tabs = document.querySelectorAll('#reviewsSection .tab');
   const accountInfoSection = document.getElementById('accountInfoSection');
+  const beautyProfileSection = document.getElementById('beauty-profile');
   const aiForm = document.getElementById('accountInfoForm');
   const aiEls = {
     first: document.getElementById('ai_first'),
@@ -106,6 +612,12 @@ const cancelReviewBtn = document.getElementById('cancelReview');
   const reviewPointsHintEl = document.getElementById('reviewPointsHint');
   const statsGrid = document.querySelector('#trackOrdersSection .stats-grid');
   const sectionTitleEl = document.querySelector('#trackOrdersSection .section-title');
+
+  // Helper: always hide Beauty Profile unless specifically requested
+  const hideBeautyProfile = () => {
+    const bpEl = document.getElementById('beauty-profile');
+    if (bpEl) bpEl.classList.add('hidden');
+  };
 
   // ------- Wishlist helpers & rendering -------
   const readWishlist = () => {
@@ -259,6 +771,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
     if (benefitsSection) benefitsSection.classList.remove('hidden');
     if (wishListSection) wishListSection.classList.remove('hidden');
     if (trackSection) trackSection.classList.add('hidden');
+    hideBeautyProfile();
   };
 
   sidebarLinks.forEach(link => {
@@ -274,6 +787,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         // Hide the two sections below
         if (benefitsSection) benefitsSection.classList.add('hidden');
         if (wishListSection) wishListSection.classList.add('hidden');
+        hideBeautyProfile();
         // Show track orders section
         if (trackSection) trackSection.classList.remove('hidden');
         // Keep membership card visible on Track Orders
@@ -292,6 +806,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         // Hide non-essential sections
         if (benefitsSection) benefitsSection.classList.add('hidden');
         if (wishListSection) wishListSection.classList.add('hidden');
+        hideBeautyProfile();
         // Show membership card and track section container
         if (membershipCardSection) membershipCardSection.classList.remove('hidden');
         trackSection.classList.remove('hidden');
@@ -313,6 +828,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (wishListSection) wishListSection.classList.remove('hidden');
         if (trackSection) trackSection.classList.add('hidden');
         if (benefitsSection) benefitsSection.classList.add('hidden');
+        hideBeautyProfile();
         renderWishlist();
         wishListSection && wishListSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -325,6 +841,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (benefitsSection) benefitsSection.classList.add('hidden');
         if (wishListSection) wishListSection.classList.add('hidden');
         if (reviewsSection) reviewsSection.classList.add('hidden');
+        hideBeautyProfile();
         couponsSection && couponsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
@@ -337,6 +854,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (wishListSection) wishListSection.classList.add('hidden');
         if (couponsSection) couponsSection.classList.add('hidden');
         if (accountInfoSection) accountInfoSection.classList.add('hidden');
+        hideBeautyProfile();
         // Default to Writable tab
         tabs.forEach(t => t.classList.remove('active'));
         const writableTab = document.querySelector('#reviewsSection .tab[data-tab="writable"]');
@@ -356,6 +874,7 @@ const cancelReviewBtn = document.getElementById('cancelReview');
         if (wishListSection) wishListSection.classList.add('hidden');
         if (couponsSection) couponsSection.classList.add('hidden');
         if (reviewsSection) reviewsSection.classList.add('hidden');
+        hideBeautyProfile();
         // Prefill form on open
         prefillAccountInfoForm(loadCurrentProfile());
         accountInfoSection && accountInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -397,6 +916,7 @@ const productsUrl = '/categories/full.json';
   // Reviews state
   let currentReviewTarget = null; // { orderId, productName }
   let resolveProductThumb = (id) => '';
+  let resolveBrandLogo = (brand) => '';
 
   let orders = [];
   let refunds = [];
@@ -455,6 +975,10 @@ const productsUrl = '/categories/full.json';
         if (couponsSection) couponsSection.classList.add('hidden');
         if (reviewsSection) reviewsSection.classList.add('hidden');
         if (accountInfoSection) accountInfoSection.classList.add('hidden');
+        {
+          const bpEl = document.getElementById('beauty-profile');
+          if (bpEl) bpEl.classList.add('hidden');
+        }
         // Always show membership card by default on section views
         if (membershipCardSection) membershipCardSection.classList.remove('hidden');
         // Apply options
@@ -464,6 +988,10 @@ const productsUrl = '/categories/full.json';
         opts.coupons && couponsSection && couponsSection.classList.remove('hidden');
         opts.reviews && reviewsSection && reviewsSection.classList.remove('hidden');
         opts.accountInfo && accountInfoSection && accountInfoSection.classList.remove('hidden');
+        if (opts.beauty) {
+          const bpEl2 = document.getElementById('beauty-profile');
+          if (bpEl2) bpEl2.classList.remove('hidden');
+        }
         // Tables visibility for track/cancel history
         if (opts.trackCancel) {
           if (statsGrid) statsGrid.classList.add('hidden');
@@ -516,6 +1044,16 @@ const productsUrl = '/categories/full.json';
           reviewsMineEl && reviewsMineEl.classList.add('hidden');
           reviewFormEl && reviewFormEl.classList.add('hidden');
           reviewsSection && reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        case 'beauty-profile':
+          // Create the section lazily when the link/hash is used
+          ensureBeautyProfileSection();
+          // Show Membership Card + Beauty Profile only
+          showOnly({ beauty: true });
+          {
+            const bpEl3 = document.getElementById('beauty-profile');
+            bpEl3 && bpEl3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
           break;
         case 'benefits':
           // Show Membership Card + Benefits only
@@ -1099,6 +1637,7 @@ const renderMyReviews = (getThumb) => {
       customers = Array.isArray(customersData) ? customersData : [];
 
       let productIndex = {};
+      let brandIndex = {};
       try {
         const arr = (productsData && productsData.products) || [];
         arr.forEach(p => {
@@ -1106,7 +1645,8 @@ const renderMyReviews = (getThumb) => {
           let normalized = '';
           if (firstImg) {
             if (firstImg.startsWith('http')) {
-              normalized = firstImg;
+              // Tránh ảnh ngoài bị ORB chặn, ưu tiên ảnh nội bộ nếu có
+              normalized = '';
             } else if (firstImg.startsWith('/')) {
               // Already absolute; keep as-is to avoid double prefix
               normalized = firstImg;
@@ -1117,11 +1657,29 @@ const renderMyReviews = (getThumb) => {
             }
           }
           productIndex[String(p.id)] = normalized;
+          // Brand logo index
+          const brandRel = (p.brandImage || '').trim();
+          if (brandRel) {
+            let brandNorm = '';
+            if (brandRel.startsWith('/')) {
+              brandNorm = brandRel;
+            } else if (brandRel.startsWith('./')) {
+              brandNorm = `/categories${brandRel.slice(1)}`;
+            } else if (/^https?:/i.test(brandRel)) {
+              brandNorm = '';
+            } else {
+              brandNorm = `/categories/${brandRel}`;
+            }
+            if (p.brand) brandIndex[String(p.brand)] = brandNorm;
+          }
         });
       } catch {}
 
       const getProductThumb = (id) => productIndex[String(id)] || '';
       resolveProductThumb = getProductThumb;
+      const getBrandLogo = (brand) => brandIndex[String(brand)] || '';
+      resolveBrandLogo = getBrandLogo;
+      try { window.dispatchEvent(new Event('productsLoaded')); } catch {}
 
       // Determine current customer from localStorage
       const storedCustomerId = localStorage.getItem('user.customerId');

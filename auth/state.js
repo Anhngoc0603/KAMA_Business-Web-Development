@@ -6,6 +6,7 @@
     email: 'user.email',
     name: 'user.name',
     provider: 'user.provider',
+    role: 'user.role',
     keepSignedIn: 'user.keepSignedIn',
     savedEmail: 'auth.savedEmail',
     firstLoginDone: 'user.firstLoginDone',
@@ -19,18 +20,20 @@
         email: localStorage.getItem(KEYS.email) || null,
         name: localStorage.getItem(KEYS.name) || null,
         provider: localStorage.getItem(KEYS.provider) || null,
+        role: localStorage.getItem(KEYS.role) || null,
         keepSignedIn: localStorage.getItem(KEYS.keepSignedIn) === 'true'
       };
     } catch { return { isLoggedIn: false }; }
   }
 
   function setLogin(opts) {
-    const { email, name, provider, keepSignedIn } = (opts || {});
+    const { email, name, provider, role, keepSignedIn } = (opts || {});
     try {
       localStorage.setItem(KEYS.isLoggedIn, 'true');
       if (email) localStorage.setItem(KEYS.email, String(email));
       if (name) localStorage.setItem(KEYS.name, String(name));
       if (provider) localStorage.setItem(KEYS.provider, String(provider));
+      if (role) localStorage.setItem(KEYS.role, String(role));
       localStorage.setItem(KEYS.keepSignedIn, keepSignedIn ? 'true' : 'false');
       // Mark first login
       if (!localStorage.getItem(KEYS.firstLoginDone)) {
@@ -44,7 +47,7 @@
     try {
       const saved = localStorage.getItem(KEYS.savedEmail);
       // Clear user keys
-      [KEYS.isLoggedIn, KEYS.email, KEYS.name, KEYS.provider, KEYS.keepSignedIn, KEYS.firstLoginDone]
+      [KEYS.isLoggedIn, KEYS.email, KEYS.name, KEYS.provider, KEYS.role, KEYS.keepSignedIn, KEYS.firstLoginDone]
         .forEach(k => localStorage.removeItem(k));
       // Preserve saved email if any
       if (saved) localStorage.setItem(KEYS.savedEmail, saved);
@@ -71,4 +74,3 @@
 
   try { window.Auth = { getUser, setLogin, logout, isLoggedIn, requireAuth }; } catch {}
 })();
-

@@ -32,19 +32,14 @@
         <ul>
           <li><a href="/contact/contact.html">Contact Us</a></li>
           <li><a href="#" data-view="reviews">Reviews</a></li>
-          <li><a href="#">Restock Notification</a></li>
-          <li><a href="#">My Event</a></li>
         </ul>
       </nav>
 
       <nav class="sidebar-section">
         <div class="section-label">My Profile</div>
         <ul>
-          <li><a href="#">Account Information</a></li>
-          <li><a href="#">Beauty Profile</a></li>
-          <li><a href="#">Addresses</a></li>
-          <li><a href="#">Login History</a></li>
-          <li><a href="#">Deactivate Account</a></li>
+          <li><a href="#" data-view="account-info">Account Information</a></li>
+          <li><a href="#beauty-profile">Beauty Profile</a></li>
         </ul>
       </nav>
     </aside>
@@ -73,6 +68,7 @@
           </div>
         </div>
       </section>
+
 
       <!-- Membership Benefits Modal -->
       <div id="membershipModal" class="modal-overlay hidden">
@@ -281,6 +277,86 @@
             <li>Coupons issued outside this mall are not accepted.</li>
           </ul>
         </div>
+      </section>
+
+      <!-- Account Information -->
+      <section class="glass-section hidden" id="accountInfoSection">
+        <div class="section-header">
+          <h2 class="section-title">Account Information</h2>
+        </div>
+        <form id="accountInfoForm" class="account-info-form">
+          <div class="form-row">
+            <label for="ai_first">First Name</label>
+            <input type="text" id="ai_first" placeholder="First name" />
+          </div>
+          <div class="form-row">
+            <label for="ai_last">Last Name</label>
+            <input type="text" id="ai_last" placeholder="Last name" />
+          </div>
+          <div class="form-row">
+            <label for="ai_email">Email</label>
+            <input type="email" id="ai_email" placeholder="Email" />
+          </div>
+          <div class="form-row">
+            <label for="ai_password">New Password</label>
+            <input type="password" id="ai_password" placeholder="8–16 characters" />
+          </div>
+          <div class="form-row">
+            <label for="ai_age">Age Group</label>
+            <select id="ai_age">
+              <option value="">Select</option>
+              <option value="18-24">18–24</option>
+              <option value="25-34">25–34</option>
+              <option value="35-44">35–44</option>
+              <option value="45-54">45–54</option>
+              <option value="55+">55+</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ai_lang">Language</label>
+            <select id="ai_lang">
+              <option value="">Select</option>
+              <option value="en">English</option>
+              <option value="vi">Tiếng Việt</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ai_birth_month">Birth Month</label>
+            <input type="number" id="ai_birth_month" min="1" max="12" placeholder="MM" />
+          </div>
+          <div class="form-row">
+            <label for="ai_birth_day">Birth Day</label>
+            <input type="number" id="ai_birth_day" min="1" max="31" placeholder="DD" />
+          </div>
+          <div class="form-row">
+            <label for="ai_gender">Gender</label>
+            <select id="ai_gender">
+              <option value="">Select</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ai_referrer">Referrer</label>
+            <input type="text" id="ai_referrer" placeholder="How did you find us?" />
+          </div>
+          <div class="form-row">
+            <label><input type="checkbox" id="ai_marketing" /> Allow marketing</label>
+          </div>
+          <div class="form-row">
+            <label><input type="checkbox" id="ai_marketing_email" /> Marketing via Email</label>
+          </div>
+          <div class="form-row">
+            <label><input type="checkbox" id="ai_marketing_push" /> Marketing via Push</label>
+          </div>
+          <div class="form-actions">
+            <button id="saveAccountInfo" class="btn primary" type="button">Save</button>
+            <button id="resetAccountInfo" class="btn" type="button">Reset</button>
+          </div>
+        </form>
       </section>
 
       <!-- Reviews -->

@@ -51,6 +51,20 @@ body { background: var(--color-background); color: var(--color-text-dark); paddi
 .view-more { font-size: .9rem; color: var(--color-primary-dark); text-decoration: none; }
 .view-more:hover { text-decoration: underline; }
 
+/* Beauty Profile chips */
+.bp-actions { display: flex; gap: .5rem; align-items: center; }
+.bp-group { border: 1px dashed var(--soft-rose); border-radius: 12px; padding: .8rem; margin: .8rem 0; background: #fff7fa; }
+.bp-header { font-weight: 700; margin-bottom: .4rem; color: var(--color-secondary); }
+.bp-sub { font-weight: 600; margin: .4rem 0 .2rem; }
+.bp-note { font-size: .85rem; color: var(--color-text-medium); font-weight: 400; }
+.bp-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.bp-tags.single .bp-tag { border-color: var(--soft-rose); }
+.bp-tag { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .8rem; border-radius: 999px; border: 1px solid var(--color-text-medium); cursor: pointer; background: #fff; color: var(--color-text-dark); user-select: none; }
+.bp-tag .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #ddd; display: inline-block; }
+.bp-tag.selected { border-color: var(--soft-rose); background: #fff2f6; color: var(--warm-blush); }
+.bp-consent { display: flex; align-items: center; gap: .5rem; margin-top: .6rem; }
+.save-status { margin-top: .6rem; color: var(--color-text-medium); }
+
 .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
 .stat-card { text-align: center; padding: 1rem; border: 1px dashed var(--color-primary-light); border-radius: 12px; background: #fff7fa; }
 .stat-card .number { font-size: 2rem; font-weight: 700; color: var(--color-secondary); }
@@ -142,6 +156,17 @@ body { background: var(--color-background); color: var(--color-text-dark); paddi
 .review-form .form-actions { display: flex; gap: .6rem; align-items: center; margin-top: .6rem; }
 .points-hint { color: var(--color-text-medium); font-size: .9rem; }
 
+/* Account Information form */
+#accountInfoSection .section-title { font-size: 1.2rem; font-weight: 700; }
+.account-info-form { border: 1px dashed var(--soft-rose); border-radius: 12px; padding: 1rem; margin-top: .6rem; background: #fff7fa; display: grid; gap: .6rem; }
+.account-info-form .form-row { display: grid; grid-template-columns: 180px 1fr; align-items: center; gap: .6rem; }
+.account-info-form label { font-weight: 600; color: var(--color-secondary); }
+.account-info-form input, .account-info-form select { padding: .6rem .8rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: var(--color-text-dark); }
+.account-info-form input[type="number"] { width: 120px; }
+.account-info-form .form-actions { display: flex; gap: .6rem; align-items: center; margin-top: .6rem; }
+.account-info-form .btn.primary { background: var(--soft-rose); color: #fff; border-color: var(--soft-rose); box-shadow: 0 4px 10px rgba(230,166,176,0.25); }
+.account-info-form .btn.primary:hover { background: var(--color-primary-dark); }
+
 /* Review media preview */
 .review-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .6rem; padding: .6rem 0; border-bottom: 1px solid #eee; }
 .thumb-wrap { width: 64px; height: 64px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; display: grid; place-items: center; background: #fafafa; }
@@ -162,3 +187,6 @@ html, body, input, button, select, textarea,
 *, *::before, *::after {
   font-family: "Playfair Display", serif !important;
 }
+.bp-recs { display: grid; gap: .6rem; }
+.bp-recs .rec-item { border: 1px solid #eee; border-radius: 10px; padding: .6rem; display: grid; grid-template-columns: 1fr auto; align-items: center; }
+.bp-recs .rec-item .reason { color: var(--color-text-medium); font-size: .9rem; }

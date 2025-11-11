@@ -122,18 +122,12 @@
       </div>
     </div>
   </section>
-<section class="bq-banner-section">
+<section id="beauty-quiz" class="bq-banner-section">
   <div class="bq-banner-container">
-    <img src="../images/bannerr.png" class="bq-banner-img" data-open-beauty-quiz>
-    <button class="bq-banner-cta" data-open-beauty-quiz="framed">Do Quiz</button>
-
-    <div class="bq-framed-popup" id="bqFramedPopup" aria-hidden="true">
-      <div class="bq-frame">
-        <img src="../images/khung ảnh.png" class="bq-frame-img">
-        <button class="bq-frame-close">×</button>
-        <div class="bq-framed-host" id="bqFramedHost"></div>
-      </div>
-    </div>
+    <a href="/quiz/quiz.html" aria-label="Open Beauty Quiz">
+      <img src="../images/bannerr.png" class="bq-banner-img">
+    </a>
+    <a class="bq-banner-cta" href="/quiz/quiz.html">Do Quiz</a>
   </div>
 </section>
 
@@ -265,6 +259,8 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const intro = document.getElementById("introContainer");
+      // Guard: introContainer có thể bị tắt (comment) -> tránh lỗi null
+      if (!intro) return;
       setTimeout(() => {
         intro.classList.add("hidden");
         setTimeout(() => intro.remove(), 800);

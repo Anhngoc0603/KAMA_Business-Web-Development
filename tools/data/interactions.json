@@ -1,0 +1,200 @@
+[
+  {
+    "id": "I-1762846980943",
+    "ts": "2025-11-11T07:43:00.943Z",
+    "source": "quiz",
+    "selections": [
+      "Normal",
+      "Dark Spots",
+      "Curly",
+      "Breakage",
+      "Face",
+      "Hair"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762846981546",
+    "ts": "2025-11-11T07:43:01.546Z",
+    "source": "quiz",
+    "selections": [
+      "Normal",
+      "Dark Spots",
+      "Curly",
+      "Breakage"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762847449166",
+    "ts": "2025-11-11T07:50:49.166Z",
+    "source": "quiz",
+    "selections": [
+      "Combination",
+      "Sensitivity",
+      "Wavy",
+      "Dry Scalp",
+      "Face",
+      "Hair"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762847449769",
+    "ts": "2025-11-11T07:50:49.769Z",
+    "source": "quiz",
+    "selections": [
+      "Combination",
+      "Sensitivity",
+      "Wavy",
+      "Dry Scalp"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762847476567",
+    "ts": "2025-11-11T07:51:16.567Z",
+    "source": "quiz",
+    "selections": [
+      "Combination",
+      "Dark Spots",
+      "Wavy",
+      "Dry Scalp",
+      "Face",
+      "Hair"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762847477174",
+    "ts": "2025-11-11T07:51:17.174Z",
+    "source": "quiz",
+    "selections": [
+      "Combination",
+      "Dark Spots",
+      "Wavy",
+      "Dry Scalp"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762847850134",
+    "ts": "2025-11-11T07:57:30.134Z",
+    "source": "beauty_profile",
+    "selections": [],
+    "meta": null
+  },
+  {
+    "id": "I-1762847947515",
+    "ts": "2025-11-11T07:59:07.515Z",
+    "source": "beauty_profile",
+    "selections": [],
+    "meta": null
+  },
+  {
+    "id": "I-1762848090957",
+    "ts": "2025-11-11T08:01:30.957Z",
+    "source": "beauty_profile",
+    "selections": [],
+    "meta": null
+  },
+  {
+    "id": "I-1762848274340",
+    "ts": "2025-11-11T08:04:34.340Z",
+    "source": "beauty_profile",
+    "selections": [],
+    "meta": null
+  },
+  {
+    "id": "I-1762848321935",
+    "ts": "2025-11-11T08:05:21.935Z",
+    "source": "quiz",
+    "selections": [
+      "Normal",
+      "Dark Spots",
+      "Curly",
+      "Dry Scalp",
+      "Face",
+      "Hair"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762848322539",
+    "ts": "2025-11-11T08:05:22.539Z",
+    "source": "quiz",
+    "selections": [
+      "Normal",
+      "Dark Spots",
+      "Curly",
+      "Dry Scalp"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762848489713",
+    "ts": "2025-11-11T08:08:09.713Z",
+    "source": "beauty_profile",
+    "selections": [
+      "Normal",
+      "Dark Spots",
+      "Curly",
+      "Dry Scalp",
+      "Face",
+      "Hair"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762848504587",
+    "ts": "2025-11-11T08:08:24.587Z",
+    "source": "quiz",
+    "selections": [
+      "Normal",
+      "Dark Spots",
+      "Curly",
+      "Split Ends",
+      "Face",
+      "Hair"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762848505197",
+    "ts": "2025-11-11T08:08:25.197Z",
+    "source": "quiz",
+    "selections": [
+      "Normal",
+      "Dark Spots",
+      "Curly",
+      "Split Ends"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762849068953",
+    "ts": "2025-11-11T08:17:48.953Z",
+    "source": "quiz",
+    "selections": [
+      "Combination",
+      "Dark Spots",
+      "Curly",
+      "Dry Scalp",
+      "Face",
+      "Hair"
+    ],
+    "meta": null
+  },
+  {
+    "id": "I-1762849069556",
+    "ts": "2025-11-11T08:17:49.556Z",
+    "source": "quiz",
+    "selections": [
+      "Combination",
+      "Dark Spots",
+      "Curly",
+      "Dry Scalp"
+    ],
+    "meta": null
+  }
+]

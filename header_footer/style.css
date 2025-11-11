@@ -751,15 +751,14 @@ body {
         height: 30px;
       }
 
-      nav {
-        gap: -100px;
-      }
-      
+      /* Điều chỉnh nhẹ spacing icon nếu cần riêng cho trang cụ thể
+         Không dùng gap âm toàn cục để tránh chồng lấn và mất click */
       nav a img {
         width: 32px;
         height: 32px;
       }
-      .acc-icon, .contact-icon{display:none;}
+      /* Không ẩn icon account/contact toàn cục. Nếu muốn ẩn trên mobile,
+         hãy đặt trong media query ở từng trang hoặc đoạn chuyên dụng. */
       .search {
         width: auto; /* vừa icon */
         margin-left: auto;

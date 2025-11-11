@@ -958,13 +958,16 @@
     const DEBUG = true;
     // ==================== CONFIGURATION ====================
     const CONFIG = {
-      // Thử các đường dẫn khác nhau
+      // Thử các đường dẫn khác nhau (ưu tiên Categories)
       jsonPaths: [
-        '/new/products.json',
+        '/categories/full.json',
+        '/Best_Sellers/full.json',
+        '/1.homepage/products.json',
+        '/new/products.json'
       ],
       headerPath: '/header_footer/header.html',
       footerPath: '/header_footer/footer.html',
-      productsPage: '/new/new_arrival.html'
+      productsPage: '/categories/categories.html'
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1051,11 +1054,21 @@
         if (data.products.length === 0) {
           throw new Error('Không có sản phẩm nào trong file JSON');
         }
-        // Chuẩn hoá ảnh để hiển thị đúng và lưu đúng vào Cart
+        // Chuẩn hoá ảnh để hiển thị đúng theo nguồn dữ liệu
+        const baseDir = (() => {
+          try {
+            const url = new URL(result.path, window.location.origin);
+            const segments = url.pathname.split('/').filter(Boolean);
+            return `/${segments[0] || ''}`; // ví dụ: /categories, /new, /Best_Sellers, /1.homepage
+          } catch { return '/categories'; }
+        })();
+
         const normalizeImagePath = (p) => {
           if (!p) return p;
-          if (p.startsWith('./images/')) return p.replace('./images/', '/new/images/');
-          if (p.startsWith('images/')) return `/new/${p}`;
+          if (p.startsWith('http')) return p;
+          if (p.startsWith('/')) return p;
+          if (p.startsWith('./images/')) return p.replace('./images/', `${baseDir}/images/`);
+          if (p.startsWith('images/')) return `${baseDir}/${p}`;
           return p;
         };
         data.products = data.products.map(prod => ({

@@ -4,5 +4,47 @@
     "email": "demo@kama.local",
     "name": "Demo User",
     "password": "123456"
+  },
+  {
+    "id": "u_admin",
+    "email": "admin@kama.local",
+    "name": "KAMA Admin",
+    "password": "Admin@2025",
+    "role": "admin"
+  },
+  {
+    "id": "u_hyhy",
+    "email": "hyhy@kama.local",
+    "name": "Hyhy",
+    "password": "Hyhymacoi05",
+    "role": "customer"
+  },
+  {
+    "id": "C1001",
+    "email": "lan.nguyen@example.com",
+    "name": "Lan Nguyen",
+    "password": "123456",
+    "role": "customer"
+  },
+  {
+    "id": "C1002",
+    "email": "khoa.tran@example.com",
+    "name": "Khoa Tran",
+    "password": "123456",
+    "role": "customer"
+  },
+  {
+    "id": "C1003",
+    "email": "anh.le@example.com",
+    "name": "Hoang Anh Le",
+    "password": "123456",
+    "role": "customer"
+  },
+  {
+    "id": "C1004",
+    "email": "trang.pham@example.com",
+    "name": "Thu Trang Pham",
+    "password": "123456",
+    "role": "customer"
   }
 ]
